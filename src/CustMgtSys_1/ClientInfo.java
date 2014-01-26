@@ -62,7 +62,6 @@ public class ClientInfo extends JDialog {
 			.createSoftBevelBorder(BevelBorder.LOWERED);
 
 	public ClientInfo(final JTable table) {
-		super();
 		this.table = table;
 
 		rowIndex = table.getSelectedRow();

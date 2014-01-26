@@ -53,7 +53,6 @@ public class CustomerPanel extends JPanel {
 
 	
 	public CustomerPanel() {
-		super();
 		setLayout(null);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		

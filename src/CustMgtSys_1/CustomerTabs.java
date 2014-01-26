@@ -32,7 +32,6 @@ public class CustomerTabs extends JPanel {
 	private final JTable table;
 	
 	public CustomerTabs(JTable table) {
-		super();
 		this.table = table;
 		setBackground(new Color(81,127,164));
 		setBorder(border);
@@ -105,13 +104,11 @@ public class CustomerTabs extends JPanel {
 	}
 	
 	private void registerControllers(Controller listen){
-		// listener for all buttons
 				addClientButton.addActionListener(listen);
 				editClientButton.addActionListener(listen);
 				showAllButton.addActionListener(listen);
 				advancedSearchButton.addActionListener(listen);
 	}
-	
 	
 	private void NoCustomerSelected() {
 		JOptionPane.showMessageDialog(null, "No customer selected");

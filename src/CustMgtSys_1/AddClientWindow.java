@@ -41,7 +41,6 @@ public class AddClientWindow extends JDialog{
     
 
 	public AddClientWindow(){
-		super();
 		setTitle("TwoFatGuys");
 		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);         
 

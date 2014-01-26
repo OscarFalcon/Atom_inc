@@ -11,7 +11,6 @@ public class LockScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	public LockScreen(MainWindowController controller) {
-		super();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final JPanel panel = new JPanel();

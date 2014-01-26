@@ -49,8 +49,6 @@ public class SearchWindow extends JDialog {
 	public JButton submit, about;
 
 	public SearchWindow() {
-		super();
-		
 		Font font; // font used throughout constructor
 		
 		/**

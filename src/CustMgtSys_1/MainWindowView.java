@@ -43,9 +43,7 @@ public class MainWindowView extends JFrame {
 
 	
 	public MainWindowView() {
-
-		super("TwoFatGuys");
-		
+		setTitle("TwoFatGuys");
 		
 		WorkOrderPanel = new WorkOrder();
 
