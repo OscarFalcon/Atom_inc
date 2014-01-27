@@ -215,7 +215,7 @@ public class Security {
 		return execute(insert);
 	}
 	
-	public static boolean updateCustomer(String id, String first, String last, String address, String city,String state, String zip, String phone, String email){
+	public static boolean updateCustomer(int id, String first, String last, String address, String city,String state, String zip, String phone, String email){
 		String vfirst,vlast,vaddress,vcity,vstate,vzip,vemail,vphone;
 		vfirst = valid(first);
 		vlast = valid(last);
@@ -265,46 +265,6 @@ public class Security {
 	
 		
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 				private methods 			// 
 	private static ResultSet executeQuery(String query) {
 		resultSet = null;

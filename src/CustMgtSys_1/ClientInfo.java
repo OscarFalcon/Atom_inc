@@ -57,7 +57,7 @@ public class ClientInfo extends JDialog {
 	private final JButton editButton, clear;
 	private final JTable table;
 	private Color darkBlue = new Color(0, 0, 51);
-	private String first, last, address, city, zip, state, email, phone;
+	private String first, last, address, city, zip, state, email, phone, id;
 	private Border border = BorderFactory
 			.createSoftBevelBorder(BevelBorder.LOWERED);
 
@@ -278,7 +278,7 @@ public class ClientInfo extends JDialog {
 						table.getModel().setValueAt(zip, rowIndex, 6);
 						table.getModel().setValueAt(email, rowIndex, 7);
 						table.getModel().setValueAt(phone, rowIndex, 8);
-						String id = (String) table.getValueAt(rowIndex, 0);
+						int id = (int) table.getValueAt(rowIndex, 0);
 
 						if (Security.updateCustomer(id, first, last, address,
 								city, state, zip, phone, email)) {
