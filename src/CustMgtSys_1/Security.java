@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Security {
 
-	private static final String DATABASE_URL = "jdbc:mysql://localhost/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15:3306/customers";
 	private static Connection connection;
 	private static ResultSet resultSet = null;
 	private static Statement statement = null;
@@ -40,8 +40,8 @@ public class Security {
 
 	public static boolean checkLogin(String user, String password) {
 		try {
-			connection = DriverManager.getConnection(DATABASE_URL, "root",
-					"rootpwd");
+			connection = DriverManager.getConnection(DATABASE_URL, "foobar",
+					"foobar159");
 			statement = connection.createStatement();
 			connectedToDatabase = true;
 		} catch (SQLException e) {
