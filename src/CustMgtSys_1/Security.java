@@ -229,6 +229,15 @@ public class Security {
 		String update = "UPDATE info SET first = '" + vfirst + "', last = '" + vlast + "', address = '" + vaddress 
 				+ "', city = '" + vcity + "', state = '" + vstate + "', zip = '" + vzip + "', email = '" + vemail + "', primaryPhone = '" + vphone + "'" 
 				+ " WHERE id = '" + id + "';";
+		update = "UPDATE info SET   first = (AES_ENCRYPT('" + vfirst + "', SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," 
+				+ " AES_ENCRYPT('" +vlast + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('" + vaddress + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," 
+				+ "AES_ENCRYPT('" + vcity + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('" + vstate + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," 
+				+ "AES_ENCRYPT('" + vzip + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('" + vemail + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," 
+				+ "AES_ENCRYPT('" + vphone + "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
+		
+		
+		
+		
 		
 		return execute(update);
 	}

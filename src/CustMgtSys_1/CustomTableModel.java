@@ -28,7 +28,7 @@ public class CustomTableModel extends DefaultTableModel{
 	public Class<?> getColumnClass(int columnIndex){
 		if( columnIndex >=0 && columnIndex < getColumnCount()){
 			if(columnIndex == 0)
-				return int.class;
+				return Integer.class;
 			return String.class;
 		}
 		return Object.class;

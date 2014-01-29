@@ -62,37 +62,34 @@ public class MainWindowController implements ChangeListener, ActionListener{
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		JTabbedPane source = (JTabbedPane)e.getSource();
-		
 		switch( source.getSelectedIndex() ){
 			case -1: 
 				break;
 			case 0:
 				view.remove(view.currentPanel);
 				view.add(view.customerPanel);
-				view.repaint();
-				view.revalidate();
-				view.pack();
 				view.currentPanel = view.customerPanel;
 				break;
 			case 1: 
 				view.remove(view.currentPanel);
 				view.add(view.WorkOrderPanel);
-				view.repaint();
-				view.revalidate();
-				view.pack();
 				view.currentPanel = view.WorkOrderPanel;
 				break;
 			case 2:
 				view.remove(view.currentPanel);
 				view.add(view.PMAPanel);
-				view.repaint();
-				view.revalidate();
-				view.pack();
 				view.currentPanel = view.PMAPanel;
 				break;
-			default:
+			case 3:
+				view.remove(view.currentPanel);
+				view.add(view.PMAPanel);
+				view.currentPanel = view.PMAPanel;
+				break;
+			
 		}
-		
+		view.repaint();
+		view.revalidate();
+		view.pack();
 	}
 
 }

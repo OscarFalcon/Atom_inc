@@ -113,31 +113,8 @@ public class MainWindowView extends JFrame {
 		add(loginPanel, BorderLayout.CENTER);
 		// ****************************** NORTH
 		// *****************************************************************************
-
-		jtp = new JTabbedPane();
-	
-		jtp.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		customerTab = null;
-		JPanel jp2 = new JPanel();
-		JPanel jp3 = new JPanel();
-
-		jtp.addTab("Customers", customerTab);
-		jtp.setTabComponentAt(0, new JButton());
-		jtp.addTab("Work Orders", jp2);
-		jtp.addTab("PMA's", jp3);
-
-		jtp.setIconAt(0, customersIcon);
-		jtp.setIconAt(1, workOrderIcon);
-		jtp.setIconAt(2, PMAIcon);
-
-		jtp.setForegroundAt(0,new Color(81,127,164));
-		jtp.setForegroundAt(0,new Color(81,127,164));
-		jtp.setForeground(new Color(81,127,164));
+			jtp = new JTabbedPane();
 		
-		
-		jtp.setEnabled(false);
-		jtp.setVisible(false);
-		add(jtp, BorderLayout.PAGE_START);
 
 		// *************************************************************************
 
@@ -156,6 +133,7 @@ public class MainWindowView extends JFrame {
 		setVisible(true);
 
 		currentPanel = loginPanel;
+		registerControllers(new MainWindowController(this));
 	}
 
 	// ***************************** END OF CONSTRUCTOR
@@ -171,61 +149,85 @@ public class MainWindowView extends JFrame {
 	}
 
 	public void switchPanels(int whichPanel) {
-
 		if (whichPanel == 0) {
 			String user = loginPanel.user.getText();
 			String password = new String(loginPanel.password.getPassword());
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
 			loginPanel.statusLabel.setText("");
-			if(Security.checkLogin(user, password)){
-				remove(currentPanel);
-				customerPanel = new CustomerPanel();
-				customerTab = new CustomerTabs(customerPanel.table);
-				jtp.removeTabAt(0);
-				jtp.insertTab("customers", customersIcon, customerTab,"customers", 0);
-				jtp.setSelectedComponent(customerTab);
-				add(customerPanel, BorderLayout.CENTER);
-				add(jtp,BorderLayout.NORTH);
-				setJMenuBar(menuBar);
-				currentPanel = customerPanel;
-				jtp.setEnabled(true);
-				jtp.setVisible(true);
-				westPanel.add(logoutButton);
-				westPanel.add(lockScreenButton);
-				Insets insets;
-				Dimension size;
-				insets = westPanel.getInsets();
-				size = logoutButton.getPreferredSize();
-				logoutButton.setBounds(insets.right+100, insets.bottom, size.width, size.height);
-				size = lockScreenButton.getPreferredSize();
-				lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
-				
-				pack();
-				repaint();
-				revalidate();
-				split.setDividerSize(10);
-				split.setDividerLocation(550);
-			}else
+			if(Security.checkLogin(user, password))
+				login();
+			else
 				loginPanel.statusLabel.setText("Invalid credentials");	
-		} else {
-			setJMenuBar(null);
-			remove(currentPanel);
-			remove(jtp);
-			Security.disconnect();
-			add(loginPanel, BorderLayout.CENTER);
-			westPanel.remove(logoutButton);
-			westPanel.remove(lockScreenButton);
-			currentPanel = loginPanel;
-			pack();
-			repaint();
-			revalidate();
-			split.setDividerSize(0);
-		}
-
-	
+		} else 
+			logout();
 	}
 
+	private void addTabbedPane(){
+		customerTab = new CustomerTabs(customerPanel.table);
+		JPanel jp1 = new JPanel();
+		JPanel jp3 = new JPanel();
+		JPanel jp4 = new Settings();
+
+		jtp.addTab("Customers", customerTab);
+		jtp.addTab("Work Orders",jp1 );
+		jtp.addTab("PMA's", jp3);
+		jtp.addTab("Settings",jp4);
+
+		jtp.setIconAt(0, customersIcon);
+		jtp.setIconAt(1, workOrderIcon);
+		jtp.setIconAt(2, PMAIcon);
+
+		jtp.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		jtp.setForeground(new Color(81,127,164));
+		add(jtp, BorderLayout.PAGE_START);
+	}
+	
+	private void addLogoutButtons(){
+		westPanel.add(logoutButton);
+		westPanel.add(lockScreenButton);
+		Insets insets;
+		Dimension size;
+		insets = westPanel.getInsets();
+		size = logoutButton.getPreferredSize();
+		logoutButton.setBounds(insets.right+100, insets.bottom, size.width, size.height);
+		size = lockScreenButton.getPreferredSize();
+		lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
+		split.setDividerSize(10);
+		split.setDividerLocation(550);
+	}
+
+	private void login(){
+		remove(currentPanel);
+		customerPanel = new CustomerPanel();
+		add(customerPanel, BorderLayout.CENTER);
+		addTabbedPane();
+		setJMenuBar(menuBar);
+		addLogoutButtons();
+		currentPanel = customerPanel;
+		pack();
+		repaint();
+		revalidate();
+	}
+	
+	
+	private void logout(){
+		setJMenuBar(null);
+		remove(currentPanel);
+		currentPanel = null;
+		remove(jtp);
+		Security.disconnect();
+		add(loginPanel, BorderLayout.CENTER);
+		westPanel.remove(logoutButton);
+		westPanel.remove(lockScreenButton);
+		currentPanel = loginPanel;
+		pack();
+		repaint();
+		revalidate();
+		split.setDividerSize(0);
+	}
+	
+	
 	
 	/**
 	 * Registers all intractable components with the specified class listener

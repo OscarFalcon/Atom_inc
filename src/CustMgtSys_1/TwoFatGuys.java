@@ -20,13 +20,10 @@ public class TwoFatGuys {
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		           // UIManager.put("nimbusBase",Color.gray);
+		        	UIManager.setLookAndFeel(info.getClassName());
 		            UIManager.put("nimbusBase",new Color(81,127,164));
-		           UIManager.put("nimbusBlueGrey",new Color(81,127,164));
-		           UIManager.put("control", null);
-		           //UIManager.put("control", new Color(25,39,66));
-		          //  UIManager.put("control", silver);
+		            UIManager.put("nimbusBlueGrey",new Color(81,127,164));
+		            UIManager.put("control", null);
 		            break;
 		        }
 		    }
@@ -52,7 +49,7 @@ public class TwoFatGuys {
 		 
 		MainWindowView view = new MainWindowView();
 		MainWindowController controller = new MainWindowController(view);
-		view.registerControllers(controller);
+		//view.registerControllers(controller);
 			
 			
 		//	String insert = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone)" + 

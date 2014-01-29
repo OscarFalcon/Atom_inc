@@ -92,6 +92,7 @@ public class ClientInfo extends JDialog {
 		cityField = new JTextField(20);
 		zipField = new JTextField(20);
 		stateList = new JComboBox<String>(states);
+		
 
 		firstNameField.setText(first);
 		firstNameField.setBorder(border);
