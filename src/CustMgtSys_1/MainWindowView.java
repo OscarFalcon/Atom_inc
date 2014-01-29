@@ -157,8 +157,12 @@ public class MainWindowView extends JFrame {
 			loginPanel.statusLabel.setText("");
 			if(Security.checkLogin(user, password))
 				login();
-			else
-				loginPanel.statusLabel.setText("Invalid credentials");	
+			else{
+				if(Security.getFailedConnectionStatus())
+					loginPanel.statusLabel.setText("Connection Error");
+				else
+					loginPanel.statusLabel.setText("Invalid credentials");
+			}
 		} else 
 			logout();
 	}

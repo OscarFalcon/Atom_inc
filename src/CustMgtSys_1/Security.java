@@ -13,8 +13,9 @@ public class Security {
 	private static ResultSet resultSet = null;
 	private static Statement statement = null;
 	private static boolean connectedToDatabase = false;
+	private static boolean failedToConnect = false;
 
-
+	
 	
 	private static CustomTableModel model = null;
 
@@ -40,12 +41,14 @@ public class Security {
 
 	public static boolean checkLogin(String user, String password) {
 		try {
-			connection = DriverManager.getConnection(DATABASE_URL, "foobar",
-					"foobar159");
+			connection = DriverManager.getConnection(DATABASE_URL, "foobar","foobar159");
 			statement = connection.createStatement();
 			connectedToDatabase = true;
+			failedToConnect = false;
 		} catch (SQLException e) {
+			failedToConnect = true;
 			Error.ConnectionError();
+			return false;
 		}
 
 		username = user;
@@ -66,6 +69,7 @@ public class Security {
 			secure_password = null;
 			disconnect();
 			Error.QueryError();
+			return false;
 		}
 		try {
 			if(resultSet.next()) {
@@ -73,13 +77,11 @@ public class Security {
 				permissions = resultSet.getInt(4);
 				return true;
 			}
-
 		} catch (SQLException e) {
 			username = null;
 			secure_password = null;
 			disconnect();
 			Error.ResultError();
-			
 		}
 		return false;
 	}
@@ -87,6 +89,9 @@ public class Security {
 
 	public static void setTableModel(CustomTableModel tablemodel) {
 		model = tablemodel;
+	}
+	public static boolean getFailedConnectionStatus(){
+		return failedToConnect;
 	}
 	
 	public static boolean updateTable(String query) {
