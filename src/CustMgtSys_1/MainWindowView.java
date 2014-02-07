@@ -155,7 +155,7 @@ public class MainWindowView extends JFrame {
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
 			loginPanel.statusLabel.setText("");
-			if(Security.checkLogin(user, password))
+			if(Security.Login(user, password))
 				login();
 			else{
 				if(Security.getFailedConnectionStatus())
@@ -171,12 +171,12 @@ public class MainWindowView extends JFrame {
 		customerTab = new CustomerTabs(customerPanel.table);
 		JPanel jp1 = new JPanel();
 		JPanel jp3 = new JPanel();
-		JPanel jp4 = new Settings();
+		//JPanel jp4 = new Settings();
 
 		jtp.addTab("Customers", customerTab);
 		jtp.addTab("Work Orders",jp1 );
 		jtp.addTab("PMA's", jp3);
-		jtp.addTab("Settings",jp4);
+		//jtp.addTab("Settings",jp4);
 
 		jtp.setIconAt(0, customersIcon);
 		jtp.setIconAt(1, workOrderIcon);

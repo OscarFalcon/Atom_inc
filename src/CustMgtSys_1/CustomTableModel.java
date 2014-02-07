@@ -20,8 +20,8 @@ public class CustomTableModel extends DefaultTableModel{
 		super(new Object[] {"ID", "First Name",
 			"Last Name", "Address", "City", "State", "Zip", "Email", "Phone"}, 0);
 		
-		Security.setTableModel(this);
-		Security.updateTable(Security.selectAll);
+		Security.clientDatabase.setTableModel(this);
+		Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
 	}
 	
 	@Override

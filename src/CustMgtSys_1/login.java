@@ -93,4 +93,9 @@ public class login  extends JPanel{
 		loginButton.addActionListener(listen);
 		password.addActionListener(listen);
 	}
+	
+	public void setText(String t){
+		statusLabel.setText(t);
+	}
+	
 }

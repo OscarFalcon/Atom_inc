@@ -95,7 +95,7 @@ public class CustomerTabs extends JPanel {
 					NoCustomerSelected();
 
 			} else if (event.getSource() == showAllButton) {
-				Security.updateTable(Security.selectAll);
+				Security.clientDatabase.updateTable(Security.selectAll);
 			}
 			else if(event.getSource() == advancedSearchButton){
 				new SearchWindow();

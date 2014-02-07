@@ -380,7 +380,7 @@ public class SearchWindow extends JDialog {
 				if (exactlyLastBox.isSelected())
 					b2 = Security.EXACTLY;
 
-				Security.updateTable(null, firstField.getText(), b1,
+				Security.clientDatabase.updateTable(null, firstField.getText(), b1,
 						lastField.getText(), b2,
 						addressField.getText(),
 						cityField.getText(),
