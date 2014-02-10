@@ -21,9 +21,9 @@ public class TwoFatGuys {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
 		        	UIManager.setLookAndFeel(info.getClassName());
-		            UIManager.put("nimbusBase",new Color(81,127,164));
-		            UIManager.put("nimbusBlueGrey",new Color(81,127,164));
-		            UIManager.put("control", null);
+		            //UIManager.put("nimbusBase",new Color(81,127,164));
+		            //UIManager.put("nimbusBlueGrey",new Color(81,127,164));
+		           // UIManager.put("control", null);
 		            break;
 		        }
 		    }

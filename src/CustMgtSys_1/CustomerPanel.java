@@ -218,9 +218,9 @@ public class CustomerPanel extends JPanel {
 			if (event.getSource() == IdField) {
 				String id = IdField.getText();
 				if (id.equals(""))
-					Security.updateTable(Security.selectAll);
+					Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
 				else
-					Security.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);
+					Security.clientDatabase.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);
 
 				IdField.setText("");
 			} else {
@@ -231,7 +231,7 @@ public class CustomerPanel extends JPanel {
 				firstField.setText("");
 				lastField.setText("");
 				phoneField.setValue("");
-				Security.updateTable(null, first, Security.EXACTLY, last, Security.EXACTLY, null, null, null, null, phone, null);
+				Security.clientDatabase.updateTable(null, first, Security.EXACTLY, last, Security.EXACTLY, null, null, null, null, phone, null);
 			}// else
 		}// ActionPerformed
 

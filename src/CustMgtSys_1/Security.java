@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Security {
 
-	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15:3306/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
 	private static Connection connection;
 	private static ResultSet resultSet = null;
 	private static Statement statement = null;
@@ -31,9 +31,10 @@ public class Security {
 
 	public static boolean Login(String user, String password) {
 		try {
-			connection = DriverManager.getConnection(DATABASE_URL, "foobar",
-					"foobar159");
+			connection = DriverManager.getConnection(DATABASE_URL, "root","password");
 			statement = connection.createStatement();
+			statement.execute("use customers");
+			System.out.println("enter");
 			connectedToDatabase = true;
 			failedToConnect = false;
 		} catch (SQLException e) {
@@ -275,26 +276,30 @@ public class Security {
 					+ "', zip = '" + vzip + "', email = '" + vemail
 					+ "', primaryPhone = '" + vphone + "'" + " WHERE id = '"
 					+ id + "';";
-			update = "UPDATE info SET   first = (AES_ENCRYPT('"
+		
+			
+			update = "UPDATE info SET first = (AES_ENCRYPT('"
 					+ vfirst
 					+ "', SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ " AES_ENCRYPT('"
+					+ " last =  AES_ENCRYPT('"
 					+ vlast
-					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('"
+					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), address = AES_ENCRYPT('"
 					+ vaddress
 					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_ENCRYPT('"
+					+ "city = AES_ENCRYPT('"
 					+ vcity
-					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('"
+					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),state = AES_ENCRYPT('"
 					+ vstate
 					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_ENCRYPT('"
+					+ "zip = AES_ENCRYPT('"
 					+ vzip
-					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT('"
+					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),email = AES_ENCRYPT('"
 					+ vemail
 					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_ENCRYPT('" + vphone
-					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
+					+ "primaryPhone = AES_ENCRYPT('" + vphone
+					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))" + " WHERE id = " + id + ";";
+			
+			System.out.println(update);
 
 			return execute(update);
 		}
@@ -310,7 +315,8 @@ public class Security {
 	public static void disconnect() {
 		if (connectedToDatabase) {
 			try {
-				resultSet.close();
+				if(resultSet != null)
+					resultSet.close();
 				statement.close();
 				connection.close();
 				connectedToDatabase = false;
@@ -349,7 +355,7 @@ public class Security {
 		return resultSet;
 	}
 
-	private static boolean execute(String command) {
+	public static boolean execute(String command) {
 		if (connectedToDatabase) {
 			try {
 				statement.execute(command);

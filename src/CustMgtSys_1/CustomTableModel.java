@@ -1,7 +1,10 @@
 package CustMgtSys_1;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.table.DefaultTableModel;
+import java.util.Scanner;
 
 
 
@@ -21,6 +24,8 @@ public class CustomTableModel extends DefaultTableModel{
 			"Last Name", "Address", "City", "State", "Zip", "Email", "Phone"}, 0);
 		
 		Security.clientDatabase.setTableModel(this);
+		//for(int i = 0; i< 50;i++)
+		//	read();
 		Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
 	}
 	
@@ -58,7 +63,7 @@ public class CustomTableModel extends DefaultTableModel{
 			e.printStackTrace();
 		}
 		
-	}
+	} **/
 	
 	
 	public void read(){
@@ -94,7 +99,7 @@ public class CustomTableModel extends DefaultTableModel{
 	
 		
 		
-	} **/
+	} 
 	
 
 }//CustomTableModel.java

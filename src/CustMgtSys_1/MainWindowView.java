@@ -94,7 +94,7 @@ public class MainWindowView extends JFrame {
 				imagePanel, westPanel);
 		split.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		
-		split.setDividerLocation(800);
+		split.setDividerLocation(600);
 		split.setDividerSize(0);
 
 		add(split, BorderLayout.LINE_START);
@@ -106,7 +106,7 @@ public class MainWindowView extends JFrame {
 		statusPanel.add(userLabel);
 		statusLabel = new JLabel("");
 		statusPanel.add(statusLabel);
-		add(statusPanel, BorderLayout.PAGE_END);
+	//	add(statusPanel, BorderLayout.PAGE_END);
 
 		// **********************************	 CENTER	 *************************************************************** //
 		loginPanel = new login(this);
@@ -154,14 +154,14 @@ public class MainWindowView extends JFrame {
 			String password = new String(loginPanel.password.getPassword());
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
-			loginPanel.statusLabel.setText("");
+			loginPanel.setText("");
 			if(Security.Login(user, password))
 				login();
 			else{
 				if(Security.getFailedConnectionStatus())
-					loginPanel.statusLabel.setText("Connection Error");
+					loginPanel.setText("Connection Error");
 				else
-					loginPanel.statusLabel.setText("Invalid credentials");
+					loginPanel.setText("Invalid credentials");
 			}
 		} else 
 			logout();
@@ -198,7 +198,7 @@ public class MainWindowView extends JFrame {
 		size = lockScreenButton.getPreferredSize();
 		lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
 		split.setDividerSize(10);
-		split.setDividerLocation(550);
+		split.setDividerLocation(590);
 	}
 
 	private void login(){
