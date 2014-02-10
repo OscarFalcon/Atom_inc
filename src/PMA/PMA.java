@@ -1,9 +1,9 @@
-package CustMgtSys_1;
+package PMA;
 
 
 public class PMA {
 	public static void main(String args[]){
-		PMAview view = new PMAview();
+		PMAView view = new PMAView();
 		PMAController controller = new PMAController(view);
 		
 		view.submit.addActionListener(controller);
