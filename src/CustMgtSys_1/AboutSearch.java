@@ -18,6 +18,7 @@ public class AboutSearch extends JDialog {
 		
 		textBox = new JTextArea();
 		textBox.setFont(new Font("Symbol-Plain", Font.BOLD, 13));
+		textBox.setEditable(false);
 		textBox.setText("\t\t\tAdvanced Search\n\n\nAdvanced Search allows you to search for a customer using any combination of criteria!\n"
 				+ "For first and last name, you can select \"exactly\" or \"matches\" mode. If \"exactly\" is selected\n"
 				+ "Advanced Search will return customers whose first or last name is EXACTLY what you typed in\n"
@@ -32,6 +33,7 @@ public class AboutSearch extends JDialog {
 				+ "\"San Antonio\" in the state of Texas. You can fill in as many fields as you want as long as "
 				+ "at least one is provided.\n\n\n");
 
+		
 		add(textBox);
 		setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		

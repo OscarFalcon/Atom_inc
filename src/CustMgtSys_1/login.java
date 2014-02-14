@@ -81,7 +81,7 @@ public class login  extends JPanel{
 		registerControllers(new Controller());
 	}
 	
-	public class Controller implements ActionListener{
+	private class Controller implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			view.switchPanels(0);
@@ -89,7 +89,7 @@ public class login  extends JPanel{
 		
 	}
 	
-	public void registerControllers(Controller listen){
+	private void registerControllers(Controller listen){
 		loginButton.addActionListener(listen);
 		password.addActionListener(listen);
 	}

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -111,6 +112,8 @@ public class CustomerPanel extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setRowHeight(table.getRowHeight() + 3);
+		table.setFillsViewportHeight(true);//?
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		TableColumn col;
 		CenterTableCellRenderer centerRenderer;

@@ -32,7 +32,7 @@ public class MainWindowView extends JFrame {
 	ImageIcon workOrderIcon = new ImageIcon("seamless.png");
 	ImageIcon PMAIcon = new ImageIcon("PMA.png");
 
-	public JTabbedPane jtp;
+	private JTabbedPane jtp;
 
 
 
@@ -196,13 +196,21 @@ public class MainWindowView extends JFrame {
 		add(customerPanel, BorderLayout.CENTER);
 	}
 	
+	private void loadWorkOrderPanel(){
+		WorkOrderPanel = new WorkOrderView();
+
+	}
 	
-	private void login(){
-		WorkOrderPanel = new WorkOrder();
+	private void loadInvoicePanel(){
 		PMAPanel = new JPanel();
 		PMAPanel.setLayout(new BorderLayout());
 		PMAPanel.setBackground(Color.blue);
-		
+	}
+	
+	
+	private void login(){
+		loadWorkOrderPanel();
+		loadInvoicePanel();
 		addCustomerPanel();
 		addTabbedPane();		
 		addMenuBar();
