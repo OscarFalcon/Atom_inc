@@ -30,6 +30,9 @@ public class Error {
 	public static void InsertError(){
 		JOptionPane.showMessageDialog(null, "Error: Failed to insert data to database","MySQL Error",JOptionPane.ERROR_MESSAGE);
 	}
+	public static void UpdateError(){
+		JOptionPane.showMessageDialog(null,"Error: Failed to update database","MySQL Error",JOptionPane.ERROR_MESSAGE);
+	}
 	
 	
 }

@@ -40,13 +40,13 @@ public class SearchWindow extends JDialog {
 	private static final Border border = BorderFactory
 			.createBevelBorder(BevelBorder.LOWERED);
 
-	public final JTextField firstField, lastField, addressField, cityField,
+	private final JTextField firstField, lastField, addressField, cityField,
 			zipField, emailField;
-	public final JFormattedTextField phoneField;
-	public final JComboBox<String> stateList;
-	public final JCheckBox matchesFirstBox, exactlyFirstBox, matchesLastBox,
+	private final JFormattedTextField phoneField;
+	private final JComboBox<String> stateList;
+	private final JCheckBox matchesFirstBox, exactlyFirstBox, matchesLastBox,
 			exactlyLastBox;
-	public JButton submit, about;
+	private JButton submit, about;
 
 	public SearchWindow() {
 		Font font; // font used throughout constructor
@@ -173,7 +173,7 @@ public class SearchWindow extends JDialog {
 		cityField.setBorder(border);
 		cityField.setPreferredSize(new Dimension(125, 25));
 		stateList = new JComboBox<String>(states);
-		stateList.setPreferredSize(new Dimension(50, 25));
+		stateList.setPreferredSize(new Dimension(55, 25));
 		JLabel zipLabel = new JLabel("Zip");
 		zipLabel.setPreferredSize(new Dimension(65, 25));
 		zipField = new JTextField();
@@ -373,12 +373,12 @@ public class SearchWindow extends JDialog {
 				if (phone.equals("(xxx) xxx-xxxx")) {
 					phone = null;
 				}
-				b1 = Security.MATCHES;
-				b2 = Security.MATCHES;
+				b1 = Security.clientDatabase.MATCHES;
+				b2 = Security.clientDatabase.MATCHES;
 				if (exactlyFirstBox.isSelected())
-					b1 = Security.EXACTLY;
+					b1 = Security.clientDatabase.EXACTLY;
 				if (exactlyLastBox.isSelected())
-					b2 = Security.EXACTLY;
+					b2 = Security.clientDatabase.EXACTLY;
 
 				Security.clientDatabase.updateTable(null, firstField.getText(), b1,
 						lastField.getText(), b2,

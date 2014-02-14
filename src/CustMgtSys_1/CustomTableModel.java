@@ -24,7 +24,7 @@ public class CustomTableModel extends DefaultTableModel{
 			"Last Name", "Address", "City", "State", "Zip", "Email", "Phone"}, 0);
 		
 		Security.clientDatabase.setTableModel(this);
-		//for(int i = 0; i< 50;i++)
+		//for(int i = 0; i< 1000 ;i++)
 		//	read();
 		Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
 	}
@@ -78,6 +78,7 @@ public class CustomTableModel extends DefaultTableModel{
 		
 		while(in.hasNextLine()){
 			line = in.nextLine();
+			System.out.println(line);
 			tokens = line.split("\\|");
 			String first = tokens[1];
 			String last = tokens[2];

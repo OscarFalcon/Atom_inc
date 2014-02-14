@@ -231,7 +231,7 @@ public class CustomerPanel extends JPanel {
 				firstField.setText("");
 				lastField.setText("");
 				phoneField.setValue("");
-				Security.clientDatabase.updateTable(null, first, Security.EXACTLY, last, Security.EXACTLY, null, null, null, null, phone, null);
+				Security.clientDatabase.updateTable(null, first, Security.clientDatabase.EXACTLY, last, Security.clientDatabase.EXACTLY, null, null, null, null, phone, null);
 			}// else
 		}// ActionPerformed
 

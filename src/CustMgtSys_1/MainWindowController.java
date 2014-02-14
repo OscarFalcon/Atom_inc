@@ -39,20 +39,11 @@ public class MainWindowController implements ChangeListener, ActionListener{
 		}
 		else if(event.getSource() == view.lockScreenButton){
 			enter = false;
-
 			view.setEnabled(false);
-			view.repaint();
-			view.revalidate();
-			while(!enter){
+			while(!enter)
 				new LockScreen(this);	
-			}
-		
 			view.setEnabled(true);
-			UIManager.put("control", null);
-			view.repaint();
-			view.revalidate();
 		}
-		
 	}
 
 	public void setEnter(boolean b){

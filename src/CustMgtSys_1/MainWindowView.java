@@ -9,7 +9,7 @@ public class MainWindowView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private JMenu fileMenu, AdminMenu, help, reports;
+	private JMenu fileMenu, help;
 
 	public JMenuItem logout, save, about, addUser, deleteUser, changePassword;
 
@@ -34,7 +34,7 @@ public class MainWindowView extends JFrame {
 
 	public JTabbedPane jtp;
 
-	public String userName;
+
 
 	Color normal = new Color(128, 0, 0);
 	Color darkBlue = new Color(0, 0, 51);
@@ -42,36 +42,12 @@ public class MainWindowView extends JFrame {
 	Color silver = new Color(224, 224, 224);
 
 	
+	
+	private MainWindowController listen;
+	
+	
 	public MainWindowView() {
-		setTitle("TwoFatGuys");
 		
-		WorkOrderPanel = new WorkOrder();
-
-		PMAPanel = new JPanel();
-		PMAPanel.setLayout(new BorderLayout());
-		PMAPanel.setBackground(Color.blue);
-		// ********************* MENUBAR
-		// ********************************************************************************
-
-		menuBar = new JMenuBar();
-
-		fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-
-		changePassword = new JMenuItem("Change Password");
-		fileMenu.add(changePassword);
-
-		save = new JMenuItem("Save");
-		fileMenu.add(save);
-
-		logout = new JMenuItem("Logout");
-		fileMenu.add(logout);
-
-		help = new JMenu("Help");
-		menuBar.add(help);
-		about = new JMenuItem("About MyCMS");
-		help.add(about);
-
 // ************************************ WEST		************************************************************************
 		// Image on top left
 		JPanel imagePanel = new JPanel();
@@ -98,7 +74,7 @@ public class MainWindowView extends JFrame {
 		split.setDividerSize(0);
 
 		add(split, BorderLayout.LINE_START);
-// **************************** SOUTH:	**********************************************************************
+// **************************** 				SOUTH:					**********************************************************************
 		statusPanel = new JPanel();
 		statusPanel.setLayout(new GridLayout(2, 1));
 		statusPanel.setBackground(Color.YELLOW);
@@ -106,25 +82,20 @@ public class MainWindowView extends JFrame {
 		statusPanel.add(userLabel);
 		statusLabel = new JLabel("");
 		statusPanel.add(statusLabel);
-	//	add(statusPanel, BorderLayout.PAGE_END);
+		//	add(statusPanel, BorderLayout.PAGE_END);
 
-		// **********************************	 CENTER	 *************************************************************** //
+// **********************************	 CENTER	 		*************************************************************** //
 		loginPanel = new login(this);
 		add(loginPanel, BorderLayout.CENTER);
-		// ****************************** NORTH
-		// *****************************************************************************
-			jtp = new JTabbedPane();
-		
-
-		// *************************************************************************
-
+			
+// ***********************				OPTIONS 		***********************************************************			
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 					Security.disconnect();
 			}
 		});
-
+		setTitle("TwoFatGuys");
 		setPreferredSize(new Dimension(1300, 800));
 		pack();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,11 +104,10 @@ public class MainWindowView extends JFrame {
 		setVisible(true);
 
 		currentPanel = loginPanel;
-		registerControllers(new MainWindowController(this));
+		
 	}
 
-	// ***************************** END OF CONSTRUCTOR
-	// ***********************************************
+	// ***************************** END OF CONSTRUCTOR			 ***********************************************
 
 	/**
 	 * Updates the status bar located at the SOUTH of the frame
@@ -168,6 +138,8 @@ public class MainWindowView extends JFrame {
 	}
 
 	private void addTabbedPane(){
+		jtp = new JTabbedPane();
+		
 		customerTab = new CustomerTabs(customerPanel.table);
 		JPanel jp1 = new JPanel();
 		JPanel jp3 = new JPanel();
@@ -201,14 +173,43 @@ public class MainWindowView extends JFrame {
 		split.setDividerLocation(590);
 	}
 
-	private void login(){
+	private void addMenuBar(){
+				menuBar = new JMenuBar();
+				fileMenu = new JMenu("File");
+				menuBar.add(fileMenu);
+				changePassword = new JMenuItem("Change Password");
+				fileMenu.add(changePassword);
+				save = new JMenuItem("Save");
+				fileMenu.add(save);
+				logout = new JMenuItem("Logout");
+				fileMenu.add(logout);
+				help = new JMenu("Help");
+				menuBar.add(help);
+				about = new JMenuItem("About MyCMS");
+				help.add(about);
+				setJMenuBar(menuBar);
+	}
+	
+	private void addCustomerPanel(){
 		remove(currentPanel);
 		customerPanel = new CustomerPanel();
 		add(customerPanel, BorderLayout.CENTER);
-		addTabbedPane();
-		setJMenuBar(menuBar);
+	}
+	
+	
+	private void login(){
+		WorkOrderPanel = new WorkOrder();
+		PMAPanel = new JPanel();
+		PMAPanel.setLayout(new BorderLayout());
+		PMAPanel.setBackground(Color.blue);
+		
+		addCustomerPanel();
+		addTabbedPane();		
+		addMenuBar();
 		addLogoutButtons();
 		currentPanel = customerPanel;
+		listen = new MainWindowController(this);
+		registerControllers(listen);
 		pack();
 		repaint();
 		revalidate();
@@ -216,14 +217,13 @@ public class MainWindowView extends JFrame {
 	
 	
 	private void logout(){
+		Security.disconnect();
 		setJMenuBar(null);
 		remove(currentPanel);
-		currentPanel = null;
 		remove(jtp);
-		Security.disconnect();
-		add(loginPanel, BorderLayout.CENTER);
 		westPanel.remove(logoutButton);
 		westPanel.remove(lockScreenButton);
+		add(loginPanel, BorderLayout.CENTER);
 		currentPanel = loginPanel;
 		pack();
 		repaint();

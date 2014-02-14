@@ -279,9 +279,9 @@ public class ClientInfo extends JDialog {
 						table.getModel().setValueAt(zip, rowIndex, 6);
 						table.getModel().setValueAt(email, rowIndex, 7);
 						table.getModel().setValueAt(phone, rowIndex, 8);
-						int id = (int) table.getValueAt(rowIndex, 0);
-
-						if (Security.clientDatabase.updateCustomer(id, first, last, address,
+						Integer id = (Integer) table.getValueAt(rowIndex, 0);
+						
+						if (Security.clientDatabase.updateCustomer(id.toString(), first, last, address,
 								city, state, zip, phone, email)) {
 							JOptionPane.showMessageDialog(null,
 									"Successfully edited Client " + first + " "

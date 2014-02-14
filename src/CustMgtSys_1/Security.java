@@ -24,17 +24,16 @@ public class Security {
 
 	private static String query;
 
-	
-
-	public static final int MATCHES = 0;
-	public static final int EXACTLY = 1;
-
+	/**This method attempts to log the specified user into the MySQL database
+	 * 
+	 * @param user
+	 * @param password
+	 * @return TRUE:
+	 */
 	public static boolean Login(String user, String password) {
 		try {
 			connection = DriverManager.getConnection(DATABASE_URL, "root","password");
 			statement = connection.createStatement();
-			statement.execute("use customers");
-			System.out.println("enter");
 			connectedToDatabase = true;
 			failedToConnect = false;
 		} catch (SQLException e) {
@@ -64,6 +63,8 @@ public class Security {
 			if (resultSet.next()) {
 				first_name = resultSet.getString(1);
 				permissions = resultSet.getInt(4);
+				secure_password = password;
+				username = user;
 				return true;
 			}
 		} catch (SQLException e) {
@@ -74,10 +75,40 @@ public class Security {
 		}
 		return false;
 	}
-
+/**
+ * This method returns TRUE: if the last attempt to connect was unsuccessful
+ * Not to be confused with wheather or not the user entered the right password
+ * 
+ * @return
+ */
 	public static boolean getFailedConnectionStatus() {
 		return failedToConnect;
 	}
+	
+	public static String getUser() {
+		if (connectedToDatabase)
+			return username;
+		return null;
+	}
+
+	public static void disconnect() {
+		if (connectedToDatabase) {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				statement.close();
+				connection.close();
+				connectedToDatabase = false;
+			} catch (SQLException e) {
+				Error.CloseError();
+			}
+		}
+	}
+
+	public static boolean testPassword(String password) {
+		return password.equals(secure_password);
+	}
+/** ********************************************************** 				CLIENT DATABASE 	*********************************************************************************************** */	
 
 	public static class clientDatabase {
 		public static final String selectAll = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
@@ -87,12 +118,18 @@ public class Security {
 				+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info";
 
 		private static final String select_All_Where = selectAll + " WHERE";
+		public static final int MATCHES = 0;
+		public static final int EXACTLY = 1;
+
 		
-		
-		
+		/**
+		 * sets the table model for displaying search results;
+		 * @param tablemodel
+		 */
 		public static void setTableModel(CustomTableModel tablemodel) {
 			model = tablemodel;
 		}
+
 		public static boolean updateTable(String query) {
 			if (connectedToDatabase) {
 				model.setRowCount(0);
@@ -129,7 +166,7 @@ public class Security {
 			vzip = valid(zip);
 			vphone = valid(phone);
 			vemail = valid(email);
-
+			
 			if (id == null || id.equals("")) {
 				query = select_All_Where + " id LIKE '%' ";
 
@@ -257,9 +294,9 @@ public class Security {
 			return execute(insert);
 		}
 
-		public static boolean updateCustomer(int id, String first, String last,
-				String address, String city, String state, String zip,
-				String phone, String email) {
+		public static boolean updateCustomer(String id, String first,
+				String last, String address, String city, String state,
+				String zip, String phone, String email) {
 			String vfirst, vlast, vaddress, vcity, vstate, vzip, vemail, vphone;
 			vfirst = valid(first);
 			vlast = valid(last);
@@ -270,15 +307,7 @@ public class Security {
 			vphone = valid(phone);
 			vemail = valid(email);
 
-			String update = "UPDATE info SET first = '" + vfirst
-					+ "', last = '" + vlast + "', address = '" + vaddress
-					+ "', city = '" + vcity + "', state = '" + vstate
-					+ "', zip = '" + vzip + "', email = '" + vemail
-					+ "', primaryPhone = '" + vphone + "'" + " WHERE id = '"
-					+ id + "';";
-		
-			
-			update = "UPDATE info SET first = (AES_ENCRYPT('"
+			String update = "UPDATE info SET first = AES_ENCRYPT('"
 					+ vfirst
 					+ "', SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 					+ " last =  AES_ENCRYPT('"
@@ -297,38 +326,14 @@ public class Security {
 					+ vemail
 					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 					+ "primaryPhone = AES_ENCRYPT('" + vphone
-					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))" + " WHERE id = " + id + ";";
-			
-			System.out.println(update);
+					+ "',SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+					+ " WHERE id = " + id + ";";
 
 			return execute(update);
 		}
 
-	}//class clientDatabase
-
-	public static String getUser() {
-		if (connectedToDatabase)
-			return username;
-		return null;
-	}
-
-	public static void disconnect() {
-		if (connectedToDatabase) {
-			try {
-				if(resultSet != null)
-					resultSet.close();
-				statement.close();
-				connection.close();
-				connectedToDatabase = false;
-			} catch (SQLException e) {
-				Error.CloseError();
-			}
-		}
-	}
-
-	public static boolean testPassword(String password) {
-		return password.equals(secure_password);
-	}
+	}// class clientDatabase
+	
 
 	// **********************************************************************************************************************************************************
 
@@ -340,6 +345,18 @@ public class Security {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// private methods //
 	private static ResultSet executeQuery(String query) {
 		resultSet = null;
@@ -362,6 +379,7 @@ public class Security {
 				return true;
 			} catch (SQLException e) {
 				Error.InsertError();
+				System.out.println(e.getMessage());
 			}
 		} else
 			Error.NotConnected();
