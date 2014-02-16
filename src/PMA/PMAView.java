@@ -4790,6 +4790,16 @@ public class PMAView extends JFrame {
 		bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
 		return bd.doubleValue();
 	}
+	
+	
+	/**
+	 * OKbuttonListener implements an action listener for when the "OK" check box is selected
+	 * or when the "NOT OK" check box is selected
+	 * 
+	 * 
+	 * @author adrian
+	 *
+	 */
 
 	public class OKbuttonListener implements ActionListener {
 		private JCheckBox box1, box2;
@@ -4847,6 +4857,15 @@ public class PMAView extends JFrame {
 	}
 	
 	
+	
+	/**
+	 * JLButtonListener implements ActionListener for when the buttonLabel is pressed
+	 * locks the entire line and add the parts and labor field to the total values.
+	 * 
+	 * 
+	 * @author adrian
+	 *
+	 */
 	public class JLButtonListener implements ActionListener {
 
 		int place;
@@ -5031,7 +5050,7 @@ public class PMAView extends JFrame {
 			double amount, QTY;
 
 			if (source == costField || source == QTYField) {
-				amount = ((Number) costField.getValue()).doubleValue();
+				amount = costField.getValue();
 				QTY = ((Number) QTYField.getValue()).doubleValue();
 				amount = amount * QTY * 2.05;
 				allCostField.setValue(amount);
