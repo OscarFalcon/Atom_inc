@@ -16,19 +16,18 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
+import javax.swing.text.MaskFormatter;
 
-public class ABMTextField extends JTextField {
-	private DecimalFormat format;
+public class ABMTextField extends JFormattedTextField {
 
 	public ABMTextField(DecimalFormat format) {
-		this.format = format;
 		this.setDisabledTextColor(Color.white);
 		this.setEnabled(false);
 
 		setColumns(format.toPattern().length());
 		setHorizontalAlignment(JFormattedTextField.TRAILING);
 		setText(NumberFormat.getCurrencyInstance().format(0.0));
-		
+			
 		addFocusListener(new java.awt.event.FocusAdapter() {
 			public void focusGained(java.awt.event.FocusEvent evt) {
 				setCaretPosition(getText().length());
@@ -39,26 +38,11 @@ public class ABMTextField extends JTextField {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				String text = getText();
-				if(!Character.isDigit(text.charAt(text.length()-1))){ 
-					text = text.substring(text.length());
-					setText(text);
-					return;
-				}
-				text = text.replace("$", "");
-				text = text.replace(".", "");
-				text = text.replace(",", "");
-				text = trim2(text);				//remove all leading 0 chars
-				if(text.length() == 0) 
-					text = "0.00";
-				else if(text.length() == 1)
-					text = ".0" + text;
-				else {
-					String save = text.substring(text.length()-2, text.length());
-					text = text.substring(0, text.length()-2) + "." + save;
-				}
-				setValue(Double.parseDouble(text));
+				text = validStr(text); //replace all non digits with nothing
+				text = trim2(text); //remove all leading 0 chars
+				setValue(Double.parseDouble(addPeriod(text)));
 			}
-
+			
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
@@ -71,18 +55,41 @@ public class ABMTextField extends JTextField {
 		});
 	}
 	
-	public String trim2(String text){
-		int i =0;
-		while(i < text.length() && text.charAt(i) == '0'){ i++;}
-		text = text.substring(i);
-		return text;
-	}
-	
 	public Double getValue() {
-		return Double.parseDouble(getText());
+		String s = getText();
+		s = validStr(s);
+		s = trim2(s);
+		s = addPeriod(s);
+		return Double.parseDouble(s);
 	}
 
 	public void setValue(double number){
 		setText(NumberFormat.getCurrencyInstance().format(number));
 	}
+	
+	public String trim2(String text){
+		int i = 0;
+		while(i < text.length() && text.charAt(i) == '0'){ i++;}
+		text = text.substring(i);
+		return text;
+	}
+	
+	private String validStr(String s){
+		return s.replaceAll("\\D", "");
+	}
+	
+	private String addPeriod(String number){
+		if(number.length() == 0) 
+			number = "0.00";
+		else if(number.length() == 1)
+			number = ".0" + number;
+		else {
+			String save = number.substring(number.length()-2, number.length());
+			number = number.substring(0, number.length()-2) + "." + save;
+		}
+		return number;
+	}
+	
+	
+	
 }

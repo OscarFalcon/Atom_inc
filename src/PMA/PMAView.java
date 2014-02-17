@@ -123,9 +123,9 @@ public class PMAView extends JFrame {
 			other4PriorityBox, other5PriorityBox, other6PriorityBox,
 			other7PriorityBox, other8PriorityBox;
 
-	public JFDTextField[][] totalFields;
+	public ABMTextField[][] totalFields;
 
-	public JFDTextField DSFTtireField, DSFTlaborField, PSFTtireField,
+	public ABMTextField DSFTtireField, DSFTlaborField, PSFTtireField,
 			PSFTlaborField, PSRTtireField, PSRTlaborField, DSRTtireField,
 			DSRTlaborField, spareTireField, spareLaborField, WWPartsField,
 			WWLaborField, locksPartsField, locksLaborField, ACHPartsField,
@@ -580,11 +580,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(DSFTpriorityBox, c);
-		DSFTtireField = new JFDTextField(format);
+		DSFTtireField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(DSFTtireField, c);
-		DSFTlaborField = new JFDTextField(format);
+		DSFTlaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(DSFTlaborField, c);
@@ -622,11 +622,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(PSFTpriorityBox, c);
-		PSFTtireField = new JFDTextField(format);
+		PSFTtireField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(PSFTtireField, c);
-		PSFTlaborField = new JFDTextField(format); 			
+		PSFTlaborField = new ABMTextField(format); 			
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(PSFTlaborField, c);
@@ -665,11 +665,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(PSRTpriorityBox, c);
-		PSRTtireField = new JFDTextField(format);
+		PSRTtireField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(PSRTtireField, c);
-		PSRTlaborField = new JFDTextField(format);
+		PSRTlaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(PSRTlaborField, c);
@@ -707,11 +707,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(DSRTpriorityBox, c);
-		DSRTtireField = new JFDTextField(format);
+		DSRTtireField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(DSRTtireField, c);
-		DSRTlaborField = new JFDTextField(format); 
+		DSRTlaborField = new ABMTextField(format); 
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(DSRTlaborField, c);
@@ -750,12 +750,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(sparePriorityBox, c);
-		spareTireField = new JFDTextField(format);
+		spareTireField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(spareTireField, c);
-		spareLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		spareLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(spareLaborField, c);
@@ -864,11 +864,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(WWPriorityBox, c);
-		WWPartsField = new JFDTextField(format);
+		WWPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(WWPartsField, c);
-		WWLaborField = new JFDTextField(format); // change this to JFDTextField
+		WWLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(WWLaborField, c);
@@ -914,12 +914,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(locksPriorityBox, c);
-		locksPartsField = new JFDTextField(format);
+		locksPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(locksPartsField, c);
-		locksLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		locksLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(locksLaborField, c);
@@ -962,11 +962,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(ACHPriorityBox, c);
-		ACHPartsField = new JFDTextField(format);
+		ACHPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(ACHPartsField, c);
-		ACHLaborField = new JFDTextField(format); // change this to JFDTextField
+		ACHLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(ACHLaborField, c);
@@ -1011,12 +1011,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(heaterPriorityBox, c);
-		heaterPartsField = new JFDTextField(format);
+		heaterPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(heaterPartsField, c);
-		heaterLaborField = new JFDTextField(format); // change this to
-														// JFDTextField
+		heaterLaborField = new ABMTextField(format); // change this to
+														// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(heaterLaborField, c);
@@ -1060,12 +1060,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(wiperPriorityBox, c);
-		wiperPartsField = new JFDTextField(format);
+		wiperPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(wiperPartsField, c);
-		wiperLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		wiperLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(wiperLaborField, c);
@@ -1106,12 +1106,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(hornPriorityBox, c);
-		hornPartsField = new JFDTextField(format);
+		hornPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(hornPartsField, c);
-		hornLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		hornLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(hornLaborField, c);
@@ -1159,11 +1159,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(HLPriorityBox, c);
-		HLPartsField = new JFDTextField(format);
+		HLPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(HLPartsField, c);
-		HLLaborField = new JFDTextField(format); // change this to JFDTextField
+		HLLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(HLLaborField, c);
@@ -1209,12 +1209,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(PTLPriorityBox, c);
-		PTLPPartsField = new JFDTextField(format);
+		PTLPPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(PTLPPartsField, c);
-		PTLPLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		PTLPLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(PTLPLaborField, c);
@@ -1260,12 +1260,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(brakePriorityBox, c);
-		brakePartsField = new JFDTextField(format);
+		brakePartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(brakePartsField, c);
-		brakeLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		brakeLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(brakeLaborField, c);
@@ -1315,11 +1315,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(DSPriorityBox, c);
-		DSPartsField = new JFDTextField(format);
+		DSPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(DSPartsField, c);
-		DSLaborField = new JFDTextField(format); // change this to JFDTextField
+		DSLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(DSLaborField, c);
@@ -1424,12 +1424,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(engineDiagPriorityBox, c);
-		engineDiagPartsField = new JFDTextField(format);
+		engineDiagPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(engineDiagPartsField, c);
-		engineDiagLaborField = new JFDTextField(format); // change this to
-															// JFDTextField
+		engineDiagLaborField = new ABMTextField(format); // change this to
+															// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(engineDiagLaborField, c);
@@ -1476,11 +1476,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(MMPriorityBox, c);
-		MMPartsField = new JFDTextField(format);
+		MMPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(MMPartsField, c);
-		MMLaborField = new JFDTextField(format); // change this to JFDTextField
+		MMLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(MMLaborField, c);
@@ -1528,11 +1528,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(BCBPriorityBox, c);
-		BCBPartsField = new JFDTextField(format);
+		BCBPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(BCBPartsField, c);
-		BCBLaborField = new JFDTextField(format); // change this to JFDTextField
+		BCBLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(BCBLaborField, c);
@@ -1576,11 +1576,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(EOPriorityBox, c);
-		EOPartsField = new JFDTextField(format);
+		EOPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(EOPartsField, c);
-		EOLaborField = new JFDTextField(format); // change this to JFDTextField
+		EOLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(EOLaborField, c);
@@ -1625,11 +1625,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(TFPriorityBox, c);
-		TFPartsField = new JFDTextField(format);
+		TFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(TFPartsField, c);
-		TFLaborField = new JFDTextField(format); // change this to JFDTextField
+		TFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(TFLaborField, c);
@@ -1673,11 +1673,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(WFPriorityBox, c);
-		WFPartsField = new JFDTextField(format);
+		WFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(WFPartsField, c);
-		WFLaborField = new JFDTextField(format); // change this to JFDTextField
+		WFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(WFLaborField, c);
@@ -1720,11 +1720,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(BFPriorityBox, c);
-		BFPartsField = new JFDTextField(format);
+		BFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(BFPartsField, c);
-		BFLaborField = new JFDTextField(format); // change this to JFDTextField
+		BFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(BFLaborField, c);
@@ -1768,11 +1768,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(PSFPriorityBox, c);
-		PSFPartsField = new JFDTextField(format);
+		PSFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(PSFPartsField, c);
-		PSFLaborField = new JFDTextField(format); // change this to JFDTextField
+		PSFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(PSFLaborField, c);
@@ -1817,12 +1817,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(coolantPriorityBox, c);
-		coolantPartsField = new JFDTextField(format);
+		coolantPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(coolantPartsField, c);
-		coolantLaborField = new JFDTextField(format); // change this to
-														// JFDTextField
+		coolantLaborField = new ABMTextField(format); // change this to
+														// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(coolantLaborField, c);
@@ -1866,11 +1866,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(SBPriorityBox, c);
-		SBPartsField = new JFDTextField(format);
+		SBPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(SBPartsField, c);
-		SBLaborField = new JFDTextField(format); // change this to JFDTextField
+		SBLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(SBLaborField, c);
@@ -1913,11 +1913,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(AFPriorityBox, c);
-		AFPartsField = new JFDTextField(format);
+		AFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(AFPartsField, c);
-		AFLaborField = new JFDTextField(format); // change this to JFDTextField
+		AFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(AFLaborField, c);
@@ -1961,11 +1961,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(FFPriorityBox, c);
-		FFPartsField = new JFDTextField(format);
+		FFPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(FFPartsField, c);
-		FFLaborField = new JFDTextField(format); // change this to JFDTextField
+		FFLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(FFLaborField, c);
@@ -2010,12 +2010,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(radiatorPriorityBox, c);
-		radiatorPartsField = new JFDTextField(format);
+		radiatorPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(radiatorPartsField, c);
-		radiatorLaborField = new JFDTextField(format); // change this to
-														// JFDTextField
+		radiatorLaborField = new ABMTextField(format); // change this to
+														// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(radiatorLaborField, c);
@@ -2057,11 +2057,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(URHPriorityBox, c);
-		URHPartsField = new JFDTextField(format);
+		URHPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(URHPartsField, c);
-		URHLaborField = new JFDTextField(format); // change this to JFDTextField
+		URHLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(URHLaborField, c);
@@ -2103,11 +2103,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(LRHPriorityBox, c);
-		LRHPartsField = new JFDTextField(format);
+		LRHPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(LRHPartsField, c);
-		LRHLaborField = new JFDTextField(format); // change this to JFDTextField
+		LRHLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(LRHLaborField, c);
@@ -2149,11 +2149,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(HBHPriorityBox, c);
-		HBHPartsField = new JFDTextField(format);
+		HBHPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(HBHPartsField, c);
-		HBHLaborField = new JFDTextField(format); // change this to JFDTextField
+		HBHLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(HBHLaborField, c);
@@ -2259,11 +2259,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(SRPPriorityBox, c);
-		SRPPartsField = new JFDTextField(format);
+		SRPPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(SRPPartsField, c);
-		SRPLaborField = new JFDTextField(format); // change this to JFDTextField
+		SRPLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(SRPLaborField, c);
@@ -2321,11 +2321,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(SLPriorityBox, c);
-		SLPartsField = new JFDTextField(format);
+		SLPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(SLPartsField, c);
-		SLLaborField = new JFDTextField(format); // change this to JFDTextField
+		SLLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(SLLaborField, c);
@@ -2395,12 +2395,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(suspPriorityBox, c);
-		suspPartsField = new JFDTextField(format);
+		suspPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(suspPartsField, c);
-		suspLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		suspLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(suspLaborField, c);
@@ -2443,12 +2443,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(alignPriorityBox, c);
-		alignPartsField = new JFDTextField(format);
+		alignPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(alignPartsField, c);
-		alignLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		alignLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(alignLaborField, c);
@@ -2502,11 +2502,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(FSSPriorityBox, c);
-		FSSPartsField = new JFDTextField(format);
+		FSSPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(FSSPartsField, c);
-		FSSLaborField = new JFDTextField(format); // change this to JFDTextField
+		FSSLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(FSSLaborField, c);
@@ -2560,11 +2560,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(RSSPriorityBox, c);
-		RSSPartsField = new JFDTextField(format);
+		RSSPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(RSSPartsField, c);
-		RSSLaborField = new JFDTextField(format); // change this to JFDTextField
+		RSSLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(RSSLaborField, c);
@@ -2612,11 +2612,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(FBPriorityBox, c);
-		FBPartsField = new JFDTextField(format);
+		FBPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(FBPartsField, c);
-		FBLaborField = new JFDTextField(format); // change this to JFDTextField
+		FBLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(FBLaborField, c);
@@ -2670,11 +2670,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(RBPriorityBox, c);
-		RBPartsField = new JFDTextField(format);
+		RBPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(RBPartsField, c);
-		RBLaborField = new JFDTextField(format); // change this to JFDTextField
+		RBLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(RBLaborField, c);
@@ -2720,12 +2720,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(CVADPriorityBox, c);
-		CVADPartsField = new JFDTextField(format);
+		CVADPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(CVADPartsField, c);
-		CVADLaborField = new JFDTextField(format); // change this to
-													// JFDTextField
+		CVADLaborField = new ABMTextField(format); // change this to
+													// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(CVADLaborField, c);
@@ -2768,12 +2768,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(mufflerPriorityBox, c);
-		mufflerPartsField = new JFDTextField(format);
+		mufflerPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(mufflerPartsField, c);
-		mufflerLaborField = new JFDTextField(format); // change this to
-														// JFDTextField
+		mufflerLaborField = new ABMTextField(format); // change this to
+														// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(mufflerLaborField, c);
@@ -2816,11 +2816,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(EPPriorityBox, c);
-		EPPartsField = new JFDTextField(format);
+		EPPartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(EPPartsField, c);
-		EPLaborField = new JFDTextField(format); // change this to JFDTextField
+		EPLaborField = new ABMTextField(format); // change this to ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(EPLaborField, c);
@@ -2920,11 +2920,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other1PriorityBox, c);
-		other1PartsField = new JFDTextField(format);
+		other1PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other1PartsField, c);
-		other1LaborField = new JFDTextField(format);
+		other1LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other1LaborField, c);
@@ -2960,12 +2960,12 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other2PriorityBox, c);
-		other2PartsField = new JFDTextField(format);
+		other2PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other2PartsField, c);
-		other2LaborField = new JFDTextField(format); // change this to
-														// JFDTextField
+		other2LaborField = new ABMTextField(format); // change this to
+														// ABMTextField
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other2LaborField, c);
@@ -3001,11 +3001,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other3PriorityBox, c);
-		other3PartsField = new JFDTextField(format);
+		other3PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other3PartsField, c);
-		other3LaborField = new JFDTextField(format);
+		other3LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other3LaborField, c);
@@ -3041,11 +3041,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other4PriorityBox, c);
-		other4PartsField = new JFDTextField(format);
+		other4PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other4PartsField, c);
-		other4LaborField = new JFDTextField(format);
+		other4LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other4LaborField, c);
@@ -3081,11 +3081,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other5PriorityBox, c);
-		other5PartsField = new JFDTextField(format);
+		other5PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other5PartsField, c);
-		other5LaborField = new JFDTextField(format);
+		other5LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other5LaborField, c);
@@ -3121,11 +3121,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other6PriorityBox, c);
-		other6PartsField = new JFDTextField(format);
+		other6PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other6PartsField, c);
-		other6LaborField = new JFDTextField(format);
+		other6LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other6LaborField, c);
@@ -3161,11 +3161,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other7PriorityBox, c);
-		other7PartsField = new JFDTextField(format);
+		other7PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other7PartsField, c);
-		other7LaborField = new JFDTextField(format);
+		other7LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other7LaborField, c);
@@ -3204,11 +3204,11 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		techPanel.add(other8PriorityBox, c);
-		other8PartsField = new JFDTextField(format);
+		other8PartsField = new ABMTextField(format);
 		c.gridx = 9;
 		c.gridwidth = 1;
 		techPanel.add(other8PartsField, c);
-		other8LaborField = new JFDTextField(format);
+		other8LaborField = new ABMTextField(format);
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other8LaborField, c);
@@ -4661,7 +4661,7 @@ public class PMAView extends JFrame {
 				other5PriorityBox, other6PriorityBox, other7PriorityBox,
 				other8PriorityBox };
 
-		totalFields = new JFDTextField[][] { { DSFTtireField, DSFTlaborField },
+		totalFields = new ABMTextField[][] { { DSFTtireField, DSFTlaborField },
 				{ PSFTtireField, PSFTlaborField },
 				{ PSRTtireField, PSRTlaborField },
 				{ DSRTtireField, DSRTlaborField },
@@ -4818,9 +4818,6 @@ public class PMAView extends JFrame {
 				totalFields[place][j].setValue(0.0);
 				totalFields[place][j].setBackground(Color.white);
 			}
-			
-			//numberFields[place][0] = new ABMTextField(format);
-			
 			comboBoxes[place][2].setBackground(null);
 			QTYfields[place].setEnabled(false);
 			vendorFields[place].setEnabled(false);
@@ -4830,6 +4827,7 @@ public class PMAView extends JFrame {
 				if (box1.isSelected()) {
 					for (int j = 0; j < 2; j++) {
 						numberFields[place][j].setEnabled(false);
+						numberFields[place][j].setValue(0.0);
 						totalFields[place][j].setEnabled(false);
 						totalFields[place][j].setValue(0.0);
 						totalFields[place][j].setBackground(Color.white);
@@ -4879,35 +4877,9 @@ public class PMAView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println(place);
 			if(checkBoxes[place][1].isSelected() && !buttonLabels[place].isSelected()){
-				buttonLabels[place].setSelected(true);
-				buttonLabels[place].setBackground(new Color(81,127,164));
-				vendorFields[place].setBackground(null);
-				
-				checkBoxes[place][0].setEnabled(false);
-				checkBoxes[place][1].setEnabled(false);
-				
-				comboBoxes[place][0].setEnabled(false);
-				comboBoxes[place][1].setEnabled(false);
-				comboBoxes[place][2].setEnabled(false);
-				comboBoxes[place][2].setRenderer(new DefaultListCellRenderer() {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void paint(Graphics g) {
-						setBackground(Color.yellow);
-						setForeground(Color.black);
-						super.paint(g);
-					}
-				});
-				
-				totalFields[place][0].setEditable(false);
-				totalFields[place][1].setEditable(false);
-				QTYfields[place].setEditable(false);
-				numberFields[place][0].setEditable(false);
-				numberFields[place][1].setEditable(false);
-				vendorFields[place].setEditable(false);
-
-				
+		
+				activateLine(false, new Color(81,127,164), Color.yellow);
+		
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts + totalFields[place][0].getValue());
 				
@@ -4926,7 +4898,6 @@ public class PMAView extends JFrame {
 				double taxAmount = new Double(tax.getValue().toString());
 				grandTotal.setValue(total+taxAmount+shopSuppliesAmount);
 				
-				
 				double val;
 				if(comboBoxes[place][2].getSelectedIndex() == 1){
 					val = new Double(high.getValue().toString());
@@ -4939,47 +4910,15 @@ public class PMAView extends JFrame {
 					low.setValue(val + (totalFields[place][0].getValue() + totalFields[place][1].getValue()));
 				}
 				
-				
 			} else if(checkBoxes[place][1].isSelected() && buttonLabels[place].isSelected()){
-				buttonLabels[place].setSelected(false);
-				buttonLabels[place].setBackground(null);
-				totalFields[place][0].setBackground(null);
-				totalFields[place][1].setBackground(null);
-				comboBoxes[place][2].setBackground(null);
 				
-				checkBoxes[place][0].setEnabled(true);
-				checkBoxes[place][1].setEnabled(true);
-				comboBoxes[place][0].setEnabled(true);
-				comboBoxes[place][1].setEnabled(true);
-				comboBoxes[place][2].setEnabled(true);
-				
-				comboBoxes[place][2].setRenderer(new DefaultListCellRenderer() {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void paint(Graphics g) {
-						setBackground(null);
-						setForeground(Color.black);
-						super.paint(g);
-					}
-				});
-				
-				
-				totalFields[place][0].setEditable(true);
-				totalFields[place][1].setEditable(true);
-				QTYfields[place].setEditable(true);
-				numberFields[place][0].setEditable(true);
-				numberFields[place][1].setEditable(true);
-				vendorFields[place].setEditable(true);
-				
+				activateLine(true, null, null);
 				
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts - totalFields[place][0].getValue());
-				System.out.println("subtract" + totalFields[place][0].getValue());
 				
 				double labor = new Double(totalLabor.getValue().toString());
 				totalLabor.setValue(labor - totalFields[place][1].getValue());
-				System.out.println("subtract" + totalFields[place][1].getValue());
 				
 				double total = new Double(totalParts.getValue().toString()) + new Double(totalLabor.getValue().toString());
 				totalPrice.setValue(total);
@@ -5005,28 +4944,50 @@ public class PMAView extends JFrame {
 					val = new Double(low.getValue().toString());
 					low.setValue(val - (totalFields[place][0].getValue() + totalFields[place][1].getValue()));
 				}
-				
 			}
-			System.out.println(totalParts.getValue());
-			System.out.println(totalLabor.getValue());
-			System.out.println(totalPrice.getValue());
-			System.out.println(tax.getValue());
-			System.out.println(shopSupplies.getValue());
-			System.out.println(grandTotal.getValue());
 		}
 		
+		@SuppressWarnings("unchecked")
+		public void activateLine(boolean value, Color back, final Color paint){
+			buttonLabels[place].setSelected(!value);
+			buttonLabels[place].setBackground(back);
+			vendorFields[place].setBackground(null);
+			
+			checkBoxes[place][0].setEnabled(value);
+			checkBoxes[place][1].setEnabled(value);
+			
+			comboBoxes[place][0].setEnabled(value);
+			comboBoxes[place][1].setEnabled(value);
+			comboBoxes[place][2].setEnabled(value);
+			comboBoxes[place][2].setRenderer(new DefaultListCellRenderer() {
+				private static final long serialVersionUID = 1L;
 
+				@Override
+				public void paint(Graphics g) {
+					setBackground(paint);
+					setForeground(Color.black);
+					super.paint(g);
+				}
+			});
+			totalFields[place][0].setEditable(value);
+			totalFields[place][1].setEditable(value);
+			QTYfields[place].setEditable(value);
+			numberFields[place][0].setEditable(value);
+			numberFields[place][1].setEditable(value);
+			vendorFields[place].setEditable(value);
+		}
 	}
+	
 	
 
 	public class changeProperty implements PropertyChangeListener {
 		ABMTextField costField, LBRHRSField;
-		JFDTextField allCostField, laborField;
+		ABMTextField allCostField, laborField;
 		JFTextField QTYField;
 		boolean tire;
 
-		public changeProperty(String value, final JFDTextField allCostField,
-				final JFDTextField laborField, final JFTextField QTYfield,
+		public changeProperty(String value, final ABMTextField allCostField,
+				final ABMTextField laborField, final JFTextField QTYfield,
 				final ABMTextField costField, final ABMTextField LBRHRSField,
 				boolean tire) {
 			this.allCostField = allCostField;
