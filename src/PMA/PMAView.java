@@ -4875,10 +4875,9 @@ public class PMAView extends JFrame {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println(place);
 			if(checkBoxes[place][1].isSelected() && !buttonLabels[place].isSelected()){
 		
-				activateLine(false, new Color(81,127,164), Color.yellow);
+				activateLine(false, new Color(81,127,164), Color.yellow, place);
 		
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts + totalFields[place][0].getValue());
@@ -4912,7 +4911,7 @@ public class PMAView extends JFrame {
 				
 			} else if(checkBoxes[place][1].isSelected() && buttonLabels[place].isSelected()){
 				
-				activateLine(true, null, null);
+				activateLine(true, null, null, place);
 				
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts - totalFields[place][0].getValue());
@@ -4947,37 +4946,39 @@ public class PMAView extends JFrame {
 			}
 		}
 		
-		@SuppressWarnings("unchecked")
-		public void activateLine(boolean value, Color back, final Color paint){
-			buttonLabels[place].setSelected(!value);
-			buttonLabels[place].setBackground(back);
-			vendorFields[place].setBackground(null);
-			
-			checkBoxes[place][0].setEnabled(value);
-			checkBoxes[place][1].setEnabled(value);
-			
-			comboBoxes[place][0].setEnabled(value);
-			comboBoxes[place][1].setEnabled(value);
-			comboBoxes[place][2].setEnabled(value);
-			comboBoxes[place][2].setRenderer(new DefaultListCellRenderer() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void paint(Graphics g) {
-					setBackground(paint);
-					setForeground(Color.black);
-					super.paint(g);
-				}
-			});
-			totalFields[place][0].setEditable(value);
-			totalFields[place][1].setEditable(value);
-			QTYfields[place].setEditable(value);
-			numberFields[place][0].setEditable(value);
-			numberFields[place][1].setEditable(value);
-			vendorFields[place].setEditable(value);
+		public class DisabledListCellRenderer extends DefaultListCellRenderer {
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel lbl = (JLabel) super.getListCellRendererComponent(list,
+						value, index, isSelected, cellHasFocus);
+				lbl.setText((String) value);
+				lbl.setOpaque(false);
+				return lbl;
+			}
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void activateLine(boolean value, Color back, final Color paint, int place){
+		buttonLabels[place].setSelected(!value);
+		buttonLabels[place].setBackground(back);
+		vendorFields[place].setBackground(null);
+		
+		checkBoxes[place][0].setEnabled(value);
+		checkBoxes[place][1].setEnabled(value);
+		
+		comboBoxes[place][0].setEnabled(value);
+		comboBoxes[place][1].setEnabled(value);
+		comboBoxes[place][2].setEnabled(value);
+		//comboBoxes[place][2].setRenderer(new DisabledListCellRenderer());
+		totalFields[place][0].setEditable(value);
+		totalFields[place][1].setEditable(value);
+		QTYfields[place].setEditable(value);
+		numberFields[place][0].setEditable(value);
+		numberFields[place][1].setEditable(value);
+		vendorFields[place].setEditable(value);
+	}
 	
 
 	public class changeProperty implements PropertyChangeListener {

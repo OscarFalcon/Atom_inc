@@ -14,9 +14,6 @@ public class myComboBox extends JComboBox{
 	@SuppressWarnings({ "serial", "unchecked" })
 	public myComboBox(String[] comments){
 		super(comments);
-		((JTextField)this.getEditor().getEditorComponent()).setDisabledTextColor(Color.black);
-		
-		
+		((JTextField)this.getEditor().getEditorComponent()).setDisabledTextColor(Color.red);
 	}
-	
 }
