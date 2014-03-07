@@ -31,6 +31,7 @@ public class PMA {
 		//view.totalFields[1][0].setEnabled(true);
 		view.totalFields[1][0].setValue(50.99);
 		view.numberFields[1][0].setValue(25.00);
+		//view.enableEastSplit(false);
 		PMAController controller = new PMAController(view);
 	}
 

@@ -3,6 +3,9 @@ package PMA;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
@@ -36,7 +39,9 @@ public class PMAView extends JFrame {
 			vehicleMakeField, vehicleModelField, workOrderField, licField,
 			vinField, engineField, transField, milesField;
 	
-	public JPanel northPanel, centerPanel, midPanel, techPanel;
+	public JPanel northPanel, centerPanel, midPanel, techPanel, eastPanel;
+	
+	public JSplitPane eastSplit;
 
 	public JCheckBox[][] checkBoxes;
 
@@ -220,19 +225,15 @@ public class PMAView extends JFrame {
 	public PMAView() {
 		super("2FATGUYS PMA");
 
-		UIManager.put("TextField.disabledBackground", Color.white);
-
+		//UIManager.put("TextField.disabledBackground", Color.white);
 		Color theme = new Color(81,127,164);
-		
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
-
-		Container container = getContentPane();
+		final Container container = getContentPane();
 		Font font2 = new Font("Verdana", Font.BOLD, 16);
 		format = new DecimalFormat("$###,##0.00");
 
-		JPanel eastPanel = new JPanel(new GridBagLayout());
+		eastPanel = new JPanel(new GridBagLayout());
 		NumberFormat QTYformat = NumberFormat.getNumberInstance();
 		LBRformat = new DecimalFormat("##,##0.0");
 
@@ -4338,7 +4339,7 @@ public class PMAView extends JFrame {
 		*/
 		imagePanel.setBackground(theme);
 		
-		JSplitPane eastSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+		eastSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				imagePanel, eastPanel);
 		eastSplit.setDividerLocation(170);
 		eastSplit.disable();
@@ -4502,6 +4503,29 @@ public class PMAView extends JFrame {
 		c.gridx = 6;
 		c.gridy = 6;
 		southNorth.add(submit,c);
+		
+		submit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				enableEastSplit(false);
+				PrinterJob pjob = PrinterJob.getPrinterJob();
+				PageFormat preformat = pjob.defaultPage();
+				preformat.setOrientation(PageFormat.LANDSCAPE);
+				PageFormat postformat = pjob.pageDialog(preformat);
+				//If user does not hit cancel then print.
+				if (preformat != postformat) {
+				    //Set print component
+				    pjob.setPrintable(new Printer(container), postformat);
+				    if (pjob.printDialog()) {
+				        try {
+							pjob.print();
+						} catch (PrinterException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				    } else enableEastSplit(true);
+				}
+			}
+		});
 		
 
 		/*****************************************************************************/
@@ -4777,6 +4801,7 @@ public class PMAView extends JFrame {
 		container.add(midPanel, BorderLayout.CENTER);
 		JScrollPane window = new JScrollPane(container);
 		window.getVerticalScrollBar().setUnitIncrement(16);
+		window.getHorizontalScrollBar().setUnitIncrement(16);
 		setContentPane(window);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
@@ -4792,8 +4817,8 @@ public class PMAView extends JFrame {
 	}
 	
 	
-	public void EnableTechPanel(boolean value){
-		techPanel.setVisible(value);
+	public void enableEastSplit(boolean value){
+		eastSplit.setVisible(value);
 	}
 	
 	

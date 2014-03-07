@@ -21,7 +21,14 @@ public class PMAController {
 
 	public void writeToSQL() {
 		String item;
-
+		String checkboxYes = "";
+		String checkboxNo = "";
+		String techComments = "";
+		String recComments = "";
+		String priority = "";
+		
+		
+		
 		/**
 		 * customer name all the way to the customer concerns
 		 */
@@ -40,14 +47,16 @@ public class PMAController {
 		view.customerConcerns.getText();
 		
 		
-		
 		for(int i = 0; i <= 42; i++){
-			view.checkBoxes[i][0].isSelected();
-			view.checkBoxes[i][1].isSelected();
+			if(view.checkBoxes[i][0].isSelected()) checkboxYes.concat("1");  // on
+			else checkboxYes.concat("0");   								 // off
 			
-			view.comboBoxes[i][0].getSelectedItem();  // need to cast this as a string
-			view.comboBoxes[i][1].getSelectedItem();  // need to cast this as a string
-			view.comboBoxes[i][2].getSelectedItem();
+			if(view.checkBoxes[i][1].isSelected()) checkboxNo.concat("1");
+			else checkboxNo.concat("0");
+			
+			techComments.concat(view.comboBoxes[i][0].getSelectedItem().toString().replaceAll("|", "\\|") + "|");
+			recComments.concat(view.comboBoxes[i][1].getSelectedItem().toString().replaceAll("|", "\\|") + "|");
+			priority.concat(Integer.toString(view.comboBoxes[i][2].getSelectedIndex()));
 			
 			view.totalFields[i][0].getText();
 			view.totalFields[i][1].getText();
