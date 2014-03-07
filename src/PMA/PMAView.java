@@ -36,7 +36,7 @@ public class PMAView extends JFrame {
 			vehicleMakeField, vehicleModelField, workOrderField, licField,
 			vinField, engineField, transField, milesField;
 	
-	public JPanel northPanel, centerPanel;
+	public JPanel northPanel, centerPanel, midPanel, techPanel;
 
 	public JCheckBox[][] checkBoxes;
 
@@ -255,9 +255,9 @@ public class PMAView extends JFrame {
 		
 		
 
-		JPanel midPanel = new JPanel(new BorderLayout());
+		midPanel = new JPanel(new BorderLayout());
 
-		JPanel techPanel = new JPanel();
+		techPanel = new JPanel();
 		techPanel.setLayout(layout);
 		
 		
@@ -2831,7 +2831,7 @@ public class PMAView extends JFrame {
 
 		JLabel otherLabel = new JLabel("OTHER ITEMS NEEDING ATTN"); 
 		
-		
+		/*
 		c.gridx = 0;
 		c.gridy = 53;
 		c.gridwidth = 2;
@@ -3212,7 +3212,7 @@ public class PMAView extends JFrame {
 		c.gridx = 10;
 		c.gridwidth = 1;
 		techPanel.add(other8LaborField, c);
-		
+		*/
 		
 		
 
@@ -3253,7 +3253,7 @@ public class PMAView extends JFrame {
 		
 		eastPanel.setBorder(new LineBorder(Color.BLACK, 2));
 		
-		c.insets = new Insets(5, 4, 5, 4);
+		//c.insets = new Insets(5, 4, 5, 4);
 		
 		
 		
@@ -3360,7 +3360,7 @@ public class PMAView extends JFrame {
 		
 		
 
-		c.insets = new Insets(2, 4, 2, 4);
+		//c.insets = new Insets(2, 4, 2, 4);
 
 		JLabel QTY2 = new JLabel("QTY");
 		c.gridx = 0;
@@ -3389,7 +3389,7 @@ public class PMAView extends JFrame {
 		vendorName2.setOpaque(true);
 		eastPanel.add(vendorName2, c);
 
-		c.insets = new Insets(5, 4, 5, 4);
+		//c.insets = new Insets(5, 4, 5, 4);
 
 		WWQTYfield = new JFTextField(QTYformat);
 		WWQTYfield.setHorizontalAlignment(JFTextField.TRAILING);
@@ -3591,7 +3591,7 @@ public class PMAView extends JFrame {
 		
 		
 
-		c.insets = new Insets(2, 4, 2, 4);
+		//c.insets = new Insets(2, 4, 2, 4);
 
 		JLabel QTY3 = new JLabel("QTY");
 		c.gridx = 0;
@@ -3620,7 +3620,7 @@ public class PMAView extends JFrame {
 		vendorName3.setOpaque(true);
 		eastPanel.add(vendorName3, c);
 
-		c.insets = new Insets(5, 4, 5, 4);
+		//c.insets = new Insets(5, 4, 5, 4);
 
 		engineDiagQTYfield = new JFTextField(QTYformat);
 		engineDiagQTYfield.setHorizontalAlignment(JFTextField.TRAILING);
@@ -3942,7 +3942,7 @@ public class PMAView extends JFrame {
 		
 		
 
-		c.insets = new Insets(2, 4, 2, 4);
+		//c.insets = new Insets(2, 4, 2, 4);
 
 		JLabel QTY4 = new JLabel("QTY");
 		c.gridx = 0;
@@ -3971,7 +3971,7 @@ public class PMAView extends JFrame {
 		vendorName4.setOpaque(true);
 		eastPanel.add(vendorName4, c);
 
-		c.insets = new Insets(5, 4, 5, 4);
+		//c.insets = new Insets(5, 4, 5, 4);
 
 		SRPQTYfield = new JFTextField(QTYformat);
 		SRPQTYfield.setHorizontalAlignment(JFTextField.TRAILING);
@@ -4192,7 +4192,7 @@ public class PMAView extends JFrame {
 		eastPanel.add(EPvendor,c );
 		
 		
-
+/*
 		c.insets = new Insets(2, 4, 3, 4);
 
 		JLabel QTY5 = new JLabel("QTY");
@@ -4335,7 +4335,7 @@ public class PMAView extends JFrame {
 		other8LBRfield = new ABMTextField(LBRformat);
 		c.gridx = 2;
 		eastPanel.add(other8LBRfield, c);
-		
+		*/
 		imagePanel.setBackground(theme);
 		
 		JSplitPane eastSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -4792,6 +4792,11 @@ public class PMAView extends JFrame {
 	}
 	
 	
+	public void EnableTechPanel(boolean value){
+		techPanel.setVisible(value);
+	}
+	
+	
 	/**
 	 * OKbuttonListener implements an action listener for when the "OK" check box is selected
 	 * or when the "NOT OK" check box is selected
@@ -4854,7 +4859,7 @@ public class PMAView extends JFrame {
 		}
 	}
 	
-	
+
 	
 	/**
 	 * JLButtonListener implements ActionListener for when the buttonLabel is pressed
@@ -4877,7 +4882,7 @@ public class PMAView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(checkBoxes[place][1].isSelected() && !buttonLabels[place].isSelected()){
 		
-				activateLine(false, new Color(81,127,164), Color.yellow, place);
+				activateLine(false, place);
 		
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts + totalFields[place][0].getValue());
@@ -4911,7 +4916,7 @@ public class PMAView extends JFrame {
 				
 			} else if(checkBoxes[place][1].isSelected() && buttonLabels[place].isSelected()){
 				
-				activateLine(true, null, null, place);
+				activateLine(true, place);
 				
 				double parts = new Double(totalParts.getValue().toString());
 				totalParts.setValue(parts - totalFields[place][0].getValue());
@@ -4959,25 +4964,40 @@ public class PMAView extends JFrame {
 		}
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
-	public void activateLine(boolean value, Color back, final Color paint, int place){
+	public void activateLine(boolean value, int place){
 		buttonLabels[place].setSelected(!value);
-		buttonLabels[place].setBackground(back);
+		if(value) buttonLabels[place].setBackground(null);
+		else buttonLabels[place].setBackground(new Color(81,127,164));
 		vendorFields[place].setBackground(null);
-		
 		checkBoxes[place][0].setEnabled(value);
 		checkBoxes[place][1].setEnabled(value);
-		
 		comboBoxes[place][0].setEnabled(value);
 		comboBoxes[place][1].setEnabled(value);
 		comboBoxes[place][2].setEnabled(value);
-		//comboBoxes[place][2].setRenderer(new DisabledListCellRenderer());
-		totalFields[place][0].setEditable(value);
-		totalFields[place][1].setEditable(value);
-		QTYfields[place].setEditable(value);
-		numberFields[place][0].setEditable(value);
-		numberFields[place][1].setEditable(value);
-		vendorFields[place].setEditable(value);
+		if(!value){
+			totalFields[place][0].setDisabledTextColor(Color.black);
+			totalFields[place][1].setDisabledTextColor(Color.black);
+			QTYfields[place].setDisabledTextColor(Color.black);
+			numberFields[place][0].setDisabledTextColor(Color.black);
+			numberFields[place][1].setDisabledTextColor(Color.black);
+			vendorFields[place].setDisabledTextColor(Color.black);
+		}else{
+			totalFields[place][0].setDisabledTextColor(Color.white);
+			totalFields[place][1].setDisabledTextColor(Color.white);
+			QTYfields[place].setDisabledTextColor(Color.white);
+			numberFields[place][0].setDisabledTextColor(Color.white);
+			numberFields[place][1].setDisabledTextColor(Color.white);
+			vendorFields[place].setDisabledTextColor(Color.white);
+		}
+		totalFields[place][0].setEnabled(value);
+		totalFields[place][1].setEnabled(value);
+		QTYfields[place].setEnabled(value);
+		numberFields[place][0].setEnabled(value);
+		numberFields[place][1].setEnabled(value);
+		vendorFields[place].setEnabled(value);
 	}
 	
 

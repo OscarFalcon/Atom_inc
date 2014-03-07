@@ -23,12 +23,12 @@ public class PMA {
 		view.nameField.setText("Adrian Martinez");
 		view.dateField.setText("Jan 10, 1995");
 		view.customerConcerns.setText("flat tire yo!!");
-		view.activateLine(true, null, null, 1);
+		view.activateLine(true, 1);
 		view.checkBoxes[1][1].setSelected(true);
 		view.checkBoxes[1][1].setBackground(Color.red);
 		view.comboBoxes[1][0].getEditor().setItem("TEXT has changed!!!!!!");
 		view.comboBoxes[1][1].getEditor().setItem("TEXT has Changed!!");
-		view.totalFields[1][0].setEnabled(true);
+		//view.totalFields[1][0].setEnabled(true);
 		view.totalFields[1][0].setValue(50.99);
 		view.numberFields[1][0].setValue(25.00);
 		PMAController controller = new PMAController(view);
