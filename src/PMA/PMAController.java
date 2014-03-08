@@ -18,33 +18,32 @@ public class PMAController {
 		totalFields = new String[50][2];
 		mechanicFields = new String[50][4];
 	}
+	
+	
+	
+	
+	
+	
 
 	public void writeToSQL() {
-		String item;
+		String header = "";
 		String checkboxYes = "";
 		String checkboxNo = "";
 		String techComments = "";
 		String recComments = "";
 		String priority = "";
-		
+		double totalParts[] = new double[42];
 		
 		
 		/**
 		 * customer name all the way to the customer concerns
 		 */
 		
-		view.nameField.getText();
-		view.dateField.getText();
-		view.tagsField.getText();
-		view.vehicleYearField.getText();
-		view.vehicleMakeField.getText();
 		view.workOrderField.getText();
-		view.licField.getText();
-		view.vinField.getText();
-		view.engineField.getText();
-		view.transField.getText();
-		view.milesField.getText();
-		view.customerConcerns.getText();
+
+		header.concat(view.tagsField.getText().replaceAll("|", "\\|") + "|");
+		header.concat(view.milesField.getText().replaceAll("|","\\|") + "|");
+		header.concat(view.customerConcerns.getText().replaceAll("|", "\\|") + "|");
 		
 		
 		for(int i = 0; i <= 42; i++){

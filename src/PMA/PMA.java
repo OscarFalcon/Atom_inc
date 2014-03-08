@@ -29,7 +29,7 @@ public class PMA {
 		view.comboBoxes[1][0].getEditor().setItem("TEXT has changed!!!!!!");
 		view.comboBoxes[1][1].getEditor().setItem("TEXT has Changed!!");
 		//view.totalFields[1][0].setEnabled(true);
-		view.totalFields[1][0].setValue(50.99);
+		view.totalFields[1][0].setText("$50.99");
 		view.numberFields[1][0].setValue(25.00);
 		//view.enableEastSplit(false);
 		PMAController controller = new PMAController(view);

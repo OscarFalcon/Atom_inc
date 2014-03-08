@@ -224,18 +224,20 @@ public class PMAView extends JFrame {
 
 	public PMAView() {
 		super("2FATGUYS PMA");
-
-		//UIManager.put("TextField.disabledBackground", Color.white);
-		Color theme = new Color(81,127,164);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
+		
 		final Container container = getContentPane();
 		Font font2 = new Font("Verdana", Font.BOLD, 16);
 		format = new DecimalFormat("$###,##0.00");
-
-		eastPanel = new JPanel(new GridBagLayout());
 		NumberFormat QTYformat = NumberFormat.getNumberInstance();
 		LBRformat = new DecimalFormat("##,##0.0");
+		
+		Color theme = new Color(81,127,164);
+		Color fontColor = Color.white;
+		
+		eastPanel = new JPanel(new GridBagLayout());
 
 		/********************************************* NORTH PANEL *********************************************/
 		northPanel = new JPanel();
@@ -277,7 +279,7 @@ public class PMAView extends JFrame {
 		JLabel Title = new JLabel(
 				"2 FAT GUYS YOUR COMPLETE AUTOMOTIVE SERVICE CENTERS \"WE DO IT ALL\"    107 COMMERCE BOERNE TX. 78006    830-249-2727");
 		Title.setFont(font);
-		Title.setForeground(Color.LIGHT_GRAY.brighter());
+		Title.setForeground(fontColor);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 11;
@@ -297,7 +299,7 @@ public class PMAView extends JFrame {
 		techPanel.add(nameField, c);
 		nameLabel = new JLabel("CUSTOM");
 		nameLabel.setBackground(theme);
-		nameLabel.setForeground(Color.white);
+		nameLabel.setForeground(fontColor);
 		nameLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		nameLabel.setOpaque(true);
 		c.gridx = 2;
@@ -305,6 +307,7 @@ public class PMAView extends JFrame {
 		techPanel.add(nameLabel, c);
 		vehicleYearLabel = new JLabel("YEAR");
 		vehicleYearLabel.setBackground(theme);
+		vehicleYearLabel.setForeground(fontColor);
 		vehicleYearLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		vehicleYearLabel.setOpaque(true);
 		c.gridx = 3;
@@ -322,6 +325,7 @@ public class PMAView extends JFrame {
 		techPanel.add(workOrderField, c);
 		workOrderLabel = new JLabel("W/O");
 		workOrderLabel.setBackground(theme);
+		workOrderLabel.setForeground(fontColor);
 		workOrderLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		workOrderLabel.setOpaque(true);
 		c.gridx = 8;
@@ -329,6 +333,7 @@ public class PMAView extends JFrame {
 		techPanel.add(workOrderLabel, c);
 		engineLabel = new JLabel("ENGINE");
 		engineLabel.setBackground(theme);
+		engineLabel.setForeground(fontColor);
 		engineLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		engineLabel.setOpaque(true);
 		c.gridx = 9;
@@ -351,6 +356,7 @@ public class PMAView extends JFrame {
 		techPanel.add(dateField, c);
 		dateLabel = new JLabel("DATE");
 		dateLabel.setBackground(theme);
+		dateLabel.setForeground(fontColor);
 		dateLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		dateLabel.setOpaque(true);
 		c.gridx = 2;
@@ -358,6 +364,7 @@ public class PMAView extends JFrame {
 		techPanel.add(dateLabel, c);
 		vehicleMakeLabel = new JLabel("MAKE");
 		vehicleMakeLabel.setBackground(theme);
+		vehicleMakeLabel.setForeground(fontColor);
 		vehicleMakeLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		vehicleMakeLabel.setOpaque(true);
 		c.gridx = 3;
@@ -375,6 +382,7 @@ public class PMAView extends JFrame {
 		techPanel.add(licField, c);
 		licLabel = new JLabel("LIC NUM");
 		licLabel.setBackground(theme);
+		licLabel.setForeground(fontColor);
 		licLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		licLabel.setOpaque(true);
 		c.gridx = 8;
@@ -382,6 +390,7 @@ public class PMAView extends JFrame {
 		techPanel.add(licLabel, c);
 		transLabel = new JLabel("TRANS");
 		transLabel.setBackground(theme);
+		transLabel.setForeground(fontColor);
 		transLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		transLabel.setOpaque(true);
 		c.gridx = 9;
@@ -403,6 +412,7 @@ public class PMAView extends JFrame {
 		techPanel.add(tagsField, c);
 		tagsLabel = new JLabel("TAGS");
 		tagsLabel.setBackground(theme);
+		tagsLabel.setForeground(fontColor);
 		tagsLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		tagsLabel.setOpaque(true);
 		c.gridx = 2;
@@ -410,6 +420,7 @@ public class PMAView extends JFrame {
 		techPanel.add(tagsLabel, c);
 		vehicleModelLabel = new JLabel("MODEL");
 		vehicleModelLabel.setBackground(theme);
+		vehicleModelLabel.setForeground(fontColor);
 		vehicleModelLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		vehicleModelLabel.setOpaque(true);
 		c.gridx = 3;
@@ -427,6 +438,7 @@ public class PMAView extends JFrame {
 		techPanel.add(vinField, c);
 		vinLabel = new JLabel("VIN");
 		vinLabel.setBackground(theme);
+		vinLabel.setForeground(fontColor);
 		vinLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		vinLabel.setOpaque(true);
 		c.gridx = 8;
@@ -434,6 +446,7 @@ public class PMAView extends JFrame {
 		techPanel.add(vinLabel, c);
 		milesLabel = new JLabel("MILES");
 		milesLabel.setBackground(theme);
+		milesLabel.setForeground(fontColor);
 		milesLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		milesLabel.setOpaque(true);
 		c.gridx = 9;
@@ -481,6 +494,7 @@ public class PMAView extends JFrame {
 		c.gridy = 7;
 		c.gridwidth = 2;
 		tireLabel.setBackground(theme);
+		tireLabel.setForeground(fontColor);
 		tireLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		tireLabel.setOpaque(true);
 		techPanel.add(tireLabel, c);
@@ -488,6 +502,7 @@ public class PMAView extends JFrame {
 		c.gridx = 2;
 		c.gridwidth = 1;
 		okayLabel.setBackground(theme);
+		okayLabel.setForeground(fontColor);
 		okayLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		okayLabel.setOpaque(true);
 		techPanel.add(okayLabel, c);
@@ -495,6 +510,7 @@ public class PMAView extends JFrame {
 		c.gridx = 3;
 		c.gridwidth = 1;
 		notOkayLabel.setBackground(theme);
+		notOkayLabel.setForeground(fontColor);
 		notOkayLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		notOkayLabel.setOpaque(true);
 		techPanel.add(notOkayLabel, c);
@@ -502,6 +518,7 @@ public class PMAView extends JFrame {
 		c.gridx = 4;
 		c.gridwidth = 2;
 		techCommentsLabel.setBackground(theme);
+		techCommentsLabel.setForeground(fontColor);
 		techCommentsLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		techCommentsLabel.setOpaque(true);
 		techPanel.add(techCommentsLabel, c);
@@ -509,6 +526,7 @@ public class PMAView extends JFrame {
 		c.gridx = 6;
 		c.gridwidth = 2;
 		recommendedRepairLabel.setBackground(theme);
+		recommendedRepairLabel.setForeground(fontColor);
 		recommendedRepairLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		recommendedRepairLabel.setOpaque(true);
 		techPanel.add(recommendedRepairLabel, c);
@@ -516,6 +534,7 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		priorityLabel.setBackground(theme);
+		priorityLabel.setForeground(fontColor);
 		priorityLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		priorityLabel.setOpaque(true);
 		techPanel.add(priorityLabel, c);
@@ -523,6 +542,7 @@ public class PMAView extends JFrame {
 		c.gridx = 9;
 		c.gridwidth = 1;
 		tiresLabel.setBackground(theme);
+		tiresLabel.setForeground(fontColor);
 		tiresLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		tiresLabel.setOpaque(true);
 		techPanel.add(tiresLabel, c);
@@ -530,6 +550,7 @@ public class PMAView extends JFrame {
 		c.gridx = 10;
 		c.gridwidth = 1;
 		laborLabel.setBackground(theme);
+		laborLabel.setForeground(fontColor);
 		laborLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		laborLabel.setOpaque(true);
 		techPanel.add(laborLabel, c);
@@ -770,6 +791,7 @@ public class PMAView extends JFrame {
 		c.gridy = 13;
 		c.gridwidth = 2;
 		INTEXTLabel.setBackground(theme);
+		INTEXTLabel.setForeground(fontColor);
 		INTEXTLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		INTEXTLabel.setOpaque(true);
 		techPanel.add(INTEXTLabel, c);
@@ -777,6 +799,7 @@ public class PMAView extends JFrame {
 		c.gridx = 2;
 		c.gridwidth = 1;
 		okay2Label.setBackground(theme);
+		okay2Label.setForeground(fontColor);
 		okay2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		okay2Label.setOpaque(true);
 		techPanel.add(okay2Label, c);
@@ -784,6 +807,7 @@ public class PMAView extends JFrame {
 		c.gridx = 3;
 		c.gridwidth = 1;
 		notOkay2Label.setBackground(theme);
+		notOkay2Label.setForeground(fontColor);
 		notOkay2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		notOkay2Label.setOpaque(true);
 		techPanel.add(notOkay2Label, c);
@@ -791,6 +815,7 @@ public class PMAView extends JFrame {
 		c.gridx = 4;
 		c.gridwidth = 2;
 		techComments2Label.setBackground(theme);
+		techComments2Label.setForeground(fontColor);
 		techComments2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		techComments2Label.setOpaque(true);
 		techPanel.add(techComments2Label, c);
@@ -798,6 +823,7 @@ public class PMAView extends JFrame {
 		c.gridx = 6;
 		c.gridwidth = 2;
 		recommendedRepair2Label.setBackground(theme);
+		recommendedRepair2Label.setForeground(fontColor);
 		recommendedRepair2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		recommendedRepair2Label.setOpaque(true);
 		techPanel.add(recommendedRepair2Label, c);
@@ -805,6 +831,7 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		priority2Label.setBackground(theme);
+		priority2Label.setForeground(fontColor);
 		priority2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		priority2Label.setOpaque(true);
 		techPanel.add(priority2Label, c);
@@ -812,6 +839,7 @@ public class PMAView extends JFrame {
 		c.gridx = 9;
 		c.gridwidth = 1;
 		partsLabel.setBackground(theme);
+		partsLabel.setForeground(fontColor);
 		partsLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		partsLabel.setOpaque(true);
 		techPanel.add(partsLabel, c);
@@ -819,6 +847,7 @@ public class PMAView extends JFrame {
 		c.gridx = 10;
 		c.gridwidth = 1;
 		labor2Label.setBackground(theme);
+		labor2Label.setForeground(fontColor);
 		labor2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		labor2Label.setOpaque(true);
 		techPanel.add(labor2Label, c);
@@ -1325,7 +1354,7 @@ public class PMAView extends JFrame {
 		c.gridwidth = 1;
 		techPanel.add(DSLaborField, c);
 
-		/******************************************** UNDER HOOD *************************/
+		/******************************************** UNDER HOOD ***********************************************/
 
 		JLabel underHoodLabel = new JLabel("UNDER HOOD"); // this obviosly needs
 															// to change
@@ -1333,6 +1362,7 @@ public class PMAView extends JFrame {
 		c.gridy = 24;
 		c.gridwidth = 2;
 		underHoodLabel.setBackground(theme);
+		underHoodLabel.setForeground(fontColor);
 		underHoodLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		underHoodLabel.setOpaque(true);
 		techPanel.add(underHoodLabel, c);
@@ -1340,6 +1370,7 @@ public class PMAView extends JFrame {
 		c.gridx = 2;
 		c.gridwidth = 1;
 		okay3Label.setBackground(theme);
+		okay3Label.setForeground(fontColor);
 		okay3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		okay3Label.setOpaque(true);
 		techPanel.add(okay3Label, c);
@@ -1347,6 +1378,7 @@ public class PMAView extends JFrame {
 		c.gridx = 3;
 		c.gridwidth = 1;
 		notOkay3Label.setBackground(theme);
+		notOkay3Label.setForeground(fontColor);
 		notOkay3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		notOkay3Label.setOpaque(true);
 		techPanel.add(notOkay3Label, c);
@@ -1354,6 +1386,7 @@ public class PMAView extends JFrame {
 		c.gridx = 4;
 		c.gridwidth = 2;
 		techComments3Label.setBackground(theme);
+		techComments3Label.setForeground(fontColor);
 		techComments3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		techComments3Label.setOpaque(true);
 		techPanel.add(techComments3Label, c);
@@ -1361,6 +1394,7 @@ public class PMAView extends JFrame {
 		c.gridx = 6;
 		c.gridwidth = 2;
 		recommendedRepair3Label.setBackground(theme);
+		recommendedRepair3Label.setForeground(fontColor);
 		recommendedRepair3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		recommendedRepair3Label.setOpaque(true);
 		techPanel.add(recommendedRepair3Label, c);
@@ -1368,6 +1402,7 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		priority3Label.setBackground(theme);
+		priority3Label.setForeground(fontColor);
 		priority3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		priority3Label.setOpaque(true);
 		techPanel.add(priority3Label, c);
@@ -1375,6 +1410,7 @@ public class PMAView extends JFrame {
 		c.gridx = 9;
 		c.gridwidth = 1;
 		parts2Label.setBackground(theme);
+		parts2Label.setForeground(fontColor);
 		parts2Label.setBorder(new LineBorder(Color.BLACK, 2));
 		parts2Label.setOpaque(true);
 		techPanel.add(parts2Label, c);
@@ -1382,6 +1418,7 @@ public class PMAView extends JFrame {
 		c.gridx = 10;
 		c.gridwidth = 1;
 		labor3Label.setBackground(theme);
+		labor3Label.setForeground(fontColor);
 		labor3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		labor3Label.setOpaque(true);
 		techPanel.add(labor3Label, c);
@@ -2167,6 +2204,7 @@ public class PMAView extends JFrame {
 		c.gridy = 41;
 		c.gridwidth = 2;
 		underCarLabel.setBackground(theme);
+		underCarLabel.setForeground(fontColor);
 		underCarLabel.setBorder(new LineBorder(Color.BLACK, 2));
 		underCarLabel.setOpaque(true);
 		techPanel.add(underCarLabel, c);
@@ -2174,6 +2212,7 @@ public class PMAView extends JFrame {
 		c.gridx = 2;
 		c.gridwidth = 1;
 		okay4Label.setBackground(theme);
+		okay4Label.setForeground(fontColor);
 		okay4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		okay4Label.setOpaque(true);
 		techPanel.add(okay4Label, c);
@@ -2181,6 +2220,7 @@ public class PMAView extends JFrame {
 		c.gridx = 3;
 		c.gridwidth = 1;
 		notOkay4Label.setBackground(theme);
+		notOkay4Label.setForeground(fontColor);
 		notOkay4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		notOkay4Label.setOpaque(true);
 		techPanel.add(notOkay4Label, c);
@@ -2188,6 +2228,7 @@ public class PMAView extends JFrame {
 		c.gridx = 4;
 		c.gridwidth = 2;
 		techComments4Label.setBackground(theme);
+		techComments4Label.setForeground(fontColor);
 		techComments4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		techComments4Label.setOpaque(true);
 		techPanel.add(techComments4Label, c);
@@ -2195,6 +2236,7 @@ public class PMAView extends JFrame {
 		c.gridx = 6;
 		c.gridwidth = 2;
 		recommendedRepair4Label.setBackground(theme);
+		recommendedRepair4Label.setForeground(fontColor);
 		recommendedRepair4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		recommendedRepair4Label.setOpaque(true);
 		techPanel.add(recommendedRepair4Label, c);
@@ -2202,6 +2244,7 @@ public class PMAView extends JFrame {
 		c.gridx = 8;
 		c.gridwidth = 1;
 		priority4Label.setBackground(theme);
+		priority4Label.setForeground(fontColor);
 		priority4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		priority4Label.setOpaque(true);
 		techPanel.add(priority4Label, c);
@@ -2209,6 +2252,7 @@ public class PMAView extends JFrame {
 		c.gridx = 9;
 		c.gridwidth = 1;
 		parts3Label.setBackground(theme);
+		parts3Label.setForeground(fontColor);
 		parts3Label.setBorder(new LineBorder(Color.BLACK, 2));
 		parts3Label.setOpaque(true);
 		techPanel.add(parts3Label, c);
@@ -2216,6 +2260,7 @@ public class PMAView extends JFrame {
 		c.gridx = 10;
 		c.gridwidth = 1;
 		labor4Label.setBackground(theme);
+		labor4Label.setForeground(fontColor);
 		labor4Label.setBorder(new LineBorder(Color.BLACK, 2));
 		labor4Label.setOpaque(true);
 		techPanel.add(labor4Label, c);
@@ -3230,24 +3275,28 @@ public class PMAView extends JFrame {
 		c.gridy = 0;
 		c.gridwidth = 1;
 		QTY.setBackground(theme);
+		QTY.setForeground(fontColor);
 		QTY.setBorder(new LineBorder(Color.BLACK, 2));
 		QTY.setOpaque(true);
 		eastPanel.add(QTY, c);
 		JLabel westTire = new JLabel("TIRE");
 		c.gridx = 1;
 		westTire.setBackground(theme);
+		westTire.setForeground(fontColor);
 		westTire.setBorder(new LineBorder(Color.BLACK, 2));
 		westTire.setOpaque(true);
 		eastPanel.add(westTire, c);
 		JLabel LBRHRS = new JLabel("LBR HRS");
 		c.gridx = 2;
 		LBRHRS.setBackground(theme);
+		LBRHRS.setForeground(fontColor);
 		LBRHRS.setBorder(new LineBorder(Color.BLACK, 2));
 		LBRHRS.setOpaque(true);
 		eastPanel.add(LBRHRS, c);
 		JLabel vendorName = new JLabel("Vendor Name");
 		c.gridx = 3;
 		vendorName.setBackground(theme);
+		vendorName.setForeground(fontColor);
 		vendorName.setBorder(new LineBorder(Color.BLACK, 2));
 		vendorName.setOpaque(true);
 		eastPanel.add(vendorName, c);
@@ -3367,18 +3416,21 @@ public class PMAView extends JFrame {
 		c.gridx = 0;
 		c.gridy = 6;
 		QTY2.setBackground(theme);
+		QTY2.setForeground(fontColor);
 		QTY2.setBorder(new LineBorder(Color.BLACK, 2));
 		QTY2.setOpaque(true);
 		eastPanel.add(QTY2, c);
 		JLabel westParts = new JLabel("PART");
 		c.gridx = 1;
 		westParts.setBackground(theme);
+		westParts.setForeground(fontColor);
 		westParts.setBorder(new LineBorder(Color.BLACK, 2));
 		westParts.setOpaque(true);
 		eastPanel.add(westParts, c);
 		JLabel LBR2HRS = new JLabel("LBR HRS");
 		c.gridx = 2;
 		LBR2HRS.setBackground(theme);
+		LBR2HRS.setForeground(fontColor);
 		LBR2HRS.setBorder(new LineBorder(Color.BLACK, 2));
 		LBR2HRS.setOpaque(true);
 		eastPanel.add(LBR2HRS, c);
@@ -3386,6 +3438,7 @@ public class PMAView extends JFrame {
 		JLabel vendorName2 = new JLabel("Vendor Name");
 		c.gridx = 3;
 		vendorName2.setBackground(theme);
+		vendorName2.setForeground(fontColor);
 		vendorName2.setBorder(new LineBorder(Color.BLACK, 2));
 		vendorName2.setOpaque(true);
 		eastPanel.add(vendorName2, c);
@@ -3598,18 +3651,21 @@ public class PMAView extends JFrame {
 		c.gridx = 0;
 		c.gridy = 17;
 		QTY3.setBackground(theme);
+		QTY3.setForeground(fontColor);
 		QTY3.setBorder(new LineBorder(Color.BLACK, 2));
 		QTY3.setOpaque(true);
 		eastPanel.add(QTY3, c);
 		JLabel westParts2 = new JLabel("PART");
 		c.gridx = 1;
 		westParts2.setBackground(theme);
+		westParts2.setForeground(fontColor);
 		westParts2.setBorder(new LineBorder(Color.BLACK, 2));
 		westParts2.setOpaque(true);
 		eastPanel.add(westParts2, c);
 		JLabel LBR3HRS = new JLabel("LBR HRS");
 		c.gridx = 2;
 		LBR3HRS.setBackground(theme);
+		LBR3HRS.setForeground(fontColor);
 		LBR3HRS.setBorder(new LineBorder(Color.BLACK, 2));
 		LBR3HRS.setOpaque(true);
 		eastPanel.add(LBR3HRS, c);
@@ -3617,6 +3673,7 @@ public class PMAView extends JFrame {
 		JLabel vendorName3 = new JLabel("Vendor Name");
 		c.gridx = 3;
 		vendorName3.setBackground(theme);
+		vendorName3.setForeground(fontColor);
 		vendorName3.setBorder(new LineBorder(Color.BLACK, 2));
 		vendorName3.setOpaque(true);
 		eastPanel.add(vendorName3, c);
@@ -3949,18 +4006,21 @@ public class PMAView extends JFrame {
 		c.gridx = 0;
 		c.gridy = 34;
 		QTY4.setBackground(theme);
+		QTY4.setForeground(fontColor);
 		QTY4.setBorder(new LineBorder(Color.BLACK, 2));
 		QTY4.setOpaque(true);
 		eastPanel.add(QTY4, c);
 		JLabel westParts3 = new JLabel("PART");
 		c.gridx = 1;
 		westParts3.setBackground(theme);
+		westParts3.setForeground(fontColor);
 		westParts3.setBorder(new LineBorder(Color.BLACK, 2));
 		westParts3.setOpaque(true);
 		eastPanel.add(westParts3, c);
 		JLabel LBR4HRS = new JLabel("LBR HRS");
 		c.gridx = 2;
 		LBR4HRS.setBackground(theme);
+		LBR4HRS.setForeground(fontColor);
 		LBR4HRS.setBorder(new LineBorder(Color.BLACK, 2));
 		LBR4HRS.setOpaque(true);
 		eastPanel.add(LBR4HRS, c);
@@ -3968,6 +4028,7 @@ public class PMAView extends JFrame {
 		JLabel vendorName4 = new JLabel("Vendor Name");
 		c.gridx = 3;
 		vendorName4.setBackground(theme);
+		vendorName4.setForeground(fontColor);
 		vendorName4.setBorder(new LineBorder(Color.BLACK, 2));
 		vendorName4.setOpaque(true);
 		eastPanel.add(vendorName4, c);
