@@ -12,7 +12,7 @@ public class Security {
 	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
 	private static Connection connection;
 	private static ResultSet resultSet = null;
-	private static Statement statement = null;
+
 
 	private static boolean connectedToDatabase = false;
 	private static boolean failedToConnect = false;
@@ -27,52 +27,31 @@ public class Security {
 	private static String query;
 
 	private static PreparedStatement loginStatement = null;
+	
 	private static PreparedStatement queryStatement = null;
 	private static PreparedStatement insertStatement = null; 
 	private static PreparedStatement updateStatement = null;
 	
+	private static PreparedStatement insertPMA = null;
+	private static PreparedStatement insertPMAinfo = null;
+	private static PreparedStatement insertLaborCost = null;
+	private static PreparedStatement insertPartCost = null;
+	private static PreparedStatement insertTotalLabor = null;
+	private static PreparedStatement insertTotalParts = null;
+	
 
-	private static final String selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\"),"
-			+ "AES_DECRYPT(password,\"rd6mNKL0vD1h95p1i\"), permissions FROM employee WHERE user = AES_ENCRYPT("
-			+ "?"
-			+ ","
-			+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
-			+ "?" + "," + "\"rd6mNKL0vD1h95p1i\");";
-
-	private static final String select = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
-			+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info";
-
-	private static String insert = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES (AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ " AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
-	
-	
-	private static String update = "UPDATE info SET first = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ " last =  AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), address = AES_ENCRYPT(?,"
-			+ "SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), city = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" 
-			+ ",state = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "zip = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),email = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "primaryPhone = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
-			+ " WHERE id = ? ;";
-	
-	
-	
-	
-	
-	
-	private static final String select_All_Where = select + " WHERE";
 	
 	private static void prepareStatements() {
 		try {
-			loginStatement = connection.prepareStatement(selectUser);
-			insertStatement = connection.prepareStatement(insert);
-			updateStatement = connection.prepareStatement(update);
-			
+			loginStatement = connection.prepareStatement(MySQLStrings.selectUser);
+			insertStatement = connection.prepareStatement(MySQLStrings.insert);
+			updateStatement = connection.prepareStatement(MySQLStrings.update);
+			insertPMA = connection.prepareStatement(MySQLStrings.insertPMAStr);
+			insertPMAinfo = connection.prepareStatement(MySQLStrings.insertPMAInfoStr);
+			insertLaborCost = connection.prepareStatement(MySQLStrings.insertLaborCostStr);
+			insertPartCost = connection.prepareStatement(MySQLStrings.insertPartCostStr);
+			insertTotalLabor = connection.prepareStatement(MySQLStrings.insertTotalLaborCostStr);
+			insertTotalParts = connection .prepareStatement(MySQLStrings.insertTotalPartsCostStr);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -89,7 +68,6 @@ public class Security {
 		try {
 			connection = DriverManager.getConnection(DATABASE_URL, "root","password");
 			connection.setAutoCommit(false);
-			statement = connection.createStatement();
 			connectedToDatabase = true;
 			failedToConnect = false;
 			prepareStatements();
@@ -139,24 +117,26 @@ public class Security {
 	}
 
 	public static String getUser() {
-		if (connectedToDatabase)
+		if (!connectedToDatabase){
+			Error.NotConnected();
+			return null;
+		}
 			return username;
-		Error.NotConnected();
-		return null;
 	}
 
 	public static void disconnect() {
-		if (connectedToDatabase) {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				statement.close();
+		if (!connectedToDatabase) 
+			return;
+		
+		try {
+			if (resultSet != null)
+				resultSet.close();
 				connection.close();
 				connectedToDatabase = false;
 			} catch (SQLException e) {
 				Error.CloseError();
 			}
-		}
+		
 	}
 
 	public static boolean testPassword(String password) {
@@ -181,7 +161,7 @@ public class Security {
 		}
 
 		public static boolean selectAll(){
-			String query = select + ";";
+			String query = MySQLStrings.select + ";";
 			try {
 				queryStatement = connection.prepareStatement(query);
 				boolean b = updateTable(queryStatement);
@@ -214,13 +194,11 @@ public class Security {
 							resultSet.getString(8), resultSet.getString(9) };
 					model.addRow(tmpRow);
 				}
-				return true;
 			} catch (SQLException e) {
-				e.printStackTrace();
 				Error.ResultError();
-				
+				return false;
 			}
-			return false;
+			return true;
 		}
 
 		public static boolean updateTable(final String id,final  String first,final int b1,
@@ -228,7 +206,7 @@ public class Security {
 				final String zip,final String phone,final String email){
 			
 			
-			query = select_All_Where;
+			query = MySQLStrings.select_All_Where;
 			
 			boolean[] list = new boolean[8]; 
 			for(boolean b : list)
@@ -251,7 +229,7 @@ public class Security {
 				return true;
 			}
 
-			query = select_All_Where + " id LIKE '%' ";
+			query = MySQLStrings.select_All_Where + " id LIKE '%' ";
 			
 			if (first == null || first.equals(""))
 				query = query + "&& first LIKE '%' ";
@@ -339,10 +317,15 @@ public class Security {
 			return b;
 		}
 
+		
+		
+		
+		
+		
+		
 		public static boolean addCustomer(String first, String last,
 				String address, String city, String state, String zip,
 				String phone, String email) {
-			
 			try{
 				insertStatement.setString(1, first);
 				insertStatement.setString(2, last);
@@ -381,44 +364,121 @@ public class Security {
 	}// class clientDatabase
 
 	// **********************************************************************************************************************************************************
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-	public void insertTable0(String nameField, String dateField,
-			String tagsField, String vehicleYearField, String vehicleMakeField,
-			String vehicleModelField, String workOrderField, String licField,
-			String vinField, String engineField, String transField,
-			String milesField) {
-
-	}
-
-	// private methods //
-	private static ResultSet executeQuery(String query) {
-		resultSet = null;
-		if (!connectedToDatabase) {
-			Error.NotConnected();
-			return null;
+	public static class PMA{	
+		
+		public static void savePMA(){
+		
+			
+			
+			
+			
 		}
-		try {
-			resultSet = statement.executeQuery(query);
-		} catch (SQLException e) {
-			Error.QueryError();
-		}
-		return resultSet;
-	}
-
-	public static boolean execute(PreparedStatement ps) {
-		if (connectedToDatabase) {
-			try {
-				ps.execute();
-				ps.getConnection().commit();
-				return true;
-			} catch (SQLException e) {
-				Error.InsertError();
-			}
-		} else
-			Error.NotConnected();
-		return false;
+		
 	}
 
 	
 
+	public static boolean execute(PreparedStatement ps) {
+		if(!connectedToDatabase){
+			Error.NotConnected();
+			return false;
+		}
+		try {
+			ps.execute();
+			ps.getConnection().commit();
+			return true;
+		} catch (SQLException e) {
+			Error.InsertError(); //should be correct 
+		}
+		return false;
+	}
+
+	private static class MySQLStrings{
+		public static final String selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\"),"
+				+ "AES_DECRYPT(password,\"rd6mNKL0vD1h95p1i\"), permissions FROM employee WHERE user = AES_ENCRYPT("
+				+ "?"
+				+ ","
+				+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
+				+ "?" + "," + "\"rd6mNKL0vD1h95p1i\");";
+
+		public static final String select = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+				+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info";
+
+		public static final String insert = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES (AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ " AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
+		
+		
+		public static final String update = "UPDATE info SET first = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ " last =  AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), address = AES_ENCRYPT(?,"
+				+ "SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), city = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" 
+				+ ",state = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "zip = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),email = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "primaryPhone = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+				+ " WHERE id = ? ;";
+		
+		public static final String select_All_Where = select + " WHERE";
+		
+		public static String insertPMAStr = " INSERT into PMA(date,vin,id) VALUES(STR_TO_DATE('1993-02-27','%Y-%m-%d'),'VINABC123',50);";
+		
+		public static String insertPMAInfoStr = "insert into PMA_info(wo,ok,notok,tech_comments,recommended_repairs,priority,qty,vendor) VALUES(?,b'?',b'?',?,?,?,?,?);";
+		
+		public static String insertLaborCostStr = "insert into labor_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+		public static String insertPartCostStr = "insert into part_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+		public static String insertTotalLaborCostStr = "insert into total_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		
+		public static String insertTotalPartsCostStr = "insert into total_parts(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

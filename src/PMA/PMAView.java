@@ -4575,7 +4575,7 @@ public class PMAView extends JFrame {
 				//If user does not hit cancel then print.
 				if (preformat != postformat) {
 				    //Set print component
-				    pjob.setPrintable(new Printer(container), postformat);
+				   // pjob.setPrintable(new Printer(container), postformat);
 				    if (pjob.printDialog()) {
 				        try {
 							pjob.print();
