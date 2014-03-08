@@ -1,7 +1,22 @@
 package CustMgtSys_1;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
 
 
@@ -13,25 +28,30 @@ public class MainWindowView extends JFrame {
 
 	public JMenuItem logout, save, about, addUser, deleteUser, changePassword;
 
-	public JPanel statusPanel, WorkOrderPanel, PMAPanel, currentPanel,
-			northPanel, westPanel;
+	public JPanel statusPanel, workOrderPanel, PMAPanel, currentPanel,westPanel;
 
-	private CustomerTabs customerTab; // tab for customer buttons
+	private JPanel customerTab;
+	
+	
 	public CustomerPanel customerPanel;// center panel for displaying customer
-	private login loginPanel;									// information
+	
+	private login loginPanel;
 	
 	public JButton logoutButton,lockScreenButton;
 	
 	private JMenuBar menuBar;
 
-	private JLabel statusLabel; // status to be displayed at SOUTH region
+	private JLabel statusLabel; 
 
 	private JSplitPane split;
 
-	ImageIcon customersIcon = new ImageIcon("icon_customers.png");
-	ImageIcon workOrderIcon = new ImageIcon("seamless.png");
-	ImageIcon PMAIcon = new ImageIcon("PMA.png");
-
+	private ImageIcon customersIcon = new ImageIcon("icon_customers.png");
+	private ImageIcon workOrderIcon = new ImageIcon("seamless.png");
+	private ImageIcon PMAIcon =	new ImageIcon("PMA.png");
+	private ImageIcon twoFatGuysIcon = new ImageIcon("2fatguyslogo.png");
+	private ImageIcon icon; //generic 
+	
+	
 	private JTabbedPane jtp;
 
 
@@ -41,35 +61,25 @@ public class MainWindowView extends JFrame {
 	Color orange = new Color(255, 128, 0);
 	Color silver = new Color(224, 224, 224);
 
-	
-	
-	private MainWindowController listen;
-	
-	
 	public MainWindowView() {
 		
 // ************************************ WEST		************************************************************************
 		// Image on top left
-		JPanel imagePanel = new JPanel();
-
-		ImageIcon icon = new ImageIcon("2fatguyslogo.png");
-		JLabel IconLabel = new JLabel();
-		IconLabel.setIcon(icon);
-		imagePanel.add(IconLabel);
-
 		westPanel = new JPanel();
 		westPanel.setLayout(null);
-		
+	
+		JPanel imagePanel = new JPanel();
+		JLabel IconLabel = new JLabel();
+		IconLabel.setIcon(twoFatGuysIcon);
+		imagePanel.add(IconLabel);
+	
 		icon = new ImageIcon("exit(1).png");
 		logoutButton = new JButton(icon);
-		
 		icon = new ImageIcon("system_lock_screen(1).png");
 		lockScreenButton = new JButton(icon);
 		
-		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				imagePanel, westPanel);
+		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,imagePanel, westPanel);
 		split.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		
 		split.setDividerLocation(600);
 		split.setDividerSize(0);
 
@@ -197,7 +207,7 @@ public class MainWindowView extends JFrame {
 	}
 	
 	private void loadWorkOrderPanel(){
-		WorkOrderPanel = new WorkOrderView();
+		workOrderPanel = new WorkOrderView();
 
 	}
 	
@@ -216,8 +226,7 @@ public class MainWindowView extends JFrame {
 		addMenuBar();
 		addLogoutButtons();
 		currentPanel = customerPanel;
-		listen = new MainWindowController(this);
-		registerControllers(listen);
+		registerControllers(new MainWindowController(this));
 		pack();
 		repaint();
 		revalidate();
