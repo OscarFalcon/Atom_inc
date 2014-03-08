@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.text.MaskFormatter;
+
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
 import org.jdesktop.xswingx.PromptSupport;
@@ -104,6 +105,7 @@ public class CustomerPanel extends JPanel {
 		SpringUtilities.makeCompactGrid(searchClientPanel, 1, 6, 0, 0, 0, 0);
 
 		tablemodel = new CustomTableModel();
+		Security.clientDatabase.setTableModel(tablemodel);
 		table = new JTable(tablemodel);
 		table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
 		table.setRowSelectionAllowed(true);
@@ -203,6 +205,7 @@ public class CustomerPanel extends JPanel {
 				size.height);
 
 		registerControllers(new CustomerPanelController());
+		Security.clientDatabase.selectAll();
 	}
 	
 	private void registerControllers(CustomerPanelController listen) {
@@ -221,7 +224,7 @@ public class CustomerPanel extends JPanel {
 			if (event.getSource() == IdField) {
 				String id = IdField.getText();
 				if (id.equals(""))
-					Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
+					Security.clientDatabase.selectAll();
 				else
 					Security.clientDatabase.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);
 

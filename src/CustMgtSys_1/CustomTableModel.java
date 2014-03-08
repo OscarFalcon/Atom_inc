@@ -3,8 +3,9 @@ package CustMgtSys_1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import javax.swing.table.DefaultTableModel;
 import java.util.Scanner;
+
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -26,7 +27,6 @@ public class CustomTableModel extends DefaultTableModel{
 		Security.clientDatabase.setTableModel(this);
 		//for(int i = 0; i< 1000 ;i++)
 		//	read();
-		Security.clientDatabase.updateTable(Security.clientDatabase.selectAll);
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class CustomTableModel extends DefaultTableModel{
 			e.printStackTrace();
 		}
 		
-		while(in.hasNextLine()){
+	/**	while(in.hasNextLine()){
 			line = in.nextLine();
 			System.out.println(line);
 			tokens = line.split("\\|");
@@ -96,7 +96,7 @@ public class CustomTableModel extends DefaultTableModel{
 			
 			Security.execute(insert);
 			
-		}
+		} **/
 	
 		
 		
@@ -104,4 +104,3 @@ public class CustomTableModel extends DefaultTableModel{
 	
 
 }//CustomTableModel.java
-

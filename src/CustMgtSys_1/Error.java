@@ -33,6 +33,12 @@ public class Error {
 	public static void UpdateError(){
 		JOptionPane.showMessageDialog(null,"Error: Failed to update database","MySQL Error",JOptionPane.ERROR_MESSAGE);
 	}
+	public static void CloseObjectError(){
+		JOptionPane.showMessageDialog(null,"Error: Failed to close operation","MySQL Error",JOptionPane.ERROR_MESSAGE);
+	}
+	public static void MySQLJavaError(){
+		JOptionPane.showMessageDialog(null,"Error: A MySQL Java error has occured","MySQL Error",JOptionPane.ERROR_MESSAGE);
+	}
 	
 	
 }
