@@ -11,33 +11,53 @@ public class Security {
 
 	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
 	private static Connection connection;
-	private static ResultSet resultSet = null;
+	private static ResultSet resultSet;
 
 
 	private static boolean connectedToDatabase = false;
 	private static boolean failedToConnect = false;
 
-	private static CustomTableModel model = null;
+	private static CustomTableModel model;
 
-	private static String username = null;
-	private static String secure_password = null;
-	private static String first_name = null;
+	private static String username;
+	private static String secure_password;
+	private static String first_name;
 	private static int permissions;
 
 	private static String query;
 
-	private static PreparedStatement loginStatement = null;
 	
-	private static PreparedStatement queryStatement = null;
-	private static PreparedStatement insertStatement = null; 
-	private static PreparedStatement updateStatement = null;
+
+	private static PreparedStatement loginStatement;	
+	private static PreparedStatement queryStatement;
+	private static PreparedStatement insertStatement; 
+	private static PreparedStatement updateStatement;
+
+	private static PreparedStatement createPMA;
+	private static PreparedStatement closePMA;
+	private static PreparedStatement createPMAinfo;
+	private static PreparedStatement updatePMAinfo;
+	private static PreparedStatement createLaborCost;
+	private static PreparedStatement updateLaborCost;
+	private static PreparedStatement createPartCost;
+	private static PreparedStatement updatePartCost;
+	private static PreparedStatement createTotalLabor; 
+	private static PreparedStatement updateTotalLabor;
+	private static PreparedStatement createTotalParts;
+	private static PreparedStatement updateTotalParts;
+	private static PreparedStatement lastIncrement;
 	
-	private static PreparedStatement insertPMA = null;
-	private static PreparedStatement insertPMAinfo = null;
-	private static PreparedStatement insertLaborCost = null;
-	private static PreparedStatement insertPartCost = null;
-	private static PreparedStatement insertTotalLabor = null;
-	private static PreparedStatement insertTotalParts = null;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 	
@@ -46,14 +66,22 @@ public class Security {
 			loginStatement = connection.prepareStatement(MySQLStrings.selectUser);
 			insertStatement = connection.prepareStatement(MySQLStrings.insert);
 			updateStatement = connection.prepareStatement(MySQLStrings.update);
-			insertPMA = connection.prepareStatement(MySQLStrings.insertPMAStr);
-			insertPMAinfo = connection.prepareStatement(MySQLStrings.insertPMAInfoStr);
-			insertLaborCost = connection.prepareStatement(MySQLStrings.insertLaborCostStr);
-			insertPartCost = connection.prepareStatement(MySQLStrings.insertPartCostStr);
-			insertTotalLabor = connection.prepareStatement(MySQLStrings.insertTotalLaborCostStr);
-			insertTotalParts = connection .prepareStatement(MySQLStrings.insertTotalPartsCostStr);
+				
+			createPMA = connection.prepareStatement(MySQLStrings.createPMAStr);
+			closePMA = connection.prepareStatement(MySQLStrings.closePMAStr);
+			createPMAinfo = connection.prepareStatement(MySQLStrings.createPMAinfoStr);
+			updatePMAinfo = connection.prepareStatement(MySQLStrings.updatePMAInfoStr);
+			createLaborCost = connection.prepareStatement(MySQLStrings.createLaborCostStr);
+			updateLaborCost = connection.prepareStatement(MySQLStrings.updateLaborCostStr);
+			createPartCost = connection.prepareStatement(MySQLStrings.createPartCostStr);
+			updatePartCost = connection.prepareStatement(MySQLStrings.updatePartCostStr);
+			createTotalLabor = connection.prepareStatement(MySQLStrings.createTotalLaborCostStr);
+			updateTotalLabor = connection.prepareStatement(MySQLStrings.updateTotalLaborCostStr);
+			createTotalParts = connection .prepareStatement(MySQLStrings.createTotalPartsCostStr);
+			updateTotalParts = connection .prepareStatement(MySQLStrings.updateTotalPartsCostStr);
+			lastIncrement = connection.prepareStatement(MySQLStrings.lastIncrementStr);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 	}
 
@@ -316,12 +344,6 @@ public class Security {
 			}
 			return b;
 		}
-
-		
-		
-		
-		
-		
 		
 		public static boolean addCustomer(String first, String last,
 				String address, String city, String state, String zip,
@@ -382,15 +404,118 @@ public class Security {
 
 	public static class PMA{	
 		
-		public static void savePMA(){
+		public static void createPMA(String date, String vin, String customerid){
+			try{
+				int last;
+				createPMA.setString(1,date);
+				createPMA.setString(2,vin);
+				createPMA.setString(3,customerid);
+				createPMA.execute();
+				connection.commit();
+				resultSet = lastIncrement.executeQuery();
+				connection.commit();
+				if(!resultSet.next()){
+					Error.ResultError();//correct error msg
+					return;
+				}
+				last = (int) resultSet.getInt(1);
+				createPMAinfo.setInt(1,last);
+				createLaborCost.setInt(1, last);
+				createPartCost.setInt(1, last);
+				createTotalLabor.setInt(1, last);
+				createTotalParts.setInt(1,last);
+				execute(createPMAinfo);
+				execute(createLaborCost);
+				execute(createPartCost);
+				execute(createTotalLabor);
+				execute(createTotalParts);
+			}catch(SQLException e){
+			 e.printStackTrace();
+			}
+		}
+		public static void savePMA(PMAObject pma){
+			try{
+				updatePMAinfo.setString(1, pma.ok.toString());
+				updatePMAinfo.setString(2, pma.notok.toString());
+				updatePMAinfo.setString(3,pma.tech_comments_pack);
+				updatePMAinfo.setString(4, pma.recommended_repairs_pack);
+				updatePMAinfo.setString(5, pma.priority_pack);
+				updatePMAinfo.setString(6, pma.qty_pack);
+				updatePMAinfo.setString(7, pma.vendor_pack);
+				
+				int i;
+				int length = pma.laborCost.length;
+				for(i  = 0; i < length; i++)
+					updateLaborCost.setString(i,pma.laborCost[i].toString()); //is there a rounding error???
+				updateLaborCost.setInt(i, pma.wo);
+				
+				length = pma.partCost.length;
+				for(i=0; i < length; i++)
+					updatePartCost.setString(i, pma.partCost[i].toString());
+				updatePartCost.setInt(i, pma.wo);
+				
+				length = pma.totalLabor.length;
+				for(i=0; i < length; i++)
+					updateTotalLabor.setString(i, pma.totalLabor[i].toString());
+				updateTotalLabor.setInt(i, pma.wo);
+				
+				length = pma.totalParts.length;
+				for(i=0; i < length; i++)
+					updateTotalParts.setString(i, pma.totalParts[i].toString());
+				updateTotalParts.setInt(i, pma.wo);
 		
-			
-			
+				execute(updateLaborCost);
+				execute(updatePartCost);
+				execute(updateTotalLabor);
+				execute(updateTotalParts);
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		
+		public static Object loadPMA(int wo) throws SQLException{
+			final String READ_OBJECT = "select object from PMAObject where id = ?";
+			PreparedStatement ps = connection.prepareStatement(READ_OBJECT);
+			ps.setInt(1, wo);
+			resultSet = ps.executeQuery();
+			resultSet.next();
+			Object object = resultSet.getObject(1);
+			resultSet.close();
+			ps.close();
+			return object;	
+		}
+		
+		public static void updatePMA(Object object, int wo) throws SQLException{
+			final String WRITE_OBJECT = "update PMAOBject set object = ? where wo = ?";
+			PreparedStatement ps = connection.prepareStatement(WRITE_OBJECT);
+			ps.setObject(1, object);
+			ps.setInt(2, wo);
+			execute(ps);
 			
 			
 		}
 		
-	}
+		public static int createPMA(Object object) throws SQLException{
+			final String CREATE_PMA = "insert into PMAOBject(name,object) VALUES(?,?)";
+			PreparedStatement ps = connection.prepareStatement(CREATE_PMA);
+			ps.setString(1, object.getClass().getName());
+			ps.setObject(2, object);
+			execute(ps);
+			resultSet = lastIncrement.executeQuery();
+			resultSet.next();
+			int wo = resultSet.getInt(1);
+			return wo;
+		}
+		
+		
+		
+		
+		
+			
+			
+	}//PMA class
+		
+	
 
 	
 
@@ -408,6 +533,10 @@ public class Security {
 		}
 		return false;
 	}
+	
+
+	
+	
 
 	private static class MySQLStrings{
 		public static final String selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\"),"
@@ -440,17 +569,56 @@ public class Security {
 		
 		public static final String select_All_Where = select + " WHERE";
 		
-		public static String insertPMAStr = " INSERT into PMA(date,vin,id) VALUES(STR_TO_DATE('1993-02-27','%Y-%m-%d'),'VINABC123',50);";
 		
-		public static String insertPMAInfoStr = "insert into PMA_info(wo,ok,notok,tech_comments,recommended_repairs,priority,qty,vendor) VALUES(?,b'?',b'?',?,?,?,?,?);";
+		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";
 		
-		public static String insertLaborCostStr = "insert into labor_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		public static String createPMAStr = "insert into PMA(date,vin,id,active) VALUES (STR_TO_DATE(?,'%Y-%m-%d'),?,?,1);";
+		
+		public static String closePMAStr = "UPDATE PMA SET active = 0;";
+		
+		public static String createPMAinfoStr = "insert into PMA_info(wo) VALUES(?);";
+				
+		public static String createLaborCostStr = "insert into labor_cost(wo) VALUES (?);";	
+				
+		public static String createPartCostStr = "insert into part_cost(wo) VALUES (?);";
+		
+		public static String createTotalLaborCostStr = "insert into total_labor(wo) VALUES (?)";
+				
+		public static String createTotalPartsCostStr = "insert into total_parts(wo) VALUES (?)";
+				
+        		
+				
+		public static String updatePMAInfoStr = "UPDATE PMA_info SET ok  = b'?' ,notok = b'?',tech_comments = ? ,recommended_repairs = ? ,priority = ? ,qty = ? ,vendor = ?);";
+		
+		
+		public static String updateLaborCostStr = "UPDATE labor_cost SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
+				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
+				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
 
-		public static String insertPartCostStr = "insert into part_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		public static String updatePartCostStr = "UPDATE part_cost SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
+				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
+				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
 
-		public static String insertTotalLaborCostStr = "insert into total_cost(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		public static String updateTotalLaborCostStr = "UPDATE total_labor SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
+				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
+				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
+	
+		public static String updateTotalPartsCostStr = "UPDATE total_parts SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
+		+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
+		+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
 		
-		public static String insertTotalPartsCostStr = "insert into total_parts(wo,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,30,v31,v32,v33,v34,v35,v36,v37,v38,v39,v40,v41) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 	

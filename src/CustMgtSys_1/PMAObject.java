@@ -19,11 +19,17 @@ public class PMAObject {
 	public BigDecimal[] totalParts;
 	public BigDecimal[] totalLabor;
 	public BigDecimal[] laborCost;
-	public BigDecimal[] partsCost;
+	public BigDecimal[] partCost;
 	public int[] qty;
 	public String[] vendor;
 	public String customer_concerns;
 	
+	
+	public String tech_comments_pack;
+	public String recommended_repairs_pack;
+	public String priority_pack;
+	public String vendor_pack;
+	public String qty_pack;
 	
 	public PMAObject(){
 		ok = new byte[42];
@@ -34,18 +40,11 @@ public class PMAObject {
 		totalParts = new BigDecimal[42];
 		totalLabor = new BigDecimal[42];
 		laborCost = new BigDecimal[42];
-		partsCost = new BigDecimal[42];
+		partCost = new BigDecimal[42];
 		approved = new byte[42];
 		qty = new int[42];
 		vendor = new String[42];
 	}
-
-	public void pack(Object[] o){
-		
-		
-		
-	}
-
 }
 	
 	

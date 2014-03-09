@@ -135,8 +135,9 @@ public class MainWindowView extends JFrame {
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
 			loginPanel.setText("");
-			if(Security.Login(user, password))
+			if(Security.Login(user, password)){
 				login();
+				Security.PMA.createPMA("1993-02-27", "testVIN", "25878");}
 			else{
 				if(Security.getFailedConnectionStatus())
 					loginPanel.setText("Connection Error");

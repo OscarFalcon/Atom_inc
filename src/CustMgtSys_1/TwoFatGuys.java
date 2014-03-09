@@ -38,6 +38,7 @@ public class TwoFatGuys {
 			}
 		}		
 		new MainWindowView();
+		
 	
  	
 		
