@@ -1,10 +1,15 @@
 package CustMgtSys_1;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class PMAObject {
+public class PMAObject implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int wo;
 	public String first,last;
 	public String tags,year,make,model,lic,vin,engine,trans,miles;
@@ -44,8 +49,14 @@ public class PMAObject {
 		approved = new byte[42];
 		qty = new int[42];
 		vendor = new String[42];
+		first = "test first";
+		totalParts[0] = new BigDecimal("1.5");
 	}
+
+	
+	public String toString(){
+		return "first name = " + first + " total part = " + totalParts[0];
+	}
+	
 }
-	
-	
 	

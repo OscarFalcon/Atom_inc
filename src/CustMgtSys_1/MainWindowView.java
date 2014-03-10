@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -137,7 +139,25 @@ public class MainWindowView extends JFrame {
 			loginPanel.setText("");
 			if(Security.Login(user, password)){
 				login();
-				Security.PMA.createPMA("1993-02-27", "testVIN", "25878");}
+				PMAObject pma = new PMAObject();
+				int wo;
+				try {
+					 wo = Security.PMA.createPMA(pma);
+					 System.out.println("wo = " + wo);
+					 PMAObject loadpma;
+					try {
+						loadpma = (PMAObject) Security.PMA.loadPMA(wo);
+						 System.out.println(loadpma);
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
 			else{
 				if(Security.getFailedConnectionStatus())
 					loginPanel.setText("Connection Error");

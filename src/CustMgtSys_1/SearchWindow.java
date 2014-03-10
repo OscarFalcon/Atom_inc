@@ -309,7 +309,6 @@ public class SearchWindow extends JDialog {
 	// constructor
 
 	private void registerController(SearchController listen) {
-		System.out.println("register");
 		firstField.addActionListener(listen);
 		lastField.addActionListener(listen);
 		addressField.addActionListener(listen);

@@ -1,15 +1,17 @@
 package CustMgtSys_1;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 public class Security {
 
 	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
+	private static String MySQLUser = "root", MySQLPassword = "password";
 	private static Connection connection;
 	private static ResultSet resultSet;
 
@@ -46,21 +48,7 @@ public class Security {
 	private static PreparedStatement createTotalParts;
 	private static PreparedStatement updateTotalParts;
 	private static PreparedStatement lastIncrement;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
 	private static void prepareStatements() {
 		try {
 			loginStatement = connection.prepareStatement(MySQLStrings.selectUser);
@@ -85,65 +73,50 @@ public class Security {
 		}
 	}
 
-	/**
-	 * This method attempts to log the specified user into the MySQL database
-	 * 
-	 * @param user
-	 * @param password
-	 * @return TRUE:
-	 */
-	public static boolean Login(String user, String password) {
+
+	private static boolean connect(){
 		try {
-			connection = DriverManager.getConnection(DATABASE_URL, "root","password");
+			connection = DriverManager.getConnection(DATABASE_URL, MySQLUser,MySQLPassword);
 			connection.setAutoCommit(false);
 			connectedToDatabase = true;
 			failedToConnect = false;
 			prepareStatements();
+			return true;
 		} catch (SQLException e) {
 			failedToConnect = true;
 			Error.ConnectionError();
-			return false;
 		}
+		return false;
+	}
+	
+	public static boolean Login(String user, String password) {
+		if(!connect())
+			return false;
 		try {
 			loginStatement.setString(1, user);
 			loginStatement.setString(2, password);
-			resultSet = loginStatement.executeQuery();
-			connection.commit();
-		} catch (SQLException e) {
-			username = null;
-			secure_password = null;
-			disconnect();
-			Error.QueryError();
-			return false;
-		}
-		try {
-			if (resultSet.next()) {
+			if(  (resultSet = executeQuery(loginStatement)) != null){
 				first_name = resultSet.getString(1);
 				permissions = resultSet.getInt(4);
 				secure_password = password;
 				username = user;
 				return true;
 			}
-		} catch (SQLException e) {
-			username = null;
-			secure_password = null;
-			disconnect();
-			Error.ResultError();
+			else{
+				username = null;
+				secure_password = null;
+				disconnect();
+			}
+		}catch(SQLException e){
+			//handle error
 		}
 		return false;
 	}
-
-	/**
-	 * This method returns TRUE: if the last attempt to connect was unsuccessful
-	 * Not to be confused with whether or not the user entered the right
-	 * password
-	 * 
-	 * @return
-	 */
+	
 	public static boolean getFailedConnectionStatus() {
 		return failedToConnect;
 	}
-
+	
 	public static String getUser() {
 		if (!connectedToDatabase){
 			Error.NotConnected();
@@ -151,26 +124,64 @@ public class Security {
 		}
 			return username;
 	}
-
+	public static boolean testPassword(String password) {
+		return password.equals(secure_password);
+	}
+	
 	public static void disconnect() {
 		if (!connectedToDatabase) 
 			return;
-		
 		try {
 			if (resultSet != null)
 				resultSet.close();
 				connection.close();
 				connectedToDatabase = false;
-			} catch (SQLException e) {
+		}catch (SQLException e) {
 				Error.CloseError();
-			}
+		}
 		
 	}
-
-	public static boolean testPassword(String password) {
-		return password.equals(secure_password);
+	
+	private static boolean execute(PreparedStatement ps) {
+		if(!connectedToDatabase){
+			Error.NotConnected();
+			return false;
+		}
+		try {
+			ps.execute();
+			ps.getConnection().commit();
+			return true;
+		} catch (SQLException e) {
+			Error.InsertError(); //should be correct 
+			e.printStackTrace();
+		}
+		return false;
 	}
-
+	
+	private static ResultSet executeQuery(PreparedStatement ps){
+		ResultSet rs = null;
+		if(!connectedToDatabase){
+			Error.NotConnected();
+			return null;
+		}
+		try{
+			rs = ps.executeQuery();
+			ps.getConnection().commit();
+			rs.next();
+		}catch(SQLException e){
+			e.printStackTrace();
+			Error.QueryError();//check
+			return null;
+		}
+		return rs;
+	}
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * ********************************************************** CLIENT
 	 * DATABASE
@@ -223,6 +234,7 @@ public class Security {
 					model.addRow(tmpRow);
 				}
 			} catch (SQLException e) {
+				e.printStackTrace();
 				Error.ResultError();
 				return false;
 			}
@@ -344,6 +356,102 @@ public class Security {
 			}
 			return b;
 		}
+		
+		
+		
+		
+		
+		public static boolean updateTable1(final String id,final  String first,final int b1,
+				final String last, final int b2,final  String address,final String city, final String state,
+				final String zip,final String phone,final String email){
+				
+			ResultSet rs = null;
+			
+			String query = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
+					",AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
+					",AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
+					",AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE first LIKE ?";     
+
+			
+			String encrypt_first = "SELECT AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))";
+			String encrypt_last = "SELECT AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))";
+			
+			try{
+				PreparedStatement ps = connection.prepareStatement(query);
+				PreparedStatement encrFirst = connection.prepareStatement(encrypt_first);
+				PreparedStatement encrLast = connection.prepareStatement(encrypt_last);
+				
+				encrFirst.setString(1,first);
+				encrLast.setString(1, last);
+			
+			
+				String eLast;
+				
+				byte[] eFirst;
+				
+				encrFirst.setString(1,first);
+				rs = executeQuery(encrFirst);
+				eFirst = rs.getBytes(1);
+				rs = executeQuery(encrLast);
+				eLast = rs.getString(1);
+			
+				if(b1 == EXACTLY)
+					ps.setBytes(1 ,eFirst );
+				else
+					ps.setBytes(1,eFirst );
+				
+			
+				
+				
+				
+				
+				
+				updateTable(ps);
+			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			return false;
+		
+		
+		
+		
+		
+		
+		
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		public static boolean addCustomer(String first, String last,
 				String address, String city, String state, String zip,
@@ -473,15 +581,22 @@ public class Security {
 			}
 		}
 		
-		public static Object loadPMA(int wo) throws SQLException{
-			final String READ_OBJECT = "select object from PMAObject where id = ?";
+		public static Object loadPMA(int wo) throws SQLException, IOException, ClassNotFoundException{
+			final String READ_OBJECT = "select object from PMAObject where wo = ?";
 			PreparedStatement ps = connection.prepareStatement(READ_OBJECT);
 			ps.setInt(1, wo);
 			resultSet = ps.executeQuery();
+			connection.commit();
 			resultSet.next();
-			Object object = resultSet.getObject(1);
+			 
+			byte[] buf = resultSet.getBytes("object");
+			        ObjectInputStream objectIn = null;
+			        if (buf != null)
+			            objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+			        Object object = objectIn.readObject();
 			resultSet.close();
 			ps.close();
+			System.out.println((PMAObject)object);
 			return object;	
 		}
 		
@@ -496,12 +611,13 @@ public class Security {
 		}
 		
 		public static int createPMA(Object object) throws SQLException{
-			final String CREATE_PMA = "insert into PMAOBject(name,object) VALUES(?,?)";
+			final String CREATE_PMA = "insert into PMAObject(name,object) VALUES(?,?)";
 			PreparedStatement ps = connection.prepareStatement(CREATE_PMA);
 			ps.setString(1, object.getClass().getName());
 			ps.setObject(2, object);
 			execute(ps);
 			resultSet = lastIncrement.executeQuery();
+			connection.commit();
 			resultSet.next();
 			int wo = resultSet.getInt(1);
 			return wo;
@@ -519,22 +635,8 @@ public class Security {
 
 	
 
-	public static boolean execute(PreparedStatement ps) {
-		if(!connectedToDatabase){
-			Error.NotConnected();
-			return false;
-		}
-		try {
-			ps.execute();
-			ps.getConnection().commit();
-			return true;
-		} catch (SQLException e) {
-			Error.InsertError(); //should be correct 
-		}
-		return false;
-	}
-	
 
+	
 	
 	
 
