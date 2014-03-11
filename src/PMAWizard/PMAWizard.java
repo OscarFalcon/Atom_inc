@@ -60,8 +60,7 @@ public class PMAWizard extends JPanel{
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	private int CUSTOMER_INFO = 0, CUSTOMER_CREATE = 1, VEHICLE_INFO = 2, VEHICLE_CREATE = 3, CUSTOMER_CONCERNS = 4;
 
-	private JTable table;
-	private DefaultTableModel tablemodel;
+	
 	
 
 	public void changeCards(int card){
@@ -193,7 +192,9 @@ public class PMAWizard extends JPanel{
 	private class card0 extends JPanel{
 		
 		private JButton create, search;
-		JScrollPane tableScroll;
+		private JScrollPane tableScroll;
+		private JTable table;
+		private DefaultTableModel tablemodel;
 		
 		private card0(){
 			setLayout(new GridBagLayout());
@@ -493,6 +494,8 @@ public class PMAWizard extends JPanel{
 	private class card2 extends JPanel{
 		private JButton create, search;
 		private JScrollPane tableScroll;
+		private JTable table;
+		private DefaultTableModel tablemodel;
 		
 		private card2(){
 			setLayout(new GridBagLayout());
