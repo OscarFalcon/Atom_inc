@@ -3,6 +3,7 @@ package PMAWizard;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -32,6 +34,7 @@ public class PMAWizard extends JPanel{
 	
 	private CardLayout layout;
 	private JPanel customerInfo, customerCreate, vehicleInfo, vehicleCreate, customerConcerns;
+	private JLabel step1, step2, step3;
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	private int CUSTOMER_INFO = 0, CUSTOMER_CREATE = 1, VEHICLE_INFO = 2, VEHICLE_CREATE = 3, CUSTOMER_CONCERNS = 4;
@@ -41,16 +44,19 @@ public class PMAWizard extends JPanel{
 		backButton.setEnabled(true);
 		nextButton.setEnabled(true);
 		finishButton.setEnabled(false);
-		//layout = (CardLayout) cards.getLayout();
+		step1.setForeground(null);
+		step2.setForeground(null);
+		step3.setForeground(null);
 		if(card == CUSTOMER_INFO){
 			layout.show(cards, "customer info");
+			step1.setForeground(Color.green);
 			backButton.setEnabled(false);
-			//nextButton.setEnabled(false);
 			model.setBackCard(-1);
 			model.setCurrentCard(CUSTOMER_INFO);
 			model.setNextCard(VEHICLE_INFO);
 		}else if(card == CUSTOMER_CREATE){
 			layout.show(cards, "customer create");
+			step1.setForeground(Color.green);
 			backButton.setEnabled(false);
 			nextButton.setEnabled(false);
 			model.setBackCard(-1);
@@ -58,11 +64,13 @@ public class PMAWizard extends JPanel{
 			model.setNextCard(VEHICLE_INFO);
 		}else if(card == VEHICLE_INFO){
 			layout.show(cards, "vehicle info");
+			step2.setForeground(Color.green);
 			model.setBackCard(CUSTOMER_INFO);
 			model.setCurrentCard(VEHICLE_INFO);
 			model.setNextCard(CUSTOMER_CONCERNS);
 		}else if(card == VEHICLE_CREATE){
 			layout.show(cards, "vehicle create");
+			step2.setForeground(Color.green);
 			backButton.setEnabled(false);
 			nextButton.setEnabled(false);
 			model.setBackCard(CUSTOMER_INFO);
@@ -70,13 +78,13 @@ public class PMAWizard extends JPanel{
 			model.setNextCard(CUSTOMER_CONCERNS);
 		}else if(card == CUSTOMER_CONCERNS){
 			layout.show(cards, "customer concerns");
+			step3.setForeground(Color.green);
 			nextButton.setEnabled(false);
 			finishButton.setEnabled(true);
 			model.setBackCard(VEHICLE_INFO);
 			model.setCurrentCard(CUSTOMER_CONCERNS);
 			model.setNextCard(-1);
 		} else
-			//layout.next(cards);
 			System.out.println("erorr");
 	}
 	
@@ -107,9 +115,10 @@ public class PMAWizard extends JPanel{
 		cards.add(customerConcerns, "customer concerns");
 		
 		JLabel titel = new JLabel("<HTML><u>Steps</u></HTML>");
-		JLabel step1 = new JLabel("1. Customer Information");
-		JLabel step2 = new JLabel("2. Vehicle Information");
-		JLabel step3 = new JLabel("3. Customer Concerns");
+		step1 = new JLabel("1. Customer Information");
+		step1.setForeground(Color.GREEN);
+		step2 = new JLabel("2. Vehicle Information");
+		step3 = new JLabel("3. Customer Concerns");
 		
 		Box stepsBox = new Box(BoxLayout.Y_AXIS);
 		stepsPanel = new JPanel(new BorderLayout());
@@ -474,7 +483,25 @@ public class PMAWizard extends JPanel{
 	
 	private class card4 extends JPanel{
 		private card4(){
-
+			setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+			JLabel createdByLabel = new JLabel("This PMA was created by ");
+			c.gridx = 0;
+			c.gridy = 0;
+			add(createdByLabel, c);
+			JTextField createdByField = new JTextField(10);
+			c.gridx = 0;
+			c.gridy = 1;
+			add(createdByField, c);
+			JLabel customerConcernsLabel = new JLabel("Please enter Customer Concerns");
+			c.gridx = 0;
+			c.gridy = 2;
+			add(customerConcernsLabel, c);
+			JTextArea customerConcerns = new JTextArea(5,20);
+			c.gridx = 0;
+			c.gridy = 3;
+			add(customerConcerns, c);
+			
 		}
 	}
 	
