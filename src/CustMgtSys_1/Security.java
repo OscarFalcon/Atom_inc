@@ -1,6 +1,7 @@
 package CustMgtSys_1;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.Connection;
@@ -19,14 +20,12 @@ public class Security {
 	private static boolean connectedToDatabase = false;
 	private static boolean failedToConnect = false;
 
-	private static CustomTableModel model;
-
 	private static String username;
 	private static String secure_password;
 	private static String first_name;
 	private static int permissions;
 
-	private static String query;
+	
 
 	
 
@@ -35,13 +34,20 @@ public class Security {
 	private static PreparedStatement insertStatement; 
 	private static PreparedStatement updateStatement;
 	private static PreparedStatement lastIncrement;
-
+	private static PreparedStatement readObject;
+	
+	static final String READ_OBJECT = "select object from PMAObject where wo = ?";
+	
+	
+	
 	private static void prepareStatements() {
 		try {
 			loginStatement = connection.prepareStatement(MySQLStrings.selectUser);
 			insertStatement = connection.prepareStatement(MySQLStrings.insert);
 			updateStatement = connection.prepareStatement(MySQLStrings.update);
 			lastIncrement = connection.prepareStatement(MySQLStrings.lastIncrementStr);
+			readObject = connection.prepareStatement(READ_OBJECT);
+			
 		} catch (SQLException e) {
 			e.printStackTrace(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
@@ -141,7 +147,6 @@ public class Security {
 		try{
 			rs = ps.executeQuery();
 			ps.getConnection().commit();
-			rs.next();
 		}catch(SQLException e){
 			e.printStackTrace();
 			Error.QueryError();//check
@@ -150,35 +155,19 @@ public class Security {
 		return rs;
 	}
 	
-	
-	
-	
-	
-	
-	
-	/**
-	 * ********************************************************** CLIENT
-	 * DATABASE
-	 * *****************************************************************
-	 * ******************************
-	 */
-
-	public static class clientDatabase {
+	public static class client{
 
 		public static final int MATCHES = 0;
 		public static final int EXACTLY = 1;
+		private static String query;
+				
 		
-
-		public static void setTableModel(CustomTableModel tablemodel) {
-			model = tablemodel;
-		}
-
 		public static ResultSet selectAll(){
 			String query = MySQLStrings.select + ";";
 			ResultSet rs = null;
 			try {
 				queryStatement = connection.prepareStatement(query);
-				rs = updateTable(queryStatement);
+				rs = executeQuery(queryStatement);
 				//queryStatement.close();
 				return rs;
 				
@@ -189,25 +178,7 @@ public class Security {
 			return rs;
 		}
 		
-	
-		private static ResultSet updateTable(PreparedStatement statement) {
-			ResultSet rs;
-			if(!connectedToDatabase){
-				Error.NotConnected();
-				return null;
-			}try{
-				rs = statement.executeQuery();
-				statement.getConnection().commit();
-				//resultSet.next();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				Error.ResultError();
-				return null;
-			}
-			return rs;
-		}
-		
-		 public static ResultSet updateTable(final String id,final  String first,final int b1,
+		public static ResultSet search(final String id,final  String first,final int b1,
 				final String last, final int b2,final  String address,final String city, final String state,
 				final String zip,final String phone,final String email){
 			
@@ -314,7 +285,7 @@ public class Security {
 					
 				}
 			}
-			ResultSet rs = updateTable(queryStatement);
+			ResultSet rs = executeQuery(queryStatement);
 			return rs;
 		}
 		
@@ -322,52 +293,7 @@ public class Security {
 		
 		
 		
-		public static boolean updateTable1(final String id,final  String first,final int b1,
-				final String last, final int b2,final  String address,final String city, final String state,
-				final String zip,final String phone,final String email){
-				
-			ResultSet rs = null;
-			
-			String query = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
-					",AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
-					",AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
-					",AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE first LIKE ?";     
-
-			
-			String encrypt_first = "SELECT AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))";
-			String encrypt_last = "SELECT AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))";
-			
-			try{
-				PreparedStatement ps = connection.prepareStatement(query);
-				PreparedStatement encrFirst = connection.prepareStatement(encrypt_first);
-				PreparedStatement encrLast = connection.prepareStatement(encrypt_last);
-				
-				encrFirst.setString(1,first);
-				encrLast.setString(1, last);
-			
-			
-				String eLast;
-				
-				byte[] eFirst;
-				
-				encrFirst.setString(1,first);
-				rs = executeQuery(encrFirst);
-				eFirst = rs.getBytes(1);
-				rs = executeQuery(encrLast);
-				eLast = rs.getString(1);
-			
-				if(b1 == EXACTLY)
-					ps.setBytes(1 ,eFirst );
-				else
-					ps.setBytes(1,eFirst );
-	
-				updateTable(ps);
-			
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return false;	
-		}
+		
 		
 		
 		
@@ -415,21 +341,29 @@ public class Security {
 	// **********************************************************************************************************************************************************
 	
 	public static class PMA{	
-		public static Object loadPMA(int wo) throws SQLException, IOException, ClassNotFoundException{
-			final String READ_OBJECT = "select object from PMAObject where wo = ?";
-			PreparedStatement ps = connection.prepareStatement(READ_OBJECT);
-			ps.setInt(1, wo);
-			resultSet = ps.executeQuery();
-			connection.commit();
-			resultSet.next();
-			byte[] buf = resultSet.getBytes("object");
-			        ObjectInputStream objectIn = null;
-			        if (buf != null)
-			            objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
-			        Object object = objectIn.readObject();
-			resultSet.close();
-			ps.close();
-			System.out.println((PMAObject)object);
+		
+		
+		
+		public static Object loadPMA(int wo){	
+			Object object = null;
+			try{
+				readObject.setInt(1, wo);
+				resultSet = executeQuery(readObject);
+				resultSet.next();
+				byte[] buf = resultSet.getBytes("object");
+			    ObjectInputStream objectIn = null;
+			    if (buf != null)
+			    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+			    object = objectIn.readObject();
+			    resultSet.close();
+			    readObject.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			catch(IOException e){	
+			}
+			catch(ClassNotFoundException e){
+			}
 			return object;	
 		}
 		
@@ -455,14 +389,7 @@ public class Security {
 			resultSet.close();
 			ps.close();
 			return wo;
-		}
-		
-		
-		
-		
-		
-			
-			
+		}	
 	}//PMA class
 		
 	
@@ -509,10 +436,13 @@ public class Security {
 		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";	
 		
 		
-		public static String createVehicleStr = "INSERT into vehicle VA";
+		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles VALUES(" +
+					"AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," +
+					"?,?,?,?,?,?,?)";
 		
-		
-		
+		public static String selectVechicleStr = "SELECT  AES_DECRYPT(vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
+				",AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles from vehicle " +
+				"WHERE  id = ?";
 		
 		
 		

@@ -281,7 +281,7 @@ public class ClientInfo extends JDialog {
 						table.getModel().setValueAt(phone, rowIndex, 8);
 						int id = (int) table.getValueAt(rowIndex, 0);
 						
-						if (Security.clientDatabase.updateCustomer(id, first, last, address,
+						if (Security.client.updateCustomer(id, first, last, address,
 								city, state, zip, phone, email)) {
 							JOptionPane.showMessageDialog(null,
 									"Successfully edited Client " + first + " "

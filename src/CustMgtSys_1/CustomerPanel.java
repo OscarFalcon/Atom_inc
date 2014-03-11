@@ -107,7 +107,6 @@ public class CustomerPanel extends JPanel {
 		SpringUtilities.makeCompactGrid(searchClientPanel, 1, 6, 0, 0, 0, 0);
 
 		tablemodel = new CustomTableModel();
-		Security.clientDatabase.setTableModel(tablemodel);
 		table = new JTable(tablemodel);
 		table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
 		table.setRowSelectionAllowed(true);
@@ -207,7 +206,7 @@ public class CustomerPanel extends JPanel {
 				size.height);
 
 		registerControllers(new CustomerPanelController());
-		updateTable(Security.clientDatabase.selectAll());
+		updateTable(Security.client.selectAll());
 	}
 	
 	private void registerControllers(CustomerPanelController listen) {
@@ -227,9 +226,9 @@ public class CustomerPanel extends JPanel {
 			if (event.getSource() == IdField) {
 				String id = IdField.getText();
 				if (id.equals(""))
-					rs = Security.clientDatabase.selectAll();
+					rs = Security.client.selectAll();
 				else
-					rs = Security.clientDatabase.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);				
+					rs = Security.client.search(id, null, 0, null, 0, null, null, null, null, null, null);				
 				IdField.setText("");
 			} else {
 				String first, last, phone;
@@ -239,7 +238,7 @@ public class CustomerPanel extends JPanel {
 				firstField.setText("");
 				lastField.setText("");
 				phoneField.setValue("");
-				rs = Security.clientDatabase.updateTable(null, first, Security.clientDatabase.EXACTLY, last, Security.clientDatabase.EXACTLY, null, null, null, null, phone, null);
+				rs = Security.client.search(null, first, Security.client.EXACTLY, last, Security.client.EXACTLY, null, null, null, null, phone, null);
 			}// else
 			updateTable(rs);
 		}// ActionPerformed
@@ -260,7 +259,6 @@ public class CustomerPanel extends JPanel {
 		tablemodel.setRowCount(0);
 		try {
 			while(rs.next()){
-				System.out.println("here");
 					tmpRow = new Object[]{ rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9)};
 					tablemodel.addRow(tmpRow);
 			}

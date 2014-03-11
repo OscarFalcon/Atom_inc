@@ -373,14 +373,14 @@ public class SearchWindow extends JDialog {
 				if (phone.equals("(xxx) xxx-xxxx")) {
 					phone = null;
 				}
-				b1 = Security.clientDatabase.MATCHES;
-				b2 = Security.clientDatabase.MATCHES;
+				b1 = Security.client.MATCHES;
+				b2 = Security.client.MATCHES;
 				if (exactlyFirstBox.isSelected())
-					b1 = Security.clientDatabase.EXACTLY;
+					b1 = Security.client.EXACTLY;
 				if (exactlyLastBox.isSelected())
-					b2 = Security.clientDatabase.EXACTLY;
+					b2 = Security.client.EXACTLY;
 
-				Security.clientDatabase.updateTable(null, firstField.getText(), b1,
+				Security.client.search(null, firstField.getText(), b1,
 						lastField.getText(), b2,
 						addressField.getText(),
 						cityField.getText(),
