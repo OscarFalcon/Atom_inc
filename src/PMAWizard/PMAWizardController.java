@@ -86,6 +86,8 @@ public class PMAWizardController{
 				} catch (SQLException e1){
 					e1.printStackTrace(); //handle error
 				}
+			} else if(model.getCurrentCard() == view.VEHICLE_INFO){
+				
 			}
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);

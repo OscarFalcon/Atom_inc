@@ -58,11 +58,11 @@ public class PMAWizard extends JPanel{
 	private JLabel step1, step2, step3;
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
-	int CUSTOMER_INFO = 0;
-	private int CUSTOMER_CREATE = 1;
-	private int VEHICLE_INFO = 2;
-	private int VEHICLE_CREATE = 3;
-	private int CUSTOMER_CONCERNS = 4;
+	public int CUSTOMER_INFO = 0;
+	public int CUSTOMER_CREATE = 1;
+	public int VEHICLE_INFO = 2;
+	public int VEHICLE_CREATE = 3;
+	public int CUSTOMER_CONCERNS = 4;
 	
 	public String vehicleInformation[];
 	public String customerInformation[];
@@ -313,7 +313,8 @@ public class PMAWizard extends JPanel{
 
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
-					nextButton.setEnabled(true);
+					if(custTable.getSelectedRow() > 0)
+						nextButton.setEnabled(true);
 				}
 				
 			});
