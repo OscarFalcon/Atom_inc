@@ -58,12 +58,22 @@ public class PMAWizard extends JPanel{
 	private JLabel step1, step2, step3;
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
-	private int CUSTOMER_INFO = 0, CUSTOMER_CREATE = 1, VEHICLE_INFO = 2, VEHICLE_CREATE = 3, CUSTOMER_CONCERNS = 4;
+	int CUSTOMER_INFO = 0;
+	private int CUSTOMER_CREATE = 1;
+	private int VEHICLE_INFO = 2;
+	private int VEHICLE_CREATE = 3;
+	private int CUSTOMER_CONCERNS = 4;
 	
 	public String vehicleInformation[];
 	public String customerInformation[];
 
+	public JTable custTable;
+	public int custID;
 	
+	public DefaultTableModel vehicleTablemodel;
+	
+	public JTextField createdByField;
+	public JTextArea custConcernsArea;
 	
 
 	public void changeCards(int card){
@@ -196,7 +206,7 @@ public class PMAWizard extends JPanel{
 		
 		private JButton create, search;
 		private JScrollPane tableScroll;
-		private JTable table;
+		
 		private DefaultTableModel tablemodel;
 		
 		private card0(){
@@ -246,43 +256,49 @@ public class PMAWizard extends JPanel{
 			
 			tablemodel = new CustomTableModel();
 			tablemodel.setColumnIdentifiers(new Object[] {"First Name",
-					"Last Name","Address", "Phone"});
+					"Last Name","Address", "Phone", "Cust ID"});
 			
-			table = new JTable(tablemodel);
-			table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
-			table.setRowSelectionAllowed(true);
-			table.setColumnSelectionAllowed(false);
-			table.setAutoCreateRowSorter(true);
-			table.getTableHeader().setReorderingAllowed(false);
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			table.setRowHeight(table.getRowHeight() + 3);
-			table.setFillsViewportHeight(true);
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			custTable = new JTable(tablemodel);
+			custTable.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
+			custTable.setRowSelectionAllowed(true);
+			custTable.setColumnSelectionAllowed(false);
+			custTable.setAutoCreateRowSorter(true);
+			custTable.getTableHeader().setReorderingAllowed(false);
+			custTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			custTable.setRowHeight(custTable.getRowHeight() + 3);
+			custTable.setFillsViewportHeight(true);
+			custTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 			TableColumn col;
 			CenterTableCellRenderer centerRenderer;
 
-			col = table.getColumnModel().getColumn(0);
+			col = custTable.getColumnModel().getColumn(0);
 			col.setPreferredWidth(125);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
-			col = table.getColumnModel().getColumn(1);
+			col = custTable.getColumnModel().getColumn(1);
 			col.setPreferredWidth(135);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
-			col = table.getColumnModel().getColumn(2);
+			col = custTable.getColumnModel().getColumn(2);
 			col.setPreferredWidth(175);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
-			col = table.getColumnModel().getColumn(3);
+			col = custTable.getColumnModel().getColumn(3);
 			col.setPreferredWidth(120);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 			
-			tableScroll = new JScrollPane(table);
+			col = custTable.getColumnModel().getColumn(4);
+			col.setPreferredWidth(0);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+			
+			
+			tableScroll = new JScrollPane(custTable);
 			Dimension tranTablePreferred = tableScroll.getPreferredSize();
 			tableScroll.setPreferredSize(new Dimension(tranTablePreferred.width,
 					tranTablePreferred.height / 3));
@@ -293,7 +309,7 @@ public class PMAWizard extends JPanel{
 			c.fill = GridBagConstraints.HORIZONTAL;
 			add(tableScroll,c);
 			
-			table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			custTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
@@ -310,7 +326,7 @@ public class PMAWizard extends JPanel{
 					tablemodel.setRowCount(0);
 					try {
 						while(rs.next()){
-								tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9)};
+								tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9), rs.getString(1)};
 								tablemodel.addRow(tmpRow);
 						}
 					} catch (SQLException e){
@@ -500,18 +516,17 @@ public class PMAWizard extends JPanel{
 		private JButton create, search;
 		private JScrollPane tableScroll;
 		private JTable table;
-		private DefaultTableModel tablemodel;
 		
 		private card2(){
 			setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 5, 2, 5);
 		
-			tablemodel = new CustomTableModel();
-			tablemodel.setColumnIdentifiers(new Object[] {"Year",
+			vehicleTablemodel = new CustomTableModel();
+			vehicleTablemodel.setColumnIdentifiers(new Object[] {"Year",
 					"Make", "Model", "License Plate"});
 			
-			table = new JTable(tablemodel);
+			table = new JTable(vehicleTablemodel);
 			table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
 			table.setRowSelectionAllowed(true);
 			table.setColumnSelectionAllowed(false);
@@ -696,15 +711,17 @@ public class PMAWizard extends JPanel{
 					JOptionPane.showMessageDialog(null,
 							"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
 					vehicleInformation = new String[9];
-					vehicleInformation[0] = yearField.getText();
-					vehicleInformation[1] = makeField.getText();
-					vehicleInformation[2] = modelField.getText();
-					vehicleInformation[3] = licField.getText();
-					vehicleInformation[4] = vinField.getText();
-					vehicleInformation[5] = tagsField.getText();
+					vehicleInformation[0] = vinField.getText();
+					vehicleInformation[1] = licField.getText();
+					vehicleInformation[2] = tagsField.getText();
+					vehicleInformation[3] = yearField.getText();
+					vehicleInformation[4] = makeField.getText();
+					vehicleInformation[5] = modelField.getText();
 					vehicleInformation[6] = engineField.getText();
 					vehicleInformation[7] = transField.getText();
 					vehicleInformation[8] = milesField.getText();
+					
+					Security.Vehicle.addVehicle(vehicleInformation, custID);
 				}
 				
 			});
@@ -727,10 +744,10 @@ public class PMAWizard extends JPanel{
 			c.gridx = 0;
 			c.gridy = 2;
 			add(customerConcernsLabel, c);
-			JTextArea customerConcerns = new JTextArea(5,20);
+			custConcernsArea = new JTextArea(5,20);
 			c.gridx = 0;
 			c.gridy = 3;
-			add(customerConcerns, c);
+			add(custConcernsArea, c);
 			
 		}
 	}
