@@ -179,7 +179,7 @@ public class Security {
 			try {
 				queryStatement = connection.prepareStatement(query);
 				rs = updateTable(queryStatement);
-				queryStatement.close();
+				//queryStatement.close();
 				return rs;
 				
 			} catch (SQLException e) {

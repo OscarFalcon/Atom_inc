@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -205,7 +207,7 @@ public class CustomerPanel extends JPanel {
 				size.height);
 
 		registerControllers(new CustomerPanelController());
-		Security.clientDatabase.selectAll();
+		updateTable(Security.clientDatabase.selectAll());
 	}
 	
 	private void registerControllers(CustomerPanelController listen) {
@@ -221,13 +223,13 @@ public class CustomerPanel extends JPanel {
 	private class CustomerPanelController extends MouseAdapter implements ActionListener, ListSelectionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			ResultSet rs = null;
 			if (event.getSource() == IdField) {
 				String id = IdField.getText();
 				if (id.equals(""))
-					Security.clientDatabase.selectAll();
+					rs = Security.clientDatabase.selectAll();
 				else
-					Security.clientDatabase.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);
-
+					rs = Security.clientDatabase.updateTable(id, null, 0, null, 0, null, null, null, null, null, null);				
 				IdField.setText("");
 			} else {
 				String first, last, phone;
@@ -237,8 +239,9 @@ public class CustomerPanel extends JPanel {
 				firstField.setText("");
 				lastField.setText("");
 				phoneField.setValue("");
-				Security.clientDatabase.updateTable(null, first, Security.clientDatabase.EXACTLY, last, Security.clientDatabase.EXACTLY, null, null, null, null, phone, null);
+				rs = Security.clientDatabase.updateTable(null, first, Security.clientDatabase.EXACTLY, last, Security.clientDatabase.EXACTLY, null, null, null, null, phone, null);
 			}// else
+			updateTable(rs);
 		}// ActionPerformed
 
 		@Override
@@ -251,5 +254,22 @@ public class CustomerPanel extends JPanel {
 		}
 
 	}// CustomerPanelController
+	
+	private void updateTable(ResultSet rs){
+		Object[] tmpRow;
+		tablemodel.setRowCount(0);
+		try {
+			while(rs.next()){
+				System.out.println("here");
+					tmpRow = new Object[]{ rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9)};
+					tablemodel.addRow(tmpRow);
+			}
+		} catch (SQLException e){
+			e.printStackTrace(); //handle error
+		}
+	}
+	
+	
+	
 
 }
