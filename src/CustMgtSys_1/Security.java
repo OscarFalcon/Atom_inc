@@ -403,9 +403,10 @@ public class Security {
 				ps = connection.prepareStatement(MySQLStrings.insertVehicleStr);
 				int i;
 				for(i = 0; i < args.length; i++){
+					System.out.println(i);
 					ps.setString(i+1, args[i]);
 				}
-				ps.setInt(i, id);
+				ps.setInt(i+1, id);
 				
 			}
 			catch(SQLException e){	
@@ -475,9 +476,9 @@ public class Security {
 		
 		
 		
-		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles,id VALUES(" +
-					"AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," +
-					"?,?,?,?,?,?,?)";
+		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles,id) VALUES(" +
+					"AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," +
+					"?,?,?,?,?,?,?,?)";
 		
 		public static String selectVechicleStr = "SELECT  AES_DECRYPT(vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
 				",AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles from vehicle " +
