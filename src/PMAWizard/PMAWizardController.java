@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import CustMgtSys_1.PMAObject;
+
 public class PMAWizardController{
 	PMAWizard view;
 	PMAWizardModel model;
@@ -19,6 +21,15 @@ public class PMAWizardController{
 		view.nextButton.addActionListener(new nextButtonListener());
 		view.cancelButton.addActionListener(new cancelButtonListener());
 	}
+	
+	private class finishButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e){
+			PMAObject pma = new PMAObject();
+			pma.first = view.customerInformation[0];
+			pma.last = view.customerInformation[1];
+		}
+	}
+	
 	
 	private class backButtonListener implements ActionListener{
 

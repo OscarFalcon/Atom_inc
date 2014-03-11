@@ -59,6 +59,9 @@ public class PMAWizard extends JPanel{
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	private int CUSTOMER_INFO = 0, CUSTOMER_CREATE = 1, VEHICLE_INFO = 2, VEHICLE_CREATE = 3, CUSTOMER_CONCERNS = 4;
+	
+	public String vehicleInformation[];
+	public String customerInformation[];
 
 	
 	
@@ -164,7 +167,7 @@ public class PMAWizard extends JPanel{
 		backButton = new JButton("< Back");
 		backButton.setEnabled(false);
 		nextButton = new JButton("Next >");
-		//nextButton.setEnabled(false);
+		nextButton.setEnabled(false);
 		cancelButton = new JButton("Cancel");
 		finishButton = new JButton("Finish");
 		finishButton.setEnabled(false);
@@ -301,7 +304,7 @@ public class PMAWizard extends JPanel{
 			
 			search.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
-					ResultSet rs = Security.clientDatabase.updateTable(null, firstNameField.getText(), Security.clientDatabase.EXACTLY, lastNameField.getText(),Security.clientDatabase.EXACTLY, 
+					ResultSet rs = Security.client.search(null, firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
 							null, null, null, null, null, null);
 					Object[] tmpRow;
 					tablemodel.setRowCount(0);
@@ -456,10 +459,12 @@ public class PMAWizard extends JPanel{
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(!emptyField()){
-						if(Security.clientDatabase.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
+						if(Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
 								phoneField.getText(), emailField.getText())){
 							JOptionPane.showMessageDialog(null,
 									"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
+							customerInformation[0] = firstNameField.getText();
+							customerInformation[1] = lastNameField.getText();
 							firstNameField.setEditable(false);
 							lastNameField.setEditable(false);
 							phoneField.setEditable(false);
@@ -560,6 +565,15 @@ public class PMAWizard extends JPanel{
 			add(create,c);
 			
 			
+			table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+
+				@Override
+				public void valueChanged(ListSelectionEvent arg0) {
+					nextButton.setEnabled(true);
+				}
+				
+			});
+			
 			create.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					changeCards(VEHICLE_CREATE);
@@ -578,21 +592,25 @@ public class PMAWizard extends JPanel{
 			c.insets = new Insets(2, 5, 2, 5);
 			
 			JLabel yearLabel = new JLabel("Year");
-			JTextField yearField = new JTextField(15);
+			final JTextField yearField = new JTextField(15);
 			JLabel makeLabel = new JLabel("Make");
-			JTextField makeField = new JTextField(15);
+			final JTextField makeField = new JTextField(15);
 			JLabel modelLabel = new JLabel("Model");
-			JTextField modelField = new JTextField(15);
-			JLabel licLabel = new JLabel("License Plate");
-			JTextField licField = new JTextField(20);
+			final JTextField modelField = new JTextField(15);
 			JLabel vinLabel = new JLabel("Vin");
-			JTextField vinField = new JTextField(15);
+			final JTextField vinField = new JTextField(15);
+			JLabel licLabel = new JLabel("License Plate");
+			final JTextField licField = new JTextField(15);
+			JLabel tagsLabel = new JLabel("Tags");
+			final JTextField tagsField = new JTextField(15);
+
 			JLabel engineLabel = new JLabel("Engine");
-			JTextField engineField = new JTextField(15);
+			final JTextField engineField = new JTextField(15);
 			JLabel transLabel = new JLabel("Trans");
-			JTextField transField = new JTextField(15);
+			final JTextField transField = new JTextField(15);
 			JLabel milesLabel = new JLabel("Miles");
-			JTextField milesField = new JTextField(15);
+			final JTextField milesField = new JTextField(15);
+
 			JButton createButton = new JButton("Create");
 			
 			c.gridx=0;
@@ -611,39 +629,46 @@ public class PMAWizard extends JPanel{
 			c.gridx=0;
 			c.gridy=2;
 			mid.add(modelLabel,c);
-			c.gridx=0;
 			c.gridy=3;
 			mid.add(modelField,c);
 			
+			c.gridx=1;
+			c.gridy=2;
+			mid.add(licLabel,c);
+			c.gridy=3;
+			mid.add(licField,c);
+			
 			c.gridx = 0;
 			c.gridy=4;
-			mid.add(licLabel,c);
+			mid.add(vinLabel,c);
+			c.gridx=1;
+			mid.add(tagsLabel, c);
 			
 			c.gridx=0;
 			c.gridy=5;
-			c.gridwidth = 2;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			mid.add(licField, c);
+			mid.add(vinField, c);
+			c.gridx=1;
+			mid.add(tagsField,c);
 			
 			c.gridx=0;
 			c.gridy=6;
 			c.gridwidth=1;
-			mid.add(vinLabel,c);
+			mid.add(engineLabel,c);
 			c.gridx=1;
-			mid.add(engineLabel, c);
+			mid.add(transLabel, c);
 			
 			c.gridx=0;
 			c.gridy=7;
-			mid.add(vinField,c);
-			c.gridx=1;
 			mid.add(engineField,c);
+			c.gridx=1;
+			mid.add(transField,c);
 			
 			c.gridx=0;
 			c.gridy=8;
-			mid.add(transLabel,c);
+			mid.add(milesLabel,c);
 			
 			c.gridy=9;
-			mid.add(transField,c);
+			mid.add(milesField,c);
 		
 			c.gridx=1;
 			c.gridy=10;
@@ -657,10 +682,31 @@ public class PMAWizard extends JPanel{
 			
 			add(mid, BorderLayout.CENTER);
 			
+			
 			backArrow.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					changeCards(VEHICLE_INFO);
 				}
+			});
+			
+			createButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JOptionPane.showMessageDialog(null,
+							"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
+					vehicleInformation = new String[9];
+					vehicleInformation[0] = yearField.getText();
+					vehicleInformation[1] = makeField.getText();
+					vehicleInformation[2] = modelField.getText();
+					vehicleInformation[3] = licField.getText();
+					vehicleInformation[4] = vinField.getText();
+					vehicleInformation[5] = tagsField.getText();
+					vehicleInformation[6] = engineField.getText();
+					vehicleInformation[7] = transField.getText();
+					vehicleInformation[8] = milesField.getText();
+				}
+				
 			});
 		}
 	}
