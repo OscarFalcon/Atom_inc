@@ -221,10 +221,12 @@ public class PMAView extends JFrame {
 	public JTextArea customerConcerns;
 	
 	public JButton submit;
-
-	public PMAView() {
+	
+	int wo;
+	
+	public PMAView(int wo) {
 		super("2FATGUYS PMA");
-		
+		this.wo = wo;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
 		
@@ -4565,7 +4567,7 @@ public class PMAView extends JFrame {
 		c.gridy = 6;
 		southNorth.add(submit,c);
 		
-		submit.addActionListener(new ActionListener(){
+		/*submit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				enableEastSplit(false);
 				PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -4586,7 +4588,7 @@ public class PMAView extends JFrame {
 				    } else enableEastSplit(true);
 				}
 			}
-		});
+		});*/
 		
 
 		/*****************************************************************************/

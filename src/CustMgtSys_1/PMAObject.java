@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class PMAObject implements Serializable{
+public class PMAObject extends Object implements Serializable{
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class PMAObject implements Serializable{
 	public byte[] approved;
 	public String[] tech_comments;
 	public String[] recommended_repairs;
-	public String[] priority;
+	public int[] priority;
 	public BigDecimal[] totalParts;
 	public BigDecimal[] totalLabor;
 	public BigDecimal[] laborCost;
@@ -30,18 +30,17 @@ public class PMAObject implements Serializable{
 	public String customer_concerns;
 	
 	
-	public String tech_comments_pack;
-	public String recommended_repairs_pack;
-	public String priority_pack;
-	public String vendor_pack;
-	public String qty_pack;
+	
+	
+	public BigDecimal[] totals; 
+	
 	
 	public PMAObject(){
 		ok = new byte[42];
 		notok = new byte[42];
 		tech_comments = new String[42];
 		recommended_repairs = new String[42];
-		priority = new String[42];
+		priority = new int[42];
 		totalParts = new BigDecimal[42];
 		totalLabor = new BigDecimal[42];
 		laborCost = new BigDecimal[42];
@@ -49,10 +48,8 @@ public class PMAObject implements Serializable{
 		approved = new byte[42];
 		qty = new int[42];
 		vendor = new String[42];
-		first = "test first";
-		totalParts[0] = new BigDecimal("1.5");
+		totals = new BigDecimal[9];
 	}
-
 	
 	public String toString(){
 		return "first name = " + first + " total part = " + totalParts[0];

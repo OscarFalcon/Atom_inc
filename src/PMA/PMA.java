@@ -1,9 +1,14 @@
 package PMA;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import CustMgtSys_1.PMAObject;
+import CustMgtSys_1.Security;
 
 
 public class PMA {
@@ -19,27 +24,16 @@ public class PMA {
 			
 		}
 		
-		PMAView view = new PMAView();
-		view.nameField.setText("Adrian Martinez");
-		view.dateField.setText("Jan 10, 1995");
-		view.customerConcerns.setText("flat tire yo!!");
-		view.activateLine(true, 1);
-		view.checkBoxes[1][1].setSelected(true);
-		view.checkBoxes[1][1].setBackground(Color.red);
-		view.comboBoxes[1][0].getEditor().setItem("TEXT has changed!!!!!!");
-		view.comboBoxes[1][1].getEditor().setItem("TEXT has Changed!!");
-		//view.totalFields[1][0].setEnabled(true);
-		view.totalFields[1][0].setText("$50.99");
-		view.numberFields[1][0].setValue(25.00);
-		//view.enableEastSplit(false);
-		PMAController controller = new PMAController(view);
+		PMAView view = null;
+		Security.Login("Birdman","password");
+		int wo = 18;
+		try {
+			view = new PMAView(wo);
+			PMAController controller = new PMAController(view);
+			controller.readSQL();
+		}catch(Exception e){
+		}
+		
 	}
 
-	private static Object makeObj(final String item) {
-		return new Object() {
-			public String toString() {
-				return item;
-			}
-		};
-	}
 }

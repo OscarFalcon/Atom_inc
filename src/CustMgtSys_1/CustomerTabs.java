@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
@@ -34,6 +35,7 @@ public class CustomerTabs extends JPanel {
 	public CustomerTabs(JTable table) {
 		this.table = table;
 		setBackground(new Color(81,127,164));
+		//setBackground(new Color(0,150,0));
 		setBorder(border);
 		setLayout(new FlowLayout());
 	
@@ -48,6 +50,9 @@ public class CustomerTabs extends JPanel {
 		addClientButton = new JButton("Add Client", addUser);		
 		//addClientButton.setBorder(border);
 		addClientButton.setPreferredSize(dimension1);
+		//addClientButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		//addClientButton.setHorizontalTextPosition(SwingConstants.CENTER);
+
 		addClientButton.setBackground(silver);
 		add(addClientButton);
 

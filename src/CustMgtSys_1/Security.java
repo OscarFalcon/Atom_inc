@@ -511,76 +511,6 @@ public class Security {
 	
 
 	public static class PMA{	
-		
-		public static void createPMA(String date, String vin, String customerid){
-			try{
-				int last;
-				createPMA.setString(1,date);
-				createPMA.setString(2,vin);
-				createPMA.setString(3,customerid);
-				createPMA.execute();
-				connection.commit();
-				resultSet = lastIncrement.executeQuery();
-				connection.commit();
-				if(!resultSet.next()){
-					Error.ResultError();//correct error msg
-					return;
-				}
-				last = (int) resultSet.getInt(1);
-				createPMAinfo.setInt(1,last);
-				createLaborCost.setInt(1, last);
-				createPartCost.setInt(1, last);
-				createTotalLabor.setInt(1, last);
-				createTotalParts.setInt(1,last);
-				execute(createPMAinfo);
-				execute(createLaborCost);
-				execute(createPartCost);
-				execute(createTotalLabor);
-				execute(createTotalParts);
-			}catch(SQLException e){
-			 e.printStackTrace();
-			}
-		}
-		public static void savePMA(PMAObject pma){
-			try{
-				updatePMAinfo.setString(1, pma.ok.toString());
-				updatePMAinfo.setString(2, pma.notok.toString());
-				updatePMAinfo.setString(3,pma.tech_comments_pack);
-				updatePMAinfo.setString(4, pma.recommended_repairs_pack);
-				updatePMAinfo.setString(5, pma.priority_pack);
-				updatePMAinfo.setString(6, pma.qty_pack);
-				updatePMAinfo.setString(7, pma.vendor_pack);
-				
-				int i;
-				int length = pma.laborCost.length;
-				for(i  = 0; i < length; i++)
-					updateLaborCost.setString(i,pma.laborCost[i].toString()); //is there a rounding error???
-				updateLaborCost.setInt(i, pma.wo);
-				
-				length = pma.partCost.length;
-				for(i=0; i < length; i++)
-					updatePartCost.setString(i, pma.partCost[i].toString());
-				updatePartCost.setInt(i, pma.wo);
-				
-				length = pma.totalLabor.length;
-				for(i=0; i < length; i++)
-					updateTotalLabor.setString(i, pma.totalLabor[i].toString());
-				updateTotalLabor.setInt(i, pma.wo);
-				
-				length = pma.totalParts.length;
-				for(i=0; i < length; i++)
-					updateTotalParts.setString(i, pma.totalParts[i].toString());
-				updateTotalParts.setInt(i, pma.wo);
-		
-				execute(updateLaborCost);
-				execute(updatePartCost);
-				execute(updateTotalLabor);
-				execute(updateTotalParts);
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-		
 		public static Object loadPMA(int wo) throws SQLException, IOException, ClassNotFoundException{
 			final String READ_OBJECT = "select object from PMAObject where wo = ?";
 			PreparedStatement ps = connection.prepareStatement(READ_OBJECT);
@@ -588,7 +518,6 @@ public class Security {
 			resultSet = ps.executeQuery();
 			connection.commit();
 			resultSet.next();
-			 
 			byte[] buf = resultSet.getBytes("object");
 			        ObjectInputStream objectIn = null;
 			        if (buf != null)
@@ -601,13 +530,12 @@ public class Security {
 		}
 		
 		public static void updatePMA(Object object, int wo) throws SQLException{
-			final String WRITE_OBJECT = "update PMAOBject set object = ? where wo = ?";
+			final String WRITE_OBJECT = "update PMAObject set object = ? where wo = ?";
 			PreparedStatement ps = connection.prepareStatement(WRITE_OBJECT);
 			ps.setObject(1, object);
 			ps.setInt(2, wo);
 			execute(ps);
-			
-			
+			ps.close();
 		}
 		
 		public static int createPMA(Object object) throws SQLException{
@@ -620,6 +548,8 @@ public class Security {
 			connection.commit();
 			resultSet.next();
 			int wo = resultSet.getInt(1);
+			resultSet.close();
+			ps.close();
 			return wo;
 		}
 		

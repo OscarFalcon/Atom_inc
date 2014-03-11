@@ -21,6 +21,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
 
+import PMA.PMAController;
+import PMA.PMAView;
+
 
 public class MainWindowView extends JFrame {
 
@@ -139,24 +142,17 @@ public class MainWindowView extends JFrame {
 			loginPanel.setText("");
 			if(Security.Login(user, password)){
 				login();
-				PMAObject pma = new PMAObject();
-				int wo;
-				try {
-					 wo = Security.PMA.createPMA(pma);
-					 System.out.println("wo = " + wo);
-					 PMAObject loadpma;
-					try {
-						loadpma = (PMAObject) Security.PMA.loadPMA(wo);
-						 System.out.println(loadpma);
-					} catch (ClassNotFoundException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-					
+				 PMAObject pma = new PMAObject();
+				 int wo = 18;
+				/** try {
+					wo = Security.PMA.createPMA(pma);
 				} catch (SQLException e) {
 					e.printStackTrace();
-				}
-				
+				}**/
+				 
+				PMAView view = new PMAView(wo);
+				PMAController controller = new PMAController(view);
+				controller.readSQL();
 			}
 			else{
 				if(Security.getFailedConnectionStatus())

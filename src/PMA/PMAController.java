@@ -1,99 +1,120 @@
 package PMA;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import CustMgtSys_1.PMAObject;
+import CustMgtSys_1.Security;
 
 public class PMAController {
 
 	private PMAView view;
-	private boolean[][] isChecked;
-	private String[][] comboBoxValues;
-	private String[][] totalFields;
-	private String[][] mechanicFields;
-
+	
+	
 	public PMAController(PMAView view) {
 		this.view = view;
-		isChecked = new boolean[50][3];
-		comboBoxValues = new String[100][3];
-		totalFields = new String[50][2];
-		mechanicFields = new String[50][4];
+		view.submit.addActionListener(new listen());
 	}
-	
-	
-	
-	
-	
 	
 
 	public void writeToSQL() {
-		String header = "";
-		String checkboxYes = "";
-		String checkboxNo = "";
-		String techComments = "";
-		String recComments = "";
-		String priority = "";
-		double totalParts[] = new double[42];
+		PMAObject pma = new PMAObject();
 		
+		pma.tags = view.tagsField.getText();
+		pma.miles = view.milesField.getText();
+		
+		for(int i = 0; i < 42; i++){
+			
+			if(view.buttonLabels[i].isSelected()) //does this work?
+				pma.approved[i] = 1;
+			else
+				pma.approved[i] = 0;
+			
+			if(view.checkBoxes[i][0].isSelected())
+				pma.ok[i] = 1;
+			else
+				pma.ok[i] = 0;
+			
+			if(view.checkBoxes[i][1].isSelected())
+				pma.notok[i] = 1;
+			else
+				pma.notok[i] = 0;
+			//if(approved)
+			
+			pma.tech_comments[i] = (String) view.comboBoxes[i][0].getEditor().getItem();
+			pma.recommended_repairs[i] = (String) view.comboBoxes[i][1].getEditor().getItem();
+			pma.priority[i] = view.comboBoxes[i][2].getSelectedIndex();
+			pma.totalParts[i] = new BigDecimal( view.totalFields[i][0].getValue()); //is it safe
+			pma.totalLabor[i] = new BigDecimal( view.totalFields[i][1].getValue());
+			pma.qty[i] = new Integer(view.QTYfields[i].getText());
+			pma.partCost[i] = new BigDecimal(view.numberFields[i][0].getValue());
+			//pma.laborCost[i] = new BigDecimal(view.numberFields[i][0].getValue()); ** need to fix
+			pma.vendor[i] = view.vendorFields[i].getText();
+	
+		}	
+
+
 		
 		/**
-		 * customer name all the way to the customer concerns
-		 */
-		
-		view.workOrderField.getText();
-
-		header.concat(view.tagsField.getText().replaceAll("|", "\\|") + "|");
-		header.concat(view.milesField.getText().replaceAll("|","\\|") + "|");
-		header.concat(view.customerConcerns.getText().replaceAll("|", "\\|") + "|");
-		
-		
-		for(int i = 0; i <= 42; i++){
-			if(view.checkBoxes[i][0].isSelected()) checkboxYes.concat("1");  // on
-			else checkboxYes.concat("0");   								 // off
-			
-			if(view.checkBoxes[i][1].isSelected()) checkboxNo.concat("1");
-			else checkboxNo.concat("0");
-			
-			techComments.concat(view.comboBoxes[i][0].getSelectedItem().toString().replaceAll("|", "\\|") + "|");
-			recComments.concat(view.comboBoxes[i][1].getSelectedItem().toString().replaceAll("|", "\\|") + "|");
-			priority.concat(Integer.toString(view.comboBoxes[i][2].getSelectedIndex()));
-			
-			view.totalFields[i][0].getText();
-			view.totalFields[i][1].getText();
-			view.QTYfields[i].getText();
-			view.numberFields[i][0].getText();
-			view.numberFields[i][1].getText();
-			view.vendorFields[i].getText();
-		}
-		
-		
-		view.totalParts.getText();
-		view.totalLabor.getText();
-		view.totalPrice.getText();
-		view.tax.getText();
-		view.shopSupplies.getText();
+		pma.totals[0] = new BigDecimal(view.totalParts.getText());
+		pma.totals[1] = new BigDecimal(view.totalLabor.getText());
+		pma.totals[2] = new BigDecimal( view.totalPrice.getText());
+		pma.totals[3] = new BigDecimal(view.tax.getText());
+		pma.totals[2] = new BigDecimal(view.shopSupplies.getValue());
 		view.grandTotal.getText();
-		
-		
-		
-		// Gets all values of the checkBoxes and stores them into an array to
-		// send to the Security class
-		// for writing to SQL
-
-		
-		
-		/*
-		 * send all the customer information to Security Class to write data to
-		 * SQL
-		 * insertTable0(view.nameField.getText(),view.dateField.getText(),view
-		 * .tagsField.getText(),
-		 * view.vehicleYearField.getText(),view.vehicleMakeField
-		 * .getText(),view.vehicleModelField.getText(),
-		 * view.workOrderField.getText
-		 * (),view.licField.getText(),view.vinField.getText(),
-		 * view.engineField.getText
-		 * (),view.transField.getText(),view.milesField.getText(),
-		 * view.customerConcerns.getText());
-		 */
+		**/ //need to be in correct format
+		try {
+			Security.PMA.updatePMA(pma,view.wo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
 
 	}
+	
+	public void readSQL(){
+		PMAObject pma = null;
+		try {
+			pma = (PMAObject) Security.PMA.loadPMA(view.wo);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		view.tagsField.setText(pma.tags);
+		for(int i = 0; i < 42; i++){
+			if(pma.ok[i] == 1){
+				view.checkBoxes[i][0].setSelected(true);
+				view.checkBoxes[i][0].setBackground(Color.green);
+			}
+			if(pma.notok[i] == 1){
+				view.checkBoxes[i][1].setSelected(true);
+				view.checkBoxes[i][1].setBackground(Color.red);
+			}
+			view.comboBoxes[i][0].getEditor().setItem(pma.tech_comments[i]); 
+			view.comboBoxes[i][1].getEditor().setItem(pma.recommended_repairs[i]);
+			view.comboBoxes[i][2].setSelectedIndex(pma.priority[i]);
+			view.totalFields[i][0].setValue(pma.totalParts[i].doubleValue());
+			view.totalFields[i][1].setValue(pma.totalLabor[i].doubleValue());
+			view.QTYfields[i].setText(String.valueOf(pma.qty[i]));
+			view.numberFields[i][0].setValue(pma.partCost[i].doubleValue());
+			//view.numberFields[i][1].setValue(pma.laborCost[i].doubleValue());
+			view.vendorFields[i].setText(pma.vendor[i]);
+
+		}
+	
+	}
+	
+	private class listen implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			writeToSQL();
+			System.out.println("write to sql");
+		}	
+	}
+	
+	
 }

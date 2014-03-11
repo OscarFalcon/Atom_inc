@@ -4,6 +4,8 @@ package CustMgtSys_1;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,8 +24,7 @@ public class login  extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	private MainWindowView view;
-	
-	JPanel westPanel,southPanel,northPanel,centerPanel;
+
 	
 	public JTextField user;
 	
@@ -31,7 +32,7 @@ public class login  extends JPanel{
 	
 	private JButton loginButton;
 	
-	public JLabel statusLabel;
+	public JLabel statusLabel,userLabel,passwordLabel;
 	
 	
 	public login(MainWindowView view){	
@@ -41,31 +42,47 @@ public class login  extends JPanel{
 		user.setPreferredSize(new Dimension(160,30));
 		password = new JPasswordField();
 		password.setPreferredSize(new Dimension(160,30));
+		
 		statusLabel = new JLabel();
 		statusLabel.setPreferredSize(new Dimension(160,30));
 		statusLabel.setForeground(Color.RED);
-		statusLabel.setText("Login please");
+		statusLabel.setText("     Login please");
 		
-		JLabel userLabel = new JLabel("user name: ");
+		userLabel = new JLabel("user name: ");
 		userLabel.setPreferredSize(new Dimension(120,30));
-		JLabel passwordLabel = new JLabel("password: ");
+		passwordLabel = new JLabel("password: ");
 		passwordLabel.setPreferredSize(new Dimension(120,30));
 		
 		loginButton = new JButton("Login");
 		loginButton.setPreferredSize(new Dimension(120,30));
 		
-		setLayout(null);
+		
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		add(user);
-		add(password);
-		add(userLabel);
-		add(passwordLabel);
-		add(loginButton);
-		add(statusLabel);
 		
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		Insets insets = getInsets();
+		c.gridx= 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.PAGE_START;
+		add(userLabel,c);
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		add(user,c);
+		c.gridx = 0;
+		c.gridy = 2;
+		add(passwordLabel,c);
+		c.gridx = 1;
+		add(password,c);
+		c.gridx = 1;
+		c.gridy = 3;
+		add(loginButton,c);
+		c.gridy = 4;
+		add(statusLabel,c);
 		
+
+		/**
 		size = user.getPreferredSize();
 		user.setBounds(insets.left+500,insets.top+200, size.width, size.height);
 		size = password.getPreferredSize();
@@ -78,6 +95,8 @@ public class login  extends JPanel{
 		loginButton.setBounds(520+insets.left,300+insets.top,size.width,size.height);
 		size = statusLabel.getPreferredSize();
 		statusLabel.setBounds(520+insets.left, 350+insets.top, size.width, size.height);
+		
+		**/
 		
 		registerControllers(new Controller());
 	}
