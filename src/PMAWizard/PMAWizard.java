@@ -708,8 +708,7 @@ public class PMAWizard extends JPanel{
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					JOptionPane.showMessageDialog(null,
-							"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
+					
 					vehicleInformation = new String[9];
 					vehicleInformation[0] = vinField.getText();
 					vehicleInformation[1] = licField.getText();
@@ -722,6 +721,8 @@ public class PMAWizard extends JPanel{
 					vehicleInformation[8] = milesField.getText();
 					
 					Security.Vehicle.addVehicle(vehicleInformation, custID);
+					JOptionPane.showMessageDialog(null,
+							"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
 				}
 				
 			});

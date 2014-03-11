@@ -73,7 +73,7 @@ public class PMAWizardController{
 		public void actionPerformed(ActionEvent e) {
 			if(model.getCurrentCard() == view.CUSTOMER_INFO){
 				int row = view.custTable.getSelectedRow();
-				view.custID = (Integer)view.custTable.getValueAt(row, 4);
+				view.custID = Integer.parseInt((String) view.custTable.getValueAt(row, 4));
 				ResultSet rs = Security.Vehicle.searchVehicles(view.custID);
 				
 				Object[] tmpRow;
