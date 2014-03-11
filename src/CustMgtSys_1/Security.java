@@ -508,6 +508,14 @@ public class Security {
 		
 		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";	
 		
+		
+		public static String createVehicleStr = "INSERT into vehicle VA";
+		
+		
+		
+		
+		
+		
 	}
 	
 	
