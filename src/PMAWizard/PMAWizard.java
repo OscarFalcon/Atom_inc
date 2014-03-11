@@ -33,6 +33,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.MaskFormatter;
@@ -41,10 +43,6 @@ import CustMgtSys_1.CenterTableCellRenderer;
 import CustMgtSys_1.CustomTableModel;
 import CustMgtSys_1.Error;
 import CustMgtSys_1.Security;
-
-
-
-
 
 
 public class PMAWizard extends JPanel{
@@ -65,9 +63,7 @@ public class PMAWizard extends JPanel{
 	private JTable table;
 	private DefaultTableModel tablemodel;
 	
-	
-	
-	
+
 	public void changeCards(int card){
 		backButton.setEnabled(true);
 		nextButton.setEnabled(true);
@@ -79,6 +75,7 @@ public class PMAWizard extends JPanel{
 			layout.show(cards, "customer info");
 			step1.setForeground(Color.green);
 			backButton.setEnabled(false);
+			nextButton.setEnabled(false);
 			model.setBackCard(-1);
 			model.setCurrentCard(CUSTOMER_INFO);
 			model.setNextCard(VEHICLE_INFO);
@@ -262,22 +259,22 @@ public class PMAWizard extends JPanel{
 			CenterTableCellRenderer centerRenderer;
 
 			col = table.getColumnModel().getColumn(0);
-			col.setPreferredWidth(120);
+			col.setPreferredWidth(125);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
 			col = table.getColumnModel().getColumn(1);
-			col.setPreferredWidth(130);
+			col.setPreferredWidth(135);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
 			col = table.getColumnModel().getColumn(2);
-			col.setPreferredWidth(115);
+			col.setPreferredWidth(175);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 
 			col = table.getColumnModel().getColumn(3);
-			col.setPreferredWidth(121);
+			col.setPreferredWidth(120);
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 			
@@ -292,7 +289,14 @@ public class PMAWizard extends JPanel{
 			c.fill = GridBagConstraints.HORIZONTAL;
 			add(tableScroll,c);
 			
-			
+			table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+
+				@Override
+				public void valueChanged(ListSelectionEvent arg0) {
+					nextButton.setEnabled(true);
+				}
+				
+			});
 			
 			search.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
@@ -454,7 +458,7 @@ public class PMAWizard extends JPanel{
 						if(Security.clientDatabase.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
 								phoneField.getText(), emailField.getText())){
 							JOptionPane.showMessageDialog(null,
-									"Successfully edited Client " + firstNameField.getText() + " " + lastNameField.getText());
+									"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
 							firstNameField.setEditable(false);
 							lastNameField.setEditable(false);
 							phoneField.setEditable(false);
@@ -471,8 +475,6 @@ public class PMAWizard extends JPanel{
 				}
 				
 			});
-
-			
 		}
 
 		private boolean emptyField() {
@@ -490,50 +492,68 @@ public class PMAWizard extends JPanel{
 	
 	private class card2 extends JPanel{
 		private JButton create, search;
-		
+		private JScrollPane tableScroll;
 		
 		private card2(){
 			setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 5, 2, 5);
 		
-			JLabel firstNameLabel = new JLabel("Vehicle Make");
-			JTextField firstNameField = new JTextField(10);
-			JLabel lastNameLabel = new JLabel("Vehicle Model");
-			JTextField lastNameField = new JTextField(10);
-			JLabel phoneLabel = new JLabel("Lic");
-			JTextField phoneField = new JTextField(10);
-			JLabel custIDLabel = new JLabel("Vin");
-			JTextField custIDField = new JTextField(10);
-			search = new JButton("Search");
+			tablemodel = new CustomTableModel();
+			tablemodel.setColumnIdentifiers(new Object[] {"Year",
+					"Make", "Model", "License Plate"});
+			
+			table = new JTable(tablemodel);
+			table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
+			table.setRowSelectionAllowed(true);
+			table.setColumnSelectionAllowed(false);
+			table.setAutoCreateRowSorter(true);
+			table.getTableHeader().setReorderingAllowed(false);
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			table.setRowHeight(table.getRowHeight() + 3);
+			table.setFillsViewportHeight(true);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 			create = new JButton("Add New Vehicle");
 		
-			c.gridx=0;
-			c.gridy=0;
-			c.gridwidth=1;
-			add(firstNameLabel,c);
-			c.gridx=1;
-			add(lastNameLabel,c);
-			c.gridx=2;
-			add(phoneLabel, c);
-			c.gridx=3;
-			add(custIDLabel,c);
-		
-			c.gridx=0;
-			c.gridy=1;
-			add(firstNameField, c);
-			c.gridx=1;
-			add(lastNameField, c);
-			c.gridx=2;
-			add(phoneField, c);
-			c.gridx=3;
-			add(custIDField,c);
-		
-			c.gridx=2;
-			c.gridy=2;
+			TableColumn col;
+			CenterTableCellRenderer centerRenderer;
+
+			col = table.getColumnModel().getColumn(0);
+			col.setPreferredWidth(84);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(1);
+			col.setPreferredWidth(130);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(2);
+			col.setPreferredWidth(115);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(3);
+			col.setPreferredWidth(121);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+			
+			tableScroll = new JScrollPane(table);
+			Dimension tranTablePreferred = tableScroll.getPreferredSize();
+			tableScroll.setPreferredSize(new Dimension(tranTablePreferred.width,
+					tranTablePreferred.height / 3));
+			
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridwidth = 4;
 			c.fill = GridBagConstraints.HORIZONTAL;
-			add(search,c);
+			add(tableScroll,c);
+			
+			
 			c.gridx=3;
+			c.gridy=1;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			add(create,c);
 			
 			
@@ -544,8 +564,8 @@ public class PMAWizard extends JPanel{
 			});
 			
 		}
-		
 	}
+	
 	private class card3 extends JPanel{
 		
 		

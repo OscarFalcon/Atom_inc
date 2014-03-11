@@ -25,7 +25,7 @@ public class PMAWizardController{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.changeCards(model.getBackCard());
-			
+			view.nextButton.setEnabled(true);
 		}
 		
 	}
@@ -35,6 +35,7 @@ public class PMAWizardController{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			view.changeCards(model.getNextCard());
+			view.nextButton.setEnabled(false);
 		}
 		
 	}
