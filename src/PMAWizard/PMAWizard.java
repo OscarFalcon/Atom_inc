@@ -4,29 +4,52 @@ package PMAWizard;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.MaskFormatter;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
+import CustMgtSys_1.CenterTableCellRenderer;
+import CustMgtSys_1.CustomTableModel;
+import CustMgtSys_1.Error;
+import CustMgtSys_1.Security;
+
+
+
+
+
 
 public class PMAWizard extends JPanel{
+	
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JDialog wizard;
 	JPanel cards, buttonPanel, stepsPanel;
@@ -38,6 +61,11 @@ public class PMAWizard extends JPanel{
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	private int CUSTOMER_INFO = 0, CUSTOMER_CREATE = 1, VEHICLE_INFO = 2, VEHICLE_CREATE = 3, CUSTOMER_CONCERNS = 4;
+
+	private JTable table;
+	private DefaultTableModel tablemodel;
+	
+	
 	
 	
 	public void changeCards(int card){
@@ -168,6 +196,7 @@ public class PMAWizard extends JPanel{
 	private class card0 extends JPanel{
 		
 		private JButton create, search;
+		JScrollPane tableScroll;
 		
 		private card0(){
 			setLayout(new GridBagLayout());
@@ -175,9 +204,9 @@ public class PMAWizard extends JPanel{
 			c.insets = new Insets(2, 5, 2, 5);
 			
 			JLabel firstNameLabel = new JLabel("First Name");
-			JTextField firstNameField = new JTextField(10);
+			final JTextField firstNameField = new JTextField(10);
 			JLabel lastNameLabel = new JLabel("Last Name");
-			JTextField lastNameField = new JTextField(10);
+			final JTextField lastNameField = new JTextField(10);
 			JLabel phoneLabel = new JLabel("Phone");
 			JTextField phoneField = new JTextField(10);
 			JLabel custIDLabel = new JLabel("Customer ID");
@@ -212,8 +241,76 @@ public class PMAWizard extends JPanel{
 			add(search,c);
 			c.gridx=3;
 			add(create,c);
-
 			
+			
+			tablemodel = new CustomTableModel();
+			tablemodel.setColumnIdentifiers(new Object[] {"First Name",
+					"Last Name","Address", "Phone"});
+			
+			table = new JTable(tablemodel);
+			table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
+			table.setRowSelectionAllowed(true);
+			table.setColumnSelectionAllowed(false);
+			table.setAutoCreateRowSorter(true);
+			table.getTableHeader().setReorderingAllowed(false);
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			table.setRowHeight(table.getRowHeight() + 3);
+			table.setFillsViewportHeight(true);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+			TableColumn col;
+			CenterTableCellRenderer centerRenderer;
+
+			col = table.getColumnModel().getColumn(0);
+			col.setPreferredWidth(120);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(1);
+			col.setPreferredWidth(130);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(2);
+			col.setPreferredWidth(115);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+
+			col = table.getColumnModel().getColumn(3);
+			col.setPreferredWidth(121);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+			
+			tableScroll = new JScrollPane(table);
+			Dimension tranTablePreferred = tableScroll.getPreferredSize();
+			tableScroll.setPreferredSize(new Dimension(tranTablePreferred.width,
+					tranTablePreferred.height / 3));
+			
+			c.gridx = 0;
+			c.gridy = 3;
+			c.gridwidth = 4;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			add(tableScroll,c);
+			
+			
+			
+			search.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					ResultSet rs = Security.clientDatabase.updateTable(null, firstNameField.getText(), Security.clientDatabase.EXACTLY, lastNameField.getText(),Security.clientDatabase.EXACTLY, 
+							null, null, null, null, null, null);
+					Object[] tmpRow;
+					tablemodel.setRowCount(0);
+					try {
+						while(rs.next()){
+								tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9)};
+								tablemodel.addRow(tmpRow);
+						}
+					} catch (SQLException e){
+						e.printStackTrace(); //handle error
+					}
+				}
+			});
+				
 			create.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent arg0) {
@@ -235,25 +332,40 @@ public class PMAWizard extends JPanel{
 			"WY" };
 		
 		
+		private JTextField firstNameField, lastNameField, emailField, addressField, cityField, zipField;
+		private JFormattedTextField phoneField;
+		private JComboBox stateField;
+		
 		private card1(){
 			JPanel mid = new JPanel(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 5, 2, 5);
 			
+			MaskFormatter mask = null;
+			try {
+				mask = new MaskFormatter("(###) ###-####");
+				mask.setPlaceholderCharacter('x');
+			} catch (ParseException e) {
+				Error.MaskFormatterError();
+				frame.dispose();
+			}
+			
 			JLabel firstNameLabel = new JLabel("First Name");
-			JTextField firstNameField = new JTextField(15);
+			firstNameField = new JTextField(15);
 			JLabel lastNameLabel = new JLabel("Last Name");
-			JTextField lastNameField = new JTextField(15);
+			lastNameField = new JTextField(15);
 			JLabel phoneLabel = new JLabel("Phone");
-			JTextField phoneField = new JTextField(15);
+			phoneField = new JFormattedTextField(mask);
+			JLabel emailLabel = new JLabel("Email");
+			emailField = new JTextField(15);
 			JLabel addressLabel = new JLabel("Street Address");
-			JTextField addressField = new JTextField(20);
+			addressField = new JTextField(20);
 			JLabel cityLabel = new JLabel("City");
-			JTextField cityField = new JTextField(15);
+			cityField = new JTextField(15);
 			JLabel stateLabel = new JLabel("State");
-			JComboBox stateField = new JComboBox(states);
+			stateField = new JComboBox(states);
 			JLabel zipLabel = new JLabel("Zip");
-			JTextField zipField = new JTextField(15);
+			zipField = new JTextField(15);
 			JButton createButton = new JButton("Create");
 			
 			c.gridx=0;
@@ -274,44 +386,55 @@ public class PMAWizard extends JPanel{
 			mid.add(phoneLabel,c);
 			c.gridx=0;
 			c.gridy=3;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			mid.add(phoneField,c);
 			
-			c.gridx = 0;
+			c.gridx=0;
 			c.gridy=4;
-			mid.add(addressLabel,c);
+			mid.add(emailLabel,c);
 			
 			c.gridx=0;
 			c.gridy=5;
+			c.gridwidth=2;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			mid.add(emailField,c);
+			
+			c.gridx = 0;
+			c.gridy=6;
+			mid.add(addressLabel,c);
+			
+			c.gridx=0;
+			c.gridy=7;
 			c.gridwidth = 2;
 			c.fill = GridBagConstraints.HORIZONTAL;
 			mid.add(addressField, c);
 			
 			c.gridx=0;
-			c.gridy=6;
+			c.gridy=8;
 			c.gridwidth=1;
 			mid.add(cityLabel,c);
 			c.gridx=1;
 			mid.add(stateLabel, c);
 			
 			c.gridx=0;
-			c.gridy=7;
+			c.gridy=9;
 			mid.add(cityField,c);
 			c.gridx=1;
 			mid.add(stateField,c);
 			
 			c.gridx=0;
-			c.gridy=8;
+			c.gridy=10;
 			mid.add(zipLabel,c);
 			
-			c.gridy=9;
+			c.gridy=11;
 			mid.add(zipField,c);
 		
 			c.gridx=1;
-			c.gridy=10;
+			c.gridy=12;
 			mid.add(createButton,c);
 			
 			
-			JButton backArrow = new JButton("<");
+			final JButton backArrow = new JButton("<");
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.add(backArrow, BorderLayout.WEST);
 			add(buttonPanel,BorderLayout.NORTH);
@@ -324,7 +447,45 @@ public class PMAWizard extends JPanel{
 				}
 			});
 			
+			createButton.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if(!emptyField()){
+						if(Security.clientDatabase.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
+								phoneField.getText(), emailField.getText())){
+							JOptionPane.showMessageDialog(null,
+									"Successfully edited Client " + firstNameField.getText() + " " + lastNameField.getText());
+							firstNameField.setEditable(false);
+							lastNameField.setEditable(false);
+							phoneField.setEditable(false);
+							emailField.setEditable(false);
+							addressField.setEditable(false);
+							cityField.setEditable(false);
+							zipField.setEditable(false);
+							stateField.setEditable(false);
+							backArrow.setEnabled(false);
+							nextButton.setEnabled(true);
+						}
+					} else JOptionPane.showMessageDialog(null,
+							"All Fields must be filled");
+				}
+				
+			});
+
+			
 		}
+
+		private boolean emptyField() {
+			return ((firstNameField.getText().equals(""))
+					|| (lastNameField.getText().equals(""))
+					|| (phoneField.getText().equals("(xxx) xxx-xxxx"))
+					|| (emailField.getText().equals(""))
+					|| (addressField.getText().equals(""))
+					|| (cityField.getText().equals(""))
+					|| (stateField.getSelectedIndex() == 0) || (zipField.getText()
+					.equals("")));
+		}
+		
 	}
 	
 	private class card2 extends JPanel{
@@ -508,7 +669,9 @@ public class PMAWizard extends JPanel{
 	
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("PMA Wizard");
+        
+    	Security.Login("birdman", "password");
+    	JFrame frame = new JFrame("PMA Wizard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.

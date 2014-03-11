@@ -150,9 +150,9 @@ public class MainWindowView extends JFrame {
 					e.printStackTrace();
 				}**/
 				 
-				PMAView view = new PMAView(wo);
-				PMAController controller = new PMAController(view);
-				controller.readSQL();
+				//PMAView view = new PMAView(wo);
+				//PMAController controller = new PMAController(view);
+				//controller.readSQL();
 			}
 			else{
 				if(Security.getFailedConnectionStatus())

@@ -23,8 +23,7 @@ public class CustomTableModel extends DefaultTableModel{
 	public CustomTableModel(){
 		super(new Object[] {"ID", "First Name",
 			"Last Name", "Address", "City", "State", "Zip", "Email", "Phone"}, 0);
-		
-		Security.clientDatabase.setTableModel(this);
+
 		//for(int i = 0; i< 1000 ;i++)
 		//	read();
 	}

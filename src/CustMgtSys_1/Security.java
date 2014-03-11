@@ -34,19 +34,6 @@ public class Security {
 	private static PreparedStatement queryStatement;
 	private static PreparedStatement insertStatement; 
 	private static PreparedStatement updateStatement;
-
-	private static PreparedStatement createPMA;
-	private static PreparedStatement closePMA;
-	private static PreparedStatement createPMAinfo;
-	private static PreparedStatement updatePMAinfo;
-	private static PreparedStatement createLaborCost;
-	private static PreparedStatement updateLaborCost;
-	private static PreparedStatement createPartCost;
-	private static PreparedStatement updatePartCost;
-	private static PreparedStatement createTotalLabor; 
-	private static PreparedStatement updateTotalLabor;
-	private static PreparedStatement createTotalParts;
-	private static PreparedStatement updateTotalParts;
 	private static PreparedStatement lastIncrement;
 
 	private static void prepareStatements() {
@@ -54,19 +41,6 @@ public class Security {
 			loginStatement = connection.prepareStatement(MySQLStrings.selectUser);
 			insertStatement = connection.prepareStatement(MySQLStrings.insert);
 			updateStatement = connection.prepareStatement(MySQLStrings.update);
-				
-			createPMA = connection.prepareStatement(MySQLStrings.createPMAStr);
-			closePMA = connection.prepareStatement(MySQLStrings.closePMAStr);
-			createPMAinfo = connection.prepareStatement(MySQLStrings.createPMAinfoStr);
-			updatePMAinfo = connection.prepareStatement(MySQLStrings.updatePMAInfoStr);
-			createLaborCost = connection.prepareStatement(MySQLStrings.createLaborCostStr);
-			updateLaborCost = connection.prepareStatement(MySQLStrings.updateLaborCostStr);
-			createPartCost = connection.prepareStatement(MySQLStrings.createPartCostStr);
-			updatePartCost = connection.prepareStatement(MySQLStrings.updatePartCostStr);
-			createTotalLabor = connection.prepareStatement(MySQLStrings.createTotalLaborCostStr);
-			updateTotalLabor = connection.prepareStatement(MySQLStrings.updateTotalLaborCostStr);
-			createTotalParts = connection .prepareStatement(MySQLStrings.createTotalPartsCostStr);
-			updateTotalParts = connection .prepareStatement(MySQLStrings.updateTotalPartsCostStr);
 			lastIncrement = connection.prepareStatement(MySQLStrings.lastIncrementStr);
 		} catch (SQLException e) {
 			e.printStackTrace(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -199,7 +173,7 @@ public class Security {
 			model = tablemodel;
 		}
 
-		public static boolean selectAll(){
+		/**public static boolean selectAll(){
 			String query = MySQLStrings.select + ";";
 			try {
 				queryStatement = connection.prepareStatement(query);
@@ -213,35 +187,26 @@ public class Security {
 			}
 			return false;
 		}
-		
+		**/
 	
-		private static boolean updateTable(PreparedStatement statement) {
+		private static ResultSet updateTable(PreparedStatement statement) {
+			ResultSet rs;
 			if(!connectedToDatabase){
 				Error.NotConnected();
-				return false;
-			}
-			model.setRowCount(0);
-			Object[] tmpRow;
-			try {
-				resultSet = statement.executeQuery();
+				return null;
+			}try{
+				rs = statement.executeQuery();
 				statement.getConnection().commit();
-				while (resultSet.next()) {
-					tmpRow = new Object[] { resultSet.getInt(1),
-							resultSet.getString(2), resultSet.getString(3),
-							resultSet.getString(4), resultSet.getString(5),
-							resultSet.getString(6), resultSet.getString(7),
-							resultSet.getString(8), resultSet.getString(9) };
-					model.addRow(tmpRow);
-				}
+				//resultSet.next();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				Error.ResultError();
-				return false;
+				return null;
 			}
-			return true;
+			return rs;
 		}
-
-		public static boolean updateTable(final String id,final  String first,final int b1,
+		
+		 public static ResultSet updateTable(final String id,final  String first,final int b1,
 				final String last, final int b2,final  String address,final String city, final String state,
 				final String zip,final String phone,final String email){
 			
@@ -254,7 +219,7 @@ public class Security {
 				
 			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES)){
 				System.out.println("Error in updateTable: Bad input values");
-				return false;
+				return null;
 			}
 			if (id != null && !id.equals("")) {
 				query = query + " id = ?";
@@ -263,10 +228,10 @@ public class Security {
 					queryStatement.setInt(1, Integer.valueOf(id));
 				} catch (SQLException e) {
 					Error.QueryError();
-					return false;
+					return null;
 				}
 				
-				return true;
+				return null;
 			}
 
 			query = MySQLStrings.select_All_Where + " id LIKE '%' ";
@@ -331,7 +296,7 @@ public class Security {
 				queryStatement = connection.prepareStatement(query);
 			} catch (SQLException e) {
 				Error.QueryError();
-				return false;
+				return null;
 			}
 		
 			String[] info = new String[]{first,last,address,city,state,zip,phone,email};
@@ -343,18 +308,13 @@ public class Security {
 						count++;
 					} catch (SQLException e) {
 						Error.QueryError();
-						return false;
+						return null;
 					}
 					
 				}
 			}
-			boolean b = updateTable(queryStatement);
-			try {
-				queryStatement.close();
-			} catch (SQLException e) {
-				Error.CloseObjectError();
-			}
-			return b;
+			ResultSet rs = updateTable(queryStatement);
+			return rs;
 		}
 		
 		
@@ -399,56 +359,14 @@ public class Security {
 					ps.setBytes(1 ,eFirst );
 				else
 					ps.setBytes(1,eFirst );
-				
-			
-				
-				
-				
-				
-				
+	
 				updateTable(ps);
 			
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			return false;
-		
-		
-		
-		
-		
-		
-		
+			return false;	
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -495,21 +413,6 @@ public class Security {
 
 	// **********************************************************************************************************************************************************
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	public static class PMA{	
 		public static Object loadPMA(int wo) throws SQLException, IOException, ClassNotFoundException{
 			final String READ_OBJECT = "select object from PMAObject where wo = ?";
@@ -602,55 +505,7 @@ public class Security {
 		public static final String select_All_Where = select + " WHERE";
 		
 		
-		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";
-		
-		public static String createPMAStr = "insert into PMA(date,vin,id,active) VALUES (STR_TO_DATE(?,'%Y-%m-%d'),?,?,1);";
-		
-		public static String closePMAStr = "UPDATE PMA SET active = 0;";
-		
-		public static String createPMAinfoStr = "insert into PMA_info(wo) VALUES(?);";
-				
-		public static String createLaborCostStr = "insert into labor_cost(wo) VALUES (?);";	
-				
-		public static String createPartCostStr = "insert into part_cost(wo) VALUES (?);";
-		
-		public static String createTotalLaborCostStr = "insert into total_labor(wo) VALUES (?)";
-				
-		public static String createTotalPartsCostStr = "insert into total_parts(wo) VALUES (?)";
-				
-        		
-				
-		public static String updatePMAInfoStr = "UPDATE PMA_info SET ok  = b'?' ,notok = b'?',tech_comments = ? ,recommended_repairs = ? ,priority = ? ,qty = ? ,vendor = ?);";
-		
-		
-		public static String updateLaborCostStr = "UPDATE labor_cost SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
-				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
-				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
-
-		public static String updatePartCostStr = "UPDATE part_cost SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
-				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
-				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
-
-		public static String updateTotalLaborCostStr = "UPDATE total_labor SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
-				+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
-				+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
-	
-		public static String updateTotalPartsCostStr = "UPDATE total_parts SET v0 = ? ,v1 = ? ,v2 = ? ,v3 = ? ,v4 = ? ,v5 = ? ,v6 = ? ,v7 = ? ,v8 = ? ,v9 = ? ,v10 = ?," 
-		+ "v11 = ? ,v12 = ? ,v13 = ? ,v14 = ? ,v16 = ? ,v17 = ? ,v18 = ? ,v19 = ? ,v20 = ? ,v21 = ? ,v22 = ? ,v23 = ? ,v24 = ? ,v25 = ? ,v26 = ?,v27 = ?," 
-		+ "v28 = ? ,v29 = ? ,30 = ? ,v31 = ? ,v32 = ? ,v33 = ? ,v34 = ?,v35 = ? ,v36 = ? ,v37 = ? ,v38 = ? ,v39 = ? ,v40 = ? ,v41 = ?) WHERE wo = ?;";
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";	
 		
 	}
 	
