@@ -720,9 +720,14 @@ public class PMAWizard extends JPanel{
 					vehicleInformation[7] = transField.getText();
 					vehicleInformation[8] = milesField.getText();
 					
-					Security.Vehicle.addVehicle(vehicleInformation, custID);
-					JOptionPane.showMessageDialog(null,
-							"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
+					if(Security.Vehicle.addVehicle(vehicleInformation, custID)){
+						JOptionPane.showMessageDialog(null,
+								"Successfully added " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
+						nextButton.setEnabled(true);
+					}
+					else
+						JOptionPane.showMessageDialog(null,
+								"Failed to add " + yearField.getText() + " " + makeField.getText() + " " + modelField.getText() + " to customer ");
 				}
 				
 			});
