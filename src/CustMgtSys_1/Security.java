@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 public class Security {
 
 	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15/customers";
@@ -36,7 +37,7 @@ public class Security {
 	private static PreparedStatement lastIncrement;
 	private static PreparedStatement readObject;
 	
-	static final String READ_OBJECT = "select object from PMAObject where wo = ?";
+	
 	
 	
 	
@@ -46,7 +47,6 @@ public class Security {
 			insertStatement = connection.prepareStatement(MySQLStrings.insert);
 			updateStatement = connection.prepareStatement(MySQLStrings.update);
 			lastIncrement = connection.prepareStatement(MySQLStrings.lastIncrementStr);
-			readObject = connection.prepareStatement(READ_OBJECT);
 			
 		} catch (SQLException e) {
 			e.printStackTrace(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -75,7 +75,8 @@ public class Security {
 		try {
 			loginStatement.setString(1, user);
 			loginStatement.setString(2, password);
-			if(  (resultSet = executeQuery(loginStatement)) != null){
+			resultSet = executeQuery(loginStatement);
+			if(resultSet.next()){
 				first_name = resultSet.getString(1);
 				permissions = resultSet.getInt(4);
 				secure_password = password;
@@ -181,8 +182,7 @@ public class Security {
 		public static ResultSet search(final String id,final  String first,final int b1,
 				final String last, final int b2,final  String address,final String city, final String state,
 				final String zip,final String phone,final String email){
-			
-			
+				
 			query = MySQLStrings.select_All_Where;
 			
 			boolean[] list = new boolean[8]; 
@@ -288,16 +288,7 @@ public class Security {
 			ResultSet rs = executeQuery(queryStatement);
 			return rs;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		public static boolean addCustomer(String first, String last,
 				String address, String city, String state, String zip,
 				String phone, String email) {
@@ -320,6 +311,9 @@ public class Security {
 		public static boolean updateCustomer(int id, String first,
 				String last, String address, String city, String state,
 				String zip, String phone, String email) {
+			if( id < 0)
+				return false;
+			
 			try{
 				updateStatement.setString(1, first);
 				updateStatement.setString(2, last);
@@ -341,12 +335,17 @@ public class Security {
 	// **********************************************************************************************************************************************************
 	
 	public static class PMA{	
+		static final String READ_OBJECT = "select object from PMAObject where wo = ?";
 		
 		
 		
 		public static Object loadPMA(int wo){	
-			Object object = null;
+			if(wo < 0)
+				return null;
+			
+			Object object = null;	
 			try{
+				readObject = connection.prepareStatement(READ_OBJECT);
 				readObject.setInt(1, wo);
 				resultSet = executeQuery(readObject);
 				resultSet.next();
@@ -364,20 +363,20 @@ public class Security {
 			}
 			catch(ClassNotFoundException e){
 			}
+			
 			return object;	
 		}
 		
-		public static void updatePMA(Object object, int wo) throws SQLException{
+		public static boolean updatePMA(Object object, int wo) throws SQLException{
 			final String WRITE_OBJECT = "update PMAObject set object = ? where wo = ?";
 			PreparedStatement ps = connection.prepareStatement(WRITE_OBJECT);
 			ps.setObject(1, object);
 			ps.setInt(2, wo);
-			execute(ps);
-			ps.close();
+			return execute(ps);
 		}
 		
 		public static int createPMA(Object object) throws SQLException{
-			final String CREATE_PMA = "insert into PMAObject(name,object) VALUES(?,?)";
+			final String CREATE_PMA = "insert into PMAObject(object) VALUES(?)";
 			PreparedStatement ps = connection.prepareStatement(CREATE_PMA);
 			ps.setString(1, object.getClass().getName());
 			ps.setObject(2, object);
@@ -393,7 +392,46 @@ public class Security {
 	}//PMA class
 		
 	
-
+	public static class Vehicle{
+		
+		public static boolean addVehicle(String[]args,int id){
+			if(id < 0)
+				return false;
+			
+			PreparedStatement ps = null;
+			try{
+				ps = connection.prepareStatement(MySQLStrings.insertVehicleStr);
+				int i;
+				for(i = 0; i < args.length; i++){
+					ps.setString(i+1, args[i]);
+				}
+				ps.setInt(i, id);
+				
+			}
+			catch(SQLException e){	
+			}//handle error
+			return execute(ps);
+		}
+		
+		public static ResultSet searchVehicles(int id){
+			if(id < 0)
+				return null;
+			
+			PreparedStatement ps = null;
+			try{
+				ps = connection.prepareStatement(MySQLStrings.selectVechicleStr);
+				ps.setInt(1, id);
+			}catch(SQLException e){
+				//handle error
+			}
+			return executeQuery(ps);
+		}
+		
+		
+		
+		
+		
+	}
 	
 
 
@@ -436,7 +474,8 @@ public class Security {
 		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";	
 		
 		
-		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles VALUES(" +
+		
+		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles,id VALUES(" +
 					"AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," +
 					"?,?,?,?,?,?,?)";
 		

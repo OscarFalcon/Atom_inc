@@ -83,8 +83,8 @@ public class PMAWizardController{
 							tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9), rs.getString(1)};
 							view.vehicleTablemodel.addRow(tmpRow);
 					}
-				} catch (SQLException e){
-					e.printStackTrace(); //handle error
+				} catch (SQLException e1){
+					e1.printStackTrace(); //handle error
 				}
 			}
 			view.changeCards(model.getNextCard());
