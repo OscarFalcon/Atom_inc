@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 public class Security {
 
-	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
-	private static String MySQLUser = "root", MySQLPassword = "password";
+	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15/customers";
+	private static String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static ResultSet resultSet;
 
@@ -173,21 +173,22 @@ public class Security {
 			model = tablemodel;
 		}
 
-		/**public static boolean selectAll(){
+		public static ResultSet selectAll(){
 			String query = MySQLStrings.select + ";";
+			ResultSet rs = null;
 			try {
 				queryStatement = connection.prepareStatement(query);
-				boolean b = updateTable(queryStatement);
+				rs = updateTable(queryStatement);
 				queryStatement.close();
-				return b;
+				return rs;
 				
 			} catch (SQLException e) {
 				Error.ResultError();
 				e.printStackTrace();
 			}
-			return false;
+			return rs;
 		}
-		**/
+		
 	
 		private static ResultSet updateTable(PreparedStatement statement) {
 			ResultSet rs;
