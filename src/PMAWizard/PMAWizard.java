@@ -54,8 +54,11 @@ public class PMAWizard extends JPanel{
 	PMAWizardModel model;
 	
 	private CardLayout layout;
-	private JPanel customerInfo, customerCreate, vehicleInfo, vehicleCreate, customerConcerns;
+	private JPanel customerInfo, vehicleInfo, vehicleCreate, customerConcerns;
 	private JLabel step1, step2, step3;
+	
+	private card1 customerCreate;
+	
 	
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	public int CUSTOMER_INFO = 0;
@@ -74,6 +77,16 @@ public class PMAWizard extends JPanel{
 	
 	public JTextField createdByField;
 	public JTextArea custConcernsArea;
+	
+	
+	public void clearFields(){
+		 customerCreate.clearFields();
+	}
+	
+	public void setEditableFields(boolean b){
+		customerCreate.setEditableFields(b);
+	}
+	
 	
 
 	public void changeCards(int card){
@@ -144,6 +157,8 @@ public class PMAWizard extends JPanel{
 		vehicleInfo = new card2();
 		vehicleCreate = new card3();
 		customerConcerns = new card4();
+		
+		customerInformation = new String[2];
 		
 		cards.add(customerInfo, "customer info");
 		cards.add(customerCreate, "customer create");
@@ -221,7 +236,7 @@ public class PMAWizard extends JPanel{
 			JLabel phoneLabel = new JLabel("Phone");
 			JTextField phoneField = new JTextField(10);
 			JLabel custIDLabel = new JLabel("Customer ID");
-			JTextField custIDField = new JTextField(10);
+			final JTextField custIDField = new JTextField(10);
 			search = new JButton("Search");
 			create = new JButton("Create New");
 			
@@ -310,19 +325,17 @@ public class PMAWizard extends JPanel{
 			add(tableScroll,c);
 			
 			custTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
-					if(custTable.getSelectedRow() > 0)
+					if(custTable.getSelectedRow() >= 0)
 						nextButton.setEnabled(true);
 				}
-				
 			});
 			
 			search.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					nextButton.setEnabled(false);
-					ResultSet rs = Security.client.search(null, firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
+					ResultSet rs = Security.client.search(custIDField.getText(), firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
 							null, null, null, null, null, null);
 					Object[] tmpRow;
 					tablemodel.setRowCount(0);
@@ -338,8 +351,10 @@ public class PMAWizard extends JPanel{
 			});
 				
 			create.addActionListener(new ActionListener(){
-
 				public void actionPerformed(ActionEvent arg0) {
+					setEditableFields(true);
+					customerCreate.setCreateButtonEnabled(true);
+					customerCreate.setBackArrowButtonEnabled(true);
 					changeCards(CUSTOMER_CREATE);
 				}
 			});
@@ -347,9 +362,11 @@ public class PMAWizard extends JPanel{
 		}
 	}
 	
-
 	
 	private class card1 extends JPanel{
+		
+		private static final long serialVersionUID = 1L;
+
 		private final String[] states = { "", "AL", "AK", "AZ", "AR", "CA",
 			"CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS",
 			"KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE",
@@ -358,10 +375,10 @@ public class PMAWizard extends JPanel{
 			"WY" };
 		
 		
-		private JTextField firstNameField, lastNameField, emailField, addressField, cityField, zipField;
 		private JFormattedTextField phoneField;
-		private JComboBox stateField;
-		
+		private JComboBox<String> stateField;
+		private JTextField firstNameField, lastNameField, emailField, addressField, cityField, zipField;
+		private JButton createButton,backArrow;
 		private card1(){
 			JPanel mid = new JPanel(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
@@ -375,7 +392,6 @@ public class PMAWizard extends JPanel{
 				Error.MaskFormatterError();
 				frame.dispose();
 			}
-			
 			JLabel firstNameLabel = new JLabel("First Name");
 			firstNameField = new JTextField(15);
 			JLabel lastNameLabel = new JLabel("Last Name");
@@ -389,10 +405,10 @@ public class PMAWizard extends JPanel{
 			JLabel cityLabel = new JLabel("City");
 			cityField = new JTextField(15);
 			JLabel stateLabel = new JLabel("State");
-			stateField = new JComboBox(states);
+			stateField = new JComboBox<String>(states);
 			JLabel zipLabel = new JLabel("Zip");
 			zipField = new JTextField(15);
-			JButton createButton = new JButton("Create");
+			createButton = new JButton("Create");
 			
 			c.gridx=0;
 			c.gridy=0;
@@ -460,7 +476,7 @@ public class PMAWizard extends JPanel{
 			mid.add(createButton,c);
 			
 			
-			final JButton backArrow = new JButton("<");
+			backArrow = new JButton("<");
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.add(backArrow, BorderLayout.WEST);
 			add(buttonPanel,BorderLayout.NORTH);
@@ -477,23 +493,17 @@ public class PMAWizard extends JPanel{
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(!emptyField()){
-						if(Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
-								phoneField.getText(), emailField.getText()) >= 0){
+						if((custID = Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
+								phoneField.getText(), emailField.getText())) >= 0){
 							JOptionPane.showMessageDialog(null,
 									"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
 							
 							customerInformation[0] = firstNameField.getText();
 							customerInformation[1] = lastNameField.getText();
-							firstNameField.setEditable(false);
-							lastNameField.setEditable(false);
-							phoneField.setEditable(false);
-							emailField.setEditable(false);
-							addressField.setEditable(false);
-							cityField.setEditable(false);
-							zipField.setEditable(false);
-							stateField.setEditable(false);
+							setEditableFields(false);
 							backArrow.setEnabled(false);
 							nextButton.setEnabled(true);
+							createButton.setEnabled(false);
 						}else
 							Error.AddClientFailed();
 					} else 
@@ -513,6 +523,32 @@ public class PMAWizard extends JPanel{
 					.equals("")));
 		}
 		
+		private void clearFields(){
+			firstNameField.setText("");
+			lastNameField.setText("");
+			emailField.setText("");
+			addressField.setText("");
+			cityField.setText("");
+			zipField.setText("");
+			phoneField.setValue("");
+			stateField.setSelectedIndex(0);
+		}
+		private void setEditableFields(boolean b){
+			firstNameField.setEditable(b);
+			lastNameField.setEditable(b);
+			emailField.setEditable(b);
+			addressField.setEditable(b);
+			cityField.setEditable(b);
+			zipField.setEditable(b);
+			phoneField.setEditable(b);
+			stateField.setEnabled(b);
+		}
+		private void setCreateButtonEnabled(boolean b){
+			createButton.setEnabled(b);
+		}
+		private void setBackArrowButtonEnabled(boolean b){
+			backArrow.setEnabled(b);
+		}
 	}
 	
 	private class card2 extends JPanel{
@@ -582,14 +618,12 @@ public class PMAWizard extends JPanel{
 			c.fill = GridBagConstraints.HORIZONTAL;
 			add(create,c);
 			
-			
 			table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
-					nextButton.setEnabled(true);
+					if(table.getSelectedRow() >=0 )
+						nextButton.setEnabled(true);
 				}
-				
 			});
 			
 			create.addActionListener(new ActionListener(){
@@ -758,7 +792,7 @@ public class PMAWizard extends JPanel{
 			c.gridy = 3;
 			add(custConcernsArea, c);
 			
-		}
+		}	
 	}
 	
 	

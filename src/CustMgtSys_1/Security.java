@@ -198,11 +198,10 @@ public class Security {
 				try {
 					queryStatement = connection.prepareStatement(query);
 					queryStatement.setInt(1, Integer.valueOf(id));
+					return executeQuery(queryStatement);
 				} catch (SQLException e) {
 					Error.QueryError();
-					return null;
 				}
-				
 				return null;
 			}
 

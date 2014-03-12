@@ -87,6 +87,9 @@ public class PMAWizardController{
 					e1.printStackTrace(); //handle error
 				}
 			}
+			else if(model.getCurrentCard() == view.CUSTOMER_CREATE){
+				view.clearFields();
+			}
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);
 		}
