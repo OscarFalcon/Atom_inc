@@ -85,16 +85,14 @@ public class PMAWizardController{
 				} catch (SQLException e1){
 					e1.printStackTrace(); //handle error
 				}
-				view.clearFields();
+				view.clearFields(view.CUSTOMER_CREATE);
 			}
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);
 		}
 		
 	}
-	
 	private class cancelButtonListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int val = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel the creation of this PMA");
