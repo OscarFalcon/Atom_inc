@@ -14,6 +14,8 @@ public class PMAObject extends Object implements Serializable{
 	public String first,last;
 	public String tags,year,make,model,lic,vin,engine,trans,miles;
 	public Date date;
+	public String customer_concerns;
+	
 	
 	public byte[] ok;
 	public byte[] notok;
@@ -27,11 +29,6 @@ public class PMAObject extends Object implements Serializable{
 	public BigDecimal[] partCost;
 	public int[] qty;
 	public String[] vendor;
-	public String customer_concerns;
-	
-	
-	
-	
 	public BigDecimal[] totals; 
 	
 	

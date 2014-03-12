@@ -345,8 +345,6 @@ public class Security {
 	public static class PMA{	
 		static final String READ_OBJECT = "select object from PMAObject where wo = ?";
 		
-		
-		
 		public static Object loadPMA(int wo){	
 			if(wo < 0)
 				return null;
