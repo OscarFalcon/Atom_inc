@@ -31,29 +31,20 @@ public class PMAWizardController{
 	private class finishButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e){
 			PMAObject pma = new PMAObject();
-			pma.first = view.customerInformation[0];
-			pma.last = view.customerInformation[1];
-			pma.tags = view.vehicleInformation[5];
-			pma.year = view.vehicleInformation[0];
-			pma.make = view.vehicleInformation[1];
-			pma.model = view.vehicleInformation[2];
-			pma.lic = view.vehicleInformation[3];
-			pma.vin = view.vehicleInformation[4];
-			pma.engine = view.vehicleInformation[6];
-			pma.trans = view.vehicleInformation[7];
-			pma.miles = view.vehicleInformation[8];
-			pma.customer_concerns = "PMA created by "; //+ view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
-			int wo = 0;
-			try {
-				wo = Security.PMA.createPMA(pma);
+			String customerConcerns = "PMA created by " + view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
+			int wo = -1;
+			/*try {
+				wo = Security.PMA.createPMA(view.custID, view.vehicleVin, customerConcerns);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			}*/
+			if(wo != -1){
+				view.frame.dispose();
+				PMAView view = new PMAView(wo);
+				PMAController controller = new PMAController(view);
+				controller.readSQL();
 			}
-			
-			PMAView view = new PMAView(wo);
-			PMAController controller = new PMAController(view);
-			controller.readSQL();
 		}
 	}
 	
@@ -74,18 +65,7 @@ public class PMAWizardController{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(( model.getCurrentCard() == view.CUSTOMER_INFO) || model.getCurrentCard() == view.CUSTOMER_CREATE){
-				ResultSet rs = Security.Vehicle.searchVehicles(view.custID);
-				Object[] tmpRow;
-				view.vehicleTablemodel.setRowCount(0);
-				try {
-					while(rs.next()){
-							tmpRow = new Object[]{ rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(2), rs.getString(1)};
-							view.vehicleTablemodel.addRow(tmpRow);
-					}
-				} catch (SQLException e1){
-					e1.printStackTrace(); //handle error
-				}
-				view.clearFields(view.CUSTOMER_CREATE);
+				view.updateTable(view.VEHICLE_INFO);
 			}
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);

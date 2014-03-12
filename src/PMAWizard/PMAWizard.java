@@ -51,14 +51,18 @@ public class PMAWizard extends JPanel{
 	private final JPanel cards, buttonPanel, stepsPanel;
 	private final PMAWizardModel model;
 	private final CardLayout layout;
-	private final JPanel customerInfo, vehicleInfo,customerConcerns;
+	private final JPanel  customerConcerns;
 	private final JLabel step1, step2, step3;
-	private card1 customerCreate;
+	private final card0 customerInfo;
+	private final card1 customerCreate;
+	private final card2 vehicleInfo;
 	private final card3 vehicleCreate;
 	public final JFrame frame;
 	public JButton backButton, nextButton, cancelButton, finishButton;
 	public DefaultTableModel vehicleTablemodel;
 	public JTable custTable;
+	public JTextArea custConcernsArea;
+	public JTextField createdByField;
 
 	//constants
 	public final int CUSTOMER_INFO = 0;
@@ -66,14 +70,13 @@ public class PMAWizard extends JPanel{
 	public final int VEHICLE_INFO = 2;
 	public final int VEHICLE_CREATE = 3;
 	public final int CUSTOMER_CONCERNS = 4;
+	
 	//public variables
-	public String vehicleInformation[];
-	public String customerInformation[];
 	public int custID;
+	public String vehicleVin;
 	
 
-	
-	
+
 	public void clearFields(int whichCard){
 		if(whichCard == CUSTOMER_CREATE) 
 			customerCreate.clearFields();
@@ -86,6 +89,13 @@ public class PMAWizard extends JPanel{
 			customerCreate.setEditableFields(b);
 		else if(whichCard == VEHICLE_CREATE)
 			vehicleCreate.setEditableFields(b);
+	}
+	
+	public void updateTable(int whichCard){
+		if(whichCard == CUSTOMER_INFO)
+			customerInfo.updateClientTable();
+		else if(whichCard == VEHICLE_INFO)
+			vehicleInfo.updateVehicleTable();
 	}
 	
 	
@@ -151,7 +161,6 @@ public class PMAWizard extends JPanel{
 		vehicleCreate = new card3();
 		customerConcerns = new card4();
 		
-		customerInformation = new String[2];//changed
 		custID = -1;//important 
 		
 		cards.add(customerInfo, "customer info");
@@ -210,7 +219,13 @@ public class PMAWizard extends JPanel{
 		add(cards, java.awt.BorderLayout.CENTER);
 	}
 	
-	
+	/**
+	 * CUSTOMER INFORMATION CARD
+	 * alternative flow CUSTOMER CREATE CARD
+	 * 
+	 * @author adrian and oscar
+	 *
+	 */
 	private class card0 extends JPanel{
 		
 		private static final long serialVersionUID = 1L;
@@ -331,19 +346,7 @@ public class PMAWizard extends JPanel{
 				public void actionPerformed(ActionEvent arg0) {
 					nextButton.setEnabled(false);
 					//custID = -1;
-					rs = Security.client.search(custIDField.getText(), firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
-							null, null, null, null, null, null);
-					Object[] tmpRow;
-					tablemodel.setRowCount(0);
-					try {
-						while(rs.next()){
-								tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9), rs.getString(1)};
-								tablemodel.addRow(tmpRow);
-						}
-						rs.close();
-					} catch (SQLException e){
-						e.printStackTrace(); //handle error
-					}
+					updateClientTable();
 				}
 			});
 				
@@ -356,11 +359,32 @@ public class PMAWizard extends JPanel{
 					changeCards(CUSTOMER_CREATE);
 				}
 			});
-			
+		}
+		public void updateClientTable(){
+			ResultSet rs = Security.client.search(custIDField.getText(), firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
+					null, null, null, null, null, null);
+			Object[] tmpRow;
+			tablemodel.setRowCount(0);
+			try {
+				while(rs.next()){
+						tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9), rs.getString(1)};
+						tablemodel.addRow(tmpRow);
+				}
+				rs.close();
+			} catch (SQLException e){
+				e.printStackTrace(); //handle error
+			}
 		}
 	}
 	
 	
+	/**
+	 * alternative flow CUSTOMER CREATE CARD
+	 * subcard of CUSTOMER INFORMATION CARD
+	 * 
+	 * @author adrian and oscar
+	 *
+	 */
 	private class card1 extends JPanel{
 		
 		private static final long serialVersionUID = 1L;
@@ -496,8 +520,6 @@ public class PMAWizard extends JPanel{
 						if((custID = Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
 								phoneField.getText(), emailField.getText())) >= 0){
 							JOptionPane.showMessageDialog(null,"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
-							customerInformation[0] = firstNameField.getText();
-							customerInformation[1] = lastNameField.getText();
 							setEditableFields(false);
 							backArrow.setEnabled(false);
 							nextButton.setEnabled(true);
@@ -549,6 +571,13 @@ public class PMAWizard extends JPanel{
 		}
 	}
 	
+	/**
+	 * VEHICLE INFORMATION CARD
+	 * alternative flow VEHICLE CREATE CARD
+	 * 
+	 * @author adrian and oscar
+	 *
+	 */
 	private class card2 extends JPanel{
 		private static final long serialVersionUID = 1L;
 		private JButton create;
@@ -562,7 +591,7 @@ public class PMAWizard extends JPanel{
 		
 			vehicleTablemodel = new CustomTableModel();
 			vehicleTablemodel.setColumnIdentifiers(new Object[] {"Year",
-					"Make", "Model", "License Plate"});
+					"Make", "Model", "License Plate", "VIN"});
 			
 			table = new JTable(vehicleTablemodel);
 			table.setFont(new Font("Symbol-Plain", Font.PLAIN, 13));
@@ -600,6 +629,11 @@ public class PMAWizard extends JPanel{
 			centerRenderer = new CenterTableCellRenderer();
 			col.setCellRenderer(centerRenderer);
 			
+			col = table.getColumnModel().getColumn(4);
+			col.setPreferredWidth(0);
+			centerRenderer = new CenterTableCellRenderer();
+			col.setCellRenderer(centerRenderer);
+			
 			tableScroll = new JScrollPane(table);
 			Dimension tranTablePreferred = tableScroll.getPreferredSize();
 			tableScroll.setPreferredSize(new Dimension(tranTablePreferred.width,
@@ -620,8 +654,12 @@ public class PMAWizard extends JPanel{
 			table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
-					if(table.getSelectedRow() >=0 )
+					int row;
+					if((row = table.getSelectedRow()) >= 0){
+						vehicleVin = (String)table.getValueAt(row, 4);
+						System.out.println("vehicleVIN = "+vehicleVin);
 						nextButton.setEnabled(true);
+					}
 				}
 			});
 			
@@ -637,8 +675,30 @@ public class PMAWizard extends JPanel{
 			});
 			
 		}
+		public void updateVehicleTable(){
+			ResultSet rs = Security.Vehicle.searchVehicles(custID);
+			Object[] tmpRow;
+			vehicleTablemodel.setRowCount(0);
+			try {
+				while(rs.next()){
+						tmpRow = new Object[]{ rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(2), rs.getString(1)};
+						vehicleTablemodel.addRow(tmpRow);
+				}
+				rs.close();
+			} catch (SQLException e1){
+				e1.printStackTrace(); //handle error
+			}
+			clearFields(CUSTOMER_CREATE);
+		}
 	}
 	
+	/**
+	 * alternative flow VEHICLE CREATE CARD
+	 * subcard of VEHICLE INFORMATION CARD
+	 * 
+	 * @author adrian and oscar
+	 *
+	 */
 	private class card3 extends JPanel{
 		private static final long serialVersionUID = 1L;
 		private final JTextField yearField,makeField,modelField,vinField,licField,tagsField,engineField,transField,milesField;
@@ -745,9 +805,11 @@ public class PMAWizard extends JPanel{
 			});
 			
 			createButton.addActionListener(new ActionListener(){
+				private String vehicleInformation[];
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					vehicleInformation = new String[9];
+					vehicleVin = vinField.getText();
 					vehicleInformation[0] = vinField.getText();
 					vehicleInformation[1] = licField.getText();
 					vehicleInformation[2] = tagsField.getText();
@@ -795,16 +857,18 @@ public class PMAWizard extends JPanel{
 			milesField.setEditable(b);
 		}
 		
-		
-		
-		
-		
-		
+
 	}
 	
+	/**
+	 * CUSTOMER CONCERNS CARD
+	 * 
+	 * @author adrian and oscar
+	 *
+	 */
 	private class card4 extends JPanel{
 		private static final long serialVersionUID = 1L;
-		private final JTextArea custConcernsArea;
+		
 		private card4(){
 			setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
@@ -812,7 +876,7 @@ public class PMAWizard extends JPanel{
 			c.gridx = 0;
 			c.gridy = 0;
 			add(createdByLabel, c);
-			JTextField createdByField = new JTextField(10);
+			createdByField = new JTextField(10);
 			c.gridx = 0;
 			c.gridy = 1;
 			add(createdByField, c);
