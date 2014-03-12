@@ -163,7 +163,7 @@ public class AddClientWindow extends JDialog{
 	private class AddClientListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if( !emptyFields() ){
-    			if( Security.client.addCustomer(firstNameField.getText(),lastNameField.getText(),addressField.getText(),cityField.getText(),(String)stateList.getSelectedItem(),zipField.getText(),phoneField.getText(),emailField.getText())){
+    			if( Security.client.addCustomer(firstNameField.getText(),lastNameField.getText(),addressField.getText(),cityField.getText(),(String)stateList.getSelectedItem(),zipField.getText(),phoneField.getText(),emailField.getText())>=0){
     				JOptionPane.showMessageDialog(null, "Successfully added new Client " + firstNameField.getText() + " " + lastNameField.getText());
     				dispose();
     			}

@@ -289,9 +289,12 @@ public class Security {
 			return rs;
 		}
 
-		public static boolean addCustomer(String first, String last,
+		public static int addCustomer(String first, String last,
 				String address, String city, String state, String zip,
 				String phone, String email) {
+			int wo = -1;
+			ResultSet rs;
+			PreparedStatement ps;
 			try{
 				insertStatement.setString(1, first);
 				insertStatement.setString(2, last);
@@ -301,11 +304,17 @@ public class Security {
 				insertStatement.setString(6, zip);
 				insertStatement.setString(7, phone);
 				insertStatement.setString(8, email);
+				execute(insertStatement);
+				ps = connection.prepareStatement(MySQLStrings.lastIncrementClientStr);
+				rs = executeQuery(ps);
+				rs.next();
+				wo = rs.getInt(1);
+				rs.close();
+				ps.close();
 			}catch(SQLException e){
 				Error.MySQLJavaError();
 			}
-			
-			return execute(insertStatement);
+			return wo;
 		}
 
 		public static boolean updateCustomer(int id, String first,
@@ -403,7 +412,6 @@ public class Security {
 				ps = connection.prepareStatement(MySQLStrings.insertVehicleStr);
 				int i;
 				for(i = 0; i < args.length; i++){
-					System.out.println(i);
 					ps.setString(i+1, args[i]);
 				}
 				ps.setInt(i+1, id);
@@ -472,8 +480,9 @@ public class Security {
 		public static final String select_All_Where = select + " WHERE";
 		
 		
-		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA;";	
+		public static String lastIncrementStr = "SELECT LAST_INSERT_ID() from PMA";
 		
+		public static String lastIncrementClientStr = "SELECT LAST_INSERT_ID() from info";
 		
 		
 		public static String insertVehicleStr = "INSERT into vehicle(vin,lic,tags,year,make,model,engine,trans,miles,id) VALUES(" +

@@ -478,9 +478,10 @@ public class PMAWizard extends JPanel{
 				public void actionPerformed(ActionEvent arg0) {
 					if(!emptyField()){
 						if(Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
-								phoneField.getText(), emailField.getText())){
+								phoneField.getText(), emailField.getText()) >= 0){
 							JOptionPane.showMessageDialog(null,
 									"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
+							
 							customerInformation[0] = firstNameField.getText();
 							customerInformation[1] = lastNameField.getText();
 							firstNameField.setEditable(false);
@@ -493,11 +494,11 @@ public class PMAWizard extends JPanel{
 							stateField.setEditable(false);
 							backArrow.setEnabled(false);
 							nextButton.setEnabled(true);
-						}
-					} else JOptionPane.showMessageDialog(null,
-							"All Fields must be filled");
+						}else
+							Error.AddClientFailed();
+					} else 
+						Error.EmptyField();
 				}
-				
 			});
 		}
 

@@ -73,21 +73,19 @@ public class PMAWizardController{
 		public void actionPerformed(ActionEvent e) {
 			if(model.getCurrentCard() == view.CUSTOMER_INFO){
 				int row = view.custTable.getSelectedRow();
-				view.custID = Integer.parseInt((String) view.custTable.getValueAt(row, 4));
+				view.custID = Integer.parseInt((String)view.custTable.getValueAt(row, 4));
 				ResultSet rs = Security.Vehicle.searchVehicles(view.custID);
 				
 				Object[] tmpRow;
 				view.vehicleTablemodel.setRowCount(0);
 				try {
 					while(rs.next()){
-							tmpRow = new Object[]{ rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(9), rs.getString(1)};
+							tmpRow = new Object[]{ rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(2), rs.getString(1)};
 							view.vehicleTablemodel.addRow(tmpRow);
 					}
 				} catch (SQLException e1){
 					e1.printStackTrace(); //handle error
 				}
-			} else if(model.getCurrentCard() == view.VEHICLE_INFO){
-				
 			}
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);

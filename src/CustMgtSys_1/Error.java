@@ -41,4 +41,16 @@ public class Error {
 	}
 	
 	
+	
+	public static void AddClientFailed(){
+		JOptionPane.showMessageDialog(null,"Error: Could not add client to database","MySQL Error",JOptionPane.ERROR_MESSAGE);
+
+	}
+	public static void EmptyField(){
+		JOptionPane.showMessageDialog(null,"Please fill out all fields","User Error",JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	
+	
+	
 }
