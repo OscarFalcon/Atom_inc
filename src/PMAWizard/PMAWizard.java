@@ -321,6 +321,7 @@ public class PMAWizard extends JPanel{
 			
 			search.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
+					nextButton.setEnabled(false);
 					ResultSet rs = Security.client.search(null, firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
 							null, null, null, null, null, null);
 					Object[] tmpRow;
