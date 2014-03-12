@@ -91,7 +91,6 @@ public class PMAWizard extends JPanel{
 
 	public void changeCards(int card){
 		backButton.setEnabled(true);
-		nextButton.setEnabled(true);
 		finishButton.setEnabled(false);
 		step1.setForeground(null);
 		step2.setForeground(null);
@@ -100,15 +99,12 @@ public class PMAWizard extends JPanel{
 			layout.show(cards, "customer info");
 			step1.setForeground(Color.green);
 			backButton.setEnabled(false);
-			nextButton.setEnabled(false);
 			model.setBackCard(-1);
 			model.setCurrentCard(CUSTOMER_INFO);
 			model.setNextCard(VEHICLE_INFO);
 		}else if(card == CUSTOMER_CREATE){
 			layout.show(cards, "customer create");
 			step1.setForeground(Color.green);
-			backButton.setEnabled(false);
-			nextButton.setEnabled(false);
 			model.setBackCard(-1);
 			model.setCurrentCard(CUSTOMER_CREATE);
 			model.setNextCard(VEHICLE_INFO);
@@ -121,21 +117,17 @@ public class PMAWizard extends JPanel{
 		}else if(card == VEHICLE_CREATE){
 			layout.show(cards, "vehicle create");
 			step2.setForeground(Color.green);
-			backButton.setEnabled(false);
-			nextButton.setEnabled(false);
 			model.setBackCard(CUSTOMER_INFO);
 			model.setCurrentCard(VEHICLE_CREATE);
 			model.setNextCard(CUSTOMER_CONCERNS);
 		}else if(card == CUSTOMER_CONCERNS){
 			layout.show(cards, "customer concerns");
 			step3.setForeground(Color.green);
-			nextButton.setEnabled(false);
 			finishButton.setEnabled(true);
 			model.setBackCard(VEHICLE_INFO);
 			model.setCurrentCard(CUSTOMER_CONCERNS);
 			model.setNextCard(-1);
-		} else
-			System.out.println("erorr");
+		}
 	}
 	
 	
@@ -158,7 +150,8 @@ public class PMAWizard extends JPanel{
 		vehicleCreate = new card3();
 		customerConcerns = new card4();
 		
-		customerInformation = new String[2];
+		customerInformation = new String[2];//changed
+		custID = -1;//important 
 		
 		cards.add(customerInfo, "customer info");
 		cards.add(customerCreate, "customer create");
@@ -327,14 +320,18 @@ public class PMAWizard extends JPanel{
 			custTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 				@Override
 				public void valueChanged(ListSelectionEvent arg0) {
-					if(custTable.getSelectedRow() >= 0)
+					int row;
+					if((row = custTable.getSelectedRow()) >= 0){
+						custID = Integer.parseInt((String)custTable.getValueAt(row, 4));
 						nextButton.setEnabled(true);
+					}
 				}
 			});
 			
 			search.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					nextButton.setEnabled(false);
+					custID = -1;
 					ResultSet rs = Security.client.search(custIDField.getText(), firstNameField.getText(), Security.client.EXACTLY, lastNameField.getText(),Security.client.EXACTLY, 
 							null, null, null, null, null, null);
 					Object[] tmpRow;
@@ -485,6 +482,7 @@ public class PMAWizard extends JPanel{
 			
 			backArrow.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
+					custTable.clearSelection();
 					changeCards(CUSTOMER_INFO);
 				}
 			});
@@ -495,9 +493,8 @@ public class PMAWizard extends JPanel{
 					if(!emptyField()){
 						if((custID = Security.client.addCustomer(firstNameField.getText(), lastNameField.getText(), addressField.getText(), cityField.getText(), stateField.getSelectedItem().toString(), zipField.getText(), 
 								phoneField.getText(), emailField.getText())) >= 0){
-							JOptionPane.showMessageDialog(null,
-									"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
-							
+							JOptionPane.showMessageDialog(null,"Successfully added Client " + firstNameField.getText() + " " + lastNameField.getText());
+							System.out.println("custID from create card1 = " + custID);
 							customerInformation[0] = firstNameField.getText();
 							customerInformation[1] = lastNameField.getText();
 							setEditableFields(false);
@@ -738,11 +735,11 @@ public class PMAWizard extends JPanel{
 			backArrow.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					changeCards(VEHICLE_INFO);
+					
 				}
 			});
 			
 			createButton.addActionListener(new ActionListener(){
-
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					

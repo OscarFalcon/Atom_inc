@@ -25,6 +25,7 @@ public class PMAWizardController{
 		view.backButton.addActionListener(new backButtonListener());
 		view.nextButton.addActionListener(new nextButtonListener());
 		view.cancelButton.addActionListener(new cancelButtonListener());
+		view.finishButton.addActionListener(new finishButtonListener());
 	}
 	
 	private class finishButtonListener implements ActionListener {
@@ -41,7 +42,7 @@ public class PMAWizardController{
 			pma.engine = view.vehicleInformation[6];
 			pma.trans = view.vehicleInformation[7];
 			pma.miles = view.vehicleInformation[8];
-			pma.customer_concerns = "PMA created by " + view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
+			pma.customer_concerns = "PMA created by "; //+ view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
 			int wo = 0;
 			try {
 				wo = Security.PMA.createPMA(pma);
@@ -58,24 +59,22 @@ public class PMAWizardController{
 	
 	
 	private class backButtonListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			view.changeCards(model.getBackCard());
-			view.nextButton.setEnabled(true);
+			if((model.getCurrentCard() == view.CUSTOMER_CONCERNS))
+				view.nextButton.setEnabled(true);
+			else{
+				view.nextButton.setEnabled(false);
+				view.custTable.clearSelection();
+			}
+			view.changeCards(model.getBackCard());			
 		}
-		
 	}
-	
 	private class nextButtonListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(model.getCurrentCard() == view.CUSTOMER_INFO){
-				int row = view.custTable.getSelectedRow();
-				view.custID = Integer.parseInt((String)view.custTable.getValueAt(row, 4));
+			if(( model.getCurrentCard() == view.CUSTOMER_INFO) || model.getCurrentCard() == view.CUSTOMER_CREATE){
 				ResultSet rs = Security.Vehicle.searchVehicles(view.custID);
-				
 				Object[] tmpRow;
 				view.vehicleTablemodel.setRowCount(0);
 				try {
@@ -86,8 +85,6 @@ public class PMAWizardController{
 				} catch (SQLException e1){
 					e1.printStackTrace(); //handle error
 				}
-			}
-			else if(model.getCurrentCard() == view.CUSTOMER_CREATE){
 				view.clearFields();
 			}
 			view.changeCards(model.getNextCard());
