@@ -33,12 +33,7 @@ public class PMAWizardController{
 			PMAObject pma = new PMAObject();
 			String customerConcerns = "PMA created by " + view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
 			int wo = -1;
-			/*try {
-				wo = Security.PMA.createPMA(view.custID, view.vehicleVin, customerConcerns);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}*/
+			wo = Security.PMA.createPMA(view.custID, view.vehicleVin, customerConcerns);
 			if(wo != -1){
 				view.frame.dispose();
 				PMAView view = new PMAView(wo);

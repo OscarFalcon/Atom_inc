@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class Security {
 
 	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15/customers";
-	private static String MySQLUser = "foo", MySQLPassword = "foobar159";
+	private static final String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static ResultSet resultSet;
 
@@ -26,20 +26,12 @@ public class Security {
 	private static String first_name;
 	private static int permissions;
 
-	
-
-	
-
 	private static PreparedStatement loginStatement;	
 	private static PreparedStatement queryStatement;
 	private static PreparedStatement insertStatement; 
 	private static PreparedStatement updateStatement;
 	private static PreparedStatement lastIncrement;
 	private static PreparedStatement readObject;
-	
-	
-	
-	
 	
 	private static void prepareStatements() {
 		try {
@@ -124,7 +116,7 @@ public class Security {
 	}
 	
 	private static boolean execute(PreparedStatement ps) {
-		if(!connectedToDatabase){
+		if(!connectedToDatabase || ps == null){
 			Error.NotConnected();
 			return false;
 		}
@@ -141,7 +133,7 @@ public class Security {
 	
 	private static ResultSet executeQuery(PreparedStatement ps){
 		ResultSet rs = null;
-		if(!connectedToDatabase){
+		if(!connectedToDatabase || ps == null){
 			Error.NotConnected();
 			return null;
 		}
@@ -189,10 +181,10 @@ public class Security {
 			for(boolean b : list)
 				b = false;
 				
-			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES)){
-				System.out.println("Error in updateTable: Bad input values");
+			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES))
 				return null;
-			}
+			
+			
 			if (id != null && !id.equals("")) {
 				query = query + " id = ?";
 				try {
@@ -343,57 +335,144 @@ public class Security {
 	// **********************************************************************************************************************************************************
 	
 	public static class PMA{	
-		static final String READ_OBJECT = "select object from PMAObject where wo = ?";
+		private static final String READ_OBJECT = "SELECT object FROM PMA WHERE wo = ?";
+		private static final String WRITE_OBJECT = "UPDATE PMA SET object = ? WHERE wo = ?";
+	
+		public static Object loadPMA(final int wo){	
+			ResultSet resultSet = null;
+			PreparedStatement readObjectStatement = null;
+			Object object = null;	
+			ObjectInputStream objectIn = null;
+			byte[] buf = null;
 		
-		public static Object loadPMA(int wo){	
 			if(wo < 0)
 				return null;
 			
-			Object object = null;	
 			try{
-				readObject = connection.prepareStatement(READ_OBJECT);
-				readObject.setInt(1, wo);
+				readObjectStatement = connection.prepareStatement(READ_OBJECT);
+				readObjectStatement.setInt(1, wo);
 				resultSet = executeQuery(readObject);
-				resultSet.next();
-				byte[] buf = resultSet.getBytes("object");
-			    ObjectInputStream objectIn = null;
-			    if (buf != null)
+				if(resultSet.next())
+					buf = resultSet.getBytes("object");			    
+				if (buf != null)
 			    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
 			    object = objectIn.readObject();
-			    resultSet.close();
-			    readObject.close();
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
 			catch(IOException e){	
+				e.printStackTrace();
 			}
 			catch(ClassNotFoundException e){
+				e.printStackTrace();
 			}
-			
+			finally{
+				try{
+					if(resultSet != null)
+					    resultSet.close();
+					if(readObjectStatement != null)
+					readObjectStatement.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
 			return object;	
 		}
 		
-		public static boolean updatePMA(Object object, int wo) throws SQLException{
-			final String WRITE_OBJECT = "update PMAObject set object = ? where wo = ?";
-			PreparedStatement ps = connection.prepareStatement(WRITE_OBJECT);
-			ps.setObject(1, object);
-			ps.setInt(2, wo);
+		public static boolean updatePMA(final Object object,final int wo){
+			PreparedStatement ps = null;
+			
+			if(object == null || wo < 0)
+				 return false;
+			
+			try{
+				ps = connection.prepareStatement(WRITE_OBJECT);
+				ps.setObject(1, object);
+				ps.setInt(2, wo);
+			}catch(SQLException e){
+				e.printStackTrace();
+			} 
+			finally{
+				try{
+					if(ps != null)
+						ps.close();
+				}
+				catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
 			return execute(ps);
 		}
-		
-		public static int createPMA(Object object) throws SQLException{
-			final String CREATE_PMA = "insert into PMAObject(object) VALUES(?)";
-			PreparedStatement ps = connection.prepareStatement(CREATE_PMA);
-			ps.setString(1, object.getClass().getName());
-			ps.setObject(2, object);
-			execute(ps);
-			resultSet = lastIncrement.executeQuery();
-			connection.commit();
-			resultSet.next();
-			int wo = resultSet.getInt(1);
-			resultSet.close();
-			ps.close();
-			return wo;
+	
+		public static int createPMA(final int custID, final String VIN, final String custConcerns){
+			PMAObject pma;
+			PreparedStatement searchVehicleByVIN = null;
+			PreparedStatement searchClient = null;
+			PreparedStatement createPMA = null;
+			ResultSet rs = null;
+			int wo = -1;
+			
+			final String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?,?)";
+			
+			if(custID < 0 || VIN == null || VIN.equals("") || custConcerns == null)
+				return -1;
+			
+			pma = new PMAObject();
+			pma.customer_concerns = custConcerns;
+			pma.vin = VIN;
+			try{
+				searchVehicleByVIN = connection.prepareStatement(MySQLStrings.searchByVinStr);
+				searchClient = connection.prepareStatement(MySQLStrings.selectClientNameStr);
+				createPMA = connection.prepareStatement(CREATE_PMA);
+				
+				searchVehicleByVIN.setString(1,VIN);
+				rs = executeQuery(searchVehicleByVIN);
+				rs.next();
+				pma.lic = rs.getString(2);
+				pma.tags = rs.getString(3);
+				pma.year = rs.getInt(4);
+				pma.make = rs.getString(5);
+				pma.model = rs.getString(6);
+				pma.engine = rs.getString(7);
+				pma.trans = rs.getString(7);
+				pma.miles = rs.getString(8);
+				
+				searchClient.setInt(1, custID);
+				rs = executeQuery(searchClient);
+				rs.next();
+				pma.first = rs.getString(1);
+				pma.last = rs.getString(2);
+				
+				byte b = 1;
+				createPMA.setString(1,VIN);
+				createPMA.setInt(2, custID);
+				createPMA.setByte(3,b);//bit to byte?
+				createPMA.setObject(4, pma);
+				execute(createPMA);
+				rs.next();
+				
+				rs = executeQuery(lastIncrement);
+				rs.next();
+				wo = rs.getInt(1);
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			finally{
+				try{
+					if(rs != null)
+						rs.close();
+					if(searchVehicleByVIN != null)
+						searchVehicleByVIN.close();
+					if(searchClient != null)
+						searchClient.close();
+					if(createPMA != null)
+						createPMA.close();
+				}
+				catch(SQLException e){
+					e.printStackTrace();//handle error
+				}//catch
+			}//finally 
+			return wo;	
 		}	
 	}//PMA class
 		
@@ -432,19 +511,26 @@ public class Security {
 			}
 			return executeQuery(ps);
 		}
-		
-		
-		
-		
-		
+		public static ResultSet searchVehicles(String vin){
+			if(vin == null || vin.equals(""))
+				return null;
+			
+			
+			
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			try{
+				ps = connection.prepareStatement(MySQLStrings.searchByVinStr);			
+				ps.setString(1,vin);
+				rs = executeQuery(ps);
+			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+				return rs;
+		}
 	}
 	
-
-
-	
-	
-	
-
 	private static class MySQLStrings{
 		public static final String selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\"),"
 				+ "AES_DECRYPT(password,\"rd6mNKL0vD1h95p1i\"), permissions FROM employee WHERE user = AES_ENCRYPT("
@@ -458,6 +544,11 @@ public class Security {
 				+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info";
+		
+		
+		public static final String selectClientNameStr = "SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info where id = ?";
+		
 
 		public static final String insert = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES (AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ " AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
@@ -490,35 +581,12 @@ public class Security {
 				",AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles from vehicle " +
 				"WHERE  id = ?";
 		
+		public final static String searchByVinStr =  "SELECT  AES_DECRYPT(vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" +
+				",AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles " +
+				"from vehicle WHERE vin = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))";
 		
 		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		
+	}	
 }

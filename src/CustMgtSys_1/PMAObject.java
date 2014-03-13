@@ -12,10 +12,10 @@ public class PMAObject extends Object implements Serializable{
 	private static final long serialVersionUID = 1L;
 	public int wo;
 	public String first,last;
-	public String tags,year,make,model,lic,vin,engine,trans,miles;
+	public String tags,make,model,lic,vin,engine,trans,miles;
 	public Date date;
 	public String customer_concerns;
-	
+	int year;
 	
 	public byte[] ok;
 	public byte[] notok;
