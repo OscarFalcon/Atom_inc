@@ -59,19 +59,7 @@ public class PMAController {
 
 
 		
-		/**
-		pma.totals[0] = new BigDecimal(view.totalParts.getText());
-		pma.totals[1] = new BigDecimal(view.totalLabor.getText());
-		pma.totals[2] = new BigDecimal( view.totalPrice.getText());
-		pma.totals[3] = new BigDecimal(view.tax.getText());
-		pma.totals[2] = new BigDecimal(view.shopSupplies.getValue());
-		view.grandTotal.getText();
-		**/ //need to be in correct format
-		try {
-			Security.PMA.updatePMA(pma,view.wo);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		Security.PMA.updatePMA(pma,view.wo);
 	
 
 	}

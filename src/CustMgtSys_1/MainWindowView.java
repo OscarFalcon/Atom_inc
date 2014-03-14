@@ -71,7 +71,7 @@ public class MainWindowView extends JFrame {
 // ************************************ WEST		************************************************************************
 		// Image on top left
 		westPanel = new JPanel();
-		westPanel.setLayout(null);
+		westPanel.setLayout(new GridLayout(1,2));
 	
 		JPanel imagePanel = new JPanel();
 		JLabel IconLabel = new JLabel();
@@ -167,7 +167,7 @@ public class MainWindowView extends JFrame {
 	private void addTabbedPane(){
 		jtp = new JTabbedPane();
 		
-		customerTab = new CustomerTabs(customerPanel.table);
+		customerTab = new CustomerTabs();
 		JPanel jp1 = new JPanel();
 		JPanel jp3 = new JPanel();
 		//JPanel jp4 = new Settings();
@@ -189,13 +189,13 @@ public class MainWindowView extends JFrame {
 	private void addLogoutButtons(){
 		westPanel.add(logoutButton);
 		westPanel.add(lockScreenButton);
-		Insets insets;
-		Dimension size;
-		insets = westPanel.getInsets();
-		size = logoutButton.getPreferredSize();
-		logoutButton.setBounds(insets.right+100, insets.bottom, size.width, size.height);
-		size = lockScreenButton.getPreferredSize();
-		lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
+		//Insets insets;
+		//Dimension size;
+		//insets = westPanel.getInsets();
+		//size = logoutButton.getPreferredSize();
+		//logoutButton.setBounds(insets.right+100, insets.bottom, size.width, size.height);
+		//size = lockScreenButton.getPreferredSize();
+		//lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
 		split.setDividerSize(10);
 		split.setDividerLocation(590);
 	}

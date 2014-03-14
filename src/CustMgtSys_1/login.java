@@ -48,9 +48,9 @@ public class login  extends JPanel{
 		statusLabel.setForeground(Color.RED);
 		statusLabel.setText("     Login please");
 		
-		userLabel = new JLabel("user name: ");
+		userLabel = new JLabel("User Name: ");
 		userLabel.setPreferredSize(new Dimension(120,30));
-		passwordLabel = new JLabel("password: ");
+		passwordLabel = new JLabel("Password: ");
 		passwordLabel.setPreferredSize(new Dimension(120,30));
 		
 		loginButton = new JButton("Login");

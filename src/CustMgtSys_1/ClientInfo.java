@@ -58,12 +58,10 @@ public class ClientInfo extends JDialog {
 	private final JTable table;
 	private Color darkBlue = new Color(0, 0, 51);
 	private String first, last, address, city, zip, state, email, phone, id;
-	private Border border = BorderFactory
-			.createSoftBevelBorder(BevelBorder.LOWERED);
+	private Border border = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
 
-	public ClientInfo(final JTable table) {
-		this.table = table;
-
+	public ClientInfo() {
+		table = CustomerPanel.getClientTable();
 		rowIndex = table.getSelectedRow();
 
 		MaskFormatter mask = null;
@@ -279,7 +277,8 @@ public class ClientInfo extends JDialog {
 						table.getModel().setValueAt(zip, rowIndex, 6);
 						table.getModel().setValueAt(email, rowIndex, 7);
 						table.getModel().setValueAt(phone, rowIndex, 8);
-						int id = (Integer) table.getValueAt(rowIndex, 0);
+						
+						int id = Integer.parseInt((String)table.getValueAt(rowIndex, 0));
 						
 						if (Security.client.updateCustomer(id, first, last, address,
 								city, state, zip, phone, email)) {

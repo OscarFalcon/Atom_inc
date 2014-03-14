@@ -39,13 +39,18 @@ public class CustomerPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	
+	
+	private static JTable table, tranTable;
+	
+	
+	
+	
 	private final JPanel searchClientPanel;
 
 	private final JScrollPane tableScroll, tranScroll;
 
 	private final JSplitPane splitPane;
-	
-	public final JTable table, tranTable;
 	
 	private final JXSearchField IdField, firstField, lastField;
 			
@@ -115,7 +120,7 @@ public class CustomerPanel extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setRowHeight(table.getRowHeight() + 3);
-		table.setFillsViewportHeight(true);//?
+		table.setFillsViewportHeight(true);//fills the entire are with the table.
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		TableColumn col;
@@ -249,12 +254,12 @@ public class CustomerPanel extends JPanel {
 
 		public void mouseReleased(MouseEvent me) {
 			if (me.getClickCount() >= 2)
-				new ClientInfo(table);
+				new ClientInfo();
 		}
 
 	}// CustomerPanelController
 	
-	private void updateTable(ResultSet rs){
+	public void updateTable(ResultSet rs){
 		Object[] tmpRow;
 		tablemodel.setRowCount(0);
 		try {
@@ -266,6 +271,21 @@ public class CustomerPanel extends JPanel {
 			e.printStackTrace(); //handle error
 		}
 	}
+	
+	public static int getClientTableSelectedRow(){
+		if(table == null)
+			return -1;
+		return table.getSelectedRow();
+	}
+	
+	public static JTable getClientTable(){
+		return table;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

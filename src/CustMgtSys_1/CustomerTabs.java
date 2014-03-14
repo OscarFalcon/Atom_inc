@@ -13,10 +13,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class CustomerTabs extends JPanel {
 
@@ -26,63 +29,57 @@ public class CustomerTabs extends JPanel {
 			advancedSearchButton, showAllButton, addWorkOrderToButton;
 
 	
-	private final Color silver = new Color(204,204,204);
-
-	private final Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED);
+	private final static Color silver = new Color(204,204,204);
+	private final static Color blue = new Color(81,127,164);
+	private final static Dimension dimension = new Dimension(150, 50);
 	
-	private final JTable table;
 	
-	public CustomerTabs(JTable table) {
-		this.table = table;
-		setBackground(new Color(81,127,164));
-		//setBackground(new Color(0,150,0));
-		setBorder(border);
-		setLayout(new FlowLayout());
+	ImageIcon customersIcon = new ImageIcon("icon_customers.png");
+	ImageIcon addUserIcon = new ImageIcon("adduser.png");
+	ImageIcon editUserIcon = new ImageIcon("edituser.png");
+	ImageIcon advancedSearchIcon = new ImageIcon("find.png");
+	ImageIcon addWorkOrderIcon = new ImageIcon("plus.png");
 	
-		Dimension dimension1 = new Dimension(150, 50);
-		ImageIcon customersIcon = new ImageIcon("icon_customers.png");
-
-		JLabel filler = new JLabel();
-		filler.setPreferredSize(new Dimension(100, 50));
-		add(filler);
-
-		Icon addUser = new ImageIcon("adduser.png");
-		addClientButton = new JButton("Add Client", addUser);		
-		//addClientButton.setBorder(border);
-		addClientButton.setPreferredSize(dimension1);
-		//addClientButton.setVerticalAlignment(SwingConstants.BOTTOM);
-		//addClientButton.setHorizontalTextPosition(SwingConstants.CENTER);
-
-		addClientButton.setBackground(silver);
-		add(addClientButton);
-
-		Icon edituser = new ImageIcon("edituser.png");
-		editClientButton = new JButton("Edit Client", edituser);
-		//editClientButton.setBorder(border);
-		editClientButton.setPreferredSize(dimension1);
-		editClientButton.setBackground(silver);
-		add(editClientButton);
-
-		showAllButton = new JButton("Show all", customersIcon);
-		//showAllButton.setBorder(border);
-		showAllButton.setPreferredSize(dimension1);
-		showAllButton.setBackground(silver);
-		add(showAllButton);
-
-		Icon advancedSearchIcon = new ImageIcon("find.png");
-		advancedSearchButton = new JButton("Advanced Search",advancedSearchIcon);
-		//advancedSearchButton.setBorder(border);
-		advancedSearchButton.setPreferredSize(new Dimension(200, 50));
-		advancedSearchButton.setBackground(silver);
-		add(advancedSearchButton);
-
-		Icon addWorkOrderIcon = new ImageIcon("plus.png");
-		addWorkOrderToButton = new JButton("Add Work Order",addWorkOrderIcon);
-		//addWorkOrderToButton.setBorder(border);
-		addWorkOrderToButton.setPreferredSize(new Dimension(200, 50));
-		addWorkOrderToButton.setBackground(silver);
-		add(addWorkOrderToButton);
+	
+	
+	
+	//Border border = BorderFactory.createBevelBorder(BevelBorder.RAISED);
+	
+	public CustomerTabs() {
 		
+		setBackground(silver);
+		setLayout(new FlowLayout());
+
+		JToolBar toolbar = new JToolBar();
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		addClientButton = new JButton("Add Client", addUserIcon);		
+		addClientButton.setPreferredSize(dimension);
+		toolbar.add(addClientButton);
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		editClientButton = new JButton("Edit Client", editUserIcon);
+		editClientButton.setPreferredSize(dimension);
+		toolbar.add(editClientButton);
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		showAllButton = new JButton("Show all", customersIcon);
+		showAllButton.setPreferredSize(dimension);
+		toolbar.add(showAllButton);
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		advancedSearchButton = new JButton("Advanced Search",advancedSearchIcon);
+		advancedSearchButton.setPreferredSize(new Dimension(200, 50));
+		toolbar.add(advancedSearchButton);
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		addWorkOrderToButton = new JButton("Add Work Order",addWorkOrderIcon);
+		addWorkOrderToButton.setPreferredSize(new Dimension(200, 50));
+		toolbar.add(addWorkOrderToButton);
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		add(toolbar);
+	
 		registerControllers(new Controller());
 
 	}
@@ -94,8 +91,8 @@ public class CustomerTabs extends JPanel {
 				new AddClientWindow();
 
 			} else if (event.getSource() == editClientButton) {
-				if (table.getSelectedRow() >= 0)
-					new ClientInfo(table);
+				if (CustomerPanel.getClientTableSelectedRow() >= 0)
+					new ClientInfo();
 				else
 					NoCustomerSelected();
 

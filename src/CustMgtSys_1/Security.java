@@ -12,13 +12,15 @@ import java.sql.SQLException;
 
 public class Security {
 
-	private static final String DATABASE_URL = "jdbc:mysql://192.168.1.15/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
 	private static final String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static ResultSet resultSet;
 
 
 	private static boolean connectedToDatabase = false;
+	
+	
 	private static boolean failedToConnect = false;
 
 	private static String username;
@@ -553,7 +555,7 @@ public class Security {
 		public static final String insert = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES (AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ " AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzselpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 				+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
 		
 		
