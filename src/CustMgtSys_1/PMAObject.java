@@ -15,7 +15,7 @@ public class PMAObject extends Object implements Serializable{
 	public String tags,make,model,lic,vin,engine,trans,miles;
 	public Date date;
 	public String customer_concerns;
-	int year;
+	public int year;
 	
 	public byte[] ok;
 	public byte[] notok;

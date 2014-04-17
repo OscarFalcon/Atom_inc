@@ -31,6 +31,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -896,6 +899,32 @@ public class PMAWizard extends JPanel{
     private static void createAndShowGUI() {
         //Create and set up the window.
         
+    	try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		        	UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			try {
+	           
+	        UIManager.setLookAndFeel(
+	            UIManager.getSystemLookAndFeelClassName());
+			} 
+			catch (UnsupportedLookAndFeelException e1) {
+			}
+			catch (ClassNotFoundException e1) {
+	    
+			}
+			catch (InstantiationException e1) {
+	      
+			}
+			catch (IllegalAccessException e1) {
+	      
+			}
+		}		
+    	
     	Security.Login("birdman", "password");
     	JFrame frame = new JFrame("PMA Wizard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

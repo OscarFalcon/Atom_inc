@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class Security {
 
-	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://24.153.253.126/customers";
 	private static final String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static ResultSet resultSet;
@@ -33,7 +33,7 @@ public class Security {
 	private static PreparedStatement insertStatement; 
 	private static PreparedStatement updateStatement;
 	private static PreparedStatement lastIncrement;
-	private static PreparedStatement readObject;
+
 	
 	private static void prepareStatements() {
 		try {
@@ -135,10 +135,13 @@ public class Security {
 	
 	private static ResultSet executeQuery(PreparedStatement ps){
 		ResultSet rs = null;
-		if(!connectedToDatabase || ps == null){
+		if(!connectedToDatabase){
 			Error.NotConnected();
 			return null;
 		}
+		else if(ps == null)
+	       return null;
+		
 		try{
 			rs = ps.executeQuery();
 			ps.getConnection().commit();
@@ -353,11 +356,13 @@ public class Security {
 			try{
 				readObjectStatement = connection.prepareStatement(READ_OBJECT);
 				readObjectStatement.setInt(1, wo);
-				resultSet = executeQuery(readObject);
+				resultSet = executeQuery(readObjectStatement);
 				if(resultSet.next())
 					buf = resultSet.getBytes("object");			    
 				if (buf != null)
 			    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+				else
+					System.out.println("Error class PMA, load PMA");
 			    object = objectIn.readObject();
 			}catch(SQLException e){
 				e.printStackTrace();
@@ -414,7 +419,7 @@ public class Security {
 			ResultSet rs = null;
 			int wo = -1;
 			
-			final String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?,?)";
+			final String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?)";
 			
 			if(custID < 0 || VIN == null || VIN.equals("") || custConcerns == null)
 				return -1;

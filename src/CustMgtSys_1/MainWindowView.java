@@ -3,6 +3,8 @@ package CustMgtSys_1;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.IOException;
@@ -66,6 +68,9 @@ public class MainWindowView extends JFrame {
 	Color orange = new Color(255, 128, 0);
 	Color silver = new Color(224, 224, 224);
 
+
+	
+	
 	public MainWindowView() {
 		
 // ************************************ WEST		************************************************************************
@@ -189,38 +194,30 @@ public class MainWindowView extends JFrame {
 	private void addLogoutButtons(){
 		westPanel.add(logoutButton);
 		westPanel.add(lockScreenButton);
-		//Insets insets;
-		//Dimension size;
-		//insets = westPanel.getInsets();
-		//size = logoutButton.getPreferredSize();
-		//logoutButton.setBounds(insets.right+100, insets.bottom, size.width, size.height);
-		//size = lockScreenButton.getPreferredSize();
-		//lockScreenButton.setBounds(20+insets.right,insets.bottom,size.width,size.height);
-		split.setDividerSize(10);
 		split.setDividerLocation(590);
 	}
 
 	private void addMenuBar(){
-				menuBar = new JMenuBar();
-				fileMenu = new JMenu("File");
-				menuBar.add(fileMenu);
-				changePassword = new JMenuItem("Change Password");
-				fileMenu.add(changePassword);
-				save = new JMenuItem("Save");
-				fileMenu.add(save);
-				logout = new JMenuItem("Logout");
-				fileMenu.add(logout);
-				help = new JMenu("Help");
-				menuBar.add(help);
-				about = new JMenuItem("About MyCMS");
-				help.add(about);
-				setJMenuBar(menuBar);
+		menuBar = new JMenuBar();
+		fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
+		changePassword = new JMenuItem("Change Password");
+		fileMenu.add(changePassword);
+		save = new JMenuItem("Save");
+		fileMenu.add(save);
+		logout = new JMenuItem("Logout");
+		fileMenu.add(logout);
+		help = new JMenu("Help");
+		menuBar.add(help);
+		about = new JMenuItem("About MyCMS");
+		help.add(about);
+		setJMenuBar(menuBar);
 	}
-	
+		
 	private void addCustomerPanel(){
 		remove(currentPanel);
 		customerPanel = new CustomerPanel();
-		add(customerPanel, BorderLayout.CENTER);
+		add(customerPanel,BorderLayout.CENTER);
 	}
 	
 	private void loadWorkOrderPanel(){

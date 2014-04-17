@@ -32,17 +32,16 @@ public class PMAWizardController{
 		public void actionPerformed(ActionEvent e){
 			PMAObject pma = new PMAObject();
 			String customerConcerns = "PMA created by " + view.createdByField.getText() + "\n" + view.custConcernsArea.getText();
-			int wo = -1;
-			wo = Security.PMA.createPMA(view.custID, view.vehicleVin, customerConcerns);
-			if(wo != -1){
+			int workOrder = -1;
+			workOrder = Security.PMA.createPMA(view.custID, view.vehicleVin, customerConcerns);
+			if(workOrder != -1){
 				view.frame.dispose();
-				PMAView view = new PMAView(wo);
+				PMAView view = new PMAView(workOrder);
 				PMAController controller = new PMAController(view);
 				controller.readSQL();
 			}
 		}
 	}
-	
 	
 	private class backButtonListener implements ActionListener{
 		@Override

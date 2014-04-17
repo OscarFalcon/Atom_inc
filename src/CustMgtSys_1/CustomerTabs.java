@@ -34,11 +34,11 @@ public class CustomerTabs extends JPanel {
 	private final static Dimension dimension = new Dimension(150, 50);
 	
 	
-	ImageIcon customersIcon = new ImageIcon("icon_customers.png");
-	ImageIcon addUserIcon = new ImageIcon("adduser.png");
-	ImageIcon editUserIcon = new ImageIcon("edituser.png");
-	ImageIcon advancedSearchIcon = new ImageIcon("find.png");
-	ImageIcon addWorkOrderIcon = new ImageIcon("plus.png");
+	private static final ImageIcon customersIcon = new ImageIcon("icon_customers.png");
+	private static final ImageIcon addUserIcon = new ImageIcon("adduser.png");
+	private static final  ImageIcon editUserIcon = new ImageIcon("edituser.png");
+	private ImageIcon advancedSearchIcon = new ImageIcon("find.png");
+	private static final ImageIcon addWorkOrderIcon = new ImageIcon("plus.png");
 	
 	
 	

@@ -14,7 +14,6 @@ public class PMAWizardModel {
 	}
 	
 	public Integer getNextCard(){
-		System.out.println(next);
 		return next;
 	}
 	
