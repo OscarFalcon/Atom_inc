@@ -26,6 +26,7 @@ import javax.swing.border.BevelBorder;
 import PMA.PMAController;
 import PMA.PMAView;
 
+import MyCMS.MyCMS;
 
 public class MainWindowView extends JFrame {
 
@@ -145,28 +146,11 @@ public class MainWindowView extends JFrame {
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
 			loginPanel.setText("");
-			if(Security.Login(user, password)){
-				login();
-				 PMAObject pma = new PMAObject();
-				 int wo = 18;
-				/** try {
-					wo = Security.PMA.createPMA(pma);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}**/
-				 
-				//PMAView view = new PMAView(wo);
-				//PMAController controller = new PMAController(view);
-				//controller.readSQL();
-			}
-			else{
-				if(Security.getFailedConnectionStatus())
-					loginPanel.setText("Connection Error");
-				else
-					loginPanel.setText("Invalid credentials");
-			}
-		} else 
-			logout();
+			//if(MyCMS.employee.login_employee(user,password) == MyCMS.SUCCESS){
+			//	login();
+		//	}
+		} //else 
+			//logout();
 	}
 
 	private void addTabbedPane(){

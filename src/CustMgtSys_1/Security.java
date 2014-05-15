@@ -55,6 +55,7 @@ public class Security {
 			connectedToDatabase = true;
 			failedToConnect = false;
 			prepareStatements();
+			System.out.println("Connected");
 			return true;
 		} catch (SQLException e) {
 			failedToConnect = true;
@@ -88,7 +89,7 @@ public class Security {
 		return false;
 	}
 	
-	public static boolean getFailedConnectionStatus() {
+	public static boolean getFailedConnectionStatus(){
 		return failedToConnect;
 	}
 	
@@ -540,7 +541,7 @@ public class Security {
 	
 	private static class MySQLStrings{
 		public static final String selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\"),"
-				+ "AES_DECRYPT(password,\"rd6mNKL0vD1h95p1i\"), permissions FROM employee WHERE user = AES_ENCRYPT("
+				+ "AES_DECRYPT(password,\"rd6mNKL0vD1h95p1i\") FROM employee WHERE user = AES_ENCRYPT("
 				+ "?"
 				+ ","
 				+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
