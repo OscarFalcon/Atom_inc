@@ -249,7 +249,6 @@ public class MySQL {
 					}//switch
 				}//for loop
 				list.add(tmp);
-				System.out.println("adding..." + tmp[0]);
 			}//while
 		}catch(SQLException e){
 			e.printStackTrace();
