@@ -44,7 +44,7 @@ public class ClientInfo extends JDialog {
 			"RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI",
 			"WY" };
 
-	private final JComboBox<String> stateList;
+	private final JComboBox stateList;
 	private final JTextField firstNameField;
 	private final JTextField lastNameField;
 	private final JFormattedTextField phoneField;
@@ -58,7 +58,7 @@ public class ClientInfo extends JDialog {
 	private final JTable table;
 	private Color darkBlue = new Color(0, 0, 51);
 	private String first, last, address, city, zip, state, email, phone, id;
-	private Border border = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
+	private Border border = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
 
 	public ClientInfo() {
 		table = CustomerPanel.getClientTable();
@@ -89,7 +89,7 @@ public class ClientInfo extends JDialog {
 		addressField = new JTextField(20);
 		cityField = new JTextField(20);
 		zipField = new JTextField(20);
-		stateList = new JComboBox<String>(states);
+		stateList = new JComboBox(states);
 		
 
 		firstNameField.setText(first);

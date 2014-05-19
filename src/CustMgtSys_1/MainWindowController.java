@@ -79,7 +79,6 @@ public class MainWindowController implements ChangeListener, ActionListener{
 			
 		}
 		view.repaint();
-		view.revalidate();
 		view.pack();
 	}
 

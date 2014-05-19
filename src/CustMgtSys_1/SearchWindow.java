@@ -44,7 +44,7 @@ public class SearchWindow extends JDialog {
 	private final JTextField firstField, lastField, addressField, cityField,
 			zipField, emailField;
 	private final JFormattedTextField phoneField;
-	private final JComboBox<String> stateList;
+	private final JComboBox stateList;
 	private final JCheckBox matchesFirstBox, exactlyFirstBox, matchesLastBox,
 			exactlyLastBox;
 	private JButton submit, about;
@@ -173,7 +173,7 @@ public class SearchWindow extends JDialog {
 		cityField = new JTextField();
 		cityField.setBorder(border);
 		cityField.setPreferredSize(new Dimension(125, 25));
-		stateList = new JComboBox<String>(states);
+		stateList = new JComboBox(states);
 		stateList.setPreferredSize(new Dimension(55, 25));
 		JLabel zipLabel = new JLabel("Zip");
 		zipLabel.setPreferredSize(new Dimension(65, 25));

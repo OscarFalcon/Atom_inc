@@ -1,25 +1,27 @@
 package MyCMS;
 
+
 import java.util.ArrayList;
 
-public class MyCMS {
 
+public class MyCMS {
 	
+	/**			general errors		**/
+	public static final int SUCCESS = 0;	
 	
 	/** 		login errors		**/
-	public static final int USERNAME_MAX_ERROR = -1;
-	public static final int PASSWORD_MAX_ERROR = -2;
-	public static final int INVALID_CREDENTIALS = -4;
-
+	public static final int LOGIN_USERNAME_MAX_ERROR = -1;
+	public static final int LOGIN_PASSWORD_MAX_ERROR = -2;
+	public static final int LOGIN_INVALID_CREDENTIALS_ERROR = -3;
 	
-	/**			general errors 		**/
-	public static final int SUCCESS = 0;
-	public static final int CONNECTION_ERROR = -3;
-	public static final int EXECUTION_ERROR = -5;
-	public static final int INVALID_ARGUMENTS_ERROR = -6;
+	/**			add customer 		**/
+	public static final int ADD_INVALID_ARGUMENTS_ERROR = -4;
 	
+	/**			update customer		**/	
+	public static final int UPDATE_INVALID_ARGUMENTS_ERROR = -5;
 	
-	
+	/**			search customer 	**/
+	public static final int SEARCH_INVALID_ARGUMENTS_ERROR = -6;
 	
 	/** 		employee table					**/ 
 	private static final int MAX_USERNAME = 32;
@@ -38,68 +40,135 @@ public class MyCMS {
 	private static final int MAX_CLIENT_EMAIL = 255;
 	private static final int MAX_CLIENT_PHONE = 20;
 	
+	/**			client options 				**/
+	public static final int MATCHES = 0;
+	public static final int EXACTLY = 1;
 	
 	
+public static class employee{
 	
-	public static class employee{
-		
-		public static Session login_employee(String username,String password){  
+	public static Session login_employee(String username,String password, Error e){  
 		String selectUser;
-		Object[] args = new Object[2];
-		String[] arg_types = new String[2];
-		String[] result_array_types = new String[3];
+		ArrayList<Type> arguments = new ArrayList<Type>();
+		ArrayList<Integer> result_types = new ArrayList<Integer>();
 		ArrayList<Object[]> results;
 		
-    		
+		
+		selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(last,\"rd6mNKL0vD1h95p1i\")," 
+				+ "AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\")"
+				+ "FROM employee WHERE user = AES_ENCRYPT("
+				+ "?"
+				+ ","
+				+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
+				+ "?" + "," + "\"rd6mNKL0vD1h95p1i\") LIMIT 1";
+		
+		
 		if(username.length() > MAX_USERNAME){
-			//return USERNAME_MAX_ERROR;
+			e.setMyCMSError(LOGIN_USERNAME_MAX_ERROR);
 			return null;
 		}
-		else if(password.length() > MAX_PASSWORD){
-			//return PASSWORD_MAX_ERROR;
+		if(password.length() > MAX_PASSWORD){
+			e.setMyCMSError(LOGIN_PASSWORD_MAX_ERROR);
 			return null;
 		}
+				
+		arguments.add(new Type(username));
+		arguments.add(new Type(password));
+		result_types.add(Type.STRING);
+		result_types.add(Type.STRING);
+		result_types.add(Type.STRING);
+
 		
-		selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), SELECT AES_DECRYPT(last,\"rd6mNKL0vD1h95p1i\")," 
-					+ "AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\")"
-					+ "FROM employee WHERE user = AES_ENCRYPT("
-					+ "?"
-					+ ","
-					+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
-					+ "?" + "," + "\"rd6mNKL0vD1h95p1i\") LIMIT 1";
-			
-			
-		args[0] = username;
-		args[1] = password;
-		arg_types[0] = "String";
-		arg_types[1] = "String";
-		result_array_types[0] = "String";
-		result_array_types[1] = "String";
-		result_array_types[2] = "String";
-		
-		if( (results = MySQL.executeQuery(selectUser, args, arg_types,result_array_types)) == null){/** why did exceuteQuery return null? **/
-			if(MySQL.errorno == MySQL.CONNECTION_ERROR){
-				//return CONNECTION_ERROR;
-				return null;
-			}
-			else{
-				return null;
-				//return EXECUTION_ERROR;
-			}
+		if( (results = MySQL.executeQuery(selectUser,arguments,result_types)) == null){/** why did exceuteQuery return null? **/
+			e.setMySQLError(MySQL.errorno); 
+			return null;
 		}
 		if(results.size() != 1){
-			//return INVALID_CREDENTIALS;
+			e.setMyCMSError(LOGIN_INVALID_CREDENTIALS_ERROR);
 			return null;
-			
 		}
 		Object[] tmp = results.get(0);
 		return new Session((String)tmp[0],(String)tmp[1],username);
-		//return SUCCESS;
-	}
+	}// login_employee
 		
 }//employee class
 	
 	public static class client{
+		
+		public static ArrayList<Object[]> search(final String first,final int b1,
+												final String last, final int b2,final String address,final String city,final String state,
+												final String zip,final String phone,final String email, Error e){
+					
+			String query = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+					+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
+			
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+			
+			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES)){	/** b1 has to be either EXACTLY or MATCHES, same for b2	**/
+				e.setMyCMSError(SEARCH_INVALID_ARGUMENTS_ERROR);
+				return null;
+			}
+			if (first == null || first.equals(""))			
+					query = query + "first LIKE '%' ";
+			else{											
+				if (b1 == EXACTLY)
+					query = query + "first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				else
+					query = query + "AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ? ";
+				arguments.add(new Type("%"+first+"%"));
+			}
+			if (last != null && !last.equals("")){
+				if (b2 == EXACTLY)
+					query = query + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				else
+					query = query + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
+				arguments.add(new Type("%"+last+"%"));
+			}
+			if(address != null && !address.equals("")){
+				query = query + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(address));
+			}
+			if (city != null && !city.equals("")){
+				query = query + "&& city = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(city));
+			}
+			if (state != null && !state.equals("")){
+				query = query + "&& state = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(state));
+			}
+			if (zip != null && !zip.equals("")){
+				query = query + "&& zip = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(zip));
+			}
+			if (phone != null && !phone.equals("")){
+				query = query + "&& primaryPhone = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(phone));
+			}
+			if (email != null && !email.equals("")){
+				query = query + "&& email = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				arguments.add(new Type(email));
+			}
+			result_types.add(Type.INTEGER);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+
+			if( (results = MySQL.executeQuery(query,arguments,result_types)) == null){
+				e.setMySQLError(MySQL.errorno); 
+				return null;
+			}
+			return results;
+		}
 		
 		/**
 		 * adds a new customer to the database. All fields must not be null. This method does not check for any empty strings.
@@ -113,9 +182,8 @@ public class MyCMS {
 		 * @param email
 		 * @return SUCCCESS if successfully added client to database, error code otherwise
 		 */
-		public static int addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email){
-			Object[] args = new Object[8];
-			String[] arg_types = new String[8];
+		public static boolean addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
+			ArrayList<Type> arguments = new ArrayList<Type>();
 			String statement;
 			
 			statement = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES (AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
@@ -125,37 +193,29 @@ public class MyCMS {
 					+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
 			
 			
-			
 			if( !isValid(first,MAX_CLIENT_FIRST) || !isValid(last,MAX_CLIENT_LAST) || !isValid(address,MAX_CLIENT_ADDRESS) || !isValid(city,MAX_CLIENT_CITY) 
 					|| !isValid(state,MAX_CLIENT_STATE) || !isValid(zip,MAX_CLIENT_ZIP) || !isValid(phone,MAX_CLIENT_PHONE) || !isValid(email,MAX_CLIENT_EMAIL)){
 				
-				return INVALID_ARGUMENTS_ERROR;
+				e.setMyCMSError(ADD_INVALID_ARGUMENTS_ERROR);
+				return false;
 			}
 			
-			/** set arguments **/
-			args[0] = first;
-			args[1] = last;
-			args[2] = address;
-			args[3] = city;
-			args[4] = state;
-			args[5] = zip;
-			args[6] = email;
-			args[7] = phone;
+			arguments.add(new Type(first));
+			arguments.add(new Type(last));
+			arguments.add(new Type(address));
+			arguments.add(new Type(city));
+			arguments.add(new Type(state));
+			arguments.add(new Type(zip));
+			arguments.add(new Type(email));
+			arguments.add(new Type(phone));
 			
-			/** set argument types **/
-			for(int i = 0; i < arg_types.length ;i++)
-				arg_types[i] = "String";
-			
-			
-			if(MySQL.execute(statement, args, arg_types) == false){
-				if(MySQL.errorno == MySQL.CONNECTION_ERROR)
-					return CONNECTION_ERROR;
-				else
-					return EXECUTION_ERROR;
-				
+			if(MySQL.execute(statement, arguments) == false){
+				e.setMySQLError(MySQL.errorno);
+				return false;
 			}	
-			return SUCCESS;
+			return true;
 		}
+		
 		private static boolean isValid(String input, int max_length){
 			if(input == null)
 				return false;
@@ -163,30 +223,97 @@ public class MyCMS {
 				return false;
 			return true;
 		}
+		
+		public static boolean updateCustomer(int id,String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			
+			String statement = "UPDATE info SET first = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ " last =  AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), address = AES_ENCRYPT(?,"
+					+ "SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), city = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))" 
+					+ ",state = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ "zip = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),email = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+					+ "primaryPhone = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+					+ " WHERE id = ?";
+			
+			if( !isValid(first,MAX_CLIENT_FIRST) || !isValid(last,MAX_CLIENT_LAST) || !isValid(address,MAX_CLIENT_ADDRESS) || !isValid(city,MAX_CLIENT_CITY) 
+					|| !isValid(state,MAX_CLIENT_STATE) || !isValid(zip,MAX_CLIENT_ZIP) || !isValid(phone,MAX_CLIENT_PHONE) || !isValid(email,MAX_CLIENT_EMAIL) || id < 0){
+				
+				e.setMyCMSError(UPDATE_INVALID_ARGUMENTS_ERROR);
+				return false;
+			}
+			/** set arguments **/
+			arguments.add(new Type(first));
+			arguments.add(new Type(last));
+			arguments.add(new Type(address));
+			arguments.add(new Type(city));
+			arguments.add(new Type(state));
+			arguments.add(new Type(zip));
+			arguments.add(new Type(email));
+			arguments.add(new Type(phone));
+			arguments.add(new Type(id));
+
+			if(MySQL.execute(statement, arguments) == false){
+				e.setMySQLError(MySQL.errorno);
+				return false;
+			}	
+			return true; 
+		}	
 	}
 
-
-	
-	
-	
-	
-	
-	
 	
 	
 	public static void main(String args[]){
+		Error e = new Error();
 		
-		Session s = employee.login_employee("birdman","password");
+		Session s = employee.login_employee("birdman","password",e);
 		if(s == null){
-			System.out.println("NO!");
+			switch( e.getMyCMSError() ){
+				case MyCMS.LOGIN_USERNAME_MAX_ERROR:
+					System.out.println("USERNAME MAX ERROR");
+					break;
+				case MyCMS.LOGIN_PASSWORD_MAX_ERROR:
+					System.out.println("PASSWORD MAX ERROR");
+					break;
+				case MyCMS.LOGIN_INVALID_CREDENTIALS_ERROR:
+					System.out.println("INVALID CREDENTIALS");
+			}
+			switch ( e.getMySQLError() ){
+				case MySQL.NO_INTERNET_CONNECTION_ERROR:
+					System.out.println("NO INTERNET ERROR");
+					break;
+				case MySQL.CONNECTION_ERROR:
+					System.out.println("SERVER DOWN ERROR");
+					break;
+				case MySQL.SUCCESS:
+					break;
+				default:
+					System.out.println("UNEXPECTED ERROR");
+			}
+			return;
+		}
+		e.reset();
+		ArrayList<Object[]> results = MyCMS.client.search("Oscar",MyCMS.MATCHES,"Fa",MyCMS.MATCHES,null,null,null,null,null,null,e);
+		
+		int size = results.size();
+		Object[] tmp;
+		System.out.println("size = " + size);
+		for(int i = 0; i < size; i++){
+			System.out.print("getting... ");
+			tmp = results.get(i);
+			System.out.print((Integer)tmp[0] + " ");
+			for(int j = 1; j < 8; j++)
+				System.out.print((String)tmp[j] + " ") ;
+			System.out.println();
 		}
 		SessionRunner r = new SessionRunner();
-		//r.setSession(s);
-		//Thread t = new Thread(r);
-		//t.start();
-		//while(true){
-		//	System.out.println("valid = " + s.isValid());
-		//}
-		
+		r.setSession(s);
+		Thread t = new Thread(r);
+		t.start();
+		System.out.println("Session started");
+		while(s.isValid())
+			;
+		System.out.println("Session Expired");
 	}
+	
+	
 }

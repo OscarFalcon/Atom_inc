@@ -183,9 +183,8 @@ public class Security {
 				
 			query = MySQLStrings.select_All_Where;
 			
-			boolean[] list = new boolean[8]; 
-			for(boolean b : list)
-				b = false;
+			boolean[] list = new boolean[8];/**by default all false; **/ 
+		
 				
 			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES))
 				return null;
@@ -211,7 +210,7 @@ public class Security {
 				if (b1 == EXACTLY)
 					query = query + " && first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				else
-					query = query + "&& AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE '%?% ";
+					query = query + "&& AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?";
 				list[0] = true;
 			}
 			if (last == null || last.equals(""))
@@ -220,7 +219,7 @@ public class Security {
 				if (b2 == EXACTLY)
 					query = query + " && last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				else
-					query = query + " && AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE '%?% " ;
+					query = query + " && AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
 				list[1] = true;
 			}
 			if (address == null || address.equals(""))

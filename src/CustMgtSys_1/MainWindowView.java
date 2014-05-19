@@ -227,7 +227,6 @@ public class MainWindowView extends JFrame {
 		registerControllers(new MainWindowController(this));
 		pack();
 		repaint();
-		revalidate();
 	}
 	
 	
@@ -242,7 +241,6 @@ public class MainWindowView extends JFrame {
 		currentPanel = loginPanel;
 		pack();
 		repaint();
-		revalidate();
 		split.setDividerSize(0);
 	}
 	

@@ -401,7 +401,7 @@ public class PMAWizard extends JPanel{
 		
 		
 		private final JFormattedTextField phoneField;
-		private final JComboBox<String> stateField;
+		private final JComboBox stateField;
 		private final JTextField firstNameField, lastNameField, emailField, addressField, cityField, zipField;
 		private final JLabel firstNameLabel,lastNameLabel,phoneLabel,emailLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 		private JButton createButton,backArrow;
@@ -431,7 +431,7 @@ public class PMAWizard extends JPanel{
 			cityLabel = new JLabel("City");
 			cityField = new JTextField(15);
 			stateLabel = new JLabel("State");
-			stateField = new JComboBox<String>(states);
+			stateField = new JComboBox(states);
 			zipLabel = new JLabel("Zip");
 			zipField = new JTextField(15);
 			createButton = new JButton("Create");

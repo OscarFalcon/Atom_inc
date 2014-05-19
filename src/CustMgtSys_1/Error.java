@@ -49,6 +49,7 @@ public class Error {
 	public static void EmptyField(){
 		JOptionPane.showMessageDialog(null,"Please fill out all fields","User Error",JOptionPane.INFORMATION_MESSAGE);
 	}
+
 	
 	
 	

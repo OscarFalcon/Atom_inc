@@ -37,7 +37,7 @@ public class AddClientWindow extends JDialog{
     private final JTextField addressField;
     private final JTextField cityField;
     private final JTextField zipField;
-    private final JComboBox<String> stateList;;
+    private final JComboBox stateList;;
     
 	private final JButton addButton, cancelButton; //button on display
 	
@@ -48,7 +48,7 @@ public class AddClientWindow extends JDialog{
 	private static final String[] labels = {"First Name: ", "Last Name: ", "Phone Number: ", "Email: ", "Address: ", "City: ","State:", "Zip: "};
 	int numPairs = labels.length; 
 
-	private Border border = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
+	private Border border = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
     
 
 	public AddClientWindow(){
@@ -71,7 +71,7 @@ public class AddClientWindow extends JDialog{
         addressField = new JTextField(20);
         cityField = new JTextField(20);
         zipField = new JTextField(20);
-        stateList = new JComboBox<String>(states);
+        stateList = new JComboBox(states);
                
         //Create and populate the panel.
         final JPanel p = new JPanel(new SpringLayout());

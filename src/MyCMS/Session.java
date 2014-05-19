@@ -32,7 +32,7 @@ public class Session {
 		return username;
 	}
 	public String toString(){
-		return "First = " + first + "Last = " + last + "Username = " + username;
+		return "First = " + first + " Last = " + last + "Username = " + username;
 	}
 	
 	

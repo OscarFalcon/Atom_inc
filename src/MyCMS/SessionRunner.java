@@ -2,22 +2,23 @@ package MyCMS;
 
 public class SessionRunner implements Runnable{
 
-	Session s;
+	private Session s;
 	
 	@Override
 	public void run() {
-		System.out.println("Thread stated");
-		System.out.println(s);
-		while(true){
-			try {
-				Thread.sleep(4000);
-				s.setValid(false);
+		if(s == null)
+			System.out.println("Error");
+		else{
+			while(true){
+				try {
+					Thread.sleep(4000);
+					s.setValid(false);
 			
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		
 	}
 	
 	public void setSession(Session s){
