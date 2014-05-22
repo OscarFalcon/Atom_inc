@@ -1,0 +1,49 @@
+.custom-title {
+    /*-fx-font: 10px "Serif"; */
+    -fx-padding:3;
+    -fx-background-color: #C0C0C0;
+    -fx-border-style:solid;
+    -fx-border-width:2px;
+    -fx-font-weight:bold;
+}
+
+.custom-label{
+   /*-fx-padding: 1;*/
+   -fx-background-color: #C0C0C0;
+   -fx-border-style:solid;
+   /*-fx-border-width:small; */
+}
+
+
+.custom-field {
+   /*-fx-padding: 1; */
+   -fx-background-color:white;
+   -fx-border-style:solid;
+}
+
+.check-box-invalid{
+   -fx-background-color:#FF0000;
+   -fx-opacity:0.6;
+   -fx-border-style:solid;
+   
+}
+
+.check-box-regular{
+   -fx-background-color:#E0E0E0;
+   -fx-border-style:solid;
+}
+
+.check-box-valid{
+   -fx-background-color:#00FF00;
+   -fx-opacity:0.6;
+   -fx-border-style:solid;
+}
+
+
+.separator{
+   -fx-border-width:large;
+}
+
+
+
+

@@ -146,6 +146,7 @@ public class MainWindowView extends JFrame {
 			loginPanel.user.setText("");
 			loginPanel.password.setText("");
 			loginPanel.setText("");
+			login();
 			//if(MyCMS.employee.login_employee(user,password) == MyCMS.SUCCESS){
 			//	login();
 		//	}

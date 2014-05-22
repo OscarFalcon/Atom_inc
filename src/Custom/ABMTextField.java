@@ -18,12 +18,15 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.MaskFormatter;
 
-public class ABMTextField extends JFormattedTextField {
+public class ABMTextField extends JFormattedTextField{
+	
+	private static final long serialVersionUID = 1L;
 
+	
 	public ABMTextField(DecimalFormat format) {
 		this.setDisabledTextColor(Color.white);
 		this.setEnabled(false);
-
+		
 		setColumns(format.toPattern().length());
 		setHorizontalAlignment(JFormattedTextField.TRAILING);
 		setText(NumberFormat.getCurrencyInstance().format(0.0));
@@ -34,7 +37,7 @@ public class ABMTextField extends JFormattedTextField {
 			}
 		});
 		
-		addKeyListener(new KeyListener() {
+		addKeyListener(new KeyListener(){
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				String text = getText();
@@ -53,6 +56,8 @@ public class ABMTextField extends JFormattedTextField {
 				// TODO Auto-generated method stub
 			}
 		});
+		
+		setText("$0.00");
 	}
 	
 	public Double getValue() {
@@ -64,7 +69,7 @@ public class ABMTextField extends JFormattedTextField {
 	}
 
 	public void setValue(double number){
-		setText(NumberFormat.getCurrencyInstance().format(number));
+		super.setText(NumberFormat.getCurrencyInstance().format(number));
 	}
 	
 	public String trim2(String text){

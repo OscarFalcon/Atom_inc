@@ -211,7 +211,7 @@ public class CustomerPanel extends JPanel {
 				size.height);
 
 		registerControllers(new CustomerPanelController());
-		updateTable(Security.client.selectAll());
+		//updateTable(Security.client.selectAll());
 	}
 	
 	private void registerControllers(CustomerPanelController listen) {
