@@ -79,7 +79,6 @@ public class PMAWizard extends JPanel{
 	public String vehicleVin;
 	
 
-
 	public void clearFields(int whichCard){
 		if(whichCard == CUSTOMER_CREATE) 
 			customerCreate.clearFields();
@@ -102,7 +101,6 @@ public class PMAWizard extends JPanel{
 	}
 	
 	
-
 	public void changeCards(int card){
 		backButton.setEnabled(true);
 		finishButton.setEnabled(false);

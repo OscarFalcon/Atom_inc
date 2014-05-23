@@ -16,8 +16,6 @@ public class PMAWizardController{
 	PMAWizard view;
 	PMAWizardModel model;
 	
-	
-	
 	public PMAWizardController(PMAWizard view, PMAWizardModel model){
 		this.view = view;
 		this.model = model;
@@ -64,8 +62,8 @@ public class PMAWizardController{
 			view.changeCards(model.getNextCard());
 			view.nextButton.setEnabled(false);
 		}
-		
 	}
+	
 	private class cancelButtonListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {

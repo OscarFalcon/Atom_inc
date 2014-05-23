@@ -23,12 +23,12 @@ public class PMA extends Application{
         stage.setScene(scene);
         stage.show();
         
-        
+        /*
         PrinterJob printerJob = PrinterJob.createPrinterJob();
         
         if(printerJob.showPrintDialog(stage.getOwner()) && printerJob.printPage(root))
             printerJob.endJob();
-	
+	*/
 	}
 }
 
