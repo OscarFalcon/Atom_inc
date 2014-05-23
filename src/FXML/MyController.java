@@ -42,28 +42,32 @@ public class MyController implements Initializable{
 		}
 		
 		//set all fields to false, default colors appropriately, and set default values to 0.0*********************
+		checkboxes[place][0].getStyleClass().remove("check-box-regular");
+		checkboxes[place][1].getStyleClass().remove("check-box-regular");
+		checkboxes[place][0].getStyleClass().remove("check-box-valid");
+		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
 		checkboxes[place][0].getStyleClass().add("check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
 		if (j==0){
 			if(checkboxes[place][j].isSelected()){
 				//If the OK checkbox is checked then we dont need to open the corresponding fields
-				checkboxes[place][0].getStyleClass().add("check-box-valid");
+				//checkboxes[place][0].getStyleClass().remove("check-box-regular");
+				//checkboxes[place][0].getStyleClass().add("check-box-valid");
 			}
 			//set NotOK checkbox to be disabled and default color
-			checkboxes[place][1].getStyleClass().remove("check-box-regular");
+			checkboxes[place][1].setSelected(false);
+			//checkboxes[place][1].getStyleClass().add("check-box-regular");
 		} else if (j==1){
 			if(checkboxes[place][j].isSelected()){
 				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
+				checkboxes[place][1].getStyleClass().remove("check-box-regular");
 				checkboxes[place][1].getStyleClass().add("check-box-invalid");
 			}
 			//set OK checkbox to be disabled and default color
-			checkboxes[place][0].getStyleClass().remove("check-box-regular");
+			checkboxes[place][0].setSelected(false);
+			//checkboxes[place][0].getStyleClass().add("check-box-regular");
 		}
 		
-		//test.getStyleClass().remove("check-box-regular"); // standard grey color
-		//test.getStyleClass().add("check-box-valid"); // green color
-													// need to make red
-	
 	}
 
 	
