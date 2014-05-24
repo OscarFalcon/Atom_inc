@@ -24,8 +24,8 @@ public class ABMTextField extends JFormattedTextField{
 
 	
 	public ABMTextField(DecimalFormat format) {
-		this.setDisabledTextColor(Color.white);
-		this.setEnabled(false);
+		//this.setDisabledTextColor(Color.white);
+		//this.setEnabled(true);
 		
 		setColumns(format.toPattern().length());
 		setHorizontalAlignment(JFormattedTextField.TRAILING);

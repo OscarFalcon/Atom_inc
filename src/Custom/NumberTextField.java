@@ -22,11 +22,11 @@ public class NumberTextField extends TextField
 			public void handle(KeyEvent ke) {
 				String text = getText();
 
-				if(ke.getCode() == KeyCode.BACK_SPACE){
-					setText(text.substring(0,text.length()-1));
-					moveCarret(getText().length());
-			}	
-				else{
+			//	if(ke.getCode() == KeyCode.BACK_SPACE){
+				//	setText(text.substring(0,text.length()-1));
+				//	moveCarret(getText().length());
+			//}	
+				//else{
 				
 				System.out.println("Key Pressed: " + ke.getText());
 				System.out.println("getText = " + text);
@@ -36,7 +36,7 @@ public class NumberTextField extends TextField
 				System.out.println("cp: " + getCaretPosition());
 				//moveCarret(text.length());
 				System.out.println("cp: " + getCaretPosition());
-			}	
+			//}	
 			}
 		});
 		setText("$0.00");
