@@ -33,6 +33,7 @@
 .check-box-invalid{
    -fx-background-color:#FF0000;
    -fx-opacity:0.8;
+   -fx-border-style:solid;
 }
 
 .check-box-regular{
