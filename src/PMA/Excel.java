@@ -6,16 +6,33 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+
 import org.apache.poi.hssf.record.PrintSetupRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 
+
+
+
+
 public class Excel {
+
+@FXML private static Label CUST,DATE,TAGS,YEAR,MAKE,MODEL,WO,LICNUM,VIN,ENG,TRANS,MILES;	
+	
+
+
+
+
+@FXML
+private CheckBox OK1;
+
 
 	public static void main(String[] args) {
 
@@ -35,17 +52,35 @@ public class Excel {
 	
 	
 	public static void read_excel() throws IOException {
-		File excel = new File("C:/Users/Oscar/Desktop/PMA.xls");
-		FileInputStream fis = new FileInputStream(excel);
-		HSSFWorkbook wb = new HSSFWorkbook(fis);
-		Sheet ws = wb.getSheet("Sheet1");
+		Row row;
+		Cell cell;
+		
+		File excel = new File("/home/oscar/Desktop/PMA.xls"); /**open file to read from master PMA **/
+		FileInputStream fis = new FileInputStream(excel);	  /**create fileInputStream from master PMA file **/
+		
+		HSSFWorkbook wb = new HSSFWorkbook(fis); 			/**create new workbook based on master PMA **/	
+		Sheet ws = wb.getSheet("Sheet1");					/**get the main sheet **/
 
-		int rowNum = ws.getLastRowNum() + 1;
+		
+		
+		row = ws.getRow(2);
+		
+		cell = row.getCell(0);
+		cell.setCellValue("CUSTOMER");
+		
+		cell = row.getCell(3);
+		cell.setCellValue("YEAR");
+		
+		
+		
+		
+		
+		
+		/**int rowNum = ws.getLastRowNum() + 1;
 		int colNum = ws.getRow(0).getLastCellNum();
 		
 		String[][] data = new String[rowNum][colNum];
-		Row row;
-		Cell cell;
+		
 		
 		row = ws.getRow(7);
 		cell = row.getCell(4);
@@ -61,16 +96,36 @@ public class Excel {
 				data[i][j] = value;
 				System.out.println("row: " + cell.getRowIndex() + " col: " + cell.getColumnIndex() + " value: " + value);
 			}
-		}
+		} **/
 		fis.close();
 		
 		FileOutputStream fileOut = null;
-		fileOut = new FileOutputStream("C:/Users/Oscar/Desktop/workbook.xls");
+		fileOut = new FileOutputStream("/home/oscar/Desktop/woorkbook.xls");
 		wb.write(fileOut);
 		fileOut.close();
 		
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public static void write_excel() {
@@ -85,7 +140,7 @@ public class Excel {
 		FileOutputStream fileOut = null;
 		try {
 
-			fileOut = new FileOutputStream("/home/oscar/Desktop/workbook.xls");
+			fileOut = new FileOutputStream("/home/oscar/Desktop");
 			wb.write(fileOut);
 
 		} catch (FileNotFoundException e1) {
