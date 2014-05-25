@@ -1,5 +1,7 @@
 package FXML;
 
+import java.awt.print.Printable;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +11,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.PageRanges;
 import javax.swing.SwingUtilities;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -214,8 +219,24 @@ public class MyController implements Initializable{
 			
 		}
 		
+		PrinterJob pj = PrinterJob.getPrinterJob();
+
+		// Initialize the Print Dialog with the number of pages in the document.
+		PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+		attributes.add(new PageRanges(1,1));
 		
+		// Proceed with print preview only if the user accepts the print dialog.
+		if (!pj.printDialog(attributes))
+		    return;
+		 
+		pj.setPrintable(painter);
+		Printable p;
+		pj.se
 		
+		// This object is responsible for rendering our document for use with the Java Print API.
+		//AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
+		// Pass our document as pageable to the printer job.
+		pj.setPageable(awPrintDoc);
 		
 		
 		
