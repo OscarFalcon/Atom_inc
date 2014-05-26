@@ -42,11 +42,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import Custom.NumberTextField;
 import Custom.ABMTextField;;
@@ -72,17 +77,19 @@ public class MyController implements Initializable{
 		,NOTOK46, NOTOK47, NOTOK48, NOTOK49;
 	
 	/** TECHNICIANS' COMMENTS **/
-	@FXML private  ComboBox TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20,TC21,TC22,TC23,TC24,TC25
+	@FXML private  ComboBox<String> TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20,TC21,TC22,TC23,TC24,TC25
 					,TC26,TC27,TC28,TC29,TCM,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49;
 	
 	/** RECOMMENDED REPAIRS  **/
-	@FXML private ComboBox RR1,RR2,RR3,RR4,RR5,RR6,RR7,RR8,RR9,RR10,RR11,RR12,RR13,RR14,RR15,RR16,RR17,RR18,RR19,RR20,RR21,RR22,RR23,RR24,RR25,RR26
+	@FXML private ComboBox<String> RR1,RR2,RR3,RR4,RR5,RR6,RR7,RR8,RR9,RR10,RR11,RR12,RR13,RR14,RR15,RR16,RR17,RR18,RR19,RR20,RR21,RR22,RR23,RR24,RR25,RR26
 					,RR27,RR28,RR29,RRM,RR30,RR31,RR32,RR33,RR34,RR35,RR36,RR37,RR38,RR39,RR40,RR41,RR42,RR43,RR44,RR45,RR46,RR47,RR48,RR49;
 	
 	/** PRIORITY **/
-	@FXML private ComboBox PRIOR1,PRIOR2,PRIOR3,PRIOR4,PRIOR5,PRIOR6,PRIOR7,PRIOR8,PRIOR9,PRIOR10,PRIOR11,PRIOR12,PRIOR13,PRIOR14,PRIOR15,PRIOR16,PRIOR17,PRIOR18
+	@FXML private ComboBox<String> PRIOR1,PRIOR2,PRIOR3,PRIOR4,PRIOR5,PRIOR6,PRIOR7,PRIOR8,PRIOR9,PRIOR10,PRIOR11,PRIOR12,PRIOR13,PRIOR14,PRIOR15,PRIOR16,PRIOR17,PRIOR18
 					,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIORM,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
 					,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49;
+	
+	@FXML Label L1;
 	
 		
 	private CheckBox[][] checkboxes;
@@ -319,15 +326,31 @@ public void initialize(URL location, ResourceBundle resources) {
 				,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIORM,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
 				,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49};
 		
+	
 		
-		/** init techcomments **/
 		for(int i = 0; i < ROW_COUNT ;i++){
 			techcomments[i].setEditable(true);
 			recommendedrepairs[i].setEditable(true);
 			priorities[i].setEditable(true);
-		}
+			
+			//techcomments[i].setDisable(true);
+			//recommendedrepairs[i].setDisable(true);
+			//priorities[i].setDisable(true);
+			
+			
+		}  
 		init();
 	}
+
+public class rightClickMenu implements EventHandler<ActionEvent>{
+	@Override
+	public void handle(ActionEvent event) {
+		System.out.println("in action event handler");
+	}
+}
+
+
+
 public void init(){
 	
 	/** strings used as combobox options in PMA **/
@@ -763,5 +786,18 @@ public void init(){
 		index+=3;
 	}
 	
+	final ContextMenu contextMenu = new ContextMenu();
+	MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/FXML/approve.png")));
+	MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/FXML/red-x.png")));
+	MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/FXML/warning.png")));	
+	contextMenu.getItems().addAll(approve,disapprove,information);
+	approve.setOnAction(new rightClickMenu());
+	L1.setContextMenu(contextMenu);
+	
+	
 }
+
+
+
+
 }
