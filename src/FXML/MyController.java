@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.PageRanges;
@@ -204,7 +206,7 @@ public class MyController implements Initializable{
 	
 		int rowIndex = 7;
 		for(int i = 0; i < 42; i++,rowIndex++){ //42 rpws
-			row = ws.getRow(rowIndex); 
+			row = ws.getRow(rowIndex+addRows(i)); 
 			
 			//OK
 			cell = row.getCell(1);
@@ -221,18 +223,21 @@ public class MyController implements Initializable{
 			//TECH COMMENTS 
 			cell = row.getCell(3);
 			cell.setCellValue(techcomments[i].getEditor().getText());
-			
-			
+			//RECOMMENDED REPAIRS
+			cell = row.getCell(4);
+			cell.setCellValue(recommendedrepairs[i].getEditor().getText());
+			//PRIORITY 
+			cell = row.getCell(5);
+			cell.setCellValue(priorities[i].getEditor().getText());
+			//TIRES - PARTS
+			cell = row.getCell(6);
+			/**cell.setCellValue(); **/
+			//LABOR
+			cell = row.getCell(7);
+			/**cell.setCellValue();**/
 			
 			
 		}
-		//ws.getPrintSetup().setLandscape(true);
-	//	ws.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
-	//	ws.setFitToPage(true);
-		//ws.setPrintGridlines(true);
-		//ws.setDisplayGridlines(true);
-		
-		
 		fis.close();
 		FileOutputStream fileOut = null;
 		fileOut = new FileOutputStream("/home/oscar/Desktop/workbook.xls");
@@ -240,10 +245,19 @@ public class MyController implements Initializable{
 		fileOut.close();
 		
 		
-		PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-		attributes.add(new PageRanges(1,1));
 		
+		/** list of available printers **/
+		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+        System.out.println("Number of print services: " + printServices.length);
 
+        for (PrintService printer : printServices)
+            System.out.println("Printer: " + printer.getName()); 
+		
+		
+        /** print dialog **/
+		/**
+        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+		attributes.add(new PageRanges(1,1));
 		PrinterJob pj = PrinterJob.getPrinterJob();	
 		if (pj.printDialog(attributes)){
 	    	//Instantiate a new workbook
@@ -259,32 +273,25 @@ public class MyController implements Initializable{
 			PageSetup pageSetup = sheet.getPageSetup();
 			pageSetup.setOrientation(PageOrientationType.LANDSCAPE);
 			pageSetup.setZoom(73);
+			pageSetup.setBottomMargin(1);
+			pageSetup.setLeftMargin(1);
+			pageSetup.setRightMargin(1);
+			pageSetup.setTopMargin(1);
 			pageSetup.setPaperSize(PaperSizeType.PAPER_A_4);
-			
 			
 			//Create a SheetRender object with respect to your desired sheet
 			SheetRender sr = new SheetRender(sheet, imgOptions);
 
 			//Print the worksheet  
-			sr.toPrinter("Canon-MP240-series");	
-	    }   
-		
-	  
-	    
-	    
-	
-			
-	/**
-		
-		cell.setCellStyle(style);
-		HSSFRichTextString richString = new HSSFRichTextString("  x");
-		richString.applyFont(redFont);
-		cell.setCellValue(richString);
-		**/
-		
-		
-		
+			sr.toPrinter("Canon-MP240-series");
+				
+	    }   **/
 	}
+	private int addRows(int rowNum){
+		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
+	}
+	
+	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 		
@@ -329,6 +336,7 @@ public void init(){
 			"7/32 TREAD", "8/32 TREAD", "9/32 TREAD", "10/32 TREAD",
 			"11/32 TREAD", "12/32 TREAD", "13/32 TREAD", "14/32 TREAD",
 			"15/32 TREAD" };
+	
 	String[] tireRecommendedComments = { "", "REPLACE TIRE", "REPAIR TIRE","ROTATE TIRE" };
 	
 	String[] WWTechComments = { "", "WINDSHIELD IS CRACKED",
