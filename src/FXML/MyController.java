@@ -53,7 +53,7 @@ import Custom.ABMTextField;;
 
 public class MyController implements Initializable{
 	
-	private static int ROW_COUNT = 49;
+	private static int ROW_COUNT = 50;
 
 	
 	
@@ -204,8 +204,8 @@ public class MyController implements Initializable{
 		HSSFCellStyle style = wb.createCellStyle();
 		style.setFont(redFont);				
 	
-		int rowIndex = 7;
-		for(int i = 0; i < 42; i++,rowIndex++){ //42 rpws
+		int rowIndex = 7; //rows for ok,notok,etc in excel start at 7.
+		for(int i = 0; i < ROW_COUNT; i++,rowIndex++){ 
 			row = ws.getRow(rowIndex+addRows(i)); 
 			
 			//OK
@@ -240,6 +240,7 @@ public class MyController implements Initializable{
 		}
 		fis.close();
 		FileOutputStream fileOut = null;
+		/** open new file stream to write contents of workbook to excel **/
 		fileOut = new FileOutputStream("/home/oscar/Desktop/workbook.xls");
 		wb.write(fileOut);
 		fileOut.close();
@@ -288,14 +289,15 @@ public class MyController implements Initializable{
 	    }   **/
 	}
 	private int addRows(int rowNum){
-		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 39) ? 3 : 4; 
+		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
 	
 	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 		
-		
+	/** put all declared FX id variables in arrays for easier processing later on **/
+	
 		checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
 				{OK7, NOTOK7},{OK8, NOTOK8},{OK9, NOTOK9},{OK10, NOTOK10},{OK11, NOTOK11},{OK12, NOTOK12},{OK13, NOTOK13},{OK14, NOTOK14},
 				{OK15, NOTOK15},{OK16, NOTOK16},{OK17, NOTOK17},{OK18, NOTOK18},{OK19, NOTOK19},{OK20, NOTOK20},{OK21, NOTOK21},{OK22, NOTOK22},
@@ -327,6 +329,9 @@ public void initialize(URL location, ResourceBundle resources) {
 		init();
 	}
 public void init(){
+	
+	/** strings used as combobox options in PMA **/
+	
 	String[] priority = new String[]{ "", "HIGH", "MED", "LOW" };
 
 	String[] tireTechComments = { "", "TIRE IS WORN OUT", "TIRE IS FLAT",
@@ -689,7 +694,7 @@ public void init(){
 	
 	String[] EPRecommendedComments = { "", "REPLACE EXHAUST PIPES" };
 
-	
+	/** make array of all combobox options that will displayed on the same row, ie(tech comment options,recommended repairs options and priority on */
 	String[][][] comments = new String[][][]{
 			new String[][]{tireTechComments,tireRecommendedComments,priority},
 			new String[][]{tireTechComments,tireRecommendedComments,priority},
@@ -733,9 +738,9 @@ public void init(){
 			new String[][]{CVADTechComments,CVADRecommendedComments,priority},
 			new String[][]{mufflerTechComments,mufflerRecommendedComments,priority},
 			new String[][]{EPTechComments,EPRecommendedComments,priority}
-			}
-			;
+			};
 	
+	/** comboboxes use observable lists, so make an arraylist of observable list to loop through and set items for each combobox **/
 	ArrayList<ObservableList<String>> observableLists = new ArrayList<ObservableList<String>>();
 	
 	ArrayList<String> tmp;
@@ -758,7 +763,5 @@ public void init(){
 		index+=3;
 	}
 	
-	
-		
 }
 }
