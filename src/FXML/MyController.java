@@ -328,18 +328,18 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 	
 		
-		for(int i = 0; i < ROW_COUNT ;i++){
+		/**for(int i = 0; i < ROW_COUNT ;i++){
+			techcomments[i].setDisable(true);
+			recommendedrepairs[i].setDisable(true);
+			priorities[i].setDisable(true);
+			
 			techcomments[i].setEditable(true);
 			recommendedrepairs[i].setEditable(true);
 			priorities[i].setEditable(true);
-			
-			//techcomments[i].setDisable(true);
-			//recommendedrepairs[i].setDisable(true);
-			//priorities[i].setDisable(true);
-			
-			
-		}  
+		}  **/
 		init();
+		//TC2.setDisable(true);
+		TC3.setDisable(true);
 	}
 
 public class rightClickMenu implements EventHandler<ActionEvent>{
@@ -351,7 +351,7 @@ public class rightClickMenu implements EventHandler<ActionEvent>{
 
 
 
-public void init(){
+private void init(){
 	
 	/** strings used as combobox options in PMA **/
 	
