@@ -59,8 +59,6 @@ import Custom.ABMTextField;;
 public class MyController implements Initializable{
 	
 	private static int ROW_COUNT = 50;
-
-	
 	
 	/** title fields **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
@@ -68,30 +66,31 @@ public class MyController implements Initializable{
 	/**OK CHECK BOXES **/
 	@FXML private CheckBox OK1, OK2, OK3, OK4, OK5, OK6, OK7, OK8, OK9, OK10, OK11, OK12, OK13,OK14,OK15, OK16, OK17, OK18, OK19, OK20, OK21, OK22
 	, OK23, OK24, OK25, OK26, OK27, OK28, OK29,OKM,OK30, OK31, OK32, OK33, OK34, OK35, OK36, OK37, OK38, OK39, OK40, OK41, OK42, OK43, OK44, OK45, OK46
-	, OK47, OK48, OK49;
+	, OK47, OK48, OK49,OK50;
 	
 	/** NOT OK CHECK BOXES **/
 	@FXML private CheckBox NOTOK1, NOTOK2, NOTOK3, NOTOK4, NOTOK5, NOTOK6, NOTOK7, NOTOK8, NOTOK9, NOTOK10, NOTOK11, NOTOK12, NOTOK13, NOTOK14, NOTOK15
-		,NOTOK16, NOTOK17, NOTOK18, NOTOK19, NOTOK20, NOTOK21, NOTOK22, NOTOK23, NOTOK24, NOTOK25, NOTOK26, NOTOK27, NOTOK28, NOTOK29,NOTOKM,NOTOK30
+		,NOTOK16, NOTOK17, NOTOK18, NOTOK19, NOTOK20, NOTOK21, NOTOK22, NOTOK23, NOTOK24, NOTOK25, NOTOK26, NOTOK27, NOTOK28, NOTOK29,NOTOK30
 		,NOTOK31, NOTOK32, NOTOK33,NOTOK34, NOTOK35, NOTOK36, NOTOK37, NOTOK38, NOTOK39, NOTOK40, NOTOK41, NOTOK42, NOTOK43, NOTOK44, NOTOK45 
-		,NOTOK46, NOTOK47, NOTOK48, NOTOK49;
+		,NOTOK46, NOTOK47, NOTOK48, NOTOK49,NOTOK50;
 	
 	/** TECHNICIANS' COMMENTS **/
 	@FXML private  ComboBox<String> TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20,TC21,TC22,TC23,TC24,TC25
-					,TC26,TC27,TC28,TC29,TCM,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49;
+					,TC26,TC27,TC28,TC29,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49,TC50;
 	
 	/** RECOMMENDED REPAIRS  **/
 	@FXML private ComboBox<String> RR1,RR2,RR3,RR4,RR5,RR6,RR7,RR8,RR9,RR10,RR11,RR12,RR13,RR14,RR15,RR16,RR17,RR18,RR19,RR20,RR21,RR22,RR23,RR24,RR25,RR26
-					,RR27,RR28,RR29,RRM,RR30,RR31,RR32,RR33,RR34,RR35,RR36,RR37,RR38,RR39,RR40,RR41,RR42,RR43,RR44,RR45,RR46,RR47,RR48,RR49;
+					,RR27,RR28,RR29,RR30,RR31,RR32,RR33,RR34,RR35,RR36,RR37,RR38,RR39,RR40,RR41,RR42,RR43,RR44,RR45,RR46,RR47,RR48,RR49,RR50;
 	
 	/** PRIORITY **/
 	@FXML private ComboBox<String> PRIOR1,PRIOR2,PRIOR3,PRIOR4,PRIOR5,PRIOR6,PRIOR7,PRIOR8,PRIOR9,PRIOR10,PRIOR11,PRIOR12,PRIOR13,PRIOR14,PRIOR15,PRIOR16,PRIOR17,PRIOR18
-					,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIORM,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
-					,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49;
+					,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
+					,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49,PRIOR50;
 	
-	@FXML Label L1;
+	/** title labels **/
+	@FXML Label L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
+				L38,L39,L40,L41,L42;
 	
-		
 	private CheckBox[][] checkboxes;
 	
 	private ComboBox<String>[] techcomments;
@@ -100,6 +99,9 @@ public class MyController implements Initializable{
 	
 	private ComboBox<String>[] priorities;
 	
+	private Label[] labels;
+	
+	private MenuItem[] menuItems = new MenuItem[50];
 	
 	@FXML GridPane grid;
 	
@@ -310,26 +312,28 @@ public void initialize(URL location, ResourceBundle resources) {
 		checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
 				{OK7, NOTOK7},{OK8, NOTOK8},{OK9, NOTOK9},{OK10, NOTOK10},{OK11, NOTOK11},{OK12, NOTOK12},{OK13, NOTOK13},{OK14, NOTOK14},
 				{OK15, NOTOK15},{OK16, NOTOK16},{OK17, NOTOK17},{OK18, NOTOK18},{OK19, NOTOK19},{OK20, NOTOK20},{OK21, NOTOK21},{OK22, NOTOK22},
-				{OK23, NOTOK23},{OK24, NOTOK24},{OK25, NOTOK25},{OK26, NOTOK26},{OK27, NOTOK27},{OK28, NOTOK28},{OK29, NOTOK29},{OKM,NOTOKM},{OK30, NOTOK30},
+				{OK23, NOTOK23},{OK24, NOTOK24},{OK25, NOTOK25},{OK26, NOTOK26},{OK27, NOTOK27},{OK28, NOTOK28},{OK29, NOTOK29},{OK30, NOTOK30},
 				{OK31, NOTOK31},{OK32, NOTOK32},{OK33, NOTOK33},{OK34, NOTOK34},{OK35, NOTOK35},{OK36, NOTOK36},{OK37, NOTOK37},{OK38, NOTOK38},
 				{OK39, NOTOK39},{OK40, NOTOK40},{OK41, NOTOK41},{OK42, NOTOK42},{OK43, NOTOK43},{OK44, NOTOK44},{OK45, NOTOK45},{OK46, NOTOK46},
-				{OK47, NOTOK47},{OK48, NOTOK48},{OK49, NOTOK49}};
+				{OK47, NOTOK47},{OK48, NOTOK48},{OK49, NOTOK49},{OK50, NOTOK50}};
 		
 		
 		techcomments = new ComboBox[] {TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20,TC21,TC22,TC23,TC24,TC25
-				,TC26,TC27,TC28,TC29,TCM,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49};
+				,TC26,TC27,TC28,TC29,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49,TC50};
 		
 		
 		recommendedrepairs = new ComboBox[]{RR1,RR2,RR3,RR4,RR5,RR6,RR7,RR8,RR9,RR10,RR11,RR12,RR13,RR14,RR15,RR16,RR17,RR18,RR19,RR20,RR21,RR22,RR23,RR24,RR25,RR26
-				,RR27,RR28,RR29,RRM,RR30,RR31,RR32,RR33,RR34,RR35,RR36,RR37,RR38,RR39,RR40,RR41,RR42,RR43,RR44,RR45,RR46,RR47,RR48,RR49};
+				,RR27,RR28,RR29,RR30,RR31,RR32,RR33,RR34,RR35,RR36,RR37,RR38,RR39,RR40,RR41,RR42,RR43,RR44,RR45,RR46,RR47,RR48,RR49,RR50};
 		
 		
 		priorities= new ComboBox[] {PRIOR1,PRIOR2,PRIOR3,PRIOR4,PRIOR5,PRIOR6,PRIOR7,PRIOR8,PRIOR9,PRIOR10,PRIOR11,PRIOR12,PRIOR13,PRIOR14,PRIOR15,PRIOR16,PRIOR17,PRIOR18
-				,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIORM,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
-				,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49};
+				,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
+				,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49,PRIOR50};
+		
+		labels = new Label[]{L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
+				L38,L39,L40,L41,L42};
 		
 	
-		
 		for(int i = 0; i < ROW_COUNT ;i++){
 			techcomments[i].setDisable(true);
 			recommendedrepairs[i].setDisable(true);
@@ -772,7 +776,7 @@ private void init(){
 			observableLists.add(olist);
 		}
 	}
-	
+	/** finally set items for all comboboxes **/
 	int index=0;
 	for(int i = 0; i < 42; i++){
 		techcomments[i].setItems(observableLists.get(index));
@@ -780,23 +784,44 @@ private void init(){
 		priorities[i].setItems(observableLists.get(index+2));
 		index+=3;
 	}
+	grid.add(new NumberTextField(),7, 9);
 	
-	final ContextMenu contextMenu = new ContextMenu();
-	MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/FXML/approve.png")));
-	MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/FXML/red-x.png")));
-	MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/FXML/warning.png")));	
-	contextMenu.getItems().addAll(approve,disapprove,information);
-	approve.setOnAction(new rightClickMenu());
-	L1.setContextMenu(contextMenu);
-	//.setComtextMenu(contextMenu);
+	/** add context menus to all title labels **/
 	
-	
-}
-private class rightClickMenu implements EventHandler<ActionEvent>{
-	@Override
-	public void handle(ActionEvent event) {
-		System.out.println("in action event handler");
+	int i = 0;
+	for(Label l : labels){
+		ContextMenu contextMenu = new ContextMenu();
+		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/FXML/approve.png")));
+		menuItems[i] = approve;
+		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/FXML/red-x.png")));
+		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/FXML/warning.png")));	
+		contextMenu.getItems().addAll(approve,disapprove,information);
+		approve.setOnAction(new rightClickMenuApprove());
+		l.setContextMenu(contextMenu);
+		i++;
 	}
 }
+
+private class rightClickMenuApprove implements EventHandler<ActionEvent>{
+	@Override
+	public void handle(ActionEvent event) {
+		int place = 0;
+		MenuItem item  =  (MenuItem)event.getSource();
+		
+		while( item != menuItems[place])
+			place++;
+		System.out.println(place);
+		priorities[place].getStyleClass().remove("custom-field");
+		priorities[place].getStyleClass().add("green-label");
+	}
+}
+
+
+
+
+
+
+
+
 
 }
