@@ -101,9 +101,13 @@ public class MyController implements Initializable{
 	
 	private Label[] labels;
 	
-	private MenuItem[] menuItems = new MenuItem[50];
+	private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
-	@FXML GridPane grid;
+	private MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
+	
+	private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
+	
+	@FXML private GridPane grid;
 	
 	public void checked(ActionEvent event){		
 		int place,index = 1;
@@ -121,7 +125,6 @@ public class MyController implements Initializable{
 		else
 			index = 1;
 		
-		
 		//set all fields to false, default colors appropriately, and set default values to 0.0*********************
 		checkboxes[place][0].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");
@@ -132,14 +135,17 @@ public class MyController implements Initializable{
 		priorities[place].setDisable(true);
 		
 		if (index == 0){
-			if(checkboxes[place][index].isSelected()){
-				//If the OK checkbox is checked then we dont need to open the corresponding fields
-			}
 			//set NotOK checkbox to be disabled and default color
 			checkboxes[place][1].setSelected(false);
 			techcomments[place].setDisable(true);
 			recommendedrepairs[place].setDisable(true);
-
+			menuItemsApproved[place].setDisable(true);
+			menuItemsDisapproved[place].setDisable(true);
+			menuItemsInformation[place].setDisable(true);
+			priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
+			priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+			priorities[place].getStyleClass().add("custom-field");
+			priorities[place].getEditor().getStyleClass().add("custom-field");
 		} else if (index == 1){
 			if(checkboxes[place][index].isSelected()){
 				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
@@ -148,6 +154,9 @@ public class MyController implements Initializable{
 				techcomments[place].setDisable(false);
 				recommendedrepairs[place].setDisable(false);
 				priorities[place].setDisable(false);
+				menuItemsApproved[place].setDisable(false);
+				menuItemsDisapproved[place].setDisable(false);
+				menuItemsInformation[place].setDisable(false);
 			}
 			//set OK checkbox to be disabled and default color
 			checkboxes[place][0].setSelected(false);
@@ -345,7 +354,6 @@ public void initialize(URL location, ResourceBundle resources) {
 		} 
 		init();
 	}
-
 
 
 
@@ -792,11 +800,18 @@ private void init(){
 	for(Label l : labels){
 		ContextMenu contextMenu = new ContextMenu();
 		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/FXML/approve.png")));
-		menuItems[i] = approve;
+		approve.setDisable(true);
+		menuItemsApproved[i] = approve;
 		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/FXML/red-x.png")));
+		disapprove.setDisable(true);
+		menuItemsDisapproved[i] = disapprove;
 		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/FXML/warning.png")));	
+		information.setDisable(true);
+		menuItemsInformation[i] = information;
 		contextMenu.getItems().addAll(approve,disapprove,information);
 		approve.setOnAction(new rightClickMenuApprove());
+		disapprove.setOnAction(new rightClickMenuDisapprove());
+		information.setOnAction(new rightClickMenuInformation());
 		l.setContextMenu(contextMenu);
 		i++;
 	}
@@ -808,13 +823,52 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 		int place = 0;
 		MenuItem item  =  (MenuItem)event.getSource();
 		
-		while( item != menuItems[place])
+		while( item != menuItemsApproved[place])
 			place++;
-		System.out.println(place);
-		priorities[place].getStyleClass().remove("custom-field");
+		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
+		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		priorities[place].getStyleClass().add("green-label");
+		priorities[place].getEditor().getStyleClass().add("green-label");
+		techcomments[place].setDisable(true);
+		recommendedrepairs[place].setDisable(true);
+		priorities[place].setDisable(true);
 	}
 }
+	private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent event) {
+			int place = 0;
+			MenuItem item  =  (MenuItem)event.getSource();
+			
+			while( item != menuItemsDisapproved[place])
+				place++;
+			priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");			
+			priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+			priorities[place].getEditor().getStyleClass().add("red-label");
+			priorities[place].getStyleClass().add("red-label");
+			techcomments[place].setDisable(true);
+			recommendedrepairs[place].setDisable(true);
+			priorities[place].setDisable(true);
+		}
+	}
+	private class rightClickMenuInformation implements EventHandler<ActionEvent>{
+			@Override
+			public void handle(ActionEvent event) {
+				int place = 0;
+				MenuItem item  =  (MenuItem)event.getSource();
+				
+				while( item != menuItemsInformation[place])
+					place++;
+				priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+				priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+				priorities[place].getEditor().getStyleClass().add("yellow-label");
+				priorities[place].getStyleClass().add("yellow-label");
+				techcomments[place].setDisable(true);
+				recommendedrepairs[place].setDisable(true);
+				priorities[place].setDisable(true);
+			}
+	
+	}
 
 
 
