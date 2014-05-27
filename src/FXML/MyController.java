@@ -870,12 +870,4 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 	
 	}
 
-
-
-
-
-
-
-
-
 }

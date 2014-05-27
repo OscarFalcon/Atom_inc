@@ -3,6 +3,8 @@ package MyCMS;
 
 import java.util.ArrayList;
 
+import CustMgtSys_1.PMAObject;
+
 
 public class MyCMS {
 	
@@ -259,7 +261,103 @@ public static class employee{
 			return true; 
 		}	
 	}
+	public static class PMA{
+		
+		public static PMAObject getPMA(int workOrder){
+			String statement = "SELECT object FROM PMA WHERE wo = ?";
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+			
+			arguments.add(new Type(workOrder));
+			result_types.add(Type.OBJECT);
+			results = MySQL.executeQuery(statement,arguments, result_types);
+			if(results != null)
+				return (PMAObject)results.get(0)[0];
+			return null;
+		}
+		public static boolean updatePMA(int workOrder,PMAObject pma){
+			String statement = "UPDATE PMA SET object = ? WHERE wo = ?";
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			
+			arguments.add(new Type(pma));
+			arguments.add(new Type(workOrder));
+			return MySQL.execute(statement, arguments);
+			
+		}
+		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns){
+			String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?)";
+			
+			String SEARCH_BY_VIN =  "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles " +
+					"from vehicle WHERE vin = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIMIT 1";
+		
+			String SEARCH_CUST = "SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+			+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info where id = ? LIMIT 1";
+			
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+			
+			
+			arguments.add(new Type(vehicleVIN));
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.INTEGER);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
 
+			if((results = MySQL.executeQuery(SEARCH_BY_VIN, arguments, result_types)) == null)
+				return false;
+			
+			PMAObject pma;
+			Object[] tmp = results.get(0);
+			pma = new PMAObject();
+			pma.customer_concerns = customerConcerns;
+			pma.vin = vehicleVIN;
+			pma.lic = (String) tmp[0];
+			pma.tags = (String) tmp[1];
+			pma.year = (Integer) tmp[2];
+			pma.make = (String) tmp[3];
+			pma.model = (String) tmp[4];
+			pma.engine = (String) tmp[5];
+			pma.trans = (String) tmp[6];
+			pma.miles = (String) tmp[7];
+			
+			arguments.clear();
+			result_types.clear();
+			results.clear();
+			
+			arguments.add(new Type(custID));
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			
+			if((results = MySQL.executeQuery(SEARCH_CUST, arguments, result_types)) == null)
+				return false;
+			
+			tmp = results.get(0);
+			pma.first = (String) tmp[0];
+			pma.last = (String) tmp[1];
+			
+			arguments.clear();
+			
+			byte b = 1;
+			arguments.add(new Type(vehicleVIN));
+			arguments.add(new Type(custID));
+			arguments.add(new Type(new Byte(b)));			
+			arguments.add(new Type(pma));
+			return MySQL.execute(CREATE_PMA, arguments);
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
 	
 	
 	public static void main(String args[]){
