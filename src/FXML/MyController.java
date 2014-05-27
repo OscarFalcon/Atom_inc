@@ -125,35 +125,31 @@ public class MyController implements Initializable{
 		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][0].getStyleClass().add("check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		
+		techcomments[place].setDisable(true);
+		recommendedrepairs[place].setDisable(true);
+		priorities[place].setDisable(true);
 		
 		if (index == 0){
 			if(checkboxes[place][index].isSelected()){
 				//If the OK checkbox is checked then we dont need to open the corresponding fields
-				//checkboxes[place][0].getStyleClass().remove("check-box-regular");
-				//checkboxes[place][0].getStyleClass().add("check-box-valid");
 			}
 			//set NotOK checkbox to be disabled and default color
 			checkboxes[place][1].setSelected(false);
-			//checkboxes[place][1].getStyleClass().add("check-box-regular");
 			techcomments[place].setDisable(true);
-		
-		
-		
-		
+			recommendedrepairs[place].setDisable(true);
+
 		} else if (index == 1){
 			if(checkboxes[place][index].isSelected()){
 				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
 				checkboxes[place][1].getStyleClass().remove("check-box-regular");
 				checkboxes[place][1].getStyleClass().add("check-box-invalid");
 				techcomments[place].setDisable(false);
+				recommendedrepairs[place].setDisable(false);
+				priorities[place].setDisable(false);
 			}
 			//set OK checkbox to be disabled and default color
 			checkboxes[place][0].setSelected(false);
-			//checkboxes[place][0].getStyleClass().add("check-box-regular");
 		}
-		
-		
 		
 	}
 
@@ -792,6 +788,7 @@ private void init(){
 	contextMenu.getItems().addAll(approve,disapprove,information);
 	approve.setOnAction(new rightClickMenu());
 	L1.setContextMenu(contextMenu);
+	//.setComtextMenu(contextMenu);
 	
 	
 }
