@@ -104,33 +104,31 @@ public class MyController implements Initializable{
 	@FXML GridPane grid;
 	
 	public void checked(ActionEvent event){		
-		int place = 0, j=1;
+		int place,index = 1;
 		CheckBox box;
 		
 		box = (CheckBox) event.getSource();
 
 		// Get the box that was checked!
 		//place is what line it is located with respect to corresponding values
-		while (place < checkboxes.length){
-			if( box == checkboxes[place][0]){
-				j=0;
-				break;
-			}else if( box == checkboxes[place][1]){
-				j=1;
-				break;
-			}
+		place = 0;
+		while(box != checkboxes[place][0] && box != checkboxes[place][1])
 			place++;
-		}
+		if(box == checkboxes[place][0])
+			index = 0;
+		else
+			index = 1;
+		
 		
 		//set all fields to false, default colors appropriately, and set default values to 0.0*********************
-		checkboxes[place][0].getStyleClass().remove("check-box-regular");
-		checkboxes[place][1].getStyleClass().remove("check-box-regular");
-		checkboxes[place][0].getStyleClass().remove("check-box-valid");
-		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
+		checkboxes[place][0].getStyleClass().removeAll("check-box-regular","check-box-invalid");
+		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][0].getStyleClass().add("check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		if (j==0){
-			if(checkboxes[place][j].isSelected()){
+		
+		
+		if (index == 0){
+			if(checkboxes[place][index].isSelected()){
 				//If the OK checkbox is checked then we dont need to open the corresponding fields
 				//checkboxes[place][0].getStyleClass().remove("check-box-regular");
 				//checkboxes[place][0].getStyleClass().add("check-box-valid");
@@ -138,16 +136,24 @@ public class MyController implements Initializable{
 			//set NotOK checkbox to be disabled and default color
 			checkboxes[place][1].setSelected(false);
 			//checkboxes[place][1].getStyleClass().add("check-box-regular");
-		} else if (j==1){
-			if(checkboxes[place][j].isSelected()){
+			techcomments[place].setDisable(true);
+		
+		
+		
+		
+		} else if (index == 1){
+			if(checkboxes[place][index].isSelected()){
 				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
 				checkboxes[place][1].getStyleClass().remove("check-box-regular");
 				checkboxes[place][1].getStyleClass().add("check-box-invalid");
+				techcomments[place].setDisable(false);
 			}
 			//set OK checkbox to be disabled and default color
 			checkboxes[place][0].setSelected(false);
 			//checkboxes[place][0].getStyleClass().add("check-box-regular");
 		}
+		
+		
 		
 	}
 
@@ -328,7 +334,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 	
 		
-		/**for(int i = 0; i < ROW_COUNT ;i++){
+		for(int i = 0; i < ROW_COUNT ;i++){
 			techcomments[i].setDisable(true);
 			recommendedrepairs[i].setDisable(true);
 			priorities[i].setDisable(true);
@@ -336,18 +342,11 @@ public void initialize(URL location, ResourceBundle resources) {
 			techcomments[i].setEditable(true);
 			recommendedrepairs[i].setEditable(true);
 			priorities[i].setEditable(true);
-		}  **/
+		} 
 		init();
-		//TC2.setDisable(true);
-		TC3.setDisable(true);
 	}
 
-public class rightClickMenu implements EventHandler<ActionEvent>{
-	@Override
-	public void handle(ActionEvent event) {
-		System.out.println("in action event handler");
-	}
-}
+
 
 
 
@@ -796,8 +795,11 @@ private void init(){
 	
 	
 }
-
-
-
+private class rightClickMenu implements EventHandler<ActionEvent>{
+	@Override
+	public void handle(ActionEvent event) {
+		System.out.println("in action event handler");
+	}
+}
 
 }
