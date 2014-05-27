@@ -19,16 +19,16 @@ public class NumberTextField extends TextField
 		super();
 		this.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
-			public void handle(KeyEvent ke) {
+			public void handle(KeyEvent kr) {
 				String text = getText();
-
-			//	if(ke.getCode() == KeyCode.BACK_SPACE){
-				//	setText(text.substring(0,text.length()-1));
-				//	moveCarret(getText().length());
-			//}	
-				//else{
-				
-				System.out.println("Key Pressed: " + ke.getText());
+/*
+				if(ke.getCode() == KeyCode.BACK_SPACE){
+					setText(text.substring(0,text.length()-1));
+					moveCarret(getText().length());
+				}	
+				else{
+	*/			
+				System.out.println("Key Pressed: " + kr.getText());
 				System.out.println("getText = " + text);
 				text = validStr(text); //replace all non digits with nothing
 				text = trim2(text); //remove all leading 0 chars
@@ -36,8 +36,21 @@ public class NumberTextField extends TextField
 				System.out.println("cp: " + getCaretPosition());
 				//moveCarret(text.length());
 				System.out.println("cp: " + getCaretPosition());
-			//}	
+				}	
+		//	}
+		});
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				// TODO Auto-generated method stub
+				String text = getText();
+				if(event.getCode() == KeyCode.BACK_SPACE){
+					setText(text.substring(0, text.length()-1));
+					moveCarret(getText().length());
+				}
 			}
+			
 		});
 		setText("$0.00");
 	}
