@@ -448,53 +448,53 @@
                         <Label fx:id="partsLaborTotal" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="custom-field" text="\$766.29" GridPane.columnIndex="8" GridPane.rowIndex="70" />
                         <TextField fx:id="vendor1" GridPane.columnIndex="13" GridPane.rowIndex="9" />
                         <TextField fx:id="vendor2" GridPane.columnIndex="13" GridPane.rowIndex="10" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="11" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="12" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="13" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="15" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="16" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="17" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="18" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="19" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="20" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="21" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="22" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="23" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="24" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="26" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="27" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="28" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="29" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="30" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="31" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="32" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="33" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="34" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="35" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="36" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="37" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="38" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="39" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="41" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="43" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="44" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="45" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="46" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="47" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="48" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="49" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="49" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="50" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="51" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="52" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="53" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="55" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="56" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="57" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="58" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="59" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="60" />
-                        <TextField GridPane.columnIndex="13" GridPane.rowIndex="61" />
+                        <TextField fx:id="vendor3" GridPane.columnIndex="13" GridPane.rowIndex="11" />
+                        <TextField fx:id="vendor4" GridPane.columnIndex="13" GridPane.rowIndex="12" />
+                        <TextField fx:id="vendor5" GridPane.columnIndex="13" GridPane.rowIndex="13" />
+                        <TextField fx:id="vendor6" GridPane.columnIndex="13" GridPane.rowIndex="15" />
+                        <TextField fx:id="vendor7" GridPane.columnIndex="13" GridPane.rowIndex="16" />
+                        <TextField fx:id="vendor8" GridPane.columnIndex="13" GridPane.rowIndex="17" />
+                        <TextField fx:id="vendor9" GridPane.columnIndex="13" GridPane.rowIndex="18" />
+                        <TextField fx:id="vendor10" GridPane.columnIndex="13" GridPane.rowIndex="19" />
+                        <TextField fx:id="vendor11" GridPane.columnIndex="13" GridPane.rowIndex="20" />
+                        <TextField fx:id="vendor12" GridPane.columnIndex="13" GridPane.rowIndex="21" />
+                        <TextField fx:id="vendor13" GridPane.columnIndex="13" GridPane.rowIndex="22" />
+                        <TextField fx:id="vendor14" GridPane.columnIndex="13" GridPane.rowIndex="23" />
+                        <TextField fx:id="vendor15" GridPane.columnIndex="13" GridPane.rowIndex="24" />
+                        <TextField fx:id="vendor16" GridPane.columnIndex="13" GridPane.rowIndex="26" />
+                        <TextField fx:id="vendor17" GridPane.columnIndex="13" GridPane.rowIndex="27" />
+                        <TextField fx:id="vendor18" GridPane.columnIndex="13" GridPane.rowIndex="28" />
+                        <TextField fx:id="vendor19" GridPane.columnIndex="13" GridPane.rowIndex="29" />
+                        <TextField fx:id="vendor20" GridPane.columnIndex="13" GridPane.rowIndex="30" />
+                        <TextField fx:id="vendor21" GridPane.columnIndex="13" GridPane.rowIndex="31" />
+                        <TextField fx:id="vendor22" GridPane.columnIndex="13" GridPane.rowIndex="32" />
+                        <TextField fx:id="vendor23" GridPane.columnIndex="13" GridPane.rowIndex="33" />
+                        <TextField fx:id="vendor24" GridPane.columnIndex="13" GridPane.rowIndex="34" />
+                        <TextField fx:id="vendor25" GridPane.columnIndex="13" GridPane.rowIndex="35" />
+                        <TextField fx:id="vendor26" GridPane.columnIndex="13" GridPane.rowIndex="36" />
+                        <TextField fx:id="vendor27" GridPane.columnIndex="13" GridPane.rowIndex="37" />
+                        <TextField fx:id="vendor28" GridPane.columnIndex="13" GridPane.rowIndex="38" />
+                        <TextField fx:id="vendor29" GridPane.columnIndex="13" GridPane.rowIndex="39" />
+                        <TextField fx:id="vendor30" GridPane.columnIndex="13" GridPane.rowIndex="41" />
+                        <TextField fx:id="vendor31" GridPane.columnIndex="13" GridPane.rowIndex="43" />
+                        <TextField fx:id="vendor32" GridPane.columnIndex="13" GridPane.rowIndex="44" />
+                        <TextField fx:id="vendor33" GridPane.columnIndex="13" GridPane.rowIndex="45" />
+                        <TextField fx:id="vendor34" GridPane.columnIndex="13" GridPane.rowIndex="46" />
+                        <TextField fx:id="vendor35" GridPane.columnIndex="13" GridPane.rowIndex="47" />
+                        <TextField fx:id="vendor36" GridPane.columnIndex="13" GridPane.rowIndex="48" />
+                        <TextField fx:id="vendor37" GridPane.columnIndex="13" GridPane.rowIndex="49" />
+                        <TextField fx:id="vendor38" GridPane.columnIndex="13" GridPane.rowIndex="49" />
+                        <TextField fx:id="vendor39" GridPane.columnIndex="13" GridPane.rowIndex="50" />
+                        <TextField fx:id="vendor40" GridPane.columnIndex="13" GridPane.rowIndex="51" />
+                        <TextField fx:id="vendor41" GridPane.columnIndex="13" GridPane.rowIndex="52" />
+                        <TextField fx:id="vendor42" GridPane.columnIndex="13" GridPane.rowIndex="53" />
+                        <TextField fx:id="vendor43" GridPane.columnIndex="13" GridPane.rowIndex="55" />
+                        <TextField fx:id="vendor44" GridPane.columnIndex="13" GridPane.rowIndex="56" />
+                        <TextField fx:id="vendor45" GridPane.columnIndex="13" GridPane.rowIndex="57" />
+                        <TextField fx:id="vendor46" GridPane.columnIndex="13" GridPane.rowIndex="58" />
+                        <TextField fx:id="vendor47" GridPane.columnIndex="13" GridPane.rowIndex="59" />
+                        <TextField fx:id="vendor48" GridPane.columnIndex="13" GridPane.rowIndex="60" />
+                        <TextField fx:id="vendor50" GridPane.columnIndex="13" GridPane.rowIndex="61" />
                         <TextField GridPane.columnIndex="13" GridPane.rowIndex="62" />
                         <Label fx:id="L30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="custom-field" stylesheets="@style.css" text="LOWER RADIATOR HOSE" GridPane.columnIndex="1" GridPane.rowIndex="40" />
                         <CheckBox fx:id="OK30" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#checked" styleClass="check-box-regular" stylesheets="@style.css" GridPane.columnIndex="2" GridPane.rowIndex="40" />

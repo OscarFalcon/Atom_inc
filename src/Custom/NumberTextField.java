@@ -13,114 +13,73 @@ import javafx.scene.input.KeyEvent;
 
 public class NumberTextField extends TextField
 {
+   private String lastInput = "$0.00";
+   private boolean flag; 
    
-    
 	public NumberTextField(){
 		super();
-		this.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent kr) {
-				String text = getText();
-/*
-				if(ke.getCode() == KeyCode.BACK_SPACE){
-					setText(text.substring(0,text.length()-1));
-					moveCarret(getText().length());
-				}	
-				else{
-	*/			
-				System.out.println("Key Pressed: " + kr.getText());
-				System.out.println("getText = " + text);
-				text = validStr(text); //replace all non digits with nothing
-				text = trim2(text); //remove all leading 0 chars
-				setValue(Double.parseDouble(addPeriod(text)));
-				System.out.println("cp: " + getCaretPosition());
-				//moveCarret(text.length());
-				System.out.println("cp: " + getCaretPosition());
-				}	
-		//	}
-		});
-		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
+		this.setOnKeyReleased(new EventHandler<KeyEvent>(){ /** move carret and lastInput must be on key released **/ 
 			@Override
 			public void handle(KeyEvent event) {
-				// TODO Auto-generated method stub
-				String text = getText();
-				if(event.getCode() == KeyCode.BACK_SPACE){
-					setText(text.substring(0, text.length()-1));
-					moveCarret(getText().length());
-				}
-			}
-			
+				lastInput = getText();
+				moveCarret(getText().length());
+			}	
 		});
+		this.setOnKeyPressed(new EventHandler<KeyEvent>(){ /** boolean logic must be on key pressed **/
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.BACK_SPACE)
+					flag = true;
+				else
+					flag = false;
+			}
+	    });
 		setText("$0.00");
 	}
 	
-
-    @Override
-    public void replaceText(int start, int end, String text)
-    {       	
-    	if (validate(text))
-        {
-            super.replaceText(start, end,text);
-        }
-   	
+	@Override
+    public void replaceText(int start, int end, String text){       
+		if(flag)
+        	setValue(getValueOf(lastInput.substring(0, lastInput.length()-1)));
+    	else
+    		setValue(getValueOf(lastInput + text));	
+    	
+    	moveCarret(getText().length());
     } 
-    
-    @Override
+  
+   /**@Override
     public void replaceSelection(String text)
     {    	
-        if (!validate(text))
-        {
-            super.replaceSelection(text);
-        } 
+        setValue(getValueOf(getText()));
     } 
-
-    private boolean validate(String text)
-    {
-        if (text.matches("[0-9]"))
-        {
-            return true;
-        }
-        return false;
-    }
-    
-    
-    private void moveCarret(int pos){
-        this.positionCaret(pos);
-
-    }
-    
-    public static Double getValueOf(String currency){
-    	currency = validStr(currency);
-    	currency = trim2(currency);
-    	currency = addPeriod(currency);
-    	return Double.parseDouble(currency);
-    }
-    
-    
+	**/
+	
     public Double getValue() {
 		return getValueOf(getText());
 	}
+ 
 
-	public void setValue(double number){
-		System.out.println("set text " + NumberFormat.getCurrencyInstance().format(number));
-		super.setText(NumberFormat.getCurrencyInstance().format(number));
-    	moveCarret(NumberFormat.getCurrencyInstance().format(number).length());
+    /**	private methods **/
+    private void setValue(double number){
+		String currency = NumberFormat.getCurrencyInstance().format(number);
+		super.setText(currency);
 	}
-	
-	
-	
-	private static String trim2(String text){
+    private void moveCarret(int pos){
+        this.positionCaret(pos);
+    }
+    
+    /** private static methods **/
+    private static String trim(String text){
 		int i = 0;
-		while(i < text.length() && text.charAt(i) == '0'){ i++;}
+		while(i < text.length() && text.charAt(i) == '0')
+			i++;
 		text = text.substring(i);
 		return text;
 	}
-	
 	private static String validStr(String s){
 		return s.replaceAll("\\D", "");
 	}
-	
 	private static String addPeriod(String number){
 		if(number.length() == 0) 
 			number = "0.00";
@@ -132,4 +91,11 @@ public class NumberTextField extends TextField
 		}
 		return number;
 	} 
+	/** public static methods **/
+    public static Double getValueOf(String currency){
+    	currency = validStr(currency);
+    	currency = trim(currency);
+    	currency = addPeriod(currency);
+    	return Double.parseDouble(currency);
+    }
 }

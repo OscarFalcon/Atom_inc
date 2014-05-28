@@ -54,6 +54,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -63,8 +64,9 @@ import MyCMS.*;
 
 public class MyController implements Initializable{
 	
-	private static int ROW_COUNT = 50;
+	private static int ROW_COUNT = 50; //the number of rows in the PMA;
 	private static int WORK_ORDER_NUMBER = 3; //the work order number used to load a specific PMA 
+	
 	
 	/** title fields **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
@@ -97,32 +99,41 @@ public class MyController implements Initializable{
 	@FXML Label L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
 				L38,L39,L40,L41,L42;
 	
+	/** vendors fields **/
+	@FXML private TextField vendor1,vendor2,vendor3,vendor4,vendor5,vendor6,vendor7,vendor8,vendor9,vendor10,vendor11,vendor12,vendor13,vendor14,
+								vendor15,vendor16,vendor17,vendor18,vendor19,vendor20,vendor21,vendor22,vendor23,vendor24,vendor25,
+								vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35,vendor36,vendor37,
+								vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47,vendor48,vendor49,vendor50; 
+	
+	/** customer concerns text area **/
 	@FXML private TextArea CustConcerns;
 	
+	/** grid pane that holds the rows of the PMA **/
 	@FXML private GridPane grid;
 
+	/** total parts text field that the CUSTOMER sees **/
 	private NumberTextField partsTot1, partsTot2, partsTot3, partsTot4, partsTot5, partsTot6, partsTot7, partsTot8, partsTot9, partsTot10, partsTot11, partsTot12
 	, partsTot13, partsTot14, partsTot15, partsTot16, partsTot17, partsTot18, partsTot19, partsTot20, partsTot21, partsTot22, partsTot23, partsTot24, partsTot25, partsTot26
 	, partsTot27, partsTot28, partsTot29, partsTot30, partsTot31, partsTot32, partsTot33, partsTot34, partsTot35, partsTot36, partsTot37, partsTot38, partsTot39, partsTot40
 	, partsTot41, partsTot42, partsTot43, partsTot44, partsTot45, partsTot46, partsTot47, partsTot48, partsTot49, partsTot50;
 	
+	/** parts text field that the STORE sees **/
 	private NumberTextField partsCost1, partsCost2, partsCost3, partsCost4, partsCost5, partsCost6, partsCost7, partsCost8, partsCost9, partsCost10, partsCost11, partsCost12
 	, partsCost13, partsCost14, partsCost15, partsCost16, partsCost17, partsCost18, partsCost19, partsCost20, partsCost21, partsCost22, partsCost23, partsCost24, partsCost25, partsCost26
 	, partsCost27, partsCost28, partsCost29, partsCost30, partsCost31, partsCost32, partsCost33, partsCost34, partsCost35, partsCost36, partsCost37, partsCost38, partsCost39, partsCost40
 	, partsCost41, partsCost42, partsCost43, partsCost44, partsCost45, partsCost46, partsCost47, partsCost48, partsCost49, partsCost50;
 	
-	
+	/**labor text field that the CUSTOMER sees **/
 	private NumberTextField laborTot1, laborTot2, laborTot3, laborTot4, laborTot5, laborTot6, laborTot7, laborTot8, laborTot9, laborTot10, laborTot11, laborTot12, laborTot13
 	, laborTot14, laborTot15, laborTot16, laborTot17, laborTot18, laborTot19, laborTot20, laborTot21, laborTot22, laborTot23, laborTot24, laborTot25, laborTot26, laborTot27, laborTot28
 	, laborTot29, laborTot30, laborTot31, laborTot32, laborTot33, laborTot34, laborTot35, laborTot36, laborTot37, laborTot38, laborTot39, laborTot40, laborTot41, laborTot42, laborTot43
 	, laborTot44, laborTot45, laborTot46, laborTot47, laborTot48, laborTot49, laborTot50;
 	
+	/**labor text field that the STORE sees **/
 	private NumberTextField laborCost1, laborCost2, laborCost3, laborCost4, laborCost5, laborCost6, laborCost7, laborCost8, laborCost9, laborCost10, laborCost11, laborCost12
 	, laborCost13, laborCost14, laborCost15, laborCost16, laborCost17, laborCost18, laborCost19, laborCost20, laborCost21, laborCost22, laborCost23, laborCost24, laborCost25, laborCost26
 	, laborCost27, laborCost28, laborCost29, laborCost30, laborCost31, laborCost32, laborCost33, laborCost34, laborCost35, laborCost36, laborCost37, laborCost38, laborCost39, laborCost40
 	, laborCost41, laborCost42, laborCost43, laborCost44, laborCost45, laborCost46, laborCost47, laborCost48, laborCost49, laborCost50;
-	
-
 	
 	private CheckBox[][] checkboxes;
 	
@@ -132,11 +143,13 @@ public class MyController implements Initializable{
 	
 	private ComboBox<String>[] priorities;
 	
+	private TextField[] vendors;
+	
 	private Label[] labels;
 	
-	NumberTextField[][] parts;
+	private NumberTextField[][] parts;
 	
-	NumberTextField[][] labor;
+	private NumberTextField[][] labor;
 
 	private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
@@ -144,48 +157,41 @@ public class MyController implements Initializable{
 	
 	private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
-	
+	/** the PMA object that will be used throughout the program **/
 	private PMAObject PMA; 
 	
-	
 	public void checked(ActionEvent event){		
-		int place,index = 1;
+		int place,index;
 		CheckBox box;
 		
+		place = 0; 	// place is what line the fired checkbox is located with respect to corresponding values
 		box = (CheckBox) event.getSource();
-
-		// Get the box that was checked!
-		//place is what line it is located with respect to corresponding values
-		place = 0;
-		while(box != checkboxes[place][0] && box != checkboxes[place][1])
+		while(box != checkboxes[place][0] && box != checkboxes[place][1]) // Get the box that was checked!
 			place++;
 		if(box == checkboxes[place][0])
 			index = 0;
 		else
 			index = 1;
 		
-		//set all fields to false, default colors appropriately, and set default values to 0.0*********************
-		checkboxes[place][0].getStyleClass().removeAll("check-box-regular","check-box-invalid");
-		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");
+		checkboxes[place][0].getStyleClass().removeAll("check-box-regular","check-box-invalid");		//set all fields to false, default colors appropriately																				
+		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");	//and set default values to 0.0*********************
 		checkboxes[place][0].getStyleClass().add("check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
 		disableFields(place);
+		
 		if (index == 0){
-			//set NotOK checkbox to be disabled and default color
-			checkboxes[place][1].setSelected(false);
-		} else if (index == 1){
+			checkboxes[place][1].setSelected(false); //set NotOK checkbox to be disabled and default color
+		} else{
 			if(checkboxes[place][index].isSelected()){
-				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
-				checkboxes[place][1].getStyleClass().remove("check-box-regular");
-				checkboxes[place][1].getStyleClass().add("check-box-invalid");
+				checkboxes[place][1].getStyleClass().remove("check-box-regular"); //If the NOTOK checkbox is checked then we DO need to open the 
+				checkboxes[place][1].getStyleClass().add("check-box-invalid");	 //fields to say what's wrong and give prices
 				enableFields(place);
 			}
-			//set OK checkbox to be disabled and default color
-			checkboxes[place][0].setSelected(false);
-		}
-		
+			checkboxes[place][0].setSelected(false);	//set OK checkbox to be disabled
+		}	
 	}
-	public void enableFields(int place){
+	
+	private void enableFields(int place){
 		techcomments[place].setDisable(false);
 		recommendedrepairs[place].setDisable(false);
 		priorities[place].setDisable(false);
@@ -199,7 +205,7 @@ public class MyController implements Initializable{
 	}
 	
 	/**This should also set default values for everything*/
-	public void disableFields(int place){
+	private void disableFields(int place){
 		techcomments[place].setDisable(true);
 		techcomments[place].setValue("");
 		recommendedrepairs[place].setDisable(true);
@@ -362,6 +368,7 @@ public class MyController implements Initializable{
 				
 	    }   **/
 	}
+	
 	private int addRows(int rowNum){
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
@@ -379,8 +386,10 @@ public class MyController implements Initializable{
 			PMA.totalParts[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][0].getText()));
 			PMA.partCost[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][1].getText()));
 			PMA.totalLabor[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][0].getText()));
-			PMA.totalLabor[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][1].getText()));
-			PMA.qty[i] = 
+			PMA.laborCost[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][1].getText()));
+			PMA.vendor[i] = vendors[i].getText();
+			//PMA.qty[i] = 
+			
 			
 			
 		}
@@ -423,9 +432,6 @@ public void initialize(URL location, ResourceBundle resources) {
 		labor[i][1] = new NumberTextField();
 		labor[i][1].setDisable(true);
 	}
-	parts[0][0].getStyleClass().add("red-label");
-
-	
 	/**Add all numberFields into their appropriate positions in the grid*/
 	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
 		addrows = addRows(i); col=7;
@@ -465,6 +471,14 @@ public void initialize(URL location, ResourceBundle resources) {
 				L38,L39,L40,L41,L42};
 		
 	
+		vendors = new TextField[]{vendor1,vendor2,vendor3,vendor4,vendor5,vendor6,vendor7,vendor8,vendor9,vendor10,vendor11
+				,vendor12,vendor13,vendor14,vendor15,vendor16,vendor17,vendor18,vendor19,vendor20,vendor21,vendor22,vendor23
+				,vendor24,vendor25,vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35,
+				vendor36,vendor37,vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47
+				,vendor48,vendor49,vendor50};
+		
+		
+		
 		for(int i = 0; i < ROW_COUNT ;i++){
 			techcomments[i].setDisable(true);
 			recommendedrepairs[i].setDisable(true);
