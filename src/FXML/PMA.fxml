@@ -16,6 +16,7 @@
                   <items>
                         <MenuItem mnemonicParsing="false" onAction="#excel" text="Print" />
                     <MenuItem mnemonicParsing="false" text="Export As Excel Document" />
+                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">

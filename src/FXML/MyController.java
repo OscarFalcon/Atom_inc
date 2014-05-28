@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.print.PrintService;
@@ -363,6 +366,8 @@ public class MyController implements Initializable{
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
 	
+	
+	
 	public void save(){
 		for(int i = 0; i < ROW_COUNT; i++){
 			PMA.ok[i] = checkboxes[i][0].isSelected();
@@ -371,6 +376,13 @@ public class MyController implements Initializable{
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();
+			PMA.totalParts[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][0].getText()));
+			PMA.partCost[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][1].getText()));
+			PMA.totalLabor[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][0].getText()));
+			PMA.totalLabor[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][1].getText()));
+			PMA.qty[i] = 
+			
+			
 		}
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
@@ -411,7 +423,8 @@ public void initialize(URL location, ResourceBundle resources) {
 		labor[i][1] = new NumberTextField();
 		labor[i][1].setDisable(true);
 	}
-	
+	parts[0][0].getStyleClass().add("red-label");
+
 	
 	/**Add all numberFields into their appropriate positions in the grid*/
 	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
@@ -422,7 +435,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		grid.add(parts[i][1], col++, row+addrows);
 		grid.add(labor[i][1], col++, row+addrows);
 	}
-	
+
 	
 	/** put all declared FX id variables in arrays for easier processing later on **/
 	

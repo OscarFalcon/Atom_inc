@@ -23,11 +23,15 @@ public class PMAObject extends Object implements Serializable{
 	public String[] tech_comments;
 	public String[] recommended_repairs;
 	public int[] priority;
-	public BigDecimal[] totalParts;
-	public BigDecimal[] totalLabor;
-	public BigDecimal[] laborCost;
-	public BigDecimal[] partCost;
+	
+	public BigDecimal[] totalParts;//what the customer sees
+	public BigDecimal[] totalLabor; //what the customer sees
+	
+	public BigDecimal[] laborCost; // stores cost
+	public BigDecimal[] partCost; // stores cost 
+	
 	public int[] qty;
+	
 	public String[] vendor;
 	public BigDecimal[] totals; 
 	

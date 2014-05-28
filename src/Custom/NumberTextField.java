@@ -85,18 +85,21 @@ public class NumberTextField extends TextField
     }
     
     
-    public void moveCarret(int pos){
+    private void moveCarret(int pos){
         this.positionCaret(pos);
 
     }
     
+    public static Double getValueOf(String currency){
+    	currency = validStr(currency);
+    	currency = trim2(currency);
+    	currency = addPeriod(currency);
+    	return Double.parseDouble(currency);
+    }
+    
     
     public Double getValue() {
-		String s = getText();
-		s = validStr(s);
-		s = trim2(s);
-		s = addPeriod(s);
-		return Double.parseDouble(s);
+		return getValueOf(getText());
 	}
 
 	public void setValue(double number){
@@ -105,18 +108,20 @@ public class NumberTextField extends TextField
     	moveCarret(NumberFormat.getCurrencyInstance().format(number).length());
 	}
 	
-	public String trim2(String text){
+	
+	
+	private static String trim2(String text){
 		int i = 0;
 		while(i < text.length() && text.charAt(i) == '0'){ i++;}
 		text = text.substring(i);
 		return text;
 	}
 	
-	private String validStr(String s){
+	private static String validStr(String s){
 		return s.replaceAll("\\D", "");
 	}
 	
-	private String addPeriod(String number){
+	private static String addPeriod(String number){
 		if(number.length() == 0) 
 			number = "0.00";
 		else if(number.length() == 1)
