@@ -180,6 +180,7 @@ public static class employee{
 		 * @param email
 		 * @return SUCCCESS if successfully added client to database, error code otherwise
 		 */
+		
 		public static boolean addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			String statement;
@@ -210,7 +211,7 @@ public static class employee{
 			if(MySQL.execute(statement, arguments) == false){
 				e.setMySQLError(MySQL.errorno);
 				return false;
-			}	
+			}				
 			return true;
 		}
 		

@@ -22,7 +22,6 @@ public class PMA extends Application{
 		Parent root = FXMLLoader.load(getClass().getResource("PMA.fxml"));
         Scene scene = new Scene(root, 1200, 800);
         stage.setScene(scene);
-        //stage.getIcons().add(new Image(getClass().getResourceAsStream("Icons/2fatguyslogo.png")));
         stage.show();
 	}
 }
