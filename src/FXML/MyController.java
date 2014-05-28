@@ -95,6 +95,29 @@ public class MyController implements Initializable{
 	@FXML Label L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
 				L38,L39,L40,L41,L42;
 	
+	private NumberTextField partsTot1, partsTot2, partsTot3, partsTot4, partsTot5, partsTot6, partsTot7, partsTot8, partsTot9, partsTot10, partsTot11, partsTot12
+	, partsTot13, partsTot14, partsTot15, partsTot16, partsTot17, partsTot18, partsTot19, partsTot20, partsTot21, partsTot22, partsTot23, partsTot24, partsTot25, partsTot26
+	, partsTot27, partsTot28, partsTot29, partsTot30, partsTot31, partsTot32, partsTot33, partsTot34, partsTot35, partsTot36, partsTot37, partsTot38, partsTot39, partsTot40
+	, partsTot41, partsTot42, partsTot43, partsTot44, partsTot45, partsTot46, partsTot47, partsTot48, partsTot49, partsTot50;
+	
+	private NumberTextField partsCost1, partsCost2, partsCost3, partsCost4, partsCost5, partsCost6, partsCost7, partsCost8, partsCost9, partsCost10, partsCost11, partsCost12
+	, partsCost13, partsCost14, partsCost15, partsCost16, partsCost17, partsCost18, partsCost19, partsCost20, partsCost21, partsCost22, partsCost23, partsCost24, partsCost25, partsCost26
+	, partsCost27, partsCost28, partsCost29, partsCost30, partsCost31, partsCost32, partsCost33, partsCost34, partsCost35, partsCost36, partsCost37, partsCost38, partsCost39, partsCost40
+	, partsCost41, partsCost42, partsCost43, partsCost44, partsCost45, partsCost46, partsCost47, partsCost48, partsCost49, partsCost50;
+	
+	
+	private NumberTextField laborTot1, laborTot2, laborTot3, laborTot4, laborTot5, laborTot6, laborTot7, laborTot8, laborTot9, laborTot10, laborTot11, laborTot12, laborTot13
+	, laborTot14, laborTot15, laborTot16, laborTot17, laborTot18, laborTot19, laborTot20, laborTot21, laborTot22, laborTot23, laborTot24, laborTot25, laborTot26, laborTot27, laborTot28
+	, laborTot29, laborTot30, laborTot31, laborTot32, laborTot33, laborTot34, laborTot35, laborTot36, laborTot37, laborTot38, laborTot39, laborTot40, laborTot41, laborTot42, laborTot43
+	, laborTot44, laborTot45, laborTot46, laborTot47, laborTot48, laborTot49, laborTot50;
+	
+	private NumberTextField laborCost1, laborCost2, laborCost3, laborCost4, laborCost5, laborCost6, laborCost7, laborCost8, laborCost9, laborCost10, laborCost11, laborCost12
+	, laborCost13, laborCost14, laborCost15, laborCost16, laborCost17, laborCost18, laborCost19, laborCost20, laborCost21, laborCost22, laborCost23, laborCost24, laborCost25, laborCost26
+	, laborCost27, laborCost28, laborCost29, laborCost30, laborCost31, laborCost32, laborCost33, laborCost34, laborCost35, laborCost36, laborCost37, laborCost38, laborCost39, laborCost40
+	, laborCost41, laborCost42, laborCost43, laborCost44, laborCost45, laborCost46, laborCost47, laborCost48, laborCost49, laborCost50;
+	
+
+	
 	private CheckBox[][] checkboxes;
 	
 	private ComboBox<String>[] techcomments;
@@ -105,6 +128,10 @@ public class MyController implements Initializable{
 	
 	private Label[] labels;
 	
+	NumberTextField[][] parts;
+	
+	NumberTextField[][] labor;
+
 	private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
 	private MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
@@ -134,39 +161,56 @@ public class MyController implements Initializable{
 		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][0].getStyleClass().add("check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		techcomments[place].setDisable(true);
-		recommendedrepairs[place].setDisable(true);
-		priorities[place].setDisable(true);
-		
+		disableFields(place);
 		if (index == 0){
 			//set NotOK checkbox to be disabled and default color
 			checkboxes[place][1].setSelected(false);
-			techcomments[place].setDisable(true);
-			recommendedrepairs[place].setDisable(true);
-			menuItemsApproved[place].setDisable(true);
-			menuItemsDisapproved[place].setDisable(true);
-			menuItemsInformation[place].setDisable(true);
-			priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
-			priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
-			priorities[place].getStyleClass().add("custom-field");
-			priorities[place].getEditor().getStyleClass().add("custom-field");
 		} else if (index == 1){
 			if(checkboxes[place][index].isSelected()){
 				//If the NOTOK checkbox is checked then we DO need to open the fields to say whats wrong and give prices
 				checkboxes[place][1].getStyleClass().remove("check-box-regular");
 				checkboxes[place][1].getStyleClass().add("check-box-invalid");
-				techcomments[place].setDisable(false);
-				recommendedrepairs[place].setDisable(false);
-				priorities[place].setDisable(false);
-				menuItemsApproved[place].setDisable(false);
-				menuItemsDisapproved[place].setDisable(false);
-				menuItemsInformation[place].setDisable(false);
+				enableFields(place);
 			}
 			//set OK checkbox to be disabled and default color
 			checkboxes[place][0].setSelected(false);
 		}
 		
 	}
+	
+	
+	public void enableFields(int place){
+		techcomments[place].setDisable(false);
+		recommendedrepairs[place].setDisable(false);
+		priorities[place].setDisable(false);
+		parts[place][0].setDisable(false);
+		parts[place][1].setDisable(false);
+		labor[place][0].setDisable(false);
+		labor[place][1].setDisable(false);
+		menuItemsApproved[place].setDisable(false);
+		menuItemsDisapproved[place].setDisable(false);
+		menuItemsInformation[place].setDisable(false);
+	}
+	
+	/**This should also set default values for everything*/
+	public void disableFields(int place){
+		techcomments[place].setDisable(true);
+		techcomments[place].setValue("");
+		recommendedrepairs[place].setDisable(true);
+		recommendedrepairs[place].setValue("");
+		priorities[place].setDisable(true);
+		priorities[place].setValue("");
+		parts[place][0].setDisable(true);
+		//parts[place][0].setValue(0.0);
+		parts[place][1].setDisable(true);
+		labor[place][0].setDisable(true);
+		labor[place][1].setDisable(true);
+		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
+		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+		priorities[place].getStyleClass().add("custom-field");
+		priorities[place].getEditor().getStyleClass().add("custom-field");
+	}
+	
 
 	public void excel() throws Exception {
 		Row row;
@@ -320,6 +364,49 @@ public class MyController implements Initializable{
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 		
+	
+	parts = new NumberTextField[][] {{partsTot1, partsCost1}, {partsTot2, partsCost2}, {partsTot3, partsCost3}, {partsTot4, partsCost4}, {partsTot5, partsCost5}, {partsTot6, partsCost6}
+	, {partsTot7, partsCost7}, {partsTot8, partsCost8}, {partsTot9, partsCost9}, {partsTot10, partsCost10}, {partsTot11, partsCost11}, {partsTot12, partsCost12}, {partsTot13, partsCost13}
+	, {partsTot14, partsCost14}, {partsTot15, partsCost15}, {partsTot16, partsCost16}, {partsTot17, partsCost17}, {partsTot18, partsCost18}, {partsTot19, partsCost19}, {partsTot20, partsCost20}
+	, {partsTot21, partsCost21}, {partsTot22, partsCost22}, {partsTot23, partsCost23}, {partsTot24, partsCost24}, {partsTot25, partsCost25}, {partsTot26, partsCost26}, {partsTot27, partsCost27}
+	, {partsTot28, partsCost28}, {partsTot29, partsCost29}, {partsTot30, partsCost30}, {partsTot31, partsCost31}, {partsTot32, partsCost32}, {partsTot33, partsCost33}, {partsTot34, partsCost34}
+	, {partsTot35, partsCost35}, {partsTot36, partsCost36}, {partsTot37, partsCost37}, {partsTot38, partsCost38}, {partsTot39, partsCost39}, {partsTot40, partsCost40}, {partsTot41, partsCost41}
+	, {partsTot42, partsCost42}, {partsTot43, partsCost43}, {partsTot44, partsCost44}, {partsTot45, partsCost45}, {partsTot46, partsCost46}, {partsTot47, partsCost47}, {partsTot48, partsCost48}
+	, {partsTot49, partsCost49}, {partsTot50, partsCost50}};
+	
+	labor = new NumberTextField[][] {{laborTot1, laborCost1}, {laborTot2, laborCost2}, {laborTot3, laborCost3}, {laborTot4, laborCost4}, {laborTot5, laborCost5}, {laborTot6, laborCost6}
+	, {laborTot7, laborCost7}, {laborTot8, laborCost8}, {laborTot9, laborCost9}, {laborTot10, laborCost10}, {laborTot11, laborCost11}, {laborTot12, laborCost12}, {laborTot13, laborCost13}, {laborTot14, laborCost14}
+	, {laborTot15, laborCost15}, {laborTot16, laborCost16}, {laborTot17, laborCost17}, {laborTot18, laborCost18}, {laborTot19, laborCost19}, {laborTot20, laborCost20}, {laborTot21, laborCost21}, {laborTot22, laborCost22}
+	, {laborTot23, laborCost23}, {laborTot24, laborCost24}, {laborTot25, laborCost25}, {laborTot26, laborCost26}, {laborTot27, laborCost27}, {laborTot28, laborCost28}, {laborTot29, laborCost29}, {laborTot30, laborCost30}
+	, {laborTot31, laborCost31}, {laborTot32, laborCost32}, {laborTot33, laborCost33}, {laborTot34, laborCost34}, {laborTot35, laborCost35}, {laborTot36, laborCost36}, {laborTot37, laborCost37}, {laborTot38, laborCost38}
+	, {laborTot39, laborCost39}, {laborTot40, laborCost40}, {laborTot41, laborCost41}, {laborTot42, laborCost42}, {laborTot43, laborCost43}, {laborTot44, laborCost44}, {laborTot45, laborCost45}, {laborTot46, laborCost46}
+	, {laborTot47, laborCost47}, {laborTot48, laborCost48}, {laborTot49, laborCost49}, {laborTot50, laborCost50}};
+	
+	
+	/**Initialize all number text fields and disable them! will also need to adjust CSS to change color of disabled text*/
+	for(int i = 0; i < labor.length; i++){
+		parts[i][0] = new NumberTextField();
+		parts[i][0].setDisable(true);
+		parts[i][1] = new NumberTextField();
+		parts[i][1].setDisable(true);
+		labor[i][0] = new NumberTextField();
+		labor[i][0].setDisable(true);
+		labor[i][1] = new NumberTextField();
+		labor[i][1].setDisable(true);
+	}
+	
+	
+	/**Add all numberFields into their appropriate positions in the grid*/
+	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
+		addrows = addRows(i); col=7;
+		grid.add(parts[i][0], col++, row+addrows);
+		grid.add(labor[i][0], col, row+addrows);
+		col+=3;
+		grid.add(parts[i][1], col++, row+addrows);
+		grid.add(labor[i][1], col++, row+addrows);
+	}
+	
+	
 	/** put all declared FX id variables in arrays for easier processing later on **/
 	
 		checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
@@ -330,6 +417,7 @@ public void initialize(URL location, ResourceBundle resources) {
 				{OK39, NOTOK39},{OK40, NOTOK40},{OK41, NOTOK41},{OK42, NOTOK42},{OK43, NOTOK43},{OK44, NOTOK44},{OK45, NOTOK45},{OK46, NOTOK46},
 				{OK47, NOTOK47},{OK48, NOTOK48},{OK49, NOTOK49},{OK50, NOTOK50}};
 		
+
 		
 		techcomments = new ComboBox[] {TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20,TC21,TC22,TC23,TC24,TC25
 				,TC26,TC27,TC28,TC29,TC30,TC31,TC32,TC33,TC34,TC35,TC36,TC37,TC38,TC39,TC40,TC41,TC42,TC43,TC44,TC45,TC46,TC47,TC48,TC49,TC50};
@@ -814,7 +902,6 @@ private void init(){
 		priorities[i].setItems(observableLists.get(index+2));
 		index+=3;
 	}
-	grid.add(new NumberTextField(),7, 9);
 	
 	/** add context menus to all title labels **/
 	
