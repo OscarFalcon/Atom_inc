@@ -17,9 +17,9 @@ public class PMAObject extends Object implements Serializable{
 	public String customer_concerns;
 	public int year;
 	
-	public byte[] ok;
-	public byte[] notok;
-	public byte[] approved;
+	public boolean[] ok;
+	public boolean[] notok;
+	public boolean[] approved;
 	public String[] tech_comments;
 	public String[] recommended_repairs;
 	public int[] priority;
@@ -33,18 +33,18 @@ public class PMAObject extends Object implements Serializable{
 	
 	
 	public PMAObject(){
-		ok = new byte[42];
-		notok = new byte[42];
-		tech_comments = new String[42];
-		recommended_repairs = new String[42];
-		priority = new int[42];
-		totalParts = new BigDecimal[42];
-		totalLabor = new BigDecimal[42];
-		laborCost = new BigDecimal[42];
-		partCost = new BigDecimal[42];
-		approved = new byte[42];
-		qty = new int[42];
-		vendor = new String[42];
+		ok = new boolean[50];
+		notok = new boolean[50];
+		tech_comments = new String[50];
+		recommended_repairs = new String[50];
+		priority = new int[50];
+		totalParts = new BigDecimal[50];
+		totalLabor = new BigDecimal[50];
+		laborCost = new BigDecimal[50];
+		partCost = new BigDecimal[50];
+		approved = new boolean[50];
+		qty = new int[50];
+		vendor = new String[50];
 		totals = new BigDecimal[9];
 	}
 	

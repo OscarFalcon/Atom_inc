@@ -1,5 +1,7 @@
 package MyCMS;
 
+import java.sql.Date;
+
 public class Type {
 
 	public static final int STRING = 0;
@@ -7,6 +9,7 @@ public class Type {
 	public static final int OBJECT = 2;
 	public static final int BYTE = 3;
 	public static final int PMA_OBJECT = 4;
+	public static final int DATE = 5;
 	
 	private Object value;
 	private int type;
@@ -27,7 +30,9 @@ public class Type {
 		value = B;
 		type = BYTE;
 	}
-	
+	public Type(Date D){
+		value = D;
+	}
 	
 	
 	public Object getValue(){

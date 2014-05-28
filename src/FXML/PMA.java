@@ -7,6 +7,8 @@ import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 
 
@@ -23,6 +25,6 @@ public class PMA extends Application{
         Scene scene = new Scene(root, 1200, 800);
         stage.setScene(scene);
         stage.show();
-	}
+       	}
 }
 

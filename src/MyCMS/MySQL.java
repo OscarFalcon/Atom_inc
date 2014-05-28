@@ -213,14 +213,18 @@ public class MySQL {
 		try{
 			for(i = 0; i < arguments.size(); i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
 				switch( arguments.get(i).getType() ){
+					case Type.BYTE:
+						preparedStatement.setByte(i+1, (Byte) arguments.get(i).getValue() );
+					
 					case Type.INTEGER:
-						preparedStatement.setInt(i+1, (Integer)arguments.get(i).getValue() );
+						preparedStatement.setInt(i+1, (Integer) arguments.get(i).getValue() );
 						break;
 					case Type.OBJECT:
-						preparedStatement.setObject(i+1, (Object)arguments.get(i).getValue() );
+					case Type.PMA_OBJECT:
+						preparedStatement.setObject(i+1, (Object) arguments.get(i).getValue() );
 						break;
 					case Type.STRING:
-						preparedStatement.setString(i+1,(String)arguments.get(i).getValue() );
+						preparedStatement.setString(i+1,(String) arguments.get(i).getValue() );
 						break;
 					default:
 						errorno = INVALID_ARGUMENTS;
@@ -260,6 +264,9 @@ public class MySQL {
 								object = objectIn.readObject();
 								tmp[j] = object;
 							}
+							break;
+						case Type.DATE:
+							tmp[j] = resultSet.getDate(j+1);
 							break;
 					}//switch
 				}//for loop
@@ -317,6 +324,7 @@ public class MySQL {
 							preparedStatement.setInt(i+1,(Integer)arguments.get(i).getValue());
 							break;
 						case Type.OBJECT:
+						case Type.PMA_OBJECT:
 							preparedStatement.setObject(i+1,arguments.get(i).getValue());
 							break;
 						case Type.STRING:

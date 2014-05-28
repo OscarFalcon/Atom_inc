@@ -1,5 +1,6 @@
 package MyCMS;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class MyCMS {
@@ -260,17 +261,21 @@ public static class employee{
 	}
 	public static class PMA{
 		
-		public static Object getPMA(int workOrder){
-			String statement = "SELECT object FROM PMA WHERE wo = ?";
+		public static PMAObject getPMA(int workOrder){
+			String statement = "SELECT date,object FROM PMA WHERE wo = ?";
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
 			ArrayList<Object[]> results;
 			
 			arguments.add(new Type(workOrder));
+			result_types.add(Type.DATE);
 			result_types.add(Type.PMA_OBJECT);
 			results = MySQL.executeQuery(statement,arguments, result_types);
-			if(results != null)
-				return results.get(0)[0];
+			if(results != null){
+				PMAObject pma = (PMAObject) results.get(0)[1];
+				pma.date = (Date) results.get(0)[0];
+				return pma;
+			}
 			return null;
 		}
 		public static boolean updatePMA(int workOrder,PMAObject pma){

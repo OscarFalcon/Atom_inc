@@ -50,19 +50,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-
 import Custom.NumberTextField;
-import MyCMS.PMAObject;
 import MyCMS.*;
 
 
 public class MyController implements Initializable{
 	
 	private static int ROW_COUNT = 50;
-	private static int WORK_ORDER_NUMBER = 2; //the work order number used to load a specific PMA 
+	private static int WORK_ORDER_NUMBER = 3; //the work order number used to load a specific PMA 
 	
 	/** title fields **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
@@ -95,6 +94,10 @@ public class MyController implements Initializable{
 	@FXML Label L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
 				L38,L39,L40,L41,L42;
 	
+	@FXML private TextArea CustConcerns;
+	
+	@FXML private GridPane grid;
+
 	private NumberTextField partsTot1, partsTot2, partsTot3, partsTot4, partsTot5, partsTot6, partsTot7, partsTot8, partsTot9, partsTot10, partsTot11, partsTot12
 	, partsTot13, partsTot14, partsTot15, partsTot16, partsTot17, partsTot18, partsTot19, partsTot20, partsTot21, partsTot22, partsTot23, partsTot24, partsTot25, partsTot26
 	, partsTot27, partsTot28, partsTot29, partsTot30, partsTot31, partsTot32, partsTot33, partsTot34, partsTot35, partsTot36, partsTot37, partsTot38, partsTot39, partsTot40
@@ -138,7 +141,9 @@ public class MyController implements Initializable{
 	
 	private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
-	@FXML private GridPane grid;
+	
+	private PMAObject PMA; 
+	
 	
 	public void checked(ActionEvent event){		
 		int place,index = 1;
@@ -177,8 +182,6 @@ public class MyController implements Initializable{
 		}
 		
 	}
-	
-	
 	public void enableFields(int place){
 		techcomments[place].setDisable(false);
 		recommendedrepairs[place].setDisable(false);
@@ -360,6 +363,20 @@ public class MyController implements Initializable{
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
 	
+	public void save(){
+		for(int i = 0; i < ROW_COUNT; i++){
+			PMA.ok[i] = checkboxes[i][0].isSelected();
+			PMA.notok[i] = checkboxes[i][0].isSelected();
+			//approved[i] = 
+			PMA.tech_comments[i] = techcomments[i].getEditor().getText();
+			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();
+			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();
+		}
+		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
+	}
+	
+	
+	
 	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
@@ -446,18 +463,22 @@ public void initialize(URL location, ResourceBundle resources) {
 		} 
 		init();
 		
-		PMAObject pma = (PMAObject) MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
-		CUST.setText(pma.first);
+		PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
+		CUST.setText(PMA.first);
 		WO.setText(new Integer(WORK_ORDER_NUMBER).toString());
-		ENG.setText(pma.engine);
-		MAKE.setText(pma.make);
-		LICNUM.setText(pma.lic);
-		TRANS.setText(pma.trans);
-		TAGS.setText(pma.tags);
-		YEAR.setText(new Integer(pma.year).toString());
-		MODEL.setText(pma.model);
-		VIN.setText(pma.vin);
-		MILES.setText(pma.miles);
+		ENG.setText(PMA.engine);
+		MAKE.setText(PMA.make);
+		LICNUM.setText(PMA.lic);
+		TRANS.setText(PMA.trans);
+		TAGS.setText(PMA.tags);
+		YEAR.setText(new Integer(PMA.year).toString());
+		MODEL.setText(PMA.model);
+		VIN.setText(PMA.vin);
+		MILES.setText(PMA.miles);
+		DATE.setText(PMA.date.toString());
+		CustConcerns.setText(PMA.customer_concerns);
+		CustConcerns.setEditable(false);
+		
 		
 		
 		//System.out.println(MyCMS.PMA.createPMA(5856, "MV54WDV64HJ45", "new pma created"));
