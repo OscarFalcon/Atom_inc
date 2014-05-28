@@ -192,7 +192,7 @@ public class MyController implements Initializable{
 	}
 	
 	private void enableFields(int place){
-		techcomments[place].setDisable(false);
+		//techcomments[place].setDisable(false);
 		recommendedrepairs[place].setDisable(false);
 		priorities[place].setDisable(false);
 		parts[place][0].setDisable(false);
@@ -206,8 +206,8 @@ public class MyController implements Initializable{
 	
 	/**This should also set default values for everything*/
 	private void disableFields(int place){
-		techcomments[place].setDisable(true);
-		techcomments[place].setValue("");
+		//techcomments[place].setDisable(true);
+		//techcomments[place].setValue("");
 		recommendedrepairs[place].setDisable(true);
 		recommendedrepairs[place].setValue("");
 		priorities[place].setDisable(true);
@@ -389,9 +389,7 @@ public class MyController implements Initializable{
 			PMA.laborCost[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][1].getText()));
 			PMA.vendor[i] = vendors[i].getText();
 			//PMA.qty[i] = 
-			
-			
-			
+	
 		}
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
@@ -480,7 +478,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 		
 		for(int i = 0; i < ROW_COUNT ;i++){
-			techcomments[i].setDisable(true);
+			//techcomments[i].setDisable(true); // should be allowed to make comments no matter what.
 			recommendedrepairs[i].setDisable(true);
 			priorities[i].setDisable(true);
 			
