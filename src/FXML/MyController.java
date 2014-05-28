@@ -53,12 +53,16 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+
 import Custom.NumberTextField;
-import Custom.ABMTextField;;
+import MyCMS.PMAObject;
+import MyCMS.*;
+
 
 public class MyController implements Initializable{
 	
 	private static int ROW_COUNT = 50;
+	private static int WORK_ORDER_NUMBER = 2; //the work order number used to load a specific PMA 
 	
 	/** title fields **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
@@ -353,6 +357,24 @@ public void initialize(URL location, ResourceBundle resources) {
 			priorities[i].setEditable(true);
 		} 
 		init();
+		
+		PMAObject pma = (PMAObject) MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
+		CUST.setText(pma.first);
+		WO.setText(new Integer(WORK_ORDER_NUMBER).toString());
+		ENG.setText(pma.engine);
+		MAKE.setText(pma.make);
+		LICNUM.setText(pma.lic);
+		TRANS.setText(pma.trans);
+		TAGS.setText(pma.tags);
+		YEAR.setText(new Integer(pma.year).toString());
+		MODEL.setText(pma.model);
+		VIN.setText(pma.vin);
+		MILES.setText(pma.miles);
+		
+		
+		//System.out.println(MyCMS.PMA.createPMA(5856, "MV54WDV64HJ45", "new pma created"));
+		
+		
 	}
 
 
@@ -799,13 +821,13 @@ private void init(){
 	int i = 0;
 	for(Label l : labels){
 		ContextMenu contextMenu = new ContextMenu();
-		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/FXML/approve.png")));
+		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("FXML/approve.png")));
 		approve.setDisable(true);
 		menuItemsApproved[i] = approve;
-		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/FXML/red-x.png")));
+		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("FXML/red-x.png")));
 		disapprove.setDisable(true);
 		menuItemsDisapproved[i] = disapprove;
-		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/FXML/warning.png")));	
+		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("FXML/warning.png")));	
 		information.setDisable(true);
 		menuItemsInformation[i] = information;
 		contextMenu.getItems().addAll(approve,disapprove,information);
@@ -869,5 +891,9 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 			}
 	
 	}
-
+	public static void setWorkOrderNumber(int workOrderNumber){
+		WORK_ORDER_NUMBER = workOrderNumber;
+	}
+	
+	
 }

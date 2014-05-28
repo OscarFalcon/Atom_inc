@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import CustMgtSys_1.PMAObject;
+import MyCMS.PMAObject;
 import CustMgtSys_1.Security;
 import PMA.PMAController;
 import PMA.PMAView;

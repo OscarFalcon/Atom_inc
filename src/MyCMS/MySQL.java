@@ -1,9 +1,10 @@
 package MyCMS;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,12 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-
+import MyCMS.*;
 
 
 public class MySQL {
 
-	private static final String DATABASE_URL = "jdbc:mysql://24.153.253.126/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/customers";
 	private static final String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static final BasicDataSource dataSource = new BasicDataSource();
@@ -246,6 +247,20 @@ public class MySQL {
 						case Type.STRING:
 							tmp[j] = resultSet.getString(j+1);
 							break;
+						case Type.BYTE:
+							tmp[j] = resultSet.getByte(j+1);
+							break;
+						case Type.PMA_OBJECT:
+							ObjectInputStream objectIn = null;
+							byte[] buf = null;
+							Object object = null;	
+							buf = resultSet.getBytes(j+1);
+							if (buf != null){
+						    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+								object = objectIn.readObject();
+								tmp[j] = object;
+							}
+							break;
 					}//switch
 				}//for loop
 				list.add(tmp);
@@ -254,6 +269,12 @@ public class MySQL {
 			e.printStackTrace();
 			errorno = RESULT_SET_ERROR;
 			return null;
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		catch(ClassNotFoundException e){
+			e.printStackTrace();
 		}
 		finally{
 			try{
@@ -278,6 +299,7 @@ public class MySQL {
 			operationStatus = OPERATION_FAILED; /** initially, the SQL statement has not completed **/
 			
 			if(preparedStatementString == null || arguments == null){
+				System.out.println("Invalid Arguments");
 				errorno = INVALID_ARGUMENTS;
 				return false;
 			}
@@ -299,6 +321,9 @@ public class MySQL {
 							break;
 						case Type.STRING:
 							preparedStatement.setString(i+1,(String)arguments.get(i).getValue());
+							break;
+						case Type.BYTE:
+							preparedStatement.setByte(i+1, (Byte)arguments.get(i).getValue());
 							break;
 						default:
 							errorno = INVALID_ARGUMENTS;

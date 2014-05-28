@@ -1,10 +1,6 @@
 package MyCMS;
 
-
 import java.util.ArrayList;
-
-import CustMgtSys_1.PMAObject;
-
 
 public class MyCMS {
 	
@@ -263,17 +259,17 @@ public static class employee{
 	}
 	public static class PMA{
 		
-		public static PMAObject getPMA(int workOrder){
+		public static Object getPMA(int workOrder){
 			String statement = "SELECT object FROM PMA WHERE wo = ?";
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
 			ArrayList<Object[]> results;
 			
 			arguments.add(new Type(workOrder));
-			result_types.add(Type.OBJECT);
+			result_types.add(Type.PMA_OBJECT);
 			results = MySQL.executeQuery(statement,arguments, result_types);
 			if(results != null)
-				return (PMAObject)results.get(0)[0];
+				return results.get(0)[0];
 			return null;
 		}
 		public static boolean updatePMA(int workOrder,PMAObject pma){
@@ -289,7 +285,7 @@ public static class employee{
 			String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?)";
 			
 			String SEARCH_BY_VIN =  "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles " +
-					"from vehicle WHERE vin = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIMIT 1";
+					"from vehicle WHERE vin = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) && id = ?  LIMIT 1";
 		
 			String SEARCH_CUST = "SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 			+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info where id = ? LIMIT 1";
@@ -300,6 +296,7 @@ public static class employee{
 			
 			
 			arguments.add(new Type(vehicleVIN));
+			arguments.add(new Type(custID));
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			result_types.add(Type.INTEGER);
@@ -308,9 +305,13 @@ public static class employee{
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
+			
 
 			if((results = MySQL.executeQuery(SEARCH_BY_VIN, arguments, result_types)) == null)
 				return false;
+			
+			System.out.println("past search by vin");
+			
 			
 			PMAObject pma;
 			Object[] tmp = results.get(0);
@@ -336,6 +337,8 @@ public static class employee{
 			
 			if((results = MySQL.executeQuery(SEARCH_CUST, arguments, result_types)) == null)
 				return false;
+			System.out.println("past search cust");
+
 			
 			tmp = results.get(0);
 			pma.first = (String) tmp[0];
@@ -350,9 +353,7 @@ public static class employee{
 			arguments.add(new Type(pma));
 			return MySQL.execute(CREATE_PMA, arguments);
 		}
-		
-		
-		
+
 	}
 	
 	
@@ -388,29 +389,8 @@ public static class employee{
 					System.out.println("UNEXPECTED ERROR");
 			}
 			return;
-		}
-		e.reset();
-		ArrayList<Object[]> results = MyCMS.client.search("Oscar",MyCMS.MATCHES,"Fa",MyCMS.MATCHES,null,null,null,null,null,null,e);
+		}		
 		
-		int size = results.size();
-		Object[] tmp;
-		System.out.println("size = " + size);
-		for(int i = 0; i < size; i++){
-			System.out.print("getting... ");
-			tmp = results.get(i);
-			System.out.print((Integer)tmp[0] + " ");
-			for(int j = 1; j < 8; j++)
-				System.out.print((String)tmp[j] + " ") ;
-			System.out.println();
-		}
-		SessionRunner r = new SessionRunner();
-		r.setSession(s);
-		Thread t = new Thread(r);
-		t.start();
-		System.out.println("Session Started");
-		while(s.isValid())
-			;
-		System.out.println("Session Expired");
 	}
 	
 	

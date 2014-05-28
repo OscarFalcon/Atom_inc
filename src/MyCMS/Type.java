@@ -6,6 +6,7 @@ public class Type {
 	public static final int INTEGER = 1;
 	public static final int OBJECT = 2;
 	public static final int BYTE = 3;
+	public static final int PMA_OBJECT = 4;
 	
 	private Object value;
 	private int type;

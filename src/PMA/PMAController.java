@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-import CustMgtSys_1.PMAObject;
 import CustMgtSys_1.Security;
+import MyCMS.PMAObject;
 
 public class PMAController {
 
