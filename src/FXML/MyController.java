@@ -173,14 +173,14 @@ public class MyController implements Initializable{
 	}
 	
 	private void enableFields(int place){
-		//techcomments[place].setDisable(false);
 		recommendedrepairs[place].setDisable(false);
 		priorities[place].setDisable(false);
-		
 		moneyFields[place][0].setDisable(false);
 		moneyFields[place][1].setDisable(false);
+		QTY[place].setDisable(false);
 		moneyFields[place][2].setDisable(false);
 		laborHours[place].setDisable(false);
+		vendors[place].setDisable(false);
 		menuItemsApproved[place].setDisable(false);
 		menuItemsDisapproved[place].setDisable(false);
 		menuItemsInformation[place].setDisable(false);
@@ -188,17 +188,21 @@ public class MyController implements Initializable{
 	
 	/**This should also set default values for everything*/
 	private void disableFields(int place){
-		//techcomments[place].setDisable(true);
-		//techcomments[place].setValue("");
 		recommendedrepairs[place].setDisable(true);
 		recommendedrepairs[place].setValue("");
 		priorities[place].setDisable(true);
 		priorities[place].setValue("");
 		moneyFields[place][0].setDisable(true);
-		//moneyFields[place][0].setValue(0.0);
+		moneyFields[place][0].setValue(new BigDecimal(0));
 		moneyFields[place][1].setDisable(true);
+		moneyFields[place][1].setValue(new BigDecimal(0));
+		QTY[place].setDisable(true);
+		QTY[place].setValue(new BigDecimal(0));
 		moneyFields[place][2].setDisable(true);
+		moneyFields[place][2].setValue(new BigDecimal(0));
 		laborHours[place].setDisable(true);
+		vendors[place].setDisable(true);
+		vendors[place].setText("");
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
 		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		priorities[place].getStyleClass().add("custom-field");
@@ -381,51 +385,7 @@ public class MyController implements Initializable{
 	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
-		
-	
-	/**parts = new MoneyTextField[][] {{partsTot1, partsCost1}, {partsTot2, partsCost2}, {partsTot3, partsCost3}, {partsTot4, partsCost4}, {partsTot5, partsCost5}, {partsTot6, partsCost6}
-	, {partsTot7, partsCost7}, {partsTot8, partsCost8}, {partsTot9, partsCost9}, {partsTot10, partsCost10}, {partsTot11, partsCost11}, {partsTot12, partsCost12}, {partsTot13, partsCost13}
-	, {partsTot14, partsCost14}, {partsTot15, partsCost15}, {partsTot16, partsCost16}, {partsTot17, partsCost17}, {partsTot18, partsCost18}, {partsTot19, partsCost19}, {partsTot20, partsCost20}
-	, {partsTot21, partsCost21}, {partsTot22, partsCost22}, {partsTot23, partsCost23}, {partsTot24, partsCost24}, {partsTot25, partsCost25}, {partsTot26, partsCost26}, {partsTot27, partsCost27}
-	, {partsTot28, partsCost28}, {partsTot29, partsCost29}, {partsTot30, partsCost30}, {partsTot31, partsCost31}, {partsTot32, partsCost32}, {partsTot33, partsCost33}, {partsTot34, partsCost34}
-	, {partsTot35, partsCost35}, {partsTot36, partsCost36}, {partsTot37, partsCost37}, {partsTot38, partsCost38}, {partsTot39, partsCost39}, {partsTot40, partsCost40}, {partsTot41, partsCost41}
-	, {partsTot42, partsCost42}, {partsTot43, partsCost43}, {partsTot44, partsCost44}, {partsTot45, partsCost45}, {partsTot46, partsCost46}, {partsTot47, partsCost47}, {partsTot48, partsCost48}
-	, {partsTot49, partsCost49}, {partsTot50, partsCost50}};**/
-	
-	/**labor = new MoneyTextField[][] {{laborTot1, laborCost1}, {laborTot2, laborCost2}, {laborTot3, laborCost3}, {laborTot4, laborCost4}, {laborTot5, laborCost5}, {laborTot6, laborCost6}
-	, {laborTot7, laborCost7}, {laborTot8, laborCost8}, {laborTot9, laborCost9}, {laborTot10, laborCost10}, {laborTot11, laborCost11}, {laborTot12, laborCost12}, {laborTot13, laborCost13}, {laborTot14, laborCost14}
-	, {laborTot15, laborCost15}, {laborTot16, laborCost16}, {laborTot17, laborCost17}, {laborTot18, laborCost18}, {laborTot19, laborCost19}, {laborTot20, laborCost20}, {laborTot21, laborCost21}, {laborTot22, laborCost22}
-	, {laborTot23, laborCost23}, {laborTot24, laborCost24}, {laborTot25, laborCost25}, {laborTot26, laborCost26}, {laborTot27, laborCost27}, {laborTot28, laborCost28}, {laborTot29, laborCost29}, {laborTot30, laborCost30}
-	, {laborTot31, laborCost31}, {laborTot32, laborCost32}, {laborTot33, laborCost33}, {laborTot34, laborCost34}, {laborTot35, laborCost35}, {laborTot36, laborCost36}, {laborTot37, laborCost37}, {laborTot38, laborCost38}
-	, {laborTot39, laborCost39}, {laborTot40, laborCost40}, {laborTot41, laborCost41}, {laborTot42, laborCost42}, {laborTot43, laborCost43}, {laborTot44, laborCost44}, {laborTot45, laborCost45}, {laborTot46, laborCost46}
-	, {laborTot47, laborCost47}, {laborTot48, laborCost48}, {laborTot49, laborCost49}, {laborTot50, laborCost50}};
-	**/
-	
-	/**Initialize all number text fields and disable them! will also need to adjust CSS to change color of disabled text*/
-	for(int i = 0; i < ROW_COUNT; i++){
-		moneyFields[i][0] = new MoneyTextField();
-		moneyFields[i][0].setDisable(true);
-		moneyFields[i][1] = new MoneyTextField();
-		moneyFields[i][1].setDisable(true);
-		moneyFields[i][2] = new MoneyTextField();
-		moneyFields[i][2].setDisable(true);
-		laborHours[i] = new DoubleTextField();
-		laborHours[i].setDisable(true);
-		QTY[i] = new IntegerTextField();
-	}
-	
-	/**Add all numberFields into their appropriate positions in the grid*/
-	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
-		addrows = addRows(i); col=7;
-		grid.add(moneyFields[i][0], col++, row+addrows);
-		grid.add(moneyFields[i][1], col, row+addrows);
-		col+=2;
-		grid.add(QTY[i],col++,row+addrows);
-		grid.add(moneyFields[i][2], col++, row+addrows);
-		grid.add(laborHours[i], col++, row+addrows);
-		col +=2;
-	}
-	
+
 	/** put all declared FX id variables in arrays for easier processing later on **/
 	
 		checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
@@ -456,22 +416,52 @@ public void initialize(URL location, ResourceBundle resources) {
 	
 		vendors = new TextField[]{vendor1,vendor2,vendor3,vendor4,vendor5,vendor6,vendor7,vendor8,vendor9,vendor10,vendor11
 				,vendor12,vendor13,vendor14,vendor15,vendor16,vendor17,vendor18,vendor19,vendor20,vendor21,vendor22,vendor23
-				,vendor24,vendor25,vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35,
-				vendor36,vendor37,vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47
+				,vendor24,vendor25,vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35
+				,vendor36,vendor37,vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47
 				,vendor48,vendor49,vendor50};
 		
 		
+		init();
+		
+		
+		/**Initialize all number text fields and disable them! will also need to adjust CSS to change color of disabled text*/
+		for(int i = 0; i < ROW_COUNT; i++){
+			moneyFields[i][0] = new MoneyTextField();
+			moneyFields[i][0].setDisable(true);
+			moneyFields[i][1] = new MoneyTextField();
+			moneyFields[i][1].setDisable(true);
+			moneyFields[i][2] = new MoneyTextField();
+			moneyFields[i][2].setDisable(true);
+			laborHours[i] = new DoubleTextField();
+			laborHours[i].setDisable(true);
+			QTY[i] = new IntegerTextField();
+			QTY[i].setDisable(true);
+			vendors[i].setDisable(true);
+			System.out.println(i);
+		}
+		
+		/**Add all numberFields into their appropriate positions in the grid*/
+		for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
+			addrows = addRows(i); col=7;
+			grid.add(moneyFields[i][0], col++, row+addrows);
+			grid.add(moneyFields[i][1], col, row+addrows);
+			col+=2;
+			grid.add(QTY[i],col++,row+addrows);
+			grid.add(moneyFields[i][2], col++, row+addrows);
+			grid.add(laborHours[i], col++, row+addrows);
+			col +=2;
+		}
+		
 		
 		for(int i = 0; i < ROW_COUNT ;i++){
-			//techcomments[i].setDisable(true); // should be allowed to make comments no matter what.
 			recommendedrepairs[i].setDisable(true);
 			priorities[i].setDisable(true);
-			
 			techcomments[i].setEditable(true);
 			recommendedrepairs[i].setEditable(true);
 			priorities[i].setEditable(true);
 		} 
-		init();
+		
+		
 		
 		PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
 		CUST.setText(PMA.first);
