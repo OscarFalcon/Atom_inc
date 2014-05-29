@@ -14,7 +14,7 @@ public class IntegerTextField extends MyTextField{
 		return new BigDecimal(Integer.parseInt(input));
 	}
 	@Override
-	protected void setValue(BigDecimal number) {
+	public void setValue(BigDecimal number) {
 		setText(number.toString());
 	}
 	

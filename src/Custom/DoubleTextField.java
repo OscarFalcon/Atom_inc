@@ -16,24 +16,20 @@ public class DoubleTextField extends MyTextField{
 	@Override
 	protected BigDecimal getValueOf(String input) {
 		input = validStr(input);
-		input = addPeriod(input);
-		if(input.equals(""))
-			return new BigDecimal(00.0);		
-		return new BigDecimal(Double.parseDouble(input));
+    	input = trim(input);
+    	input = addPeriod(input);
+    	BigDecimal bd = new BigDecimal(Double.parseDouble(input));
+    	return bd;
 	}
-
+	
 	@Override
 	public void setValue(BigDecimal number) {
-		if( (number.compareTo(maxValue) == 1)){
-				setText("99.9");
-				return;
-		}
 		setText(number.toString());
 	}
-
+	
 	private static String addPeriod(String number){
 		if(number.length() == 0) 
-			number = "00.0";
+			number = "0.00";
 		else if(number.length() == 1)
 			number = ".0" + number;
 		else {
@@ -42,6 +38,14 @@ public class DoubleTextField extends MyTextField{
 		}
 		return number;
 	} 
+	private static String trim(String text){
+		int i = 0;
+		while(i < text.length() && text.charAt(i) == '0')
+			i++;
+		text = text.substring(i);
+		return text;
+	}
+	
 	
 	
 }

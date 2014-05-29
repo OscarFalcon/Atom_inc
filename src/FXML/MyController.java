@@ -126,11 +126,11 @@ public class MyController implements Initializable{
 	
 	private Label[] labels;
 	
-	final private MoneyTextField[][] parts = new MoneyTextField[ROW_COUNT][2];
+	final private MoneyTextField[][] moneyFields = new MoneyTextField[ROW_COUNT][3];
 	
-	final private DoubleTextField[][] labor = new DoubleTextField[ROW_COUNT][2];
-
 	final private IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
+	
+	final private DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
 	
 	final private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
@@ -176,10 +176,11 @@ public class MyController implements Initializable{
 		//techcomments[place].setDisable(false);
 		recommendedrepairs[place].setDisable(false);
 		priorities[place].setDisable(false);
-		parts[place][0].setDisable(false);
-		parts[place][1].setDisable(false);
-		labor[place][0].setDisable(false);
-		labor[place][1].setDisable(false);
+		
+		moneyFields[place][0].setDisable(false);
+		moneyFields[place][1].setDisable(false);
+		moneyFields[place][2].setDisable(false);
+		laborHours[place].setDisable(false);
 		menuItemsApproved[place].setDisable(false);
 		menuItemsDisapproved[place].setDisable(false);
 		menuItemsInformation[place].setDisable(false);
@@ -193,11 +194,11 @@ public class MyController implements Initializable{
 		recommendedrepairs[place].setValue("");
 		priorities[place].setDisable(true);
 		priorities[place].setValue("");
-		parts[place][0].setDisable(true);
-		//parts[place][0].setValue(0.0);
-		parts[place][1].setDisable(true);
-		labor[place][0].setDisable(true);
-		labor[place][1].setDisable(true);
+		moneyFields[place][0].setDisable(true);
+		//moneyFields[place][0].setValue(0.0);
+		moneyFields[place][1].setDisable(true);
+		moneyFields[place][2].setDisable(true);
+		laborHours[place].setDisable(true);
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
 		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		priorities[place].getStyleClass().add("custom-field");
@@ -364,10 +365,10 @@ public class MyController implements Initializable{
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();
-			PMA.totalParts[i] = (NumberTextField.getValueOf(parts[i][0].getText()));
-			PMA.partCost[i] = (NumberTextField.getValueOf(parts[i][1].getText()));
-			PMA.totalLabor[i] = (NumberTextField.getValueOf(labor[i][0].getText()));
-			PMA.laborCost[i] = (NumberTextField.getValueOf(labor[i][1].getText()));
+			PMA.totalParts[i] = (NumberTextField.getValueOf(moneyFields[i][0].getText()));
+			PMA.partCost[i] = (NumberTextField.getValueOf(moneyFields[i][1].getText()));
+			PMA.totalLabor[i] = (NumberTextField.getValueOf(moneyFields[i][2].getText()));
+			PMA.laborCost[i] = (NumberTextField.getValueOf(laborHours[i].getText()));
 			PMA.vendor[i] = vendors[i].getText();
 			//PMA.qty[i] = 
 	
@@ -402,28 +403,27 @@ public void initialize(URL location, ResourceBundle resources) {
 	
 	/**Initialize all number text fields and disable them! will also need to adjust CSS to change color of disabled text*/
 	for(int i = 0; i < ROW_COUNT; i++){
-		parts[i][0] = new MoneyTextField();
-		parts[i][0].setDisable(true);
-		parts[i][1] = new MoneyTextField();
-		parts[i][1].setDisable(true);
-		labor[i][0] = new DoubleTextField();
-		labor[i][0].setDisable(true);
-		labor[i][1] = new DoubleTextField();
-		labor[i][1].setDisable(true);
+		moneyFields[i][0] = new MoneyTextField();
+		moneyFields[i][0].setDisable(true);
+		moneyFields[i][1] = new MoneyTextField();
+		moneyFields[i][1].setDisable(true);
+		moneyFields[i][2] = new MoneyTextField();
+		moneyFields[i][2].setDisable(true);
+		laborHours[i] = new DoubleTextField();
+		laborHours[i].setDisable(true);
 		QTY[i] = new IntegerTextField();
 	}
 	
 	/**Add all numberFields into their appropriate positions in the grid*/
 	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
 		addrows = addRows(i); col=7;
-		grid.add(parts[i][0], col++, row+addrows);
-		grid.add(labor[i][0], col, row+addrows);
+		grid.add(moneyFields[i][0], col++, row+addrows);
+		grid.add(moneyFields[i][1], col, row+addrows);
 		col+=2;
 		grid.add(QTY[i],col++,row+addrows);
-		grid.add(parts[i][1], col++, row+addrows);
-		grid.add(labor[i][1], col++, row+addrows);
+		grid.add(moneyFields[i][2], col++, row+addrows);
+		grid.add(laborHours[i], col++, row+addrows);
 		col +=2;
-		
 	}
 	
 	/** put all declared FX id variables in arrays for easier processing later on **/
