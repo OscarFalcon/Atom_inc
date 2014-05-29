@@ -5,15 +5,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainController implements Initializable, ControlledScreen {
 
@@ -35,9 +42,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 
-	
-	//nameCol.prefWidthProperty().bind(personTable.widthProperty().divide(4)); // w * 1/4
-	
+
 	
 	
 	public void initialize(URL url, ResourceBundle rb) {
@@ -63,20 +68,29 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	public void popup(ActionEvent event){
-		Stage popupWindow = new Stage();
+
+		final Stage secondaryStage = new Stage();
+	    
+	    
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddCustomerView.fxml"));
-			Scene scene = (Scene)fxmlLoader.load();
-			//myController = fxmlLoader.getController();
-			popupWindow.setScene(scene);
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			Parent root = FXMLLoader.load(getClass().getResource("AddCustomerView.fxml")); 
+	        Scene scene = new Scene(root, 300, 275);
+	        secondaryStage.setTitle("Add Customer");
+	        secondaryStage.setScene(scene);
+	        
+	        secondaryStage.initModality(Modality.APPLICATION_MODAL);
+	        
+	        secondaryStage.show();
+            
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            
+        }
 		
-		
+	    
+	    
+	    
 		
 		
 	}

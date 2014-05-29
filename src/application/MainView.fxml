@@ -39,7 +39,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="611.0">
               <children>
-                <TableView fx:id="serviceTable" prefHeight="349.0" prefWidth="583.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">
+                <TableView fx:id="serviceTable" prefHeight="321.0" prefWidth="569.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">
                   <columns>
                     <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Work Order" fx:id="serviceOrderNum" />
                     <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="77.0" text="Date In" fx:id="serviceDateIn" />
@@ -54,8 +54,88 @@
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="View Order" />
                   </children>
                 </HBox>
-                <TextArea prefHeight="89.0" prefWidth="315.0" wrapText="true" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="419.0" />
-                <Label prefHeight="16.0" prefWidth="60.0" text="Comments" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="523.0" AnchorPane.topAnchor="413.0" />
+                <TabPane prefHeight="153.0" prefWidth="569.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <tabs>
+                    <Tab text="Personal Info">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <VBox id="VBox" alignment="CENTER_LEFT" layoutX="23.0" layoutY="14.0" spacing="5.0">
+                              <children>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="10.0">
+                                  <children>
+                                    <Label text="First Name" />
+                                    <Label text="Last Name" />
+                                  </children>
+                                </HBox>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
+                                  <children>
+                                    <Label text="210-543-0476" />
+                                    <Label text="johncwimberly@yahoo.com" />
+                                  </children>
+                                </HBox>
+                                <Label text="6406 Red Jacket" />
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="10.0">
+                                  <children>
+                                    <Label text="San Antonio" />
+                                    <Label text="TX" />
+                                  </children>
+                                </HBox>
+                              </children>
+                            </VBox>
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </Tab>
+                    <Tab text="Vehicle Info">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <VBox id="VBox" alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" spacing="5.0">
+                              <children>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="10.0">
+                                  <children>
+                                    <Label text="Mitsubishi" />
+                                    <Label text="Lancer" />
+                                    <Label text="2006" />
+                                  </children>
+                                </HBox>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
+                                  <children>
+                                    <Label text="CC5-C450" />
+                                    <Label text="VPA45670PI9015" />
+                                  </children>
+                                </HBox>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
+                                  <children>
+                                    <Label text="Steel Grey" />
+                                    <Label text="45,689" />
+                                  </children>
+                                </HBox>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
+                                  <children>
+                                    <Label text="2 Cylinder" />
+                                    <Label text="Automatic" />
+                                  </children>
+                                </HBox>
+                              </children>
+                            </VBox>
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </Tab>
+                    <Tab text="Notes">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <TextArea prefHeight="109.0" prefWidth="364.0" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="191.0" AnchorPane.topAnchor="7.0" />
+                            <Button mnemonicParsing="false" text="Submit Note" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="93.0" AnchorPane.topAnchor="88.0" />
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </Tab>
+                  </tabs>
+                </TabPane>
               </children>
             </AnchorPane>
           </content>
