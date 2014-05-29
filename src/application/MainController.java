@@ -32,12 +32,17 @@ public class MainController implements Initializable, ControlledScreen {
 	TableView serviceTable;
 	@FXML
 	TableView customerTable;
+	@FXML
+	TableView pmaTable;
 	//columns for the customer table
 	@FXML
 	TableColumn customerId, customerFirst, customerLast, customerPhone, customerAddress, customerEmail;
-	//columns for the in garage tab
+	//columns for the in garage table
 	@FXML
 	TableColumn serviceOrderNum, serviceDateIn, serviceName, serviceVehicle, serviceStatus;
+	//columns for the PMA table
+	@FXML
+	TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
 	
 	
 	
@@ -62,7 +67,13 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceVehicle.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
 		serviceStatus.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
 		
-
+		//set resizing for the searched PMA table columns
+		workOrderNum.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.18));
+		dateIn.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.12));
+		first.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
+		last.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.20));
+		vehicle.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.20));
+		phone.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
 	}
 	
 	
