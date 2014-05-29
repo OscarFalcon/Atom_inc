@@ -128,8 +128,12 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                           <children>
-                            <TextArea prefHeight="89.0" prefWidth="364.0" wrapText="true" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="191.0" AnchorPane.topAnchor="7.0" />
-                            <Button mnemonicParsing="false" text="Submit Note" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="93.0" AnchorPane.topAnchor="75.0" />
+                            <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="7.0" spacing="5.0">
+                              <children>
+                                <TextArea prefHeight="89.0" prefWidth="364.0" wrapText="true" />
+                                <Button mnemonicParsing="false" text="Submit Note" />
+                              </children>
+                            </HBox>
                           </children>
                         </AnchorPane>
                       </content>
