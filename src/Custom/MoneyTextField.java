@@ -20,7 +20,7 @@ public class MoneyTextField extends MyTextField{
 	}
 
 	@Override
-	protected void setValue(BigDecimal number) {
+	public void setValue(BigDecimal number) {
 		String currency = NumberFormat.getCurrencyInstance().format(number);
 		super.setText(currency);
 	}

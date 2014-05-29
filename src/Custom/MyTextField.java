@@ -60,7 +60,7 @@ public abstract class MyTextField extends TextField{
 	 * This method must set the TextFields output to that specified by number
 	 * @param number
 	 */
-	protected abstract void setValue(BigDecimal number);
+	public abstract void setValue(BigDecimal number);
 	
 	
 	 /**

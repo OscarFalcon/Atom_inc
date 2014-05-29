@@ -7,18 +7,23 @@ public class DoubleTextField extends MyTextField{
 	
 	private BigDecimal maxValue = new BigDecimal(99.9);
 	
+	public DoubleTextField(){
+		super();
+		setText("00.0");
+	}
+	
+	
 	@Override
 	protected BigDecimal getValueOf(String input) {
 		input = validStr(input);
 		input = addPeriod(input);
-		
-		
-		
-		return null;
+		if(input.equals(""))
+			return new BigDecimal(00.0);		
+		return new BigDecimal(Double.parseDouble(input));
 	}
 
 	@Override
-	protected void setValue(BigDecimal number) {
+	public void setValue(BigDecimal number) {
 		if( (number.compareTo(maxValue) == 1)){
 				setText("99.9");
 				return;
