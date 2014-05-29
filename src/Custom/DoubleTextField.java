@@ -1,20 +1,28 @@
 package Custom;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.math.RoundingMode;
 
 public class DoubleTextField extends MyTextField{
-	
-	private BigDecimal maxValue = new BigDecimal(99.9);
+		
 	
 	public DoubleTextField(){
 		super();
-		setText("00.0");
+		setText("0.0");
 	}
 	
 	
 	@Override
 	protected BigDecimal getValueOf(String input) {
+		if(input.equals(""))
+			return new BigDecimal(00.0);
+		
+		if(input.length() > 4){
+			input = input.substring(0,4);
+			return new BigDecimal(Double.parseDouble(input));
+		}
 		input = validStr(input);
     	input = trim(input);
     	input = addPeriod(input);
@@ -24,20 +32,20 @@ public class DoubleTextField extends MyTextField{
 	
 	@Override
 	public void setValue(BigDecimal number) {
-		setText(number.toString());
+		String currency = NumberFormat.getCurrencyInstance().format(number);
+		super.setText(currency.substring(1, currency.length()-1));	
 	}
 	
 	private static String addPeriod(String number){
 		if(number.length() == 0) 
-			number = "0.00";
-		else if(number.length() == 1)
-			number = ".0" + number;
+			number = "00.0";
 		else {
-			String save = number.substring(number.length()-2, number.length());
-			number = number.substring(0, number.length()-2) + "." + save;
+			String save = number.substring(number.length()-1, number.length());
+			number = number.substring(0, number.length()-1) + "." + save;
 		}
 		return number;
 	} 
+	
 	private static String trim(String text){
 		int i = 0;
 		while(i < text.length() && text.charAt(i) == '0')
@@ -49,3 +57,5 @@ public class DoubleTextField extends MyTextField{
 	
 	
 }
+
+
