@@ -58,6 +58,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import Custom.DoubleTextField;
+import Custom.IntegerTextField;
+import Custom.MoneyTextField;
 import Custom.NumberTextField;
 import MyCMS.*;
 
@@ -111,30 +114,6 @@ public class MyController implements Initializable{
 	/** grid pane that holds the rows of the PMA **/
 	@FXML private GridPane grid;
 
-	/** total parts text field that the CUSTOMER sees **/
-	private NumberTextField partsTot1, partsTot2, partsTot3, partsTot4, partsTot5, partsTot6, partsTot7, partsTot8, partsTot9, partsTot10, partsTot11, partsTot12
-	, partsTot13, partsTot14, partsTot15, partsTot16, partsTot17, partsTot18, partsTot19, partsTot20, partsTot21, partsTot22, partsTot23, partsTot24, partsTot25, partsTot26
-	, partsTot27, partsTot28, partsTot29, partsTot30, partsTot31, partsTot32, partsTot33, partsTot34, partsTot35, partsTot36, partsTot37, partsTot38, partsTot39, partsTot40
-	, partsTot41, partsTot42, partsTot43, partsTot44, partsTot45, partsTot46, partsTot47, partsTot48, partsTot49, partsTot50;
-	
-	/** parts text field that the STORE sees **/
-	private NumberTextField partsCost1, partsCost2, partsCost3, partsCost4, partsCost5, partsCost6, partsCost7, partsCost8, partsCost9, partsCost10, partsCost11, partsCost12
-	, partsCost13, partsCost14, partsCost15, partsCost16, partsCost17, partsCost18, partsCost19, partsCost20, partsCost21, partsCost22, partsCost23, partsCost24, partsCost25, partsCost26
-	, partsCost27, partsCost28, partsCost29, partsCost30, partsCost31, partsCost32, partsCost33, partsCost34, partsCost35, partsCost36, partsCost37, partsCost38, partsCost39, partsCost40
-	, partsCost41, partsCost42, partsCost43, partsCost44, partsCost45, partsCost46, partsCost47, partsCost48, partsCost49, partsCost50;
-	
-	/**labor text field that the CUSTOMER sees **/
-	private NumberTextField laborTot1, laborTot2, laborTot3, laborTot4, laborTot5, laborTot6, laborTot7, laborTot8, laborTot9, laborTot10, laborTot11, laborTot12, laborTot13
-	, laborTot14, laborTot15, laborTot16, laborTot17, laborTot18, laborTot19, laborTot20, laborTot21, laborTot22, laborTot23, laborTot24, laborTot25, laborTot26, laborTot27, laborTot28
-	, laborTot29, laborTot30, laborTot31, laborTot32, laborTot33, laborTot34, laborTot35, laborTot36, laborTot37, laborTot38, laborTot39, laborTot40, laborTot41, laborTot42, laborTot43
-	, laborTot44, laborTot45, laborTot46, laborTot47, laborTot48, laborTot49, laborTot50;
-	
-	/**labor text field that the STORE sees **/
-	private NumberTextField laborCost1, laborCost2, laborCost3, laborCost4, laborCost5, laborCost6, laborCost7, laborCost8, laborCost9, laborCost10, laborCost11, laborCost12
-	, laborCost13, laborCost14, laborCost15, laborCost16, laborCost17, laborCost18, laborCost19, laborCost20, laborCost21, laborCost22, laborCost23, laborCost24, laborCost25, laborCost26
-	, laborCost27, laborCost28, laborCost29, laborCost30, laborCost31, laborCost32, laborCost33, laborCost34, laborCost35, laborCost36, laborCost37, laborCost38, laborCost39, laborCost40
-	, laborCost41, laborCost42, laborCost43, laborCost44, laborCost45, laborCost46, laborCost47, laborCost48, laborCost49, laborCost50;
-	
 	private CheckBox[][] checkboxes;
 	
 	private ComboBox<String>[] techcomments;
@@ -147,15 +126,17 @@ public class MyController implements Initializable{
 	
 	private Label[] labels;
 	
-	private NumberTextField[][] parts;
+	final private MoneyTextField[][] parts = new MoneyTextField[ROW_COUNT][2];
 	
-	private NumberTextField[][] labor;
+	final private DoubleTextField[][] labor = new DoubleTextField[ROW_COUNT][2];
 
-	private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
+	final private IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
 	
-	private MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
+	final private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
-	private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
+	final private MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
+	
+	final private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
 	/** the PMA object that will be used throughout the program **/
 	private PMAObject PMA; 
@@ -383,10 +364,10 @@ public class MyController implements Initializable{
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();
-			PMA.totalParts[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][0].getText()));
-			PMA.partCost[i] = new BigDecimal(NumberTextField.getValueOf(parts[i][1].getText()));
-			PMA.totalLabor[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][0].getText()));
-			PMA.laborCost[i] = new BigDecimal(NumberTextField.getValueOf(labor[i][1].getText()));
+			PMA.totalParts[i] = (NumberTextField.getValueOf(parts[i][0].getText()));
+			PMA.partCost[i] = (NumberTextField.getValueOf(parts[i][1].getText()));
+			PMA.totalLabor[i] = (NumberTextField.getValueOf(labor[i][0].getText()));
+			PMA.laborCost[i] = (NumberTextField.getValueOf(labor[i][1].getText()));
 			PMA.vendor[i] = vendors[i].getText();
 			//PMA.qty[i] = 
 	
@@ -401,45 +382,49 @@ public class MyController implements Initializable{
 public void initialize(URL location, ResourceBundle resources) {
 		
 	
-	parts = new NumberTextField[][] {{partsTot1, partsCost1}, {partsTot2, partsCost2}, {partsTot3, partsCost3}, {partsTot4, partsCost4}, {partsTot5, partsCost5}, {partsTot6, partsCost6}
+	/**parts = new MoneyTextField[][] {{partsTot1, partsCost1}, {partsTot2, partsCost2}, {partsTot3, partsCost3}, {partsTot4, partsCost4}, {partsTot5, partsCost5}, {partsTot6, partsCost6}
 	, {partsTot7, partsCost7}, {partsTot8, partsCost8}, {partsTot9, partsCost9}, {partsTot10, partsCost10}, {partsTot11, partsCost11}, {partsTot12, partsCost12}, {partsTot13, partsCost13}
 	, {partsTot14, partsCost14}, {partsTot15, partsCost15}, {partsTot16, partsCost16}, {partsTot17, partsCost17}, {partsTot18, partsCost18}, {partsTot19, partsCost19}, {partsTot20, partsCost20}
 	, {partsTot21, partsCost21}, {partsTot22, partsCost22}, {partsTot23, partsCost23}, {partsTot24, partsCost24}, {partsTot25, partsCost25}, {partsTot26, partsCost26}, {partsTot27, partsCost27}
 	, {partsTot28, partsCost28}, {partsTot29, partsCost29}, {partsTot30, partsCost30}, {partsTot31, partsCost31}, {partsTot32, partsCost32}, {partsTot33, partsCost33}, {partsTot34, partsCost34}
 	, {partsTot35, partsCost35}, {partsTot36, partsCost36}, {partsTot37, partsCost37}, {partsTot38, partsCost38}, {partsTot39, partsCost39}, {partsTot40, partsCost40}, {partsTot41, partsCost41}
 	, {partsTot42, partsCost42}, {partsTot43, partsCost43}, {partsTot44, partsCost44}, {partsTot45, partsCost45}, {partsTot46, partsCost46}, {partsTot47, partsCost47}, {partsTot48, partsCost48}
-	, {partsTot49, partsCost49}, {partsTot50, partsCost50}};
+	, {partsTot49, partsCost49}, {partsTot50, partsCost50}};**/
 	
-	labor = new NumberTextField[][] {{laborTot1, laborCost1}, {laborTot2, laborCost2}, {laborTot3, laborCost3}, {laborTot4, laborCost4}, {laborTot5, laborCost5}, {laborTot6, laborCost6}
+	/**labor = new MoneyTextField[][] {{laborTot1, laborCost1}, {laborTot2, laborCost2}, {laborTot3, laborCost3}, {laborTot4, laborCost4}, {laborTot5, laborCost5}, {laborTot6, laborCost6}
 	, {laborTot7, laborCost7}, {laborTot8, laborCost8}, {laborTot9, laborCost9}, {laborTot10, laborCost10}, {laborTot11, laborCost11}, {laborTot12, laborCost12}, {laborTot13, laborCost13}, {laborTot14, laborCost14}
 	, {laborTot15, laborCost15}, {laborTot16, laborCost16}, {laborTot17, laborCost17}, {laborTot18, laborCost18}, {laborTot19, laborCost19}, {laborTot20, laborCost20}, {laborTot21, laborCost21}, {laborTot22, laborCost22}
 	, {laborTot23, laborCost23}, {laborTot24, laborCost24}, {laborTot25, laborCost25}, {laborTot26, laborCost26}, {laborTot27, laborCost27}, {laborTot28, laborCost28}, {laborTot29, laborCost29}, {laborTot30, laborCost30}
 	, {laborTot31, laborCost31}, {laborTot32, laborCost32}, {laborTot33, laborCost33}, {laborTot34, laborCost34}, {laborTot35, laborCost35}, {laborTot36, laborCost36}, {laborTot37, laborCost37}, {laborTot38, laborCost38}
 	, {laborTot39, laborCost39}, {laborTot40, laborCost40}, {laborTot41, laborCost41}, {laborTot42, laborCost42}, {laborTot43, laborCost43}, {laborTot44, laborCost44}, {laborTot45, laborCost45}, {laborTot46, laborCost46}
 	, {laborTot47, laborCost47}, {laborTot48, laborCost48}, {laborTot49, laborCost49}, {laborTot50, laborCost50}};
-	
+	**/
 	
 	/**Initialize all number text fields and disable them! will also need to adjust CSS to change color of disabled text*/
-	for(int i = 0; i < labor.length; i++){
-		parts[i][0] = new NumberTextField();
+	for(int i = 0; i < ROW_COUNT; i++){
+		parts[i][0] = new MoneyTextField();
 		parts[i][0].setDisable(true);
-		parts[i][1] = new NumberTextField();
+		parts[i][1] = new MoneyTextField();
 		parts[i][1].setDisable(true);
-		labor[i][0] = new NumberTextField();
+		labor[i][0] = new DoubleTextField();
 		labor[i][0].setDisable(true);
-		labor[i][1] = new NumberTextField();
+		labor[i][1] = new DoubleTextField();
 		labor[i][1].setDisable(true);
+		QTY[i] = new IntegerTextField();
 	}
+	
 	/**Add all numberFields into their appropriate positions in the grid*/
 	for(int i=0, addrows=0,col=7,row=9; i < ROW_COUNT; i++, row++){
 		addrows = addRows(i); col=7;
 		grid.add(parts[i][0], col++, row+addrows);
 		grid.add(labor[i][0], col, row+addrows);
-		col+=3;
+		col+=2;
+		grid.add(QTY[i],col++,row+addrows);
 		grid.add(parts[i][1], col++, row+addrows);
 		grid.add(labor[i][1], col++, row+addrows);
+		col +=2;
+		
 	}
-
 	
 	/** put all declared FX id variables in arrays for easier processing later on **/
 	

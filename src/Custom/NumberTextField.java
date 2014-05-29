@@ -1,10 +1,9 @@
 package Custom;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,28 +12,30 @@ import javafx.scene.input.KeyEvent;
 
 public class NumberTextField extends TextField
 {
-   private String lastInput = "$0.00";
-   private boolean flag; 
+	private String lastInput;
+	private boolean flag; 
    
 	public NumberTextField(){
 		super();
 
-		this.setOnKeyReleased(new EventHandler<KeyEvent>(){ /** move carret and lastInput must be on key released **/ 
+		this.setOnKeyReleased(new EventHandler<KeyEvent>(){ 
 			@Override
 			public void handle(KeyEvent event) {
-				lastInput = getText();
 				moveCarret(getText().length());
 			}	
 		});
-		this.setOnKeyPressed(new EventHandler<KeyEvent>(){ /** boolean logic must be on key pressed **/
+		this.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
 			public void handle(KeyEvent event) {
+				lastInput = getText();
 				if(event.getCode() == KeyCode.BACK_SPACE)
 					flag = true;
 				else
 					flag = false;
+				
+				moveCarret(getText().length());
 			}
-	    });
+	    });		
 		setText("$0.00");
 	}
 	
@@ -45,29 +46,24 @@ public class NumberTextField extends TextField
     	else
     		setValue(getValueOf(lastInput + text));	
     	
-    	moveCarret(getText().length());
+    	moveCarret(getText().length()); /** must have **/
     } 
-  
-   /**@Override
-    public void replaceSelection(String text)
-    {    	
-        setValue(getValueOf(getText()));
-    } 
-	**/
-	
-    public Double getValue() {
+   /**
+    * @return the value of the TextField as a Double
+    */
+	public BigDecimal getValue() {
 		return getValueOf(getText());
 	}
- 
-
+	
     /**	private methods **/
-    private void setValue(double number){
+    private void setValue(BigDecimal number){
 		String currency = NumberFormat.getCurrencyInstance().format(number);
 		super.setText(currency);
 	}
     private void moveCarret(int pos){
         this.positionCaret(pos);
     }
+    
     
     /** private static methods **/
     private static String trim(String text){
@@ -92,10 +88,11 @@ public class NumberTextField extends TextField
 		return number;
 	} 
 	/** public static methods **/
-    public static Double getValueOf(String currency){
+    public static BigDecimal getValueOf(String currency){
     	currency = validStr(currency);
     	currency = trim(currency);
     	currency = addPeriod(currency);
-    	return Double.parseDouble(currency);
+    	BigDecimal bd = new BigDecimal(Double.parseDouble(currency));
+    	return bd;
     }
 }
