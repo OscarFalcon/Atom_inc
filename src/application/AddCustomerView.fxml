@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="345.0" prefWidth="342.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Label layoutX="42.0" layoutY="67.0" text="First Name:" />
+    <Label layoutX="42.0" layoutY="109.0" text="Last Name:" />
+    <TextField layoutX="119.0" layoutY="64.0" prefWidth="200.0" />
+    <TextField layoutX="119.0" layoutY="106.0" prefWidth="200.0" />
+  </children>
+</AnchorPane>

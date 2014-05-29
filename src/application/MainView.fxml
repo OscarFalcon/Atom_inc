@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.MainController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
+      <image>
+        <Image url="@../images/2fatguyslogo.png" />
+      </image>
+    </ImageView>
+    <MenuBar prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <TabPane id="customerTable" fx:id="tabbedPane" prefHeight="562.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="189.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="24.0">
+      <tabs>
+        <Tab text="In Service">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="611.0">
+              <children>
+                <TableView fx:id="serviceTable" prefHeight="349.0" prefWidth="583.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">
+                  <columns>
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Work Order" fx:id="serviceOrderNum" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="77.0" text="Date In" fx:id="serviceDateIn" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="149.0" text="Name" fx:id="serviceName" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="162.0" text="Vehicle" fx:id="serviceVehicle" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" text="Status" fx:id="serviceStatus" />
+                  </columns>
+                </TableView>
+                <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0">
+                  <children>
+                    <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Create Order" />
+                    <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="View Order" />
+                  </children>
+                </HBox>
+                <TextArea prefHeight="89.0" prefWidth="315.0" wrapText="true" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="419.0" />
+                <Label prefHeight="16.0" prefWidth="60.0" text="Comments" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="523.0" AnchorPane.topAnchor="413.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Customers">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TableView fx:id="customerTable" prefHeight="423.0" prefWidth="571.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="77.0">
+                  <columns>
+                    <TableColumn prefWidth="75.0" text="ID" fx:id="customerId" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="First" fx:id="customerFirst" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Last" fx:id="customerLast" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="138.0" text="Address" fx:id="customerAddress" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="116.0" text="Phone" fx:id="customerPhone" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Email" fx:id="customerEmail" />
+                  </columns>
+                </TableView>
+                <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0">
+                  <children>
+                    <Button mnemonicParsing="false" text="Search" />
+                    <TextField prefWidth="119.0" text="first" />
+                    <TextField prefWidth="119.0" text="last" />
+                    <TextField prefWidth="119.0" text="phone" />
+                  </children>
+                </HBox>
+                <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0">
+                  <children>
+                    <Button mnemonicParsing="false" onAction="#popup" prefHeight="24.0" prefWidth="100.0" text="Add Client" />
+                    <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.00009999999747" text="Edit Client" />
+                    <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="119.0" text="Advanced Search" />
+                    <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Add Order" />
+                  </children>
+                </HBox>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="PMAs">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+        <Tab text="Settings">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>

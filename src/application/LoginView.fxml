@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.LoginController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
+      <image>
+        <Image url="@../images/2fatguyslogo.png" />
+      </image>
+    </ImageView>
+    <MenuBar prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <Label layoutX="255.0" layoutY="150.0" text="Sign In :" />
+    <Label layoutX="255.0" layoutY="188.0" text="Password :" />
+    <TextField layoutX="347.0" layoutY="147.0" prefWidth="200.0" />
+    <PasswordField layoutX="347.0" layoutY="185.0" prefWidth="200.0" />
+    <Label layoutX="255.0" layoutY="222.0" text="You must sign in before you can use any of these tools." />
+    <Button fx:id="loginButton" layoutX="255.0" layoutY="276.0" mnemonicParsing="false" onAction="#signIn" text="Sign In" />
+  </children>
+</AnchorPane>
