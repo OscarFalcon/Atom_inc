@@ -96,7 +96,29 @@
         </Tab>
         <Tab text="PMAs">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TableView id="customerTable" layoutX="14.0" layoutY="77.0" prefHeight="423.0" prefWidth="571.0">
+                  <columns>
+                    <TableColumn prefWidth="75.0" text="Work Order" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="First" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Last" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="94.0" text="Vehicle" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="103.0" text="Phone" />
+                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Email" />
+                  </columns>
+                </TableView>
+                <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0">
+                  <children>
+                    <Button mnemonicParsing="false" text="Search" />
+                    <TextField prefWidth="119.0" text="first" />
+                    <TextField prefWidth="119.0" text="last" />
+                    <TextField prefWidth="119.0" text="phone" />
+                  </children>
+                </HBox>
+                <Button layoutX="55.0" layoutY="14.0" mnemonicParsing="false" text="Advanced Search" />
+              </children>
+            </AnchorPane>
           </content>
         </Tab>
         <Tab text="Settings">
