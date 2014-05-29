@@ -201,6 +201,7 @@ public class MyController implements Initializable{
 		moneyFields[place][2].setDisable(true);
 		moneyFields[place][2].setValue(new BigDecimal(0));
 		laborHours[place].setDisable(true);
+		laborHours[place].setValue(new BigDecimal(0));
 		vendors[place].setDisable(true);
 		vendors[place].setText("");
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
@@ -365,7 +366,6 @@ public class MyController implements Initializable{
 		for(int i = 0; i < ROW_COUNT; i++){
 			PMA.ok[i] = checkboxes[i][0].isSelected();
 			PMA.notok[i] = checkboxes[i][0].isSelected();
-			//approved[i] = 
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();
@@ -374,8 +374,6 @@ public class MyController implements Initializable{
 			PMA.totalLabor[i] = (NumberTextField.getValueOf(moneyFields[i][2].getText()));
 			PMA.laborCost[i] = (NumberTextField.getValueOf(laborHours[i].getText()));
 			PMA.vendor[i] = vendors[i].getText();
-			//PMA.qty[i] = 
-	
 		}
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
@@ -437,7 +435,6 @@ public void initialize(URL location, ResourceBundle resources) {
 			QTY[i] = new IntegerTextField();
 			QTY[i].setDisable(true);
 			vendors[i].setDisable(true);
-			System.out.println(i);
 		}
 		
 		/**Add all numberFields into their appropriate positions in the grid*/
