@@ -194,16 +194,16 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
-                                <Label layoutX="248.0" layoutY="6.0" text="Email" />
-                                <TextField layoutX="310.0" layoutY="3.0" prefWidth="150.0" />
-                                <Label layoutX="248.0" layoutY="34.0" text="Address" />
-                                <TextField layoutX="310.0" layoutY="31.0" prefWidth="150.0" />
-                                <TextField layoutX="66.0" layoutY="3.0" prefWidth="150.0" />
-                                <TextField layoutX="66.0" layoutY="31.0" prefWidth="150.0" />
-                                <TextField layoutX="66.0" layoutY="60.0" prefWidth="150.0" />
-                                <Label layoutX="12.0" layoutY="6.0" text="First" />
-                                <Label layoutX="12.0" layoutY="34.0" text="Last" />
-                                <Label layoutX="12.0" layoutY="63.0" text="Phone" />
+                                <Label layoutX="247.0" layoutY="15.0" text="Email" />
+                                <TextField layoutX="309.0" layoutY="12.0" prefWidth="150.0" />
+                                <Label layoutX="247.0" layoutY="43.0" text="Address" />
+                                <TextField layoutX="309.0" layoutY="40.0" prefWidth="150.0" />
+                                <TextField layoutX="65.0" layoutY="12.0" prefWidth="150.0" />
+                                <TextField layoutX="65.0" layoutY="40.0" prefWidth="150.0" />
+                                <TextField layoutX="65.0" layoutY="69.0" prefWidth="150.0" />
+                                <Label layoutX="11.0" layoutY="15.0" text="First" />
+                                <Label layoutX="11.0" layoutY="43.0" text="Last" />
+                                <Label layoutX="11.0" layoutY="72.0" text="Phone" />
                               </children>
                             </AnchorPane>
                           </content>
@@ -212,25 +212,25 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
-                                <Label layoutX="7.0" layoutY="6.0" text="Make" />
-                                <TextField layoutX="54.0" layoutY="3.0" prefWidth="150.0" />
-                                <Label layoutX="7.0" layoutY="34.0" text="Model" />
-                                <TextField layoutX="54.0" layoutY="31.0" prefWidth="150.0" />
-                                <Label layoutX="7.0" layoutY="65.0" text="Year" />
-                                <TextField layoutX="54.0" layoutY="62.0" prefWidth="150.0" />
-                                <Label layoutX="244.0" layoutY="6.0" text="License Plate" />
-                                <TextField layoutX="342.0" layoutY="3.0" prefWidth="150.0" />
-                                <Label layoutX="244.0" layoutY="31.0" text="Vin" />
-                                <TextField layoutX="342.0" layoutY="31.0" prefWidth="150.0" />
+                                <Label layoutX="7.0" layoutY="14.0" text="Make" />
+                                <TextField layoutX="54.0" layoutY="11.0" prefWidth="150.0" />
+                                <Label layoutX="7.0" layoutY="42.0" text="Model" />
+                                <TextField layoutX="54.0" layoutY="39.0" prefWidth="150.0" />
+                                <Label layoutX="7.0" layoutY="73.0" text="Year" />
+                                <TextField layoutX="54.0" layoutY="70.0" prefWidth="150.0" />
+                                <Label layoutX="244.0" layoutY="14.0" text="License Plate" />
+                                <TextField layoutX="342.0" layoutY="11.0" prefWidth="150.0" />
+                                <Label layoutX="244.0" layoutY="39.0" text="Vin" />
+                                <TextField layoutX="342.0" layoutY="39.0" prefWidth="150.0" />
                               </children>
                             </AnchorPane>
                           </content>
                         </TitledPane>
-                        <TitledPane fx:id="x2" animated="false" expanded="false" text="Time">
+                        <TitledPane fx:id="x2" animated="false" expanded="true" text="Time">
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
-                                <ComboBox fx:id="monthCombo" layoutX="61.0" layoutY="4.0" prefHeight="21.0" prefWidth="119.0">
+                                <ComboBox fx:id="monthCombo" layoutX="62.0" layoutY="13.0" prefHeight="21.0" prefWidth="119.0">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="January" />
@@ -248,8 +248,8 @@
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
-                                <Label layoutX="7.0" layoutY="6.0" text="Month" />
-                                <ComboBox fx:id="yearCombo" layoutX="61.0" layoutY="42.0">
+                                <Label layoutX="8.0" layoutY="15.0" text="Month" />
+                                <ComboBox fx:id="yearCombo" layoutX="62.0" layoutY="51.0">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Item 1" />
@@ -258,18 +258,18 @@
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
-                                <Label layoutX="7.0" layoutY="45.0" text="Year" />
-                                <Label layoutX="224.0" layoutY="33.0" prefWidth="9.0" text="or">
+                                <Label layoutX="8.0" layoutY="54.0" text="Year" />
+                                <Label layoutX="225.0" layoutY="42.0" prefWidth="9.0" text="or">
                                   <font>
                                     <Font name="System Bold Italic" size="9.0" fx:id="x3" />
                                   </font>
                                 </Label>
-                                <Label layoutX="271.0" layoutY="4.0" text="From">
+                                <Label layoutX="272.0" layoutY="13.0" text="From">
                                   <font>
                                     <Font name="System Bold Italic" size="10.0" fx:id="x1" />
                                   </font>
                                 </Label>
-                                <Label font="$x1" layoutX="271.0" layoutY="42.0" text="To" />
+                                <Label font="$x1" layoutX="272.0" layoutY="51.0" text="To" />
                               </children>
                             </AnchorPane>
                           </content>
