@@ -83,7 +83,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	
-	public void popup(ActionEvent event){
+	public void addClient(ActionEvent event){
 
 		final Stage secondaryStage = new Stage();
 	    

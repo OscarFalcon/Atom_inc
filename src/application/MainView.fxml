@@ -172,7 +172,7 @@
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
                 <ToolBar prefWidth="597.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
                   <items>
-                    <Button mnemonicParsing="false" onAction="#popup" prefHeight="24.0" prefWidth="100.0" text="Add Client" />
+                    <Button mnemonicParsing="false" onAction="#addClient" prefHeight="24.0" prefWidth="100.0" text="Add Client" />
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.00009999999747" text="Edit Client" />
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="119.0" text="Advanced Search" />
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Add Order" />
