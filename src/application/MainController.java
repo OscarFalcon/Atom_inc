@@ -27,89 +27,101 @@ import javafx.stage.StageStyle;
 public class MainController implements Initializable, ControlledScreen {
 
 	ScreenController myController;
-	
+
 	public TabPane tabbedPane;
-	
+
 	@FXML
 	TableView serviceTable;
 	@FXML
 	TableView customerTable;
 	@FXML
 	TableView pmaTable;
-	//columns for the customer table
+	// columns for the customer table
 	@FXML
-	TableColumn customerId, customerFirst, customerLast, customerPhone, customerAddress, customerEmail;
-	//columns for the in garage table
+	TableColumn customerId, customerFirst, customerLast, customerPhone,
+			customerAddress, customerEmail;
+	// columns for the in garage table
 	@FXML
-	TableColumn serviceOrderNum, serviceDateIn, serviceName, serviceVehicle, serviceStatus;
-	//columns for the PMA table
+	TableColumn serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,
+			serviceStatus;
+	// columns for the PMA table
 	@FXML
 	TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
 	@FXML
 	SplitPane pmaSplitPane;
-	
-	
 
-
-	
-	
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		//Set the resizing property for customer table
+
+		// Set the resizing property for customer table
 		customerId.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.12));
 		customerFirst.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.15));
 		customerLast.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.18));
 		customerAddress.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.20));
 		customerPhone.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.15));
 		customerEmail.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.20));
-		
-		//Set the resizing property for the service order table
+
+		// Set the resizing property for the service order table
 		serviceOrderNum.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
 		serviceDateIn.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
 		serviceName.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
 		serviceVehicle.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.30));
 		serviceStatus.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
-		
-		//set resizing for the searched PMA table columns
+
+		// set resizing for the searched PMA table columns
 		workOrderNum.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
 		dateIn.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.12));
 		first.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
 		last.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.20));
 		vehicle.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.23));
 		phone.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
-		
-		
+
 	}
-	
-	
-	
-	public void addClient(ActionEvent event){
+
+	public void addClient(ActionEvent event) {
 
 		final Stage secondaryStage = new Stage();
-	    
-	    
+
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("AddCustomerView.fxml")); 
-	        Scene scene = new Scene(root, 450, 350);
-	        secondaryStage.setTitle("Add Customer");
-	        secondaryStage.setScene(scene);
-	        
-	        secondaryStage.initModality(Modality.APPLICATION_MODAL);
-	        secondaryStage.setResizable(false);
-	        
-	        secondaryStage.show();
-            
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            
-        }
-		
-	    
-	    
-	    
-		
-		
+			Parent root = FXMLLoader.load(getClass().getResource(
+					"AddCustomerView.fxml"));
+			Scene scene = new Scene(root, 450, 350);
+			secondaryStage.setTitle("Add Customer");
+			secondaryStage.setScene(scene);
+
+			secondaryStage.initModality(Modality.APPLICATION_MODAL);
+			secondaryStage.setResizable(false);
+
+			secondaryStage.show();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+		}
+
+	}
+	
+	public void editClient(ActionEvent event) {
+
+		final Stage secondaryStage = new Stage();
+
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource(
+					"CHANGE TO EDIT CLIENT .FXML"));//correct this string here.
+			Scene scene = new Scene(root, 450, 350);
+			secondaryStage.setTitle("Add Customer");
+			secondaryStage.setScene(scene);
+			secondaryStage.initModality(Modality.APPLICATION_MODAL);
+			secondaryStage.setResizable(false);
+			
+			//fill in textfields based on which client was selected for 'edit'
+			
+			secondaryStage.show();
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+		}
+
 	}
 	
 
@@ -119,8 +131,8 @@ public class MainController implements Initializable, ControlledScreen {
 
 	@FXML
 	public void signOut(ActionEvent event) {
-		// add "are you sure you wish to sign out" prompt
-		myController.setScreen(Main.screenLoginID);
+		//sign out prompt
+		//then load login screen clear logged in info
 	}
 
 	@FXML
@@ -128,10 +140,9 @@ public class MainController implements Initializable, ControlledScreen {
 		// add 'are you sure you want to exit application" prompt
 		Platform.exit();
 	}
+	
+	
 
 	
-	public void cancel(ActionEvent event) {
-		return;
-	}
 
 }
