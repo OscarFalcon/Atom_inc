@@ -30,6 +30,7 @@ public class MainController implements Initializable, ControlledScreen {
 	ScreenController myController;
 
 	public TabPane tabbedPane;
+	static Stage primaryStage;
 
 	@FXML
 	TableView serviceTable;
@@ -52,6 +53,10 @@ public class MainController implements Initializable, ControlledScreen {
 	SplitPane pmaSplitPane;
 	@FXML 
 	TextField firstAddField, lastAddField, emailAddField;
+	
+	public Person current;
+	
+	
 
 	public void initialize(URL url, ResourceBundle rb) {
 
@@ -77,24 +82,48 @@ public class MainController implements Initializable, ControlledScreen {
 		last.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.20));
 		vehicle.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.23));
 		phone.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
+		
+		
+		current = new Person("7891", "John", "Wimberly", "44561897", "6406 Red Jacket", "johncwimberly@yahoo.com");
+		
 
 	}
 
 	
 	public void addClient(ActionEvent event){
-		Stage secondaryStage = loadpopup("AddCustomerView.fxml");
-		secondaryStage.setTitle("Add Customer");
-		secondaryStage.show();
+		EditClientController.person = null;
+		Stage popup = loadpopup("EditCustomerView.fxml");
+		popup.setTitle("Add Client");
+		popup.show();
+		
+		/*
+		AddClientController msgBox = new AddClientController();
+	    try {
+	        msgBox.showMessageBox(primaryStage);
+	    } catch (Exception e) {
+	        e.printStackTrace(); 
+	    }
+	    */
 	}
 	
 	public void editClient(ActionEvent event){
-		System.out.println("Do edit client stuff");
+		EditClientController.person = current;
+		Stage popup = loadpopup("EditCustomerView.fxml");
+		popup.setTitle("Edit Client");
+		popup.show();
+		
+		
 		/*
-		Stage secondaryStage = loadpopup("AddCustomerView.fxml");
-		secondaryStage.setTitle("Edit Customer");
-		firstAddField.setText("John");
-		secondaryStage.show();
-		*/
+		EditClientController msgBox = new EditClientController();
+	    try {
+	        msgBox.showMessageBox(primaryStage, current);
+	    } catch (Exception e) {
+	        e.printStackTrace(); 
+	    }
+	    */
+	    
+	    
+		
 	}
 	
 	public Stage loadpopup(String filename){
@@ -105,6 +134,12 @@ public class MainController implements Initializable, ControlledScreen {
 			popup.setScene(scene);
 			popup.initModality(Modality.APPLICATION_MODAL);
 			popup.setResizable(false);
+			
+			popup.setScene(scene);
+	        popup.initOwner(primaryStage);
+	        popup.initModality(Modality.WINDOW_MODAL);
+	        popup.initStyle(StageStyle.UTILITY);
+	        popup.setResizable(false);
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());

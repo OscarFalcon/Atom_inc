@@ -33,6 +33,10 @@ public class Main extends Application{
         
         mainContainer.setScreen(Main.screenLoginID);
         
+        
+        MainController.primaryStage = primaryStage;
+        
+        
         AnchorPane root = new AnchorPane();
         root.getChildren().addAll(mainContainer);
         
