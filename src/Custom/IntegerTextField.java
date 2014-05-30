@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class IntegerTextField extends MyTextField{
 
 	@Override
-	protected BigDecimal getValueOf(String input) {
+	public BigDecimal getValueOf(String input) {
 		input = validStr(input);
 		if(input.equals(""))
 			return new BigDecimal(0.0);
@@ -13,9 +13,16 @@ public class IntegerTextField extends MyTextField{
 			input = input.substring(0,3);
 		return new BigDecimal(Integer.parseInt(input));
 	}
+	
+	
 	@Override
 	public void setValue(BigDecimal number) {
-		setText(number.toString());
+		setText(new Integer(number.intValue()).toString());
+	}
+	
+	@Override
+	public BigDecimal getValue() {
+		return getValueOf(getText());
 	}
 	
 }

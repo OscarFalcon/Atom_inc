@@ -13,27 +13,30 @@ public class DoubleTextField extends MyTextField{
 		setText("0.0");
 	}
 	
+	@Override
+	public void setValue(BigDecimal number){
+		String currency = NumberFormat.getCurrencyInstance().format(number);
+		super.setText(currency.substring(1, currency.length()-1));	
+	}
+	
+	@Override
+	public BigDecimal getValue() {
+		return getValueOf(getText());
+	}
 	
 	@Override
 	protected BigDecimal getValueOf(String input) {
 		if(input.equals(""))
 			return new BigDecimal(00.0);
 		
-		if(input.length() > 4){
-			input = input.substring(0,4);
-			return new BigDecimal(Double.parseDouble(input));
-		}
 		input = validStr(input);
     	input = trim(input);
     	input = addPeriod(input);
-    	BigDecimal bd = new BigDecimal(Double.parseDouble(input));
-    	return bd;
-	}
-	
-	@Override
-	public void setValue(BigDecimal number) {
-		String currency = NumberFormat.getCurrencyInstance().format(number);
-		super.setText(currency.substring(1, currency.length()-1));	
+		
+		if(input.length() > 4)
+			input = input.substring(0,4);
+		
+		return new BigDecimal(Double.parseDouble(input));
 	}
 	
 	private static String addPeriod(String number){
@@ -53,8 +56,6 @@ public class DoubleTextField extends MyTextField{
 		text = text.substring(i);
 		return text;
 	}
-	
-	
 	
 }
 

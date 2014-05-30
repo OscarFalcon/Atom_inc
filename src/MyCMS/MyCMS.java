@@ -260,6 +260,7 @@ public static class employee{
 		}	
 	}
 	public static class PMA{
+		private static int ROW_COUNT = 50;
 		
 		public static PMAObject getPMA(int workOrder){
 			String statement = "SELECT date,object FROM PMA WHERE wo = ?";
@@ -332,6 +333,9 @@ public static class employee{
 			pma.engine = (String) tmp[5];
 			pma.trans = (String) tmp[6];
 			pma.miles = (String) tmp[7];
+			
+			for(int i = 0; i < ROW_COUNT; i++)
+				pma.approved[i] = PMAObject.NO_ACTION;
 			
 			arguments.clear();
 			result_types.clear();

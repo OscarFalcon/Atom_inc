@@ -10,6 +10,18 @@ public class MoneyTextField extends MyTextField{
 		super();
 		setText("$0.00");
 	}
+	
+	@Override
+	public void setValue(BigDecimal number) {
+		String currency = NumberFormat.getCurrencyInstance().format(number);
+		super.setText(currency);
+	}
+	
+	@Override
+	public BigDecimal getValue() {
+		return getValueOf(getText());
+	} 
+	
 	@Override
 	protected BigDecimal getValueOf(String input) {
 		input = validStr(input);
@@ -19,12 +31,6 @@ public class MoneyTextField extends MyTextField{
     	return bd;
 	}
 
-	@Override
-	public void setValue(BigDecimal number) {
-		String currency = NumberFormat.getCurrencyInstance().format(number);
-		super.setText(currency);
-	}
-	
 	/** private static methods **/
     private static String trim(String text){
 		int i = 0;
@@ -44,7 +50,5 @@ public class MoneyTextField extends MyTextField{
 			number = number.substring(0, number.length()-2) + "." + save;
 		}
 		return number;
-	} 
-	
-	
+	}
 }

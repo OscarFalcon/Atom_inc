@@ -46,21 +46,27 @@ public abstract class MyTextField extends TextField{
     	
     	moveCaret(getText().length()); /** must have **/
     } 
-	
-	
 
 	/**
-	 * This method must return the BigDecimal representation of the TextField
+	 * This method must return the BigDecimal representation of the a given input
 	 * @return
 	 */
 	protected abstract BigDecimal getValueOf(String input);
 	
 	
 	/**
-	 * This method must set the TextFields output to that specified by number
+	 * Sets the displayed text of this text field to the 
+	 * string representation of the specified BigDecimal number
 	 * @param number
 	 */
 	public abstract void setValue(BigDecimal number);
+	
+	
+	/**
+	 * returns the BigDecimal representation of this TextField.
+	 * @return
+	 */
+	public abstract BigDecimal getValue();
 	
 	
 	 /**
