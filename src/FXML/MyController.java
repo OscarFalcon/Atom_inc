@@ -68,7 +68,7 @@ import MyCMS.*;
 public class MyController implements Initializable{
 	
 	private static int ROW_COUNT = 50; //the number of rows in the PMA;
-	private static int WORK_ORDER_NUMBER = 5; //the work order number used to load a specific PMA 
+	private static int WORK_ORDER_NUMBER = 7; //the work order number used to load a specific PMA 
 	
 	
 	/** title fields **/
@@ -380,7 +380,7 @@ public class MyController implements Initializable{
 			PMA.notok[i] = checkboxes[i][0].isSelected();									/** NOT OK **/
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();					/** TECH COMMENTS **/
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();		/** RECOMMENDED REPAIRS **/
-			PMA.priority[i] = (short) priorities[i].getSelectionModel().getSelectedIndex();	/** PRIORITY **/
+			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();			/** PRIORITY **/
 			PMA.totalParts[i] = moneyFields[i][0].getValue();								/** TOTAL PARTS **/
 			PMA.totalLabor[i] = moneyFields[i][2].getValue();								/** TOTAL LABOR **/
 			PMA.qty[i] = Integer.parseInt(QTY[i].getText());								/** QUANTITY **/
@@ -388,7 +388,6 @@ public class MyController implements Initializable{
 			PMA.laborCost[i] = laborHours[i].getValue();									/** LABOR HOURS **/
 			PMA.vendor[i] = vendors[i].getText();											/** VENDORS **/
 		}
-		
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
 	
@@ -432,9 +431,6 @@ public void initialize(URL location, ResourceBundle resources) {
 				,vendor36,vendor37,vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47
 				,vendor48,vendor49,vendor50};
 		
-		initComoBoxOptions();
-		initPMA();
-		initMenuItems();
 		
 		for(int i = 0; i < ROW_COUNT; i++){
 			/** initialize manually added fields **/
@@ -474,6 +470,10 @@ public void initialize(URL location, ResourceBundle resources) {
 			col +=2;
 		}
 		
+		initComoBoxOptions();
+		initPMA();
+		initMenuItems();
+		
 		//System.out.println(MyCMS.PMA.createPMA(5856, "MV54WDV64HJ45", "new pma created"));
 		
 	}
@@ -497,15 +497,20 @@ private void initPMA(){
 	CustConcerns.setText(PMA.customer_concerns);
 	CustConcerns.setEditable(false); 
 	
-	
-	
-	
 	for(int i = 0; i < ROW_COUNT; i++){
 		checkboxes[i][0].setSelected(PMA.ok[i]);
 		checkboxes[i][1].setSelected(PMA.notok[i]);
 		
 		techcomments[i].getEditor().setText((PMA.tech_comments[i]));
-
+		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);
+		priorities[i].getSelectionModel().select(PMA.priority[i]+1);
+		moneyFields[i][0].setValue(PMA.totalParts[i]);
+		moneyFields[i][1].setValue(PMA.totalLabor[i]);
+		QTY[i].setValue(new BigDecimal(PMA.qty[i]));
+		moneyFields[i][2].setValue(PMA.partCost[i]);
+		laborHours[i].setValue(PMA.laborCost[i]);
+		vendors[i].setText(PMA.vendor[i]);
+		
 		
 		switch( PMA.approved[i] ){
 			case PMAObject.APPROVED:
@@ -519,17 +524,11 @@ private void initPMA(){
 			case PMAObject.INFORMATION_ONLY:
 				alterRow(i,PMAObject.INFORMATION_ONLY);
 				lockRow(i);
-				
-				
-				
-				
+					
 		}
-
 	}
-	
-	
-	
 }
+
 
 private void initMenuItems(){
 	int i = 0;

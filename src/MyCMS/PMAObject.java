@@ -69,6 +69,15 @@ public class PMAObject extends Object implements Serializable{
 		qty = new int[ROW_COUNT];
 		vendor = new String[ROW_COUNT];
 		totals = new BigDecimal[9];
+		
+		for(int i = 0; i < ROW_COUNT; i ++){
+			totalParts[i] = new BigDecimal(0.0);
+			totalLabor[i] = new BigDecimal(0.0);
+			laborCost[i] = new BigDecimal(0.0);
+			partCost[i] = new BigDecimal(0.0);
+		}
+		
+		
 	}
 	
 	public String toString(){
