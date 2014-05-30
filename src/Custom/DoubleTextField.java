@@ -29,13 +29,13 @@ public class DoubleTextField extends MyTextField{
 		if(input.equals(""))
 			return new BigDecimal(00.0);
 		
-		input = validStr(input);
-    	input = trim(input);
-    	input = addPeriod(input);
-		
 		if(input.length() > 4)
 			input = input.substring(0,4);
 		
+		input = validStr(input);
+    	input = trim(input);
+    	input = addPeriod(input);
+			
 		return new BigDecimal(Double.parseDouble(input));
 	}
 	

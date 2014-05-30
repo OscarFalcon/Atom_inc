@@ -270,8 +270,6 @@
                                   </font>
                                 </Label>
                                 <Label font="$x1" layoutX="271.0" layoutY="42.0" text="To" />
-                                                <DatePicker layoutX="331.0" layoutY="6.0" />
-                                                <DatePicker layoutX="331.0" layoutY="42.0" />
                               </children>
                             </AnchorPane>
                           </content>

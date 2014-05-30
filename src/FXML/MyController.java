@@ -67,8 +67,8 @@ import MyCMS.*;
 
 public class MyController implements Initializable{
 	
-	private static int ROW_COUNT = 50; //the number of rows in the PMA;
-	private static int WORK_ORDER_NUMBER = 7; //the work order number used to load a specific PMA 
+	public static final int ROW_COUNT = 50; //the number of rows in the PMA;
+	private static int WORK_ORDER_NUMBER = 9; //the work order number used to load a specific PMA 
 	
 	
 	/** title fields **/
@@ -138,7 +138,25 @@ public class MyController implements Initializable{
 	
 	final private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
+	
 	private PMAObject PMA; 		/** the PMA object that will be used throughout the program **/
+	
+	
+	
+	public static final int HIGH = 0;
+	public static final int MED = 1;
+	public static final int LOW = 2;
+	public static final int NO_PRIORITY = 3;
+	private static int[] priority_status = new int[ROW_COUNT];
+	
+	public static final int NO_STATUS = 0;			/** lock all fields, except for tech comments: lock menu items **/
+	private static final int OK_SELECTED = 1;		/** lock all fields, including tech comments : lock menu items **/
+	private static final int NOT_OK_SELECTED = 2;	/** unlock all fields : unlock menu items **/
+	private static final int APPROVED = 3;			/** lock all fields, including tech comments : unlock menu items **/
+	private static final int NOT_APPROVED = 4;		/** lock all fields, including tech comments : unlock menu items **/
+	private static final int INFORMATION_ONLY = 5;	/** lock all fields, including tech comments : unlock menu items **/
+	private static int[] ROW_STATUS = new int[ROW_COUNT];				/** status of each row **/
+	
 	
 	
 	public void checked(ActionEvent event){		
@@ -155,37 +173,23 @@ public class MyController implements Initializable{
 		else
 			index = 1;
 		
-		checkboxes[place][0].getStyleClass().removeAll("check-box-regular","check-box-invalid");																			
-		checkboxes[place][index].getStyleClass().removeAll("check-box-regular","check-box-invalid");	
-		checkboxes[place][0].getStyleClass().add("check-box-regular");
-		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		disableAndClearFields(place);
-		
-		if (index == 0){						 						/**if event came from OK check box **/
-			checkboxes[place][1].setSelected(false);
-			disableMenuItems(place,true,true,true);		
-			PMA.approved[place] = PMAObject.NO_ACTION;
-			
-		}else{ 	/** event came from NOT OK **/
-			checkboxes[place][0].setSelected(false);					/** set OK checkbox to be not selected **/
-			
-			if(checkboxes[place][index].isSelected()){					/** The Check Box is selected **/
-				checkboxes[place][1].getStyleClass().remove("check-box-regular"); 
-				checkboxes[place][1].getStyleClass().add("check-box-invalid");	
-				disableFields(place,false);								/** enable fields **/
-				disableMenuItems(place,false,false,false);
-			}
-			else{												/** NOT OK  not selected **/
-				disableMenuItems(place,true,true,true);
-				PMA.approved[place] = PMAObject.NO_ACTION;
-			}
-			
-		}	
-		techcomments[place].setDisable(false);
+		if (index == 0 && checkboxes[place][0].isSelected() )						 						
+			selectOK(place);
+		else if( index == 0)
+			unselectOK(place);
+		else if( checkboxes[place][index].isSelected() )					
+			selectNOTOK(place);	
+		else												
+			unselectNOTOK(place);
 	}
 	
 	
-	/** set all the fields except tech comments to b **/
+	
+	/** 
+	 * set all the fields except tech comments to disable = b 
+	 * except for tech_comments
+	 * 
+	 */
 	private void disableFields(int place,boolean b){
 		recommendedrepairs[place].setDisable(b);
 		priorities[place].setDisable(b);
@@ -196,7 +200,12 @@ public class MyController implements Initializable{
 		laborHours[place].setDisable(b);
 		vendors[place].setDisable(b);
 	}
-	/** sets all the fields in a row to thier default values **/
+	
+	
+	/**
+	 *  sets all the fields in a row to their default values 
+	 *  except for tech comments
+	 */
 	private void clearFields(int place){
 		recommendedrepairs[place].setValue("");
 		priorities[place].setValue("");
@@ -206,6 +215,14 @@ public class MyController implements Initializable{
 		QTY[place].setValue(new BigDecimal(0));
 		vendors[place].setText("");
 	}
+	
+	/**
+	 * removes any CSS of each component of the row, and sets all the components back 
+	 * to their default looks.
+	 * PRIORITY,TOTAL PARTS, and TOTAL LABOR ARE the only fields affected.
+	 * 
+	 * @param place
+	 */
 	private void clearCSS(int place){
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
 		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
@@ -231,7 +248,81 @@ public class MyController implements Initializable{
 		disableFields(place,true);
 	}
 	
+	
+	
+	
+	private void selectOK(int place){
+		/** uncheck corresponding NOT OK **/
+		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
+		checkboxes[place][1].getStyleClass().add("check-box-regular");
+		checkboxes[place][1].setSelected(false);
+		disableMenuItems(place,true,true,true);		
+		disableAndClearFields(place);
+		techcomments[place].setDisable(true);
+		ROW_STATUS[place] = OK_SELECTED;
+	}
+	private void unselectOK(int place){
+		/** we know OK was the previous called method **/
+		techcomments[place].setDisable(false);
+		ROW_STATUS[place] = NO_STATUS;
+	}
+	
+	private void selectNOTOK(int place){
+		checkboxes[place][1].getStyleClass().remove("check-box-regular");
+		checkboxes[place][1].getStyleClass().add("check-box-invalid");
+		disableFields(place,false);
+		techcomments[place].setDisable(false);
+		disableMenuItems(place,false,false,false);
+		ROW_STATUS[place] = NOT_OK_SELECTED;
+	}
+	private void unselectNOTOK(int place){
+		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
+		checkboxes[place][1].getStyleClass().add("check-box-regular");
+		disableMenuItems(place,true,true,true);
+		disableAndClearFields(place);
+		ROW_STATUS[place] = NO_STATUS;
+	}
+	
+	
+	
+	/**
+	 * Sets the row to be altered by providing the specified behaviors when 
+	 * user click on Approve,Not Approved,or Information Only
+	 * @param place
+	 * @param which
+	 */
+	private void alterRow(final int place, final int which){
+		String css;
+		
+		lockRow(place);
+		clearCSS(place);
+		
+		switch(which){
+			case APPROVED:
+				css = "green-label";
+				break;
+			case NOT_APPROVED:
+				css = "red-label";
+				break;
+			case INFORMATION_ONLY:
+				css = "yellow-label";
+				break;
+			default:
+				return;
+		}
+		ROW_STATUS[place] = which;
+		priorities[place].getStyleClass().add(css);
+		priorities[place].getEditor().getStyleClass().add(css);
+		moneyFields[place][0].getStyleClass().add(css);
+		moneyFields[place][1].getStyleClass().add(css);
+	}
+	
+	
+	private int addRows(int rowNum){
+		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
+	}
 
+	
 	public void excel() throws Exception {
 
 		File excel = new File("PMA.xls"); 					/**open file to read from master PMA **/
@@ -295,7 +386,7 @@ public class MyController implements Initializable{
 				cell.setCellValue(richString);
 			}
 			
-			if(PMA.approved[i] != PMAObject.NO_ACTION){
+			if(PMA.ROW_STATUS[i] != NO_STATUS){
 				cell = row.getCell(3); 							/**  TECH COMMENTS  **/ 
 				cell.setCellValue(techcomments[i].getEditor().getText());
 				cell = row.getCell(4);							/** RECOMMENDED REPAIRS **/
@@ -369,9 +460,7 @@ public class MyController implements Initializable{
 	    }   **/
 	}
 	
-	private int addRows(int rowNum){
-		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
-	}
+	
 	
 	
 	public void save(){
@@ -382,11 +471,12 @@ public class MyController implements Initializable{
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();		/** RECOMMENDED REPAIRS **/
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();			/** PRIORITY **/
 			PMA.totalParts[i] = moneyFields[i][0].getValue();								/** TOTAL PARTS **/
-			PMA.totalLabor[i] = moneyFields[i][2].getValue();								/** TOTAL LABOR **/
-			PMA.qty[i] = Integer.parseInt(QTY[i].getText());								/** QUANTITY **/
-			PMA.partCost[i] = moneyFields[i][1].getValue();									/** PARTS COST **/
+			PMA.totalLabor[i] = moneyFields[i][1].getValue();								/** TOTAL LABOR **/
+			PMA.qty[i] = QTY[i].getValue();													/** QUANTITY **/
+			PMA.partCost[i] = moneyFields[i][2].getValue();									/** PARTS COST **/
 			PMA.laborCost[i] = laborHours[i].getValue();									/** LABOR HOURS **/
 			PMA.vendor[i] = vendors[i].getText();											/** VENDORS **/
+			PMA.ROW_STATUS[i] = ROW_STATUS[i];
 		}
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
@@ -503,28 +593,27 @@ private void initPMA(){
 		
 		techcomments[i].getEditor().setText((PMA.tech_comments[i]));
 		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);
-		priorities[i].getSelectionModel().select(PMA.priority[i]+1);
+		
+		priorities[i].getSelectionModel().select(PMA.priority[i]);
+		
 		moneyFields[i][0].setValue(PMA.totalParts[i]);
 		moneyFields[i][1].setValue(PMA.totalLabor[i]);
-		QTY[i].setValue(new BigDecimal(PMA.qty[i]));
+		QTY[i].setValue(PMA.qty[i]);
 		moneyFields[i][2].setValue(PMA.partCost[i]);
 		laborHours[i].setValue(PMA.laborCost[i]);
 		vendors[i].setText(PMA.vendor[i]);
 		
 		
-		switch( PMA.approved[i] ){
-			case PMAObject.APPROVED:
-				alterRow(i,PMAObject.APPROVED);
-				lockRow(i);
+		switch( PMA.ROW_STATUS[i] ){
+			case APPROVED:
+				alterRow(i,APPROVED);
 				break;
-			case PMAObject.NOT_APPROVED:
-				alterRow(i,PMAObject.NOT_APPROVED);
-				lockRow(i);
+			case NOT_APPROVED:
+				alterRow(i,NOT_APPROVED);
 				break;
-			case PMAObject.INFORMATION_ONLY:
-				alterRow(i,PMAObject.INFORMATION_ONLY);
-				lockRow(i);
-					
+			case INFORMATION_ONLY:
+				alterRow(i,INFORMATION_ONLY);
+			
 		}
 	}
 }
@@ -561,8 +650,8 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 		while( item != menuItemsApproved[place])
 			place++;
 		
-		alterRow(place,PMAObject.APPROVED);
-		PMA.approved[place] = PMAObject.APPROVED;
+		alterRow(place,APPROVED);
+		ROW_STATUS[place] = APPROVED;
 	}
 }
 private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
@@ -574,8 +663,8 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 			while( item != menuItemsDisapproved[place])
 				place++;
 			
-			alterRow(place,PMAObject.NOT_APPROVED);
-			PMA.approved[place] = PMAObject.NOT_APPROVED;
+			alterRow(place,NOT_APPROVED);
+			ROW_STATUS[place] = NOT_APPROVED;
 		}
 	}
 	private class rightClickMenuInformation implements EventHandler<ActionEvent>{
@@ -587,32 +676,11 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				while( item != menuItemsInformation[place])
 					place++;
 	
-				alterRow(place,PMAObject.INFORMATION_ONLY);
-				PMA.approved[place] = PMAObject.INFORMATION_ONLY;
+				alterRow(place,INFORMATION_ONLY);
+				ROW_STATUS[place] = INFORMATION_ONLY;
 			}
 	}
-	private void alterRow(final int place, final int which){
-		String css;
-		switch(which){
-			case PMAObject.APPROVED:
-				css = "green-label";
-				break;
-			case PMAObject.NOT_APPROVED:
-				css = "red-label";
-				break;
-			case PMAObject.INFORMATION_ONLY:
-				css = "yellow-label";
-				break;
-			default:
-				return;
-		}
-		disableFields(place,true);
-		clearCSS(place);
-		priorities[place].getStyleClass().add(css);
-		priorities[place].getEditor().getStyleClass().add(css);
-		moneyFields[place][0].getStyleClass().add(css);
-		moneyFields[place][1].getStyleClass().add(css);
-	}
+	
 	
 	
 	

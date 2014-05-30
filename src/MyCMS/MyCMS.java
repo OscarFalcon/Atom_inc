@@ -3,6 +3,8 @@ package MyCMS;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import FXML.MyController;
+
 public class MyCMS {
 	
 	/**			general errors		**/
@@ -279,6 +281,7 @@ public static class employee{
 			}
 			return null;
 		}
+		
 		public static boolean updatePMA(int workOrder,PMAObject pma){
 			String statement = "UPDATE PMA SET object = ? WHERE wo = ?";
 			ArrayList<Type> arguments = new ArrayList<Type>();
@@ -322,7 +325,7 @@ public static class employee{
 			
 			PMAObject pma;
 			Object[] tmp = results.get(0);
-			pma = new PMAObject();
+			pma = new PMAObject(ROW_COUNT);
 			pma.customer_concerns = customerConcerns;
 			pma.vin = vehicleVIN;
 			pma.lic = (String) tmp[0];
@@ -333,9 +336,6 @@ public static class employee{
 			pma.engine = (String) tmp[5];
 			pma.trans = (String) tmp[6];
 			pma.miles = (String) tmp[7];
-			
-			for(int i = 0; i < ROW_COUNT; i++)
-				pma.approved[i] = PMAObject.NO_ACTION;
 			
 			arguments.clear();
 			result_types.clear();

@@ -4,58 +4,48 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import FXML.MyController;
+
 public class PMAObject extends Object implements Serializable{
 
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static int ROW_COUNT = 50;
+	private int ROW_COUNT;
 	
-	public static final int NO_ACTION = 0;
-	public static final int APPROVED = 1;
-	public static final int NOT_APPROVED = 2;
-	public static final int INFORMATION_ONLY = 3;
-	
-	public static final int HIGH = 0;
-	public static final int MED = 1;
-	public static final int LOW = 2;
 	
 	/** header of PMA **/
 	public int wo;
+	public int year;
 	public String first,last;
 	public String tags,make,model,lic,vin,engine,trans,miles;
-	public Date date;
 	public String customer_concerns;
-	public int year;
+	public Date date;
 	
-	/** ok/notok columns **/
+	/** OK/NOTOK columns **/
 	public boolean[] ok;
 	public boolean[] notok;
 	
-	/** Either NO_ACTION,APPROVED,NOT_APPROVED,INFORMATION_ONLY **/
-	public int[] approved;
+	public int[] ROW_STATUS;
+	public int[] priority;
 	
 	public String[] tech_comments;
 	public String[] recommended_repairs;
-	public int[] priority;
-	
-	/** price columns of PMA **/
-	public BigDecimal[] totalParts;//what the customer sees
-	public BigDecimal[] totalLabor; //what the customer sees
-	public BigDecimal[] laborCost; // stores cost
-	public BigDecimal[] partCost; // stores cost 
-	
-	public int[] qty; 
-	
 	public String[] vendor;
 	
-	/**
-	 * HIGH,MED,LOW,PARTS,LABOR,TOTAL_PARTS_AND_LABOR,TAX,SHOP_SUPPLIES,GRAND_TOTAL
-	 */
-	public BigDecimal[] totals; 
+	/** price columns of PMA **/
+	public BigDecimal[] totalParts;  /** what the customer sees **/
+	public BigDecimal[] totalLabor;  /** what the customer sees **/
+	public BigDecimal[] laborCost;   /** stores cost **/
+	public BigDecimal[] partCost;    /** stores cost **/
+	public BigDecimal[] totals;  /** HIGH,MED,LOW,PARTS,LABOR,TOTAL_PARTS_AND_LABOR,TAX,SHOP_SUPPLIES,GRAND_TOTAL **/
+	public BigDecimal[] qty; 		
+
 	
 	
-	public PMAObject(){
+	public PMAObject(int rowCount){
+		ROW_COUNT = rowCount;
+		
 		ok = new boolean[ROW_COUNT];
 		notok = new boolean[ROW_COUNT];
 		tech_comments = new String[ROW_COUNT];
@@ -65,24 +55,20 @@ public class PMAObject extends Object implements Serializable{
 		totalLabor = new BigDecimal[ROW_COUNT];
 		laborCost = new BigDecimal[ROW_COUNT];
 		partCost = new BigDecimal[ROW_COUNT];
-		approved = new int[ROW_COUNT];
-		qty = new int[ROW_COUNT];
+		ROW_STATUS = new int[ROW_COUNT];
+		qty = new BigDecimal[ROW_COUNT];
 		vendor = new String[ROW_COUNT];
-		totals = new BigDecimal[9];
+		totals = new BigDecimal[9];	
 		
 		for(int i = 0; i < ROW_COUNT; i ++){
 			totalParts[i] = new BigDecimal(0.0);
 			totalLabor[i] = new BigDecimal(0.0);
 			laborCost[i] = new BigDecimal(0.0);
 			partCost[i] = new BigDecimal(0.0);
+			qty[i] = new BigDecimal(0);
+			ROW_STATUS[i] = MyController.NO_STATUS;
 		}
 		
-		
 	}
-	
-	public String toString(){
-		return "first name = " + first + " total part = " + totalParts[0];
-	}
-	
 }
 	
