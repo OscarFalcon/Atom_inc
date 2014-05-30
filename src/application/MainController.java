@@ -19,6 +19,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,6 +50,8 @@ public class MainController implements Initializable, ControlledScreen {
 	TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
 	@FXML
 	SplitPane pmaSplitPane;
+	@FXML 
+	TextField firstAddField, lastAddField, emailAddField;
 
 	public void initialize(URL url, ResourceBundle rb) {
 
@@ -77,51 +80,36 @@ public class MainController implements Initializable, ControlledScreen {
 
 	}
 
-	public void addClient(ActionEvent event) {
-
-		final Stage secondaryStage = new Stage();
-
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource(
-					"AddCustomerView.fxml"));
-			Scene scene = new Scene(root, 450, 350);
-			secondaryStage.setTitle("Add Customer");
-			secondaryStage.setScene(scene);
-
-			secondaryStage.initModality(Modality.APPLICATION_MODAL);
-			secondaryStage.setResizable(false);
-
-			secondaryStage.show();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-
-		}
-
+	
+	public void addClient(ActionEvent event){
+		Stage secondaryStage = loadpopup("AddCustomerView.fxml");
+		secondaryStage.setTitle("Add Customer");
+		secondaryStage.show();
 	}
 	
-	public void editClient(ActionEvent event) {
-
-		final Stage secondaryStage = new Stage();
-
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource(
-					"CHANGE TO EDIT CLIENT .FXML"));//correct this string here.
+	public void editClient(ActionEvent event){
+		System.out.println("Do edit client stuff");
+		/*
+		Stage secondaryStage = loadpopup("AddCustomerView.fxml");
+		secondaryStage.setTitle("Edit Customer");
+		firstAddField.setText("John");
+		secondaryStage.show();
+		*/
+	}
+	
+	public Stage loadpopup(String filename){
+		Stage popup = new Stage();
+		try{
+			Parent root = FXMLLoader.load(getClass().getResource(filename));
 			Scene scene = new Scene(root, 450, 350);
-			secondaryStage.setTitle("Add Customer");
-			secondaryStage.setScene(scene);
-			secondaryStage.initModality(Modality.APPLICATION_MODAL);
-			secondaryStage.setResizable(false);
-			
-			//fill in textfields based on which client was selected for 'edit'
-			
-			secondaryStage.show();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-
+			popup.setScene(scene);
+			popup.initModality(Modality.APPLICATION_MODAL);
+			popup.setResizable(false);
 		}
-
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+		return popup;
 	}
 	
 

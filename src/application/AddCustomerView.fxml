@@ -20,9 +20,9 @@
       </children>
     </VBox>
     <Label layoutX="227.0" layoutY="48.0" text="Last" />
-    <TextField layoutX="75.0" layoutY="45.0" prefWidth="134.00009999999747" />
-    <TextField layoutX="265.0" layoutY="45.0" prefWidth="134.0" />
-    <TextField layoutX="75.0" layoutY="86.0" prefWidth="134.0" />
+    <TextField id="firstAdvSer" fx:id="firstAddField" layoutX="75.0" layoutY="45.0" prefWidth="134.00009999999747" />
+    <TextField fx:id="lastAddField" layoutX="265.0" layoutY="45.0" prefWidth="134.0" />
+    <TextField id="emailAddView" fx:id="emailAddField" layoutX="75.0" layoutY="86.0" prefWidth="134.0" />
     <TextField layoutX="76.0" layoutY="127.0" prefWidth="134.0" />
     <TextField layoutX="75.0" layoutY="168.0" prefWidth="134.0" />
     <TextField layoutX="265.0" layoutY="127.0" prefWidth="134.0" />
