@@ -10,7 +10,6 @@ public class PMAObject extends Object implements Serializable{
 
 	
 	private static final long serialVersionUID = 1L;
-	
 	private int ROW_COUNT;
 	
 	
@@ -22,11 +21,11 @@ public class PMAObject extends Object implements Serializable{
 	public String customer_concerns;
 	public Date date;
 	
-	/** OK/NOTOK columns **/
-	public boolean[] ok;
-	public boolean[] notok;
+
+	/** OK/NOTOK	 - 	APPROVED-DISAPPROVED-INFORMATION_ONLY **/
+	public int[][] ROW_STATUS;
 	
-	public int[] ROW_STATUS;
+	/** REPRESENTS THE SELECTED INDEX OF PRIORITY DROP DOWN MENU **/
 	public int[] priority;
 	
 	public String[] tech_comments;
@@ -46,8 +45,6 @@ public class PMAObject extends Object implements Serializable{
 	public PMAObject(int rowCount){
 		ROW_COUNT = rowCount;
 		
-		ok = new boolean[ROW_COUNT];
-		notok = new boolean[ROW_COUNT];
 		tech_comments = new String[ROW_COUNT];
 		recommended_repairs = new String[ROW_COUNT];
 		priority = new int[ROW_COUNT];
@@ -55,7 +52,7 @@ public class PMAObject extends Object implements Serializable{
 		totalLabor = new BigDecimal[ROW_COUNT];
 		laborCost = new BigDecimal[ROW_COUNT];
 		partCost = new BigDecimal[ROW_COUNT];
-		ROW_STATUS = new int[ROW_COUNT];
+		ROW_STATUS = new int[ROW_COUNT][2];
 		qty = new BigDecimal[ROW_COUNT];
 		vendor = new String[ROW_COUNT];
 		totals = new BigDecimal[9];	
@@ -66,8 +63,12 @@ public class PMAObject extends Object implements Serializable{
 			laborCost[i] = new BigDecimal(0.0);
 			partCost[i] = new BigDecimal(0.0);
 			qty[i] = new BigDecimal(0);
-			ROW_STATUS[i] = MyController.NO_STATUS;
+			ROW_STATUS[i][0] = MyController.NO_STATUS;
+			ROW_STATUS[i][1] = MyController.NO_STATUS;			
 		}
+		for(int i = 0; i < 9; i++)
+			totals[i] = new BigDecimal(0.0);
+		
 		
 	}
 }

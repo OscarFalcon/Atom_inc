@@ -3,10 +3,8 @@ package FXML;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 

@@ -9,7 +9,7 @@ import javafx.scene.input.KeyEvent;
 
 
 public abstract class MyTextField extends TextField{
-	private String lastInput;
+	private String lastInput = "";
 	private boolean flag;
 	
 	
@@ -39,44 +39,41 @@ public abstract class MyTextField extends TextField{
 	
 	@Override
     public void replaceText(int start, int end, String text){       
+		
 		if(flag)
-        	setValue(getValueOf(lastInput.substring(0, lastInput.length()-1)));
-    	else
-    		setValue(getValueOf(lastInput + text));	
-    	
+			text = validStr(lastInput.substring(0, lastInput.length()-1));
+		else 
+			text = validStr(lastInput + text);
+		
+		setValue(getValueOf(text));
     	moveCaret(getText().length()); /** must have **/
     } 
 
 	/**
-	 * This method must return the BigDecimal representation of the a given input
-	 * @return
-	 */
-	protected abstract BigDecimal getValueOf(String input);
-	
-	
-	/**
 	 * Sets the displayed text of this text field to the 
 	 * string representation of the specified BigDecimal number
-	 * @param number
 	 */
 	public abstract void setValue(BigDecimal number);
 	
 	
 	/**
 	 * returns the BigDecimal representation of this TextField.
-	 * @return
 	 */
 	public abstract BigDecimal getValue();
 	
 	
+	/**
+	 * This method must return the BigDecimal representation of the a given input
+	 */
+	protected abstract BigDecimal getValueOf(String input);
+	
 	 /**
 	  * Used to move the caret of the TextField
-	  * @param pos
 	  */
 	 final protected void moveCaret(int position){
 		 this.positionCaret(position);
 	 }
-	 
+	
 	 final protected String validStr(String input){
 			return input.replaceAll("\\D", "");
 	 }

@@ -1,9 +1,7 @@
 package Custom;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.math.RoundingMode;
 
 public class DoubleTextField extends MyTextField{
 		
@@ -21,22 +19,17 @@ public class DoubleTextField extends MyTextField{
 	
 	@Override
 	public BigDecimal getValue() {
-		return getValueOf(getText());
+		String text = validStr(getText());
+		return getValueOf(text);
 	}
 	
 	@Override
 	protected BigDecimal getValueOf(String input) {
-		if(input.equals(""))
-			return new BigDecimal(00.0);
-		
 		if(input.length() > 4)
 			input = input.substring(0,4);
 		
-		input = validStr(input);
-    	input = trim(input);
-    	input = addPeriod(input);
-			
-		return new BigDecimal(Double.parseDouble(input));
+		input = addPeriod(input);	
+		return new BigDecimal(input);
 	}
 	
 	private static String addPeriod(String number){
@@ -48,15 +41,6 @@ public class DoubleTextField extends MyTextField{
 		}
 		return number;
 	} 
-	
-	private static String trim(String text){
-		int i = 0;
-		while(i < text.length() && text.charAt(i) == '0')
-			i++;
-		text = text.substring(i);
-		return text;
-	}
-	
 }
 
 

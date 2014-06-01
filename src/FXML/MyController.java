@@ -9,8 +9,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
@@ -41,6 +44,7 @@ import com.aspose.cells.PaperSizeType;
 import com.aspose.cells.SheetRender;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingNode;
@@ -67,8 +71,8 @@ import MyCMS.*;
 
 public class MyController implements Initializable{
 	
-	public static final int ROW_COUNT = 50; //the number of rows in the PMA;
-	private static int WORK_ORDER_NUMBER = 9; //the work order number used to load a specific PMA 
+	public static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
+	private static int WORK_ORDER_NUMBER = 14; 	//the work order number used to load a specific PMA
 	
 	
 	/** title fields **/
@@ -108,12 +112,20 @@ public class MyController implements Initializable{
 								vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35,vendor36,vendor37,
 								vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47,vendor48,vendor49,vendor50; 
 	
+	
+	@FXML private Label laborTotal,partsTotal,shopSupplies,tax,Total,partsLaborTotal;
+	
+	@FXML private Label highPrior,mediumPrior,lowPrior;
+	
+	
 	/** customer concerns text area **/
 	@FXML private TextArea CustConcerns;
 	
 	/** grid pane that holds the rows of the PMA **/
 	@FXML private GridPane grid;
 
+	
+	
 	private CheckBox[][] checkboxes;
 	
 	private ComboBox<String>[] techcomments;
@@ -140,22 +152,38 @@ public class MyController implements Initializable{
 	
 	
 	private PMAObject PMA; 		/** the PMA object that will be used throughout the program **/
+		
 	
-	
-	
-	public static final int HIGH = 0;
-	public static final int MED = 1;
-	public static final int LOW = 2;
-	public static final int NO_PRIORITY = 3;
-	private static int[] priority_status = new int[ROW_COUNT];
-	
-	public static final int NO_STATUS = 0;			/** lock all fields, except for tech comments: lock menu items **/
+	public  static final int NO_STATUS = 0;			/** lock all fields, except for tech comments: lock menu items **/
 	private static final int OK_SELECTED = 1;		/** lock all fields, including tech comments : lock menu items **/
 	private static final int NOT_OK_SELECTED = 2;	/** unlock all fields : unlock menu items **/
 	private static final int APPROVED = 3;			/** lock all fields, including tech comments : unlock menu items **/
 	private static final int NOT_APPROVED = 4;		/** lock all fields, including tech comments : unlock menu items **/
 	private static final int INFORMATION_ONLY = 5;	/** lock all fields, including tech comments : unlock menu items **/
-	private static int[] ROW_STATUS = new int[ROW_COUNT];				/** status of each row **/
+	
+	/** 
+	 *  ROW_STATUS[i][0] can be either NO_STATUS, OK_SELECTED, or NOT_OK_SELECTED
+	 *  ROW_STATUS[i][1] can be either NO_STATUS, APPROVED, NOT_APPROVED, or INFORMATION_ONLY 
+	 *  In general, first entry tells you whether the row has been selected, second entry tells 
+	 *  you the approval status of the row 
+	 *  
+	 */
+	private static int[][] ROW_STATUS = new int[ROW_COUNT][2];	/** status of each row **/
+	
+	
+	/**
+	 * These integers are used to index the totals 
+	 * big decimal array of an PMAObject instance.  
+	 */
+	private static final int HIGH = 0;
+	private static final int MED = 1 ;
+	private static final int LOW = 2;
+	private static final int PARTS = 3;
+	private static final int LABOR = 4;
+	private static final int TOTAL_PARTS_AND_LABOR = 5;
+	private static final int TAX = 6;
+	private static final int SHOP_SUPPLIES = 7;
+	private static final int GRAND_TOTAL = 8;
 	
 	
 	
@@ -177,13 +205,45 @@ public class MyController implements Initializable{
 			selectOK(place);
 		else if( index == 0)
 			unselectOK(place);
-		else if( checkboxes[place][index].isSelected() )					
+		else if( checkboxes[place][1].isSelected() )					
 			selectNOTOK(place);	
 		else												
 			unselectNOTOK(place);
 	}
 	
+	private void selectOK(int place){
+		disableAndClearFields(place);		
+		disableMenuItems(place,true,true,true);		
+		techcomments[place].setDisable(true);
+		checkboxes[place][1].setSelected(false);
+		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
+		checkboxes[place][1].getStyleClass().add("check-box-regular");
+		ROW_STATUS[place][0] = OK_SELECTED;
+		ROW_STATUS[place][1] = NO_STATUS;
+	}
+	private void unselectOK(int place){
+		techcomments[place].setDisable(false);
+		ROW_STATUS[place][0] = NO_STATUS;
+	}
 	
+	private void selectNOTOK(int place){
+		disableFields(place,false);
+		techcomments[place].setDisable(false);
+		disableMenuItems(place,false,false,false);
+		checkboxes[place][0].setSelected(false);
+		checkboxes[place][1].getStyleClass().removeAll("check-box-regular","check-box-invalid");
+		checkboxes[place][1].getStyleClass().add("check-box-invalid");
+		ROW_STATUS[place][0] = NOT_OK_SELECTED;
+		ROW_STATUS[place][1] = NO_STATUS;
+	}
+	private void unselectNOTOK(int place){		
+		disableAndClearFields(place);
+		disableMenuItems(place,true,true,true);
+		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
+		checkboxes[place][1].getStyleClass().add("check-box-regular");
+		ROW_STATUS[place][0] = NO_STATUS;
+		ROW_STATUS[place][1] = NO_STATUS;
+	}
 	
 	/** 
 	 * set all the fields except tech comments to disable = b 
@@ -200,7 +260,6 @@ public class MyController implements Initializable{
 		laborHours[place].setDisable(b);
 		vendors[place].setDisable(b);
 	}
-	
 	
 	/**
 	 *  sets all the fields in a row to their default values 
@@ -221,7 +280,6 @@ public class MyController implements Initializable{
 	 * to their default looks.
 	 * PRIORITY,TOTAL PARTS, and TOTAL LABOR ARE the only fields affected.
 	 * 
-	 * @param place
 	 */
 	private void clearCSS(int place){
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
@@ -231,59 +289,16 @@ public class MyController implements Initializable{
 		moneyFields[place][0].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		moneyFields[place][1].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 	}
-	
 	private void disableAndClearFields(int place){
 		clearFields(place);
 		clearCSS(place);
 		disableFields(place,true);
 	}
-	
 	private void disableMenuItems(int place, boolean approved, boolean disapproved, boolean information){
 			menuItemsApproved[place].setDisable(approved);
 			menuItemsDisapproved[place].setDisable(disapproved);
 			menuItemsInformation[place].setDisable(information);
 	}
-	private void lockRow(int place){
-		techcomments[place].setDisable(true);
-		disableFields(place,true);
-	}
-	
-	
-	
-	
-	private void selectOK(int place){
-		/** uncheck corresponding NOT OK **/
-		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
-		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		checkboxes[place][1].setSelected(false);
-		disableMenuItems(place,true,true,true);		
-		disableAndClearFields(place);
-		techcomments[place].setDisable(true);
-		ROW_STATUS[place] = OK_SELECTED;
-	}
-	private void unselectOK(int place){
-		/** we know OK was the previous called method **/
-		techcomments[place].setDisable(false);
-		ROW_STATUS[place] = NO_STATUS;
-	}
-	
-	private void selectNOTOK(int place){
-		checkboxes[place][1].getStyleClass().remove("check-box-regular");
-		checkboxes[place][1].getStyleClass().add("check-box-invalid");
-		disableFields(place,false);
-		techcomments[place].setDisable(false);
-		disableMenuItems(place,false,false,false);
-		ROW_STATUS[place] = NOT_OK_SELECTED;
-	}
-	private void unselectNOTOK(int place){
-		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
-		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		disableMenuItems(place,true,true,true);
-		disableAndClearFields(place);
-		ROW_STATUS[place] = NO_STATUS;
-	}
-	
-	
 	
 	/**
 	 * Sets the row to be altered by providing the specified behaviors when 
@@ -291,13 +306,14 @@ public class MyController implements Initializable{
 	 * @param place
 	 * @param which
 	 */
-	private void alterRow(final int place, final int which){
+	private void alterRow(final int place, final int status){
 		String css;
 		
-		lockRow(place);
+		techcomments[place].setDisable(true);
+		disableFields(place,true);
 		clearCSS(place);
 		
-		switch(which){
+		switch( status ){
 			case APPROVED:
 				css = "green-label";
 				break;
@@ -310,18 +326,16 @@ public class MyController implements Initializable{
 			default:
 				return;
 		}
-		ROW_STATUS[place] = which;
+		ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
 		priorities[place].getStyleClass().add(css);
 		priorities[place].getEditor().getStyleClass().add(css);
 		moneyFields[place][0].getStyleClass().add(css);
 		moneyFields[place][1].getStyleClass().add(css);
 	}
 	
-	
 	private int addRows(int rowNum){
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
-
 	
 	public void excel() throws Exception {
 
@@ -386,7 +400,7 @@ public class MyController implements Initializable{
 				cell.setCellValue(richString);
 			}
 			
-			if(PMA.ROW_STATUS[i] != NO_STATUS){
+			if(ROW_STATUS[i][0] != NO_STATUS){
 				cell = row.getCell(3); 							/**  TECH COMMENTS  **/ 
 				cell.setCellValue(techcomments[i].getEditor().getText());
 				cell = row.getCell(4);							/** RECOMMENDED REPAIRS **/
@@ -407,16 +421,12 @@ public class MyController implements Initializable{
 			
 		}
 		
-		
-		
 		fis.close();
 		FileOutputStream fileOut = null;
-		/** open new file stream to write contents of workbook to excel **/
-		fileOut = new FileOutputStream("/home/oscar/Desktop/workbook.xls");
+
+		fileOut = new FileOutputStream("/home/oscar/Desktop/workbook.xls"); 	/** open new file stream to write contents of workbook to excel **/
 		wb.write(fileOut);
 		fileOut.close();
-		
-		
 		
 		/** list of available printers **/
 		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
@@ -460,13 +470,11 @@ public class MyController implements Initializable{
 	    }   **/
 	}
 	
-	
-	
-	
 	public void save(){
 		for(int i = 0; i < ROW_COUNT; i++){
-			PMA.ok[i] = checkboxes[i][0].isSelected();										/** OK **/
-			PMA.notok[i] = checkboxes[i][0].isSelected();									/** NOT OK **/
+			
+			PMA.ROW_STATUS[i][0] = ROW_STATUS[i][0];										/** OK/NOT OK STATUS **/
+			PMA.ROW_STATUS[i][1] = ROW_STATUS[i][1];										/** APPROVED-DISAPPROVED-INFORMATION_ONLY **/
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();					/** TECH COMMENTS **/
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();		/** RECOMMENDED REPAIRS **/
 			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();			/** PRIORITY **/
@@ -476,13 +484,68 @@ public class MyController implements Initializable{
 			PMA.partCost[i] = moneyFields[i][2].getValue();									/** PARTS COST **/
 			PMA.laborCost[i] = laborHours[i].getValue();									/** LABOR HOURS **/
 			PMA.vendor[i] = vendors[i].getText();											/** VENDORS **/
-			PMA.ROW_STATUS[i] = ROW_STATUS[i];
 		}
 		MyCMS.PMA.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
-	
-	
-	
+
+	private void computeTotals(){
+		BigDecimal total_parts = new BigDecimal("0.00");
+		BigDecimal total_labor = new BigDecimal("0.00");
+		BigDecimal total_parts_and_labor = new BigDecimal("0.00");
+		BigDecimal tax_amount = new BigDecimal("0.00");
+		BigDecimal shop_supplies = new BigDecimal("0.00");
+		BigDecimal grand_total = new BigDecimal("0.00");
+		BigDecimal priority_high = new BigDecimal("0.00");
+		BigDecimal priority_med = new BigDecimal("0.00");
+		BigDecimal priority_low = new BigDecimal("0.00");
+		BigDecimal tax_rate = new BigDecimal(".0825");
+		final MathContext mc = new MathContext(50,RoundingMode.HALF_UP);
+		
+		for(int i = 0; i < ROW_COUNT; i++){
+			
+			if(ROW_STATUS[i][1] == APPROVED){
+				total_parts = total_parts.add(moneyFields[i][0].getValue());
+				total_labor = total_labor.add(moneyFields[i][1].getValue());
+				total_parts_and_labor = total_parts.add(total_labor,mc);
+			}
+			Object item;
+			if( (item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("HIGH") ){
+				priority_high = priority_high.add(moneyFields[i][0].getValue(),mc);
+				priority_high = priority_high.add(moneyFields[i][1].getValue(),mc);
+			}
+			else if( (item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("MED") ){
+				priority_med = priority_med.add(moneyFields[i][0].getValue(),mc);
+				priority_med = priority_med.add(moneyFields[i][1].getValue(),mc);
+			}
+			else if((item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("LOW") ){
+				priority_low = priority_low.add(moneyFields[i][0].getValue(),mc);
+				priority_low = priority_low.add(moneyFields[i][1].getValue(),mc);			}
+		}
+		tax_amount = total_parts_and_labor.multiply(tax_rate, mc);
+		grand_total = total_parts_and_labor.add(tax_amount, mc);
+		
+		/** set textfields to newly computed totals **/
+		partsTotal.setText(NumberFormat.getCurrencyInstance().format(total_parts));					/**	PARTS TOTAL LABEL **/
+		laborTotal.setText(NumberFormat.getCurrencyInstance().format(total_labor));					/** LABOR TOTAL LABEL **/
+		partsLaborTotal.setText(NumberFormat.getCurrencyInstance().format(total_parts_and_labor));	/** PARTS AND LABOR TOTAL LABEL **/
+		tax.setText(NumberFormat.getCurrencyInstance().format(tax_amount));							/** TAX LABEL **/
+		Total.setText(NumberFormat.getCurrencyInstance().format(grand_total));						/** TOTAL LABEL **/
+		highPrior.setText(NumberFormat.getCurrencyInstance().format(priority_high));				/** HIGH PRIORITY LABEL **/
+		mediumPrior.setText(NumberFormat.getCurrencyInstance().format(priority_med));				/** MED PRIORITY LABEL **/
+		lowPrior.setText(NumberFormat.getCurrencyInstance().format(priority_low));					/** LOW PRIORITY LABEL **/
+		
+		/** update PMA with newly computed totals **/
+		PMA.totals[HIGH] = priority_high; 
+		PMA.totals[MED] = priority_med;
+		PMA.totals[LOW] = priority_low;
+		PMA.totals[PARTS] = total_parts; 
+		PMA.totals[LABOR] = total_labor;
+		PMA.totals[TOTAL_PARTS_AND_LABOR] = total_parts_and_labor;
+		PMA.totals[TAX] = tax_amount;
+		PMA.totals[SHOP_SUPPLIES] = shop_supplies;
+		PMA.totals[GRAND_TOTAL] = grand_total;
+		
+	}
 	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
@@ -561,8 +624,8 @@ public void initialize(URL location, ResourceBundle resources) {
 		}
 		
 		initComoBoxOptions();
-		initPMA();
 		initMenuItems();
+		initPMA();
 		
 		//System.out.println(MyCMS.PMA.createPMA(5856, "MV54WDV64HJ45", "new pma created"));
 		
@@ -572,49 +635,62 @@ private void initPMA(){
 	PMA = null;
 	PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
 	
-	CUST.setText(PMA.first);
-	WO.setText(new Integer(WORK_ORDER_NUMBER).toString());
-	ENG.setText(PMA.engine);
-	MAKE.setText(PMA.make);
-	LICNUM.setText(PMA.lic);
-	TRANS.setText(PMA.trans);
-	TAGS.setText(PMA.tags);
-	YEAR.setText(new Integer(PMA.year).toString());
-	MODEL.setText(PMA.model);
-	VIN.setText(PMA.vin);
-	MILES.setText(PMA.miles);
-	DATE.setText(PMA.date.toString());
-	CustConcerns.setText(PMA.customer_concerns);
-	CustConcerns.setEditable(false); 
+	CUST.setText(PMA.first);									/** FIRST NAME **/
+	WO.setText(new Integer(WORK_ORDER_NUMBER).toString());		/** WORK ORDER NUMBER **/
+	ENG.setText(PMA.engine);									/** ENGINE **/
+	MAKE.setText(PMA.make);										/** MAKE **/
+	LICNUM.setText(PMA.lic);									/** LIC NUM **/
+	TRANS.setText(PMA.trans);									/** TRANS **/
+	TAGS.setText(PMA.tags);										/** TAGS **/
+	YEAR.setText(new Integer(PMA.year).toString());				/** YEAR **/
+	MODEL.setText(PMA.model);									/** MODEL **/
+	VIN.setText(PMA.vin);										/** VIN **/
+	MILES.setText(PMA.miles);									/** MILES **/
+	DATE.setText(PMA.date.toString());							/** DATE **/
+	CustConcerns.setText(PMA.customer_concerns);				/** CUSTOMER CONCERNS **/
+	CustConcerns.setEditable(false); 				
 	
-	for(int i = 0; i < ROW_COUNT; i++){
-		checkboxes[i][0].setSelected(PMA.ok[i]);
-		checkboxes[i][1].setSelected(PMA.notok[i]);
+	for(int i = 0; i < ROW_COUNT; i++){							/** REVERT ALL ROW STATUSES  **/
 		
-		techcomments[i].getEditor().setText((PMA.tech_comments[i]));
-		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);
-		
-		priorities[i].getSelectionModel().select(PMA.priority[i]);
+		if(PMA.ROW_STATUS[i][0] == OK_SELECTED){
+			selectOK(i);
+			checkboxes[i][0].setSelected(true);
+		}
+		else if(PMA.ROW_STATUS[i][0] == NOT_OK_SELECTED ){
+			selectNOTOK(i);
+			checkboxes[i][1].setSelected(true);
+		}
 		
 		moneyFields[i][0].setValue(PMA.totalParts[i]);
 		moneyFields[i][1].setValue(PMA.totalLabor[i]);
-		QTY[i].setValue(PMA.qty[i]);
 		moneyFields[i][2].setValue(PMA.partCost[i]);
-		laborHours[i].setValue(PMA.laborCost[i]);
-		vendors[i].setText(PMA.vendor[i]);
+
+		if( PMA.ROW_STATUS[i][1] == APPROVED )
+			alterRow(i,APPROVED);
 		
+		else if( PMA.ROW_STATUS[i][1] == NOT_APPROVED)
+			alterRow(i,NOT_APPROVED);
 		
-		switch( PMA.ROW_STATUS[i] ){
-			case APPROVED:
-				alterRow(i,APPROVED);
-				break;
-			case NOT_APPROVED:
-				alterRow(i,NOT_APPROVED);
-				break;
-			case INFORMATION_ONLY:
-				alterRow(i,INFORMATION_ONLY);
-			
-		}
+		else if( PMA.ROW_STATUS[i][1] == INFORMATION_ONLY )
+			alterRow(i,INFORMATION_ONLY);
+	
+		
+		techcomments[i].getEditor().setText((PMA.tech_comments[i]));			/** TECH COMMENTS **/
+		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);	/** RECOMMENDED REPAIRS **/
+		priorities[i].getSelectionModel().select(PMA.priority[i]);				/** PRIORITIES **/
+		QTY[i].setValue(PMA.qty[i]);											/** QTY **/
+		laborHours[i].setValue(PMA.laborCost[i]);								/** LABOR HOURS **/
+		vendors[i].setText(PMA.vendor[i]);										/** VENDOR **/
+		
+		laborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LABOR]));
+		partsTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[PARTS]));
+		tax.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TAX]));
+		partsLaborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TOTAL_PARTS_AND_LABOR]));
+		Total.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[GRAND_TOTAL]));
+		
+		highPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[HIGH]));
+		mediumPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[MED]));
+		lowPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LOW]));
 	}
 }
 
@@ -639,8 +715,8 @@ private void initMenuItems(){
 		l.setContextMenu(contextMenu);
 		i++;
 	}
-	
 }
+
 private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 	@Override
 	public void handle(ActionEvent event) {
@@ -651,7 +727,7 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 			place++;
 		
 		alterRow(place,APPROVED);
-		ROW_STATUS[place] = APPROVED;
+		computeTotals();
 	}
 }
 private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
@@ -662,9 +738,8 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 			
 			while( item != menuItemsDisapproved[place])
 				place++;
-			
 			alterRow(place,NOT_APPROVED);
-			ROW_STATUS[place] = NOT_APPROVED;
+			computeTotals();
 		}
 	}
 	private class rightClickMenuInformation implements EventHandler<ActionEvent>{
@@ -675,9 +750,8 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				
 				while( item != menuItemsInformation[place])
 					place++;
-	
 				alterRow(place,INFORMATION_ONLY);
-				ROW_STATUS[place] = INFORMATION_ONLY;
+				computeTotals();
 			}
 	}
 	

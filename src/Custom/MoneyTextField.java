@@ -19,27 +19,20 @@ public class MoneyTextField extends MyTextField{
 	
 	@Override
 	public BigDecimal getValue() {
-		return getValueOf(getText());
+		String text = validStr(getText());
+		return getValueOf(text);
 	} 
 	
 	@Override
-	protected BigDecimal getValueOf(String input) {
-		input = validStr(input);
-    	input = trim(input);
-    	input = addPeriod(input);
-    	BigDecimal bd = new BigDecimal(Double.parseDouble(input));
+	protected BigDecimal getValueOf(String input){		
+		if(input.length() > 8)
+			input = input.substring(0, 8);
+    	
+		input = addPeriod(input);    	
+    	BigDecimal bd = new BigDecimal(input);
     	return bd;
 	}
-
-	/** private static methods **/
-    private static String trim(String text){
-		int i = 0;
-		while(i < text.length() && text.charAt(i) == '0')
-			i++;
-		text = text.substring(i);
-		return text;
-	}
-    
+	
 	private static String addPeriod(String number){
 		if(number.length() == 0) 
 			number = "0.00";
