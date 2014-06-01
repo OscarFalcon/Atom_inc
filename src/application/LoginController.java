@@ -25,7 +25,8 @@ public class LoginController implements Initializable, ControlledScreen {
 	
 	private static final int ALLOWED_ATTEMPTS = 3;
 	private int attempts = 0;
-	
+	private static boolean timed_out;
+	private static Timeout timeout;
 	
 	/**
 	 * Initializes the controller class.
@@ -76,7 +77,15 @@ public class LoginController implements Initializable, ControlledScreen {
 			return;
 		}
 		if(attempts >= ALLOWED_ATTEMPTS){
-			System.out.println("ALLOWED ATTEMPTS ERROR");
+			timed_out = true;
+			timeout = new Timeout();
+			timeout.setTimeout(this, 30000); //TIME OUT 30 SECONDS
+			Thread t = new Thread(timeout);
+			t.start();
+			attempts = 0;
+		}
+		if(getTimeOutStatus()){
+			System.out.println("TIMED OUT");
 			return;
 		}
 		if(MyCMS.employee.login_employee(username, password)){
@@ -88,12 +97,22 @@ public class LoginController implements Initializable, ControlledScreen {
 		
 		return;
 	}
-
+	
+	public synchronized void setTimeOutStatus(boolean b){
+		System.out.println("TIMEOUT ENDED");
+		timed_out = b;
+	}
+	private synchronized boolean getTimeOutStatus(){
+		return timed_out;
+	}
+	
 	public void cancel(ActionEvent event) {
 		return;
 	}
 
 
+	
+	
 	
 	
 }
