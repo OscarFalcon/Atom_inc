@@ -519,7 +519,8 @@ public class MyController implements Initializable{
 			}
 			else if((item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("LOW") ){
 				priority_low = priority_low.add(moneyFields[i][0].getValue(),mc);
-				priority_low = priority_low.add(moneyFields[i][1].getValue(),mc);			}
+				priority_low = priority_low.add(moneyFields[i][1].getValue(),mc);			
+			}
 		}
 		tax_amount = total_parts_and_labor.multiply(tax_rate, mc);
 		grand_total = total_parts_and_labor.add(tax_amount, mc);

@@ -35,8 +35,8 @@
     </MenuBar>
     <Label layoutX="255.0" layoutY="150.0" text="Sign In :" />
     <Label layoutX="255.0" layoutY="188.0" text="Password :" />
-    <TextField layoutX="347.0" layoutY="147.0" prefWidth="200.0" />
-    <PasswordField layoutX="347.0" layoutY="185.0" prefWidth="200.0" />
+    <TextField fx:id = "usernameField" layoutX="347.0" layoutY="147.0" prefWidth="200.0" />
+    <PasswordField fx:id ="passwordField" layoutX="347.0" layoutY="185.0" prefWidth="200.0" />
     <Label layoutX="255.0" layoutY="222.0" text="You must sign in before you can use any of these tools." />
     <Button fx:id="loginButton" layoutX="255.0" layoutY="276.0" mnemonicParsing="false" onAction="#signIn" text="Sign In" />
   </children>

@@ -48,7 +48,7 @@ public class MyCMS {
 	
 public static class employee{
 	
-	public static Session login_employee(String username,String password, Error e){  
+	public static boolean login_employee(String username,String password){  
 		String selectUser;
 		ArrayList<Type> arguments = new ArrayList<Type>();
 		ArrayList<Integer> result_types = new ArrayList<Integer>();
@@ -64,14 +64,14 @@ public static class employee{
 				+ "?" + "," + "\"rd6mNKL0vD1h95p1i\") LIMIT 1";
 		
 		
-		if(username.length() > MAX_USERNAME){
+		/**if(username.length() > MAX_USERNAME){
 			e.setMyCMSError(LOGIN_USERNAME_MAX_ERROR);
 			return null;
 		}
 		if(password.length() > MAX_PASSWORD){
 			e.setMyCMSError(LOGIN_PASSWORD_MAX_ERROR);
 			return null;
-		}
+		} **/
 				
 		arguments.add(new Type(username));
 		arguments.add(new Type(password));
@@ -81,15 +81,15 @@ public static class employee{
 
 		
 		if( (results = MySQL.executeQuery(selectUser,arguments,result_types)) == null){/** why did exceuteQuery return null? **/
-			e.setMySQLError(MySQL.errorno); 
-			return null;
+			//e.setMySQLError(MySQL.errorno); 
+			return false;
 		}
 		if(results.size() != 1){
-			e.setMyCMSError(LOGIN_INVALID_CREDENTIALS_ERROR);
-			return null;
+			//e.setMyCMSError(LOGIN_INVALID_CREDENTIALS_ERROR);
+			return false;
 		}
 		Object[] tmp = results.get(0);
-		return new Session((String)tmp[0],(String)tmp[1],username);
+		return true;
 	}// login_employee
 		
 }//employee class
@@ -374,7 +374,7 @@ public static class employee{
 	public static void main(String args[]){
 		Error e = new Error();
 		
-		Session s = employee.login_employee("birdman","password",e);
+		/** Session s = employee.login_employee("birdman","password");
 		if(s == null){
 			switch( e.getMyCMSError() ){
 				case MyCMS.LOGIN_USERNAME_MAX_ERROR:
@@ -400,7 +400,7 @@ public static class employee{
 			}
 			return;
 		}		
-		
+		**/
 	}
 	
 	
