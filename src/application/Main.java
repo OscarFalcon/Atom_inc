@@ -46,7 +46,6 @@ public class Main extends Application{
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(700);
         
-        
         final Scene scene = new Scene(root);
         scene.getStylesheets().addAll(this.getClass().getResource("Login.css").toExternalForm());
      

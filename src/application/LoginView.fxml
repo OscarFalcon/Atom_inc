@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="678.0" prefWidth="922.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.LoginController">
+<AnchorPane fx:id="anchorPane" prefHeight="678.0" prefWidth="922.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
   <!-- TODO Add Nodes -->
   <children>
     <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
@@ -34,9 +34,17 @@
       </menus>
     </MenuBar>
     <Separator layoutX="186.0" orientation="VERTICAL" prefHeight="638.0" prefWidth="5.0" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="33.0" />
-    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Please Log In" textFill="#d00404" AnchorPane.leftAnchor="411.0" AnchorPane.topAnchor="255.0" />
-    <PasswordField fx:id="passwordField" maxHeight="1.7976931348623157E308" prefWidth="200.0" promptText="Password" AnchorPane.leftAnchor="411.0" AnchorPane.topAnchor="317.0" />
-    <TextField fx:id="usernameField" maxHeight="1.7976931348623157E308" prefWidth="200.0" promptText="Login Name" AnchorPane.leftAnchor="411.0" AnchorPane.topAnchor="284.0" />
-    <Button fx:id="loginButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#signIn" text="Sign In" AnchorPane.leftAnchor="558.0" AnchorPane.topAnchor="367.0" />
+      <StackPane fx:id="loginPane" layoutX="306.0" layoutY="166.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="355.0" prefWidth="465.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="306.0" AnchorPane.rightAnchor="151.0" AnchorPane.topAnchor="166.0">
+         <children>
+            <Pane fx:id="panel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="355.0" StackPane.alignment="CENTER">
+               <children>
+                <PasswordField fx:id="passwordField" layoutX="63.0" layoutY="135.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Password" />
+                <Button fx:id="loginButton" layoutX="210.0" layoutY="185.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#signIn" text="Sign In" />
+                <Label alignment="CENTER" layoutX="63.0" layoutY="73.0" maxWidth="1.7976931348623157E308" text="Please Log In" textFill="#d00404" />
+                <TextField fx:id="usernameField" layoutX="63.0" layoutY="102.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Login Name" />
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
   </children>
 </AnchorPane>
