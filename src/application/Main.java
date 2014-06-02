@@ -1,5 +1,8 @@
 package application;
 
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
+
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -26,39 +29,31 @@ public class Main extends Application{
     
     @Override
     public void start(Stage primaryStage) {
-    	ScreenController mainContainer = new ScreenController();
-        mainContainer.loadScreen(Main.screenLoginID, Main.screenLoginFile);
-        mainContainer.loadScreen(Main.screenMainID, Main.screenMainFile);
-        
-        
-        mainContainer.setScreen(Main.screenLoginID);
-        
-        
         MainController.primaryStage = primaryStage;
+    	ScreenController mainContainer = new ScreenController();
         
-        
-        AnchorPane root = new AnchorPane();
-        root.getChildren().addAll(mainContainer);
-        
-       
+    	mainContainer.loadScreen(Main.screenLoginID, Main.screenLoginFile);
+        mainContainer.loadScreen(Main.screenMainID, Main.screenMainFile);
+        mainContainer.setScreen(Main.screenLoginID);
         mainContainer.prefHeightProperty().bind(primaryStage.heightProperty());
         mainContainer.prefWidthProperty().bind(primaryStage.widthProperty());
         
-        
-        
+        AnchorPane root = new AnchorPane();
+        root.getChildren().addAll(mainContainer);
+            
         //sets the initial size of the frame (stage)
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(600);
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
+        primaryStage.setWidth(1400);
+        primaryStage.setHeight(800);
+        primaryStage.setMinWidth(1000);
+        primaryStage.setMinHeight(700);
+        
         
         final Scene scene = new Scene(root);
         scene.getStylesheets().addAll(this.getClass().getResource("Login.css").toExternalForm());
      
         primaryStage.setScene(scene);
-        primaryStage.show();
-        
-  
+        primaryStage.show();  
+        MyCMS.MyCMS.workOrders.getWorksOrders();
     }
     
     

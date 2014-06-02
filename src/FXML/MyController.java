@@ -35,6 +35,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.controlsfx.control.NotificationPane;
 
 import com.aspose.cells.Color;
 import com.aspose.cells.ImageOrPrintOptions;
@@ -57,6 +58,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -72,7 +74,7 @@ import MyCMS.*;
 public class MyController implements Initializable{
 	
 	public static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
-	private static int WORK_ORDER_NUMBER = 14; 	//the work order number used to load a specific PMA
+	private static int WORK_ORDER_NUMBER = 18; 	//the work order number used to load a specific PMA
 	
 	
 	/** title fields **/
@@ -627,8 +629,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		initComoBoxOptions();
 		initMenuItems();
 		initPMA();
-		
-		//System.out.println(MyCMS.PMA.createPMA(5856, "MV54WDV64HJ45", "new pma created"));
+		//System.out.println(MyCMS.PMA.createPMA(25376, "JHLRD77874CO2656", "Oil Change required"));
 		
 	}
 

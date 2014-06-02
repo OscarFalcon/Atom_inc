@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import application.Person;
+import application.WorkOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList; 
 
@@ -50,13 +51,12 @@ public static class employee{
 		ArrayList<Object[]> results;
 		
 		
-		selectUser = "SELECT AES_DECRYPT(first,\"rd6mNKL0vD1h95p1i\"), AES_DECRYPT(last,\"rd6mNKL0vD1h95p1i\")," 
-				+ "AES_DECRYPT(user,\"rd6mNKL0vD1h95p1i\")"
-				+ "FROM employee WHERE user = AES_ENCRYPT("
-				+ "?"
-				+ ","
-				+ "\"rd6mNKL0vD1h95p1i\") && password = AES_ENCRYPT("
-				+ "?" + "," + "\"rd6mNKL0vD1h95p1i\") LIMIT 1";
+		selectUser = 	"SELECT AES_DECRYPT(first,'rd6mNKL0vD1h95p1i'),"
+						+ "AES_DECRYPT(last,'rd6mNKL0vD1h95p1i')," 
+						+ "AES_DECRYPT(user,'rd6mNKL0vD1h95p1i')"
+						+ "FROM employee WHERE user = "
+						+ "AES_ENCRYPT(?,'rd6mNKL0vD1h95p1i') "
+						+ "&& password = AES_ENCRYPT(?,'rd6mNKL0vD1h95p1i') LIMIT 1";
 		
 		
 		arguments.add(new Type(username));
@@ -82,15 +82,19 @@ public static class employee{
 	
 	public static class client{
 		
-		public static ObservableList<Person> search(final String first,final int b1,
-												final String last, final int b2,final String address,final String city,final String state,
-												final String zip,final String phone,final String email){
+		public static ObservableList<Person> search(final String first,final int b1,final String last, final int b2,
+													final String address,final String city,final String state,
+													final String zip,final String phone,final String email){
 					
-			String query = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
-					+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
-					+ ",AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
+			String query =		"SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+								+ "AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
+			
 			
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
@@ -102,6 +106,8 @@ public static class employee{
 				//e.setMyCMSError(SEARCH_INVALID_ARGUMENTS_ERROR);
 				return null;
 			}
+			
+			
 			if (first == null || first.equals(""))			
 					query = query + "first LIKE '%' ";
 			else{											
@@ -119,9 +125,10 @@ public static class employee{
 					query = query + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 					arguments.add(new Type(last));
 				}
-				else
+				else{
 					query = query + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
-				//arguments.add(new Type("%"+last+"%"));
+					arguments.add(new Type("%"+last+"%"));
+				}	
 			}
 			if(address != null && !address.equals("")){
 				query = query + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
@@ -166,8 +173,9 @@ public static class employee{
 			Person person;
 			int size = results.size();
 			for(int i = 0; i < size; i++){
-				person = new Person(((Integer)results.get(i)[0]).toString(),(String)results.get(i)[1],(String)results.get(i)[2],(String)results.get(i)[3],(String)results.get(i)[4]
-						,(String)results.get(i)[5],(String)results.get(i)[6],(String)results.get(i)[7],(String)results.get(i)[8]);
+				person = new Person(((Integer)results.get(i)[0]).toString(),(String)results.get(i)[1],(String)results.get(i)[2],
+						 			(String)results.get(i)[3],(String)results.get(i)[4],(String)results.get(i)[5],(String)results.get(i)[6],
+						 			(String)results.get(i)[7],(String)results.get(i)[8]);
 				
 				persons.add(person);
 			}
@@ -215,14 +223,6 @@ public static class employee{
 			return true;
 		}
 		
-		private static boolean isValid(String input, int max_length){
-			if(input == null)
-				return false;
-			if(input.length() > max_length)
-				return false;
-			return true;
-		}
-		
 		public static boolean updateCustomer(int id,String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			
@@ -253,8 +253,12 @@ public static class employee{
 			return true; 
 		}	
 	}
+	
+	
+	
 	public static class PMA{
 		private static int ROW_COUNT = 50;
+		
 		
 		public static PMAObject getPMA(int workOrder){
 			String statement = "SELECT date,object FROM PMA WHERE wo = ?";
@@ -265,12 +269,12 @@ public static class employee{
 			arguments.add(new Type(workOrder));
 			result_types.add(Type.DATE);
 			result_types.add(Type.PMA_OBJECT);
-			results = MySQL.executeQuery(statement,arguments, result_types);
-			if(results != null){
-				PMAObject pma = (PMAObject) results.get(0)[1];
-				pma.date = (Date) results.get(0)[0];
-				return pma;
-			}
+			
+			if( (results = MySQL.executeQuery(statement,arguments, result_types)) == null)
+				return null;
+			
+			PMAObject pma = (PMAObject) results.get(0)[1];
+			pma.date = (Date) results.get(0)[0];
 			return null;
 		}
 		
@@ -281,23 +285,35 @@ public static class employee{
 			arguments.add(new Type(pma));
 			arguments.add(new Type(workOrder));
 			return MySQL.execute(statement, arguments);
-			
 		}
-		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns){
-			String CREATE_PMA = "INSERT INTO PMA(vin,id,active,object) VALUES(?,?,?,?)";
-			
-			String SEARCH_BY_VIN =  "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),tags,year,make,model,engine,trans,miles " +
-					"from vehicle WHERE vin = AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) && id = ?  LIMIT 1";
 		
-			String SEARCH_CUST = "SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-			+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info where id = ? LIMIT 1";
+		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns){
+			
+			String SEARCH_BY_VIN =    "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+									+ "AES_DECRYPT(tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), year ," 
+									+ "AES_DECRYPT(make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+									+ "AES_DECRYPT(model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+									+ "AES_DECRYPT(engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+									+ "AES_DECRYPT(trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+									+ "AES_DECRYPT(miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+									+ "from vehicle WHERE vin = "
+									+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) && id = ?  LIMIT 1";
+		
+			String SEARCH_CUST = 	"SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+									+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) "
+									+ "from info where id = ? LIMIT 1";
+			
+			
+			String CREATE_PMA = 	"INSERT INTO PMA(vin,id,active,object) VALUES("
+									+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+									+ "?,?,?)";
+			
 			
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
 			ArrayList<Object[]> results;
 			
-			
-			arguments.add(new Type(vehicleVIN));
+			arguments.add(new Type(vehicleVIN));		/** SEARCH FOR VEHICLE INFORMATION IN DATABASE **/
 			arguments.add(new Type(custID));
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
@@ -308,14 +324,10 @@ public static class employee{
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			
-
 			if((results = MySQL.executeQuery(SEARCH_BY_VIN, arguments, result_types)) == null)
 				return false;
 			
-			System.out.println("past search by vin");
-			
-			
-			PMAObject pma;
+			final PMAObject pma;							/** FILL IN PMA WITH VEHICLE INFORMATION **/
 			Object[] tmp = results.get(0);
 			pma = new PMAObject(ROW_COUNT);
 			pma.customer_concerns = customerConcerns;
@@ -333,22 +345,20 @@ public static class employee{
 			result_types.clear();
 			results.clear();
 			
-			arguments.add(new Type(custID));
+			arguments.add(new Type(custID));			/** SEARCH FOR CUSTOMER INFORMATION **/
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			
 			if((results = MySQL.executeQuery(SEARCH_CUST, arguments, result_types)) == null)
 				return false;
-			System.out.println("past search cust");
-
 			
-			tmp = results.get(0);
+			tmp = results.get(0);						/** FILL IN PMA WITH CUSTOMER INFORMATION **/
 			pma.first = (String) tmp[0];
 			pma.last = (String) tmp[1];
 			
 			arguments.clear();
 			
-			byte b = 1;
+			final byte b = 1;							/** INSERT PMA INTO DATABASE **/
 			arguments.add(new Type(vehicleVIN));
 			arguments.add(new Type(custID));
 			arguments.add(new Type(new Byte(b)));			
@@ -358,7 +368,79 @@ public static class employee{
 
 	}
 	
-	
+	public static class workOrders{
+		
+		public static ObservableList<WorkOrder> getWorksOrders(){
+			String GET_WORK_ORDERS  =	 "SELECT PMA.wo, "
+										+ "AES_DECRYPT(vehicle.vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "vehicle.year,"
+										+ "AES_DECRYPT(vehicle.make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "info.id,"
+										+ "AES_DECRYPT(info.first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+										+ "FROM vehicle INNER JOIN PMA ON vehicle.vin = PMA.vin INNER JOIN info ON PMA.id = info.id";						
+			
+			
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+
+			result_types.add(Type.INTEGER);	//wo
+			result_types.add(Type.STRING);	//vin
+			result_types.add(Type.STRING);	//lic
+			result_types.add(Type.STRING);	//tags
+			result_types.add(Type.INTEGER);	//year
+			result_types.add(Type.STRING);	//make
+			result_types.add(Type.STRING);	//model
+			result_types.add(Type.STRING);	//engine
+			result_types.add(Type.STRING);	//trans
+			result_types.add(Type.STRING);	//miles
+			result_types.add(Type.INTEGER); //id 
+			result_types.add(Type.STRING);	//first
+			result_types.add(Type.STRING);	//last
+			result_types.add(Type.STRING);	//address
+			result_types.add(Type.STRING);  //city
+			result_types.add(Type.STRING); 	//state
+			result_types.add(Type.STRING); 	//zip
+			result_types.add(Type.STRING);	//phone
+			result_types.add(Type.STRING);  //email
+			
+			
+			if((results = MySQL.executeQuery(GET_WORK_ORDERS, arguments, result_types)) == null)
+				return null;
+			
+			int size = results.size();
+			Person person;
+			WorkOrder workOrder;
+			ObservableList<WorkOrder> list = FXCollections.observableArrayList();
+			for(int i = 0; i < size; i++){
+				person = new Person(((Integer) results.get(i)[10]).toString(),(String) results.get(i)[11],(String) results.get(i)[12],(String) results.get(i)[13],(String) results.get(i)[14],
+									(String) results.get(i)[15],(String) results.get(i)[16],(String) results.get(i)[17],(String) results.get(i)[18]);
+				
+				workOrder = new WorkOrder(((Integer)results.get(i)[0]).toString(),(String) results.get(i)[1],(String) results.get(i)[2],(String) results.get(i)[3],
+											((Integer)results.get(i)[4]).toString(),(String) results.get(i)[5],(String) results.get(i)[6],(String) results.get(i)[7],
+											(String) results.get(i)[8],(String) results.get(i)[9],person); 
+				list.add(workOrder);				
+			}
+			return list;
+		}
+		
+		
+		
+		
+	}
 	
 	
 	
