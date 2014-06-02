@@ -27,6 +27,6 @@
     -fx-font-size: 14px;
 }
 
-.buttonactive {
-    -fx-padding: 8px 13px 6px;
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
