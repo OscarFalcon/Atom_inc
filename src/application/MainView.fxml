@@ -320,7 +320,7 @@
       </tabs>
     </TabPane>
     <Separator orientation="VERTICAL" prefHeight="638.0" prefWidth="5.0" AnchorPane.bottomAnchor="-62.0" AnchorPane.leftAnchor="184.0" AnchorPane.topAnchor="24.0" />
-    <Button fx:id="signOutButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="168.0" styleClass="logoutButton" text="" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="11.0">
+    <Button fx:id="signOutButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="168.0" styleClass="logoutButton, buttonactive" text="" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="11.0">
       <stylesheets>
         <URL value="@Login.css" />
       </stylesheets>

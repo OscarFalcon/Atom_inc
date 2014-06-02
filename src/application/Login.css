@@ -25,5 +25,8 @@
     -fx-padding: 3 30 3 30;
     -fx-text-fill: black;
     -fx-font-size: 14px;
-    -fx-accent: #0093ff;
+}
+
+.buttonactive {
+    -fx-padding: 8px 13px 6px;
 }
