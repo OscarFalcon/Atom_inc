@@ -27,6 +27,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import FXML.PMA;
 import MyCMS.*;
 
 
@@ -63,6 +64,7 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,
 					  serviceStatus;
 	
+	@FXML Button viewWorkOrdersButton;
 	
 	
 	
@@ -255,14 +257,21 @@ public class MainController implements Initializable, ControlledScreen {
 			phone = null;
 		
 		ObservableList<Person> persons = MyCMS.client.search(first, MyCMS.EXACTLY,last,MyCMS.EXACTLY, null,null,null,null,null,null);
-		System.out.println(persons.size());
 		customerTable.setItems(persons);
-		
-		
-		
 	}
 	
-
+	/** IN SERVICE TAB CONTROLLER SECTION **/
+	public void viewWorkOrder(){
+		int index = serviceTable.getSelectionModel().getSelectedIndex();
+		String custID = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
+		PMA pma = new PMA();
+		try {
+			pma.start(new Stage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 
 }

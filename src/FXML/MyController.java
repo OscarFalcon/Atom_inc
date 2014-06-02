@@ -636,7 +636,6 @@ public void initialize(URL location, ResourceBundle resources) {
 private void initPMA(){
 	PMA = null;
 	PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
-	
 	CUST.setText(PMA.first);									/** FIRST NAME **/
 	WO.setText(new Integer(WORK_ORDER_NUMBER).toString());		/** WORK ORDER NUMBER **/
 	ENG.setText(PMA.engine);									/** ENGINE **/

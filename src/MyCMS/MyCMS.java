@@ -275,7 +275,7 @@ public static class employee{
 			
 			PMAObject pma = (PMAObject) results.get(0)[1];
 			pma.date = (Date) results.get(0)[0];
-			return null;
+			return pma;
 		}
 		
 		public static boolean updatePMA(int workOrder,PMAObject pma){
