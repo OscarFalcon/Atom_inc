@@ -1,7 +1,6 @@
 package application;
 
-import org.controlsfx.control.NotificationPane;
-import org.controlsfx.control.Notifications;
+
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -42,8 +41,8 @@ public class Main extends Application{
         root.getChildren().addAll(mainContainer);
             
         //sets the initial size of the frame (stage)
-        primaryStage.setWidth(1400);
-        primaryStage.setHeight(800);
+        primaryStage.setWidth(1300);
+        primaryStage.setHeight(775);
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(700);
         

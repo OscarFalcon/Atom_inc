@@ -85,6 +85,19 @@ public class MainController implements Initializable, ControlledScreen {
 	
 
 	public void initialize(URL url, ResourceBundle rb) {
+		
+		customerTable.setOpacity(.8);
+		//customerTable.setPlaceholder(value);
+		
+	/** INIT CUSTOMER TABLE VIEW **/
+	// TableColumn<Person,String> firstNameCol = new TableColumn<Person,String>("First Name");       
+		customerId.setCellValueFactory(new PropertyValueFactory<Person,String>("customerId"));
+		customerFirst.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
+	    customerLast.setCellValueFactory(new PropertyValueFactory<Person,String>("lastName"));
+	    customerPhone.setCellValueFactory(new PropertyValueFactory<Person,String>("phoneId"));
+	    customerAddress.setCellValueFactory(new PropertyValueFactory<Person,String>("addressId"));
+	    customerEmail.setCellValueFactory(new PropertyValueFactory<Person,String>("emailId"));
+	        
 		// Set the resizing property for customer table
 		customerId.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.12));
 		customerFirst.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.15));
@@ -111,16 +124,6 @@ public class MainController implements Initializable, ControlledScreen {
 		//current = new Person("7891", "John", "Wimberly", "44561897", "6406 Red Jacket", "johncwimberly@yahoo.com");
 		
 		
-		
-        /** INIT CUSTOMER TABLE VIEW **/
-       // TableColumn<Person,String> firstNameCol = new TableColumn<Person,String>("First Name");       
-		customerId.setCellValueFactory(new PropertyValueFactory<Person,String>("customerId"));
-		customerFirst.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
-        customerLast.setCellValueFactory(new PropertyValueFactory<Person,String>("lastName"));
-        customerPhone.setCellValueFactory(new PropertyValueFactory<Person,String>("phoneId"));
-        customerAddress.setCellValueFactory(new PropertyValueFactory<Person,String>("addressId"));
-        customerEmail.setCellValueFactory(new PropertyValueFactory<Person,String>("emailId"));
-        
         
         //firstNameCol.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
         
