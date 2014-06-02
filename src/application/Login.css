@@ -13,6 +13,9 @@
 	 /*-fx-border-color: rgba(0,168,355,0.3) rgba(0,168,355,0.3) 
         transparent rgba(0,168,355,0.3);*/
 }
+.button:pressed{
+ 	-fx-padding: 4 29 2 31;
+ }
 
 .logoutButton{
 	-fx-graphic: url("signout.png");
@@ -30,3 +33,4 @@
 .button:hover {
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
+
