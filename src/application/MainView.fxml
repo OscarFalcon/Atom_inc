@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane opacity="0.38" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
   <!-- TODO Add Nodes -->
   <children>
     <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
@@ -164,9 +164,9 @@
                 <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0">
                   <children>
                     <Button fx:id="searchCustomerButton" mnemonicParsing="false" onAction="#searchCustomer" text="Search" />
-                    <TextField fx:id="firstNameField" prefWidth="119.0" text="first" />
-                    <TextField fx:id="lastNameField" prefWidth="119.0" text="last" />
-                    <TextField fx:id="phoneField" prefWidth="119.0" text="phone" />
+                    <TextField fx:id="firstNameField" prefWidth="119.0" promptText="first" />
+                    <TextField fx:id="lastNameField" prefWidth="119.0" promptText="last" />
+                    <TextField fx:id="phoneField" prefWidth="119.0" promptText="phone" />
                   </children>
                 </HBox>
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
@@ -291,9 +291,9 @@
                 <HBox id="HBox" alignment="CENTER" layoutY="54.0" prefHeight="25.0" spacing="5.0" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="90.0">
                   <children>
                     <Button mnemonicParsing="false" text="Search" />
-                    <TextField prefWidth="119.0" text="first" />
-                    <TextField prefWidth="119.0" text="last" />
-                    <TextField prefWidth="119.0" text="phone" />
+                    <TextField prefWidth="119.0" promptText="first" />
+                    <TextField prefWidth="119.0" promptText="last" />
+                    <TextField prefWidth="119.0" promptText="phone" />
                   </children>
                 </HBox>
                 <ToolBar prefWidth="597.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -304,14 +304,14 @@
                 <HBox id="HBox" alignment="CENTER" layoutY="40.0" spacing="5.0" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="71.0">
                   <children>
                     <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                    <Label font="$x3" text="quick search" HBox.hgrow="NEVER" />
+                    <Label font="$x3" text="quick search" textFill="WHITE" HBox.hgrow="NEVER" />
                     <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   </children>
                 </HBox>
                 <HBox id="HBox" alignment="CENTER" layoutY="82.0" prefWidth="463.0" spacing="5.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="72.0">
                   <children>
                     <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                    <Label font="$x3" text="or" HBox.hgrow="NEVER" />
+                    <Label font="$x3" text="or" textFill="WHITE" HBox.hgrow="NEVER" />
                     <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   </children>
                 </HBox>
