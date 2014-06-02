@@ -38,21 +38,18 @@ public class MainController implements Initializable, ControlledScreen {
 	public TabPane tabbedPane;
 	static Stage primaryStage;
 
-	@FXML
-	TableView serviceTable;
+	
 	
 	
 	
 	@FXML
 	TableView pmaTable;
-	// columns for the customer table
-	
-	// columns for the in garage table
-	@FXML TableColumn serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,
-			serviceStatus;
-	
-	// columns for the PMA table
 	@FXML TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
+
+	
+	
+	
+	
 	
 	
 	@FXML SplitPane pmaSplitPane;
@@ -60,14 +57,24 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML TextField firstAddField, lastAddField, emailAddField;
 	
 	
-	/** CUSTOMERS TAB **/
+	/** IN SERVICE TAB **/
+	@FXML TableView<WorkOrder> serviceTable;
+	
+	@FXML TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,
+					  serviceStatus;
+	
+	
+	
+	
+	
+	
+	/** 	CUSTOMERS TAB 			**/
 	@FXML private TableView<Person> customerTable;
 	@FXML private Button searchCustomerButton;
 	@FXML private TextField firstNameField,lastNameField,phoneField;
 	
 	@FXML TableColumn<Person, String> customerId, customerFirst, customerLast, customerPhone,
 			customerAddress, customerEmail;
-	
 	
 	/** 		CUSTOMRER FIELD  LIMITS 			**/
 	private static final int MAX_CLIENT_FIRST = 32;
@@ -86,11 +93,10 @@ public class MainController implements Initializable, ControlledScreen {
 
 	public void initialize(URL url, ResourceBundle rb) {
 		
-		customerTable.setOpacity(.8);
+		customerTable.setOpacity(.6);
 		//customerTable.setPlaceholder(node);
 		
-	/** INIT CUSTOMER TABLE VIEW **/
-	// TableColumn<Person,String> firstNameCol = new TableColumn<Person,String>("First Name");       
+		/** INIT CUSTOMER TABLE VIEW **/
 		customerId.setCellValueFactory(new PropertyValueFactory<Person,String>("customerId"));
 		customerFirst.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
 	    customerLast.setCellValueFactory(new PropertyValueFactory<Person,String>("lastName"));
@@ -106,6 +112,20 @@ public class MainController implements Initializable, ControlledScreen {
 		customerPhone.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.15));
 		customerEmail.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.20));
 
+		/** INIT IN SERVICE TABLE VIEW **/
+		serviceOrderNum.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("workOrder"));
+		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
+		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
+		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
+		
+		serviceTable.setItems(MyCMS.workOrders.getWorksOrders());
+		
+		//, serviceDateIn, serviceName, serviceVehicle,
+		//  serviceStatus
+		
+		
+		
+		
 		// Set the resizing property for the service order table
 		serviceOrderNum.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
 		serviceDateIn.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
@@ -121,16 +141,7 @@ public class MainController implements Initializable, ControlledScreen {
 		vehicle.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.23));
 		phone.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
 			
-		//current = new Person("7891", "John", "Wimberly", "44561897", "6406 Red Jacket", "johncwimberly@yahoo.com");
 		
-		
-        
-        //firstNameCol.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
-        
-        
-        //customerTable.getColumns().clear();
-        
-       // customerTable.getColumns().addAll(firstNameCol );
         
 	
         

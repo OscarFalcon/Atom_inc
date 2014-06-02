@@ -1,5 +1,7 @@
 package application;
 
+import java.sql.Date;
+
 import javafx.beans.property.SimpleStringProperty;
 
 public class WorkOrder {
@@ -14,14 +16,15 @@ public class WorkOrder {
     private final SimpleStringProperty vehicleTrans;
     private final SimpleStringProperty vehicleMiles;
     private final SimpleStringProperty vehicleEngine;
-
+    private final SimpleStringProperty workOrderDate;
+    
     private final Person person;
     
     
 
 
 	
-	public WorkOrder(String wo, String VIN,String licnum, String tags,String year,String make,String model,String engine,String trans,String miles,Person person) {
+	public WorkOrder(String wo,Date date,String VIN,String licnum, String tags,String year,String make,String model,String engine,String trans,String miles,Person person) {
         this.workOrder = new SimpleStringProperty(wo);
 		this.vehicleVIN = new SimpleStringProperty(VIN);
         this.vehicleLic = new SimpleStringProperty(licnum);
@@ -32,11 +35,21 @@ public class WorkOrder {
         this.vehicleEngine = new SimpleStringProperty(engine);
         this.vehicleTrans = new SimpleStringProperty(trans);
         this.vehicleMiles = new SimpleStringProperty(miles);
+        this.workOrderDate = new SimpleStringProperty(date.toString());
         this.person = person;
 	}
 	
-	
-	
-	
+	public String getWorkOrder(){
+		return workOrder.get();
+	}
+	public String getDate(){
+		return workOrderDate.get();
+	}
+	public String getName(){
+		return person.getFirstName() + " " + person.getLastName();
+	}
+	public String getVehicle(){
+		return vehicleYear.get() + " "	+ vehicleMake.get() + " " + vehicleModel.get();
+	}
 	
 }

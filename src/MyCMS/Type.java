@@ -34,7 +34,6 @@ public class Type {
 		value = D;
 	}
 	
-	
 	public Object getValue(){
 		return value;
 	}

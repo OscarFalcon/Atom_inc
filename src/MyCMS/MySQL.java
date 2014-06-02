@@ -6,12 +6,14 @@ import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+
 import MyCMS.*;
 
 
@@ -216,11 +218,14 @@ public class MySQL {
 					case Type.BYTE:
 						preparedStatement.setByte(i+1, (Byte) arguments.get(i).getValue() );
 						break;
+					case Type.DATE:
+						preparedStatement.setDate(i+1, (Date) arguments.get(i).getValue());
+						break;
 					case Type.INTEGER:
 						preparedStatement.setInt(i+1, (Integer) arguments.get(i).getValue() );
 						break;
-					case Type.OBJECT:
 					case Type.PMA_OBJECT:
+					case Type.OBJECT:
 						preparedStatement.setObject(i+1, (Object) arguments.get(i).getValue() );
 						break;
 					case Type.STRING:
@@ -242,17 +247,14 @@ public class MySQL {
 				Object[] tmp = new Object[length];
 				for(int j = 0; j < length; j++){
 					switch( result_types.get(j) ){
-						case Type.INTEGER:
-							tmp[j] = resultSet.getInt(j+1);
-							break;
-						case Type.OBJECT:
-							tmp[j] = resultSet.getObject(j+1);
-							break;
-						case Type.STRING:
-							tmp[j] = resultSet.getString(j+1);
-							break;
 						case Type.BYTE:
 							tmp[j] = resultSet.getByte(j+1);
+							break;	
+						case Type.DATE:
+							tmp[j] = resultSet.getDate(j+1);
+							break;
+						case Type.INTEGER:
+							tmp[j] = resultSet.getInt(j+1);
 							break;
 						case Type.PMA_OBJECT:
 							ObjectInputStream objectIn = null;
@@ -265,9 +267,15 @@ public class MySQL {
 								tmp[j] = object;
 							}
 							break;
-						case Type.DATE:
-							tmp[j] = resultSet.getDate(j+1);
+						
+						case Type.OBJECT:
+							tmp[j] = resultSet.getObject(j+1);
 							break;
+						case Type.STRING:
+							tmp[j] = resultSet.getString(j+1);
+							break;
+						
+						
 					}//switch
 				}//for loop
 				list.add(tmp);

@@ -372,6 +372,7 @@ public static class employee{
 		
 		public static ObservableList<WorkOrder> getWorksOrders(){
 			String GET_WORK_ORDERS  =	 "SELECT PMA.wo, "
+										+ "PMA.date,"
 										+ "AES_DECRYPT(vehicle.vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 										+ "AES_DECRYPT(vehicle.lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 										+ "AES_DECRYPT(vehicle.tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
@@ -398,6 +399,7 @@ public static class employee{
 			ArrayList<Object[]> results;
 
 			result_types.add(Type.INTEGER);	//wo
+			result_types.add(Type.DATE);	//date
 			result_types.add(Type.STRING);	//vin
 			result_types.add(Type.STRING);	//lic
 			result_types.add(Type.STRING);	//tags
@@ -426,12 +428,14 @@ public static class employee{
 			WorkOrder workOrder;
 			ObservableList<WorkOrder> list = FXCollections.observableArrayList();
 			for(int i = 0; i < size; i++){
-				person = new Person(((Integer) results.get(i)[10]).toString(),(String) results.get(i)[11],(String) results.get(i)[12],(String) results.get(i)[13],(String) results.get(i)[14],
-									(String) results.get(i)[15],(String) results.get(i)[16],(String) results.get(i)[17],(String) results.get(i)[18]);
 				
-				workOrder = new WorkOrder(((Integer)results.get(i)[0]).toString(),(String) results.get(i)[1],(String) results.get(i)[2],(String) results.get(i)[3],
-											((Integer)results.get(i)[4]).toString(),(String) results.get(i)[5],(String) results.get(i)[6],(String) results.get(i)[7],
-											(String) results.get(i)[8],(String) results.get(i)[9],person); 
+				person = new Person(((Integer) results.get(i)[11]).toString(),(String) results.get(i)[12],(String) results.get(i)[13],(String) results.get(i)[14]
+									,(String) results.get(i)[15],(String) results.get(i)[16],(String) results.get(i)[17],(String) results.get(i)[18],
+									(String) results.get(i)[19]);
+								
+				workOrder = new WorkOrder(((Integer)results.get(i)[0]).toString(),(Date)results.get(i)[1],(String)results.get(i)[2],(String) results.get(i)[3]
+											,(String)results.get(i)[4],((Integer)results.get(i)[5]).toString(),(String) results.get(i)[6],(String)results.get(i)[7]
+											,(String) results.get(i)[8],(String) results.get(i)[9],(String) results.get(i)[10],person); 
 				list.add(workOrder);				
 			}
 			return list;
