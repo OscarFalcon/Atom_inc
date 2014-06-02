@@ -3,7 +3,10 @@ package MyCMS;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import FXML.MyController;
+import application.Person;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList; 
+
 
 public class MyCMS {
 	
@@ -31,15 +34,7 @@ public class MyCMS {
 	private static final int MAX_EMPLOYEE_LAST = 32;
 	
 	
-	/** 		client table 					**/
-	private static final int MAX_CLIENT_FIRST = 32;
-	private static final int MAX_CLIENT_LAST = 32;
-	private static final int MAX_CLIENT_ADDRESS = 64;
-	private static final int MAX_CLIENT_CITY = 64;
-	private static final int MAX_CLIENT_STATE = 11;
-	private static final int MAX_CLIENT_ZIP = 11;
-	private static final int MAX_CLIENT_EMAIL = 255;
-	private static final int MAX_CLIENT_PHONE = 20;
+	
 	
 	/**			client options 				**/
 	public static final int MATCHES = 0;
@@ -64,15 +59,6 @@ public static class employee{
 				+ "?" + "," + "\"rd6mNKL0vD1h95p1i\") LIMIT 1";
 		
 		
-		/**if(username.length() > MAX_USERNAME){
-			e.setMyCMSError(LOGIN_USERNAME_MAX_ERROR);
-			return null;
-		}
-		if(password.length() > MAX_PASSWORD){
-			e.setMyCMSError(LOGIN_PASSWORD_MAX_ERROR);
-			return null;
-		} **/
-				
 		arguments.add(new Type(username));
 		arguments.add(new Type(password));
 		result_types.add(Type.STRING);
@@ -84,51 +70,58 @@ public static class employee{
 			//e.setMySQLError(MySQL.errorno); 
 			return false;
 		}
-		if(results.size() != 1){
-			//e.setMyCMSError(LOGIN_INVALID_CREDENTIALS_ERROR);
+		
+		if(results.size() != 1)
 			return false;
-		}
-		Object[] tmp = results.get(0);
+		
 		return true;
 	}// login_employee
+	
 		
 }//employee class
 	
 	public static class client{
 		
-		public static ArrayList<Object[]> search(final String first,final int b1,
+		public static ObservableList<Person> search(final String first,final int b1,
 												final String last, final int b2,final String address,final String city,final String state,
-												final String zip,final String phone,final String email, Error e){
+												final String zip,final String phone,final String email){
 					
 			String query = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 					+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
 					+ ",AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-					+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
+					+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+					+ ",AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
 			
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
-			ArrayList<Object[]> results;
+			ArrayList<Object[]> results = null;
+			ObservableList<Person> persons = FXCollections.observableArrayList();
+			
 			
 			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES)){	/** b1 has to be either EXACTLY or MATCHES, same for b2	**/
-				e.setMyCMSError(SEARCH_INVALID_ARGUMENTS_ERROR);
+				//e.setMyCMSError(SEARCH_INVALID_ARGUMENTS_ERROR);
 				return null;
 			}
 			if (first == null || first.equals(""))			
 					query = query + "first LIKE '%' ";
 			else{											
-				if (b1 == EXACTLY)
+				if (b1 == EXACTLY){
 					query = query + "first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				else
+					arguments.add(new Type(first));
+				}
+				else{
 					query = query + "AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ? ";
-				arguments.add(new Type("%"+first+"%"));
+					arguments.add(new Type("%"+first+"%"));
+				}
 			}
 			if (last != null && !last.equals("")){
-				if (b2 == EXACTLY)
+				if (b2 == EXACTLY){
 					query = query + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+					arguments.add(new Type(last));
+				}
 				else
 					query = query + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
-				arguments.add(new Type("%"+last+"%"));
+				//arguments.add(new Type("%"+last+"%"));
 			}
 			if(address != null && !address.equals("")){
 				query = query + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
@@ -154,6 +147,7 @@ public static class employee{
 				query = query + "&& email = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(email));
 			}
+			
 			result_types.add(Type.INTEGER);
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
@@ -163,12 +157,22 @@ public static class employee{
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
-
+			
 			if( (results = MySQL.executeQuery(query,arguments,result_types)) == null){
-				e.setMySQLError(MySQL.errorno); 
+				//e.setMySQLError(MySQL.errorno); 
 				return null;
 			}
-			return results;
+			
+			Person person;
+			int size = results.size();
+			for(int i = 0; i < size; i++){
+				person = new Person(((Integer)results.get(i)[0]).toString(),(String)results.get(i)[1],(String)results.get(i)[2],(String)results.get(i)[3],(String)results.get(i)[4]
+						,(String)results.get(i)[5],(String)results.get(i)[6],(String)results.get(i)[7],(String)results.get(i)[8]);
+				
+				persons.add(person);
+			}
+			
+			return persons;
 		}
 		
 		/**
@@ -194,13 +198,6 @@ public static class employee{
 					+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzselpHn97d7',512)),AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 					+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
 			
-			
-			if( !isValid(first,MAX_CLIENT_FIRST) || !isValid(last,MAX_CLIENT_LAST) || !isValid(address,MAX_CLIENT_ADDRESS) || !isValid(city,MAX_CLIENT_CITY) 
-					|| !isValid(state,MAX_CLIENT_STATE) || !isValid(zip,MAX_CLIENT_ZIP) || !isValid(phone,MAX_CLIENT_PHONE) || !isValid(email,MAX_CLIENT_EMAIL)){
-				
-				e.setMyCMSError(ADD_INVALID_ARGUMENTS_ERROR);
-				return false;
-			}
 			
 			arguments.add(new Type(first));
 			arguments.add(new Type(last));
@@ -237,12 +234,7 @@ public static class employee{
 					+ "primaryPhone = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
 					+ " WHERE id = ?";
 			
-			if( !isValid(first,MAX_CLIENT_FIRST) || !isValid(last,MAX_CLIENT_LAST) || !isValid(address,MAX_CLIENT_ADDRESS) || !isValid(city,MAX_CLIENT_CITY) 
-					|| !isValid(state,MAX_CLIENT_STATE) || !isValid(zip,MAX_CLIENT_ZIP) || !isValid(phone,MAX_CLIENT_PHONE) || !isValid(email,MAX_CLIENT_EMAIL) || id < 0){
-				
-				e.setMyCMSError(UPDATE_INVALID_ARGUMENTS_ERROR);
-				return false;
-			}
+			
 			/** set arguments **/
 			arguments.add(new Type(first));
 			arguments.add(new Type(last));

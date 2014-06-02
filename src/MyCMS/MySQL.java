@@ -215,7 +215,7 @@ public class MySQL {
 				switch( arguments.get(i).getType() ){
 					case Type.BYTE:
 						preparedStatement.setByte(i+1, (Byte) arguments.get(i).getValue() );
-					
+						break;
 					case Type.INTEGER:
 						preparedStatement.setInt(i+1, (Integer) arguments.get(i).getValue() );
 						break;

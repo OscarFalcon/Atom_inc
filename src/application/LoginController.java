@@ -52,8 +52,8 @@ public class LoginController implements Initializable, ControlledScreen {
 	}
 
 	public void signIn(ActionEvent event) {
-		String username,password;
-		int user_name_length, password_length;
+		final String username,password;
+		final int user_name_length, password_length;
 		
 		username = usernameField.getText();
 		password = passwordField.getText();
@@ -79,10 +79,10 @@ public class LoginController implements Initializable, ControlledScreen {
 		if(attempts >= ALLOWED_ATTEMPTS){
 			timed_out = true;
 			timeout = new Timeout();
-			timeout.setTimeout(this, 30000); //TIME OUT 30 SECONDS
+			timeout.setTimeout(this, 30000); //TIME OUT FOR 30 SECONDS
 			Thread t = new Thread(timeout);
 			t.start();
-			attempts = 0;
+			attempts = 0;					// RESET ATTEMPTS TO GIVE USER 3 MORE TRIES
 		}
 		if(getTimeOutStatus()){
 			System.out.println("TIMED OUT");
@@ -109,10 +109,4 @@ public class LoginController implements Initializable, ControlledScreen {
 	public void cancel(ActionEvent event) {
 		return;
 	}
-
-
-	
-	
-	
-	
 }

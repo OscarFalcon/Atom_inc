@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
   <!-- TODO Add Nodes -->
   <children>
     <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
@@ -43,11 +43,11 @@
               <children>
                 <TableView fx:id="serviceTable" prefHeight="321.0" prefWidth="569.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">
                   <columns>
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Work Order" fx:id="serviceOrderNum" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="77.0" text="Date In" fx:id="serviceDateIn" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="149.0" text="Name" fx:id="serviceName" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="162.0" text="Vehicle" fx:id="serviceVehicle" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" text="Status" fx:id="serviceStatus" />
+                    <TableColumn fx:id="serviceOrderNum" maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Work Order" />
+                    <TableColumn fx:id="serviceDateIn" maxWidth="5000.0" minWidth="10.0" prefWidth="77.0" text="Date In" />
+                    <TableColumn fx:id="serviceName" maxWidth="5000.0" minWidth="10.0" prefWidth="149.0" text="Name" />
+                    <TableColumn fx:id="serviceVehicle" maxWidth="5000.0" minWidth="10.0" prefWidth="162.0" text="Vehicle" />
+                    <TableColumn fx:id="serviceStatus" maxWidth="5000.0" minWidth="10.0" prefWidth="88.0" text="Status" />
                   </columns>
                 </TableView>
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
@@ -153,20 +153,20 @@
               <children>
                 <TableView fx:id="customerTable" prefHeight="423.0" prefWidth="571.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="77.0">
                   <columns>
-                    <TableColumn prefWidth="75.0" text="ID" fx:id="customerId" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="First" fx:id="customerFirst" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Last" fx:id="customerLast" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="138.0" text="Address" fx:id="customerAddress" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="116.0" text="Phone" fx:id="customerPhone" />
-                    <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Email" fx:id="customerEmail" />
+                    <TableColumn fx:id="customerId" prefWidth="75.0" text="ID" />
+                    <TableColumn fx:id="customerFirst" maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="First" />
+                    <TableColumn fx:id="customerLast" maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="Last" />
+                    <TableColumn fx:id="customerAddress" maxWidth="5000.0" minWidth="10.0" prefWidth="138.0" text="Address" />
+                    <TableColumn fx:id="customerPhone" maxWidth="5000.0" minWidth="10.0" prefWidth="116.0" text="Phone" />
+                    <TableColumn fx:id="customerEmail" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Email" />
                   </columns>
                 </TableView>
                 <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0">
                   <children>
-                    <Button mnemonicParsing="false" text="Search" />
-                    <TextField prefWidth="119.0" text="first" />
-                    <TextField prefWidth="119.0" text="last" />
-                    <TextField prefWidth="119.0" text="phone" />
+                    <Button fx:id="searchCustomerButton" mnemonicParsing="false" onAction="#searchCustomer" text="Search" />
+                    <TextField fx:id="firstNameField" prefWidth="119.0" text="first" />
+                    <TextField fx:id="lastNameField" prefWidth="119.0" text="last" />
+                    <TextField fx:id="phoneField" prefWidth="119.0" text="phone" />
                   </children>
                 </HBox>
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
@@ -190,7 +190,7 @@
                   <items>
                     <Accordion maxHeight="200.0" minHeight="125.0" prefHeight="163.0" prefWidth="571.0">
                       <panes>
-                        <TitledPane fx:id="x4" animated="false" text="Customer">
+                        <TitledPane animated="false" text="Customer" fx:id="x4">
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
@@ -226,7 +226,7 @@
                             </AnchorPane>
                           </content>
                         </TitledPane>
-                        <TitledPane fx:id="x2" animated="false" expanded="true" text="Time">
+                        <TitledPane animated="false" expanded="true" text="Time" fx:id="x2">
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                               <children>
@@ -278,12 +278,12 @@
                     </Accordion>
                     <TableView id="customerTable" fx:id="pmaTable" prefHeight="183.0" prefWidth="571.0">
                       <columns>
-                        <TableColumn prefWidth="75.0" text="Work Order" fx:id="workOrderNum" />
-                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="Date In" fx:id="dateIn" />
-                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="First" fx:id="first" />
-                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="94.0" text="Last" fx:id="last" />
-                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="103.0" text="Vehicle" fx:id="vehicle" />
-                        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Phone" fx:id="phone" />
+                        <TableColumn fx:id="workOrderNum" prefWidth="75.0" text="Work Order" />
+                        <TableColumn fx:id="dateIn" maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="Date In" />
+                        <TableColumn fx:id="first" maxWidth="5000.0" minWidth="10.0" prefWidth="106.0" text="First" />
+                        <TableColumn fx:id="last" maxWidth="5000.0" minWidth="10.0" prefWidth="94.0" text="Last" />
+                        <TableColumn fx:id="vehicle" maxWidth="5000.0" minWidth="10.0" prefWidth="103.0" text="Vehicle" />
+                        <TableColumn fx:id="phone" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Phone" />
                       </columns>
                     </TableView>
                   </items>
