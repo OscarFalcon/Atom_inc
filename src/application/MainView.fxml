@@ -35,7 +35,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <TabPane id="customerTable" fx:id="tabbedPane" prefHeight="562.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="189.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="24.0">
+    <TabPane id="customerTable" fx:id="tabbedPane" layoutX="189.0" layoutY="29.0" prefHeight="562.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="189.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="29.0">
       <tabs>
         <Tab text="In Service">
           <content>
@@ -54,35 +54,30 @@
                 <TabPane prefHeight="153.0" prefWidth="569.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                   <tabs>
                     <Tab text="Personal Info">
-                      <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                          <children>
-                            <VBox id="VBox" alignment="CENTER_LEFT" layoutX="14.0" layoutY="11.0" spacing="5.0">
-                              <children>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="10.0">
-                                  <children>
-                                    <Label text="First Name" />
-                                    <Label text="Last Name" />
-                                  </children>
-                                </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
-                                  <children>
-                                    <Label text="210-543-0476" />
-                                    <Label text="johncwimberly@yahoo.com" />
-                                  </children>
-                                </HBox>
-                                <Label text="6406 Red Jacket" />
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="10.0">
-                                  <children>
-                                    <Label text="San Antonio" />
-                                    <Label text="TX" />
-                                  </children>
-                                </HBox>
-                              </children>
-                            </VBox>
-                          </children>
-                        </AnchorPane>
-                      </content>
+                                 <content>
+                                    <GridPane>
+                                      <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="19.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="266.0" minWidth="10.0" prefWidth="130.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.0" minWidth="10.0" prefWidth="199.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.0" minWidth="10.0" prefWidth="216.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" text="Adrian" GridPane.columnIndex="1" />
+                                          <Label maxWidth="1.7976931348623157E308" text="303 UTSA " GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                          <Label maxWidth="1.7976931348623157E308" text="Martinez" GridPane.columnIndex="2" />
+                                          <Label maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                 </content>
                     </Tab>
                     <Tab text="Vehicle Info">
                       <content>
