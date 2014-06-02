@@ -87,7 +87,7 @@ public class MainController implements Initializable, ControlledScreen {
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		customerTable.setOpacity(.8);
-		//customerTable.setPlaceholder(value);
+		//customerTable.setPlaceholder(node);
 		
 	/** INIT CUSTOMER TABLE VIEW **/
 	// TableColumn<Person,String> firstNameCol = new TableColumn<Person,String>("First Name");       

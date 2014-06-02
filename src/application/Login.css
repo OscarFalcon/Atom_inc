@@ -9,6 +9,7 @@
 .panel1{
 	
 	-fx-background-color: rgba(201,201,201,0.3); 
+	-fx-font: #ffffff;
 	 /*-fx-border-color: rgba(0,168,355,0.3) rgba(0,168,355,0.3) 
         transparent rgba(0,168,355,0.3);*/
 }
