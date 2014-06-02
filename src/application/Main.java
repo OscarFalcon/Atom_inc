@@ -26,7 +26,7 @@ public class Main extends Application{
     
     @Override
     public void start(Stage primaryStage) {
-        ScreenController mainContainer = new ScreenController();
+    	ScreenController mainContainer = new ScreenController();
         mainContainer.loadScreen(Main.screenLoginID, Main.screenLoginFile);
         mainContainer.loadScreen(Main.screenMainID, Main.screenMainFile);
         
@@ -53,9 +53,11 @@ public class Main extends Application{
         primaryStage.setMinWidth(800);
         
         final Scene scene = new Scene(root);
-
+        scene.getStylesheets().addAll(this.getClass().getResource("Login.css").toExternalForm());
+     
         primaryStage.setScene(scene);
         primaryStage.show();
+        
   
     }
     
