@@ -74,7 +74,7 @@ import MyCMS.*;
 public class MyController implements Initializable{
 	
 	public static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
-	private static int WORK_ORDER_NUMBER = 18; 	//the work order number used to load a specific PMA
+	private int WORK_ORDER_NUMBER; 	//the work order number used to load a specific PMA
 	
 	
 	/** title fields **/
@@ -759,7 +759,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 	
 	
 	
-	public static void setWorkOrderNumber(int workOrderNumber){
+	public void setWorkOrderNumber(int workOrderNumber){
 		WORK_ORDER_NUMBER = workOrderNumber;
 	}
 	

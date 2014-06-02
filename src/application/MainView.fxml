@@ -58,12 +58,12 @@
                       <content>
                         <AnchorPane opacity="1.0" prefHeight="200.0" prefWidth="200.0" styleClass="panel1">
                           <children>
-                            <Label layoutX="14.0" layoutY="8.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="Adrian" textFill="WHITE" />
-                            <Label layoutX="14.0" layoutY="39.0" maxWidth="1.7976931348623157E308" prefWidth="216.0" text="303 UTSA  Bvd" textFill="WHITE" />
-                            <Label layoutX="94.0" layoutY="8.0" maxWidth="1.7976931348623157E308" prefWidth="136.0" text="Martinez" textFill="WHITE" />
-                            <Label layoutX="150.0" layoutY="69.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="78240" textFill="WHITE" />
-                            <Label layoutX="14.0" layoutY="69.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="San Antonio" textFill="WHITE" />
-                            <Label layoutX="14.0" layoutY="100.0" text="210-543-0476" textFill="WHITE" />
+                            <Label fx:id="firstNameLabel" layoutX="14.0" layoutY="8.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="Adrian" textFill="WHITE" />
+                            <Label fx:id="addressLabel" layoutX="14.0" layoutY="39.0" maxWidth="1.7976931348623157E308" prefWidth="216.0" text="303 UTSA  Bvd" textFill="WHITE" />
+                            <Label fx:id="lastNameLabel" layoutX="94.0" layoutY="8.0" maxWidth="1.7976931348623157E308" prefWidth="136.0" text="Martinez" textFill="WHITE" />
+                            <Label fx:id="zipLabel" layoutX="150.0" layoutY="69.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="78240" textFill="WHITE" />
+                            <Label fx:id="cityLabel" layoutX="14.0" layoutY="69.0" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="San Antonio" textFill="WHITE" />
+                            <Label fx:id="phoneLabel" layoutX="14.0" layoutY="100.0" text="210-543-0476" textFill="WHITE" />
                           </children>
                           <stylesheets>
                             <URL value="@Login.css" />
