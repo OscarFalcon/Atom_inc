@@ -262,10 +262,10 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	/** IN SERVICE TAB CONTROLLER SECTION **/
 	public void viewWorkOrder(){
-		int index = serviceTable.getSelectionModel().getSelectedIndex();
-		String custID = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
-		PMA pma = new PMA();
+		String workOrder = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
 		
+		PMA pma = new PMA();
+		pma.setWorkOrder(Integer.parseInt(workOrder));
 		try {
 			pma.start(new Stage());
 		} catch (Exception e) {
