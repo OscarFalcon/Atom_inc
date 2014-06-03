@@ -627,12 +627,14 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 		initComoBoxOptions();
 		initMenuItems();
-		initPMA();
+		
 		//System.out.println(MyCMS.PMA.createPMA(25376, "JHLRD77874CO2656", "Oil Change required"));
 		
 	}
 
-private void initPMA(){
+public void initializePMA(int workOrder){
+	this.WORK_ORDER_NUMBER = workOrder;
+	
 	PMA = null;
 	PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
 	CUST.setText(PMA.first);									/** FIRST NAME **/
@@ -754,15 +756,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				computeTotals();
 			}
 	}
-	
-	
-	
-	
-	public void setWorkOrderNumber(int workOrderNumber){
-		WORK_ORDER_NUMBER = workOrderNumber;
-	}
-	
-	
+		
 	private void initComoBoxOptions(){
 		
 		/** strings used as combobox options in PMA **/

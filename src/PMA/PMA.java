@@ -10,25 +10,29 @@ import javafx.stage.Stage;
 
 public class PMA extends Application{
 
+	private int workOrderNumber = 18;
+	
 	public static void main(String args[]){
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		FXMLLoader fxmlLoader = new FXMLLoader();		
 		
-		Parent root = FXMLLoader.load(getClass().getResource("PMA.fxml"));
+		Parent root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());
         Scene scene = new Scene(root, 1200, 800);
-        scene.getStylesheets().remove("style.css");
-        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
-        
+     
+        PMAController controller =  fxmlLoader.getController();
+        controller.initializePMA(workOrderNumber);
+  
 	}
-	//public boolean launchPMA(int work_order_number){
-		
-		
-//	}
+	
+	public void setWorkOrder(int workOrder){
+		workOrderNumber = workOrder;
+	}
 	
 	
 	
