@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import FXML.MyController;
+import PMA.PMAController;
 
 public class PMAObject extends Object implements Serializable{
 
@@ -63,8 +63,8 @@ public class PMAObject extends Object implements Serializable{
 			laborCost[i] = new BigDecimal(0.0);
 			partCost[i] = new BigDecimal(0.0);
 			qty[i] = new BigDecimal(0);
-			ROW_STATUS[i][0] = MyController.NO_STATUS;
-			ROW_STATUS[i][1] = MyController.NO_STATUS;			
+			ROW_STATUS[i][0] = PMAController.NO_STATUS;
+			ROW_STATUS[i][1] = PMAController.NO_STATUS;			
 		}
 		for(int i = 0; i < 9; i++)
 			totals[i] = new BigDecimal(0.0);

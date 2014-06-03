@@ -1,4 +1,4 @@
-package FXML;
+package PMA;
 
 
 import javafx.application.Application;
@@ -19,6 +19,8 @@ public class PMA extends Application{
 		
 		Parent root = FXMLLoader.load(getClass().getResource("PMA.fxml"));
         Scene scene = new Scene(root, 1200, 800);
+        scene.getStylesheets().remove("style.css");
+        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
         

@@ -1,4 +1,4 @@
-package FXML;
+package PMA;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -70,7 +70,7 @@ import Custom.MoneyTextField;
 import MyCMS.*;
 
 
-public class MyController implements Initializable{
+public class PMAController implements Initializable{
 	
 	public static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
 	private int WORK_ORDER_NUMBER = 18; 	//the work order number used to load a specific PMA
@@ -699,13 +699,13 @@ private void initMenuItems(){
 	int i = 0;
 	for(Label l : labels){
 		ContextMenu contextMenu = new ContextMenu();
-		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("FXML/approve.png")));
+		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/Images/approve.png")));
 		approve.setDisable(true);
 		menuItemsApproved[i] = approve;
-		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("FXML/red-x.png")));
+		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/Images/red-x.png")));
 		disapprove.setDisable(true);
 		menuItemsDisapproved[i] = disapprove;
-		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("FXML/warning.png")));	
+		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/Images/warning.png")));	
 		information.setDisable(true);
 		menuItemsInformation[i] = information;
 		contextMenu.getItems().addAll(approve,disapprove,information);

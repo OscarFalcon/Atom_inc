@@ -1,4 +1,11 @@
 
+.root{
+	-fx-background-image: url("../../Images/background.jpg");
+	/*-fx-background-repeat: repeat; */  
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+}
+
 .custom-title {
     /*-fx-font: 10px "Serif"; */
     -fx-padding:3;
