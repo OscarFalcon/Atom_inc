@@ -46,7 +46,6 @@ public class Main extends Application{
         mainContainer.prefWidthProperty().bind(primaryStage.widthProperty());
         
         AnchorPane root = new AnchorPane();
-        //root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(mainContainer);
             
         //sets the initial size of the frame (stage)

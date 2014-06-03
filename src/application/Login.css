@@ -1,6 +1,6 @@
 
 .root{
-	-fx-background-image: url("background.jpg");
+	-fx-background-image: url("../Images/background.jpg");
 	/*-fx-background-repeat: repeat; */  
     -fx-background-size: 900 506;
     -fx-background-position: center center;
@@ -18,7 +18,7 @@
  }
 
 .logoutButton{
-	-fx-graphic: url("signout.png");
+	-fx-graphic: url("../Images/signout.png");
 	-fx-background-color: 
         #3c7fb1,
         linear-gradient(#fafdfe, #e8f5fc),
