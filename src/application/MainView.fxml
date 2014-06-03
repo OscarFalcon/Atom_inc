@@ -140,24 +140,30 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="131.0" prefWidth="582.0" styleClass="panel1" stylesheets="@Login.css">
                           <children>
-                          <TextArea editable="false" layoutX="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="163.0" prefWidth="597.0" text="June 2, 2014 10:15pm - This is a Note" wrapText="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" />
+                          <TextArea editable="false" layoutX="1.0" layoutY="34.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="130.0" prefWidth="597.0" text="June 2, 2014 10:15pm - This is a Note" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0" />
+                                          <RadioButton layoutX="14.0" layoutY="5.0" mnemonicParsing="false" text="Issues" />
+                                          <RadioButton layoutX="125.0" layoutY="5.0" mnemonicParsing="false" text="Notes" />
                           </children>
                         </AnchorPane>
                       </content>
                     </Tab>
                               <Tab text="Issues">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="panel1" stylesheets="@Login.css" />
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="panel1" stylesheets="@Login.css">
+                                       <children>
+                                          <TextArea editable="false" layoutX="65.0" layoutY="34.0" prefHeight="130.0" prefWidth="597.0" text="Needed part delivery delayed until 07/25/14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0" />
+                                          <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" text="Resolve Issue" />
+                                       </children></AnchorPane>
                                 </content>
                               </Tab>
                   </tabs>
                 </TabPane>
                 <ToolBar prefHeight="37.0" prefWidth="597.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <items>
-                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Create Order" />
-                    <Button fx:id="viewWorkOrderButton" mnemonicParsing="false" onAction="#viewWorkOrder" prefHeight="24.0" prefWidth="100.0" text="View Order" />
-                              <Button mnemonicParsing="false" text="Print Selected" />
-                              <Button mnemonicParsing="false" text="Print List" />
+                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Create Order" />
+                    <Button fx:id="viewWorkOrderButton" alignment="CENTER" mnemonicParsing="false" onAction="#viewWorkOrder" prefHeight="24.0" prefWidth="100.0" text="View Order" />
+                              <Button alignment="CENTER" mnemonicParsing="false" text="Print Selected" />
+                              <Button alignment="CENTER" mnemonicParsing="false" text="Print List" />
                   </items>
                 </ToolBar>
               </children>
@@ -181,7 +187,7 @@
                     <TableColumn fx:id="customerEmail" maxWidth="5000.0" minWidth="10.0" prefWidth="114.0" text="Email" />
                   </columns>
                 </TableView>
-                <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0">
+                <HBox id="HBox" alignment="CENTER" layoutX="55.0" layoutY="48.0" prefHeight="24.000091552734375" spacing="5.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="107.0">
                   <children>
                     <Button fx:id="searchCustomerButton" mnemonicParsing="false" onAction="#searchCustomer" text="Search" />
                     <TextField fx:id="firstNameField" prefWidth="119.0" promptText="first" />
@@ -192,7 +198,7 @@
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
                 <ToolBar prefHeight="31.0" prefWidth="597.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
                   <items>
-                    <Button mnemonicParsing="false" onAction="#addClient" prefHeight="24.0" prefWidth="100.0" text="Add Client" />
+                    <Button mnemonicParsing="false" onAction="#addClient" prefHeight="24.0" prefWidth="100.0" style="-: url(&quot;../Images/addUser.png&quot;);" text="Add Client" />
                     <Button mnemonicParsing="false" onAction="#editClient" prefHeight="24.0" prefWidth="100.00009999999747" text="Edit Client" />
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="119.0" text="Advanced Search" />
                     <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Add Order" />
