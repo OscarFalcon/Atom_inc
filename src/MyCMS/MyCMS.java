@@ -261,6 +261,7 @@ public static class employee{
 		
 		
 		public static PMAObject getPMA(int workOrder){
+			System.out.println(workOrder);
 			String statement = "SELECT date,object FROM PMA WHERE wo = ?";
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();

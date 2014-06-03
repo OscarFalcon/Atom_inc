@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -34,17 +35,13 @@
       </menus>
     </MenuBar>
     <Separator layoutX="186.0" orientation="VERTICAL" prefHeight="638.0" prefWidth="5.0" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="33.0" />
-      <StackPane fx:id="loginPane" layoutX="306.0" layoutY="166.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="355.0" prefWidth="465.0" AnchorPane.bottomAnchor="157.0" AnchorPane.leftAnchor="306.0" AnchorPane.rightAnchor="151.0" AnchorPane.topAnchor="166.0">
+      <VBox alignment="CENTER" layoutX="291.0" layoutY="264.0" prefHeight="109.0" prefWidth="341.0" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="291.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="264.0">
          <children>
-            <Pane fx:id="panel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="355.0" StackPane.alignment="CENTER">
-               <children>
-                <PasswordField fx:id="passwordField" layoutX="63.0" layoutY="135.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Password" />
-                <Button fx:id="loginButton" layoutX="210.0" layoutY="185.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#signIn" text="Sign In" />
-                <Label alignment="CENTER" layoutX="63.0" layoutY="73.0" maxWidth="1.7976931348623157E308" text="Please Log In" textFill="#d00404" />
-                <TextField fx:id="usernameField" layoutX="63.0" layoutY="102.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" promptText="Login Name" />
-               </children>
-            </Pane>
+          <Label fx:id="loginLabel" alignment="CENTER" text="Please Log In" textFill="#d00404" />
+          <TextField fx:id="usernameField" maxWidth="-Infinity" prefWidth="350.0" promptText="Login Name" />
+          <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="350.0" promptText="Password" />
+          <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#signIn" prefHeight="25.0" prefWidth="350.0" text="Sign In" VBox.vgrow="NEVER" />
          </children>
-      </StackPane>
+      </VBox>
   </children>
 </AnchorPane>

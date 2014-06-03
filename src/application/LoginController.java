@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -16,12 +18,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import MyCMS.*;
 
+
 public class LoginController implements Initializable, ControlledScreen {
 	
-	@FXML TextField usernameField;
-	@FXML PasswordField passwordField;
-	@FXML AnchorPane anchorPane;
-	@FXML Pane panel;
+	@FXML private TextField usernameField;
+	@FXML private PasswordField passwordField;
+	@FXML private Label loginLabel;
+	@FXML private Button loginButton;
+	
+	private static Scene scene;
+	
 	ScreenController myController;
 
 	private static final int MAX_USERNAME = 32;
@@ -37,6 +43,7 @@ public class LoginController implements Initializable, ControlledScreen {
 	 * Initializes the controller class.
 	 */
 	public void initialize(URL url, ResourceBundle rb) {
+		//usernameField.layoutXProperty().bind(scene.widthProperty().subtract(usernameField.prefWidth(-1)).divide(2));
 	}
 
 	public void setScreenParent(ScreenController screenParent) {
@@ -113,4 +120,9 @@ public class LoginController implements Initializable, ControlledScreen {
 	public void cancel(ActionEvent event) {
 		return;
 	}
+	
+	public static void setScene(Scene s){
+		scene = s;
+	}
+	
 }

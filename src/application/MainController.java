@@ -265,6 +265,7 @@ public class MainController implements Initializable, ControlledScreen {
 		int index = serviceTable.getSelectionModel().getSelectedIndex();
 		String custID = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
 		PMA pma = new PMA();
+		
 		try {
 			pma.start(new Stage());
 		} catch (Exception e) {

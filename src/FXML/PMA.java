@@ -16,10 +16,12 @@ public class PMA extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		
 		Parent root = FXMLLoader.load(getClass().getResource("PMA.fxml"));
         Scene scene = new Scene(root, 1200, 800);
         stage.setScene(scene);
         stage.show();
+        
 	}
 	//public boolean launchPMA(int work_order_number){
 		
