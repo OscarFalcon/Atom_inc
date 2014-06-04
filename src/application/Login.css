@@ -6,6 +6,38 @@
     -fx-background-position: center center;
 }
 
+.loginbutton{
+	-fx-graphic: url("../Images/login.png"); 
+}
+
+.toolbar{
+	-fx-background-color: #6B6B6B;
+}
+
+.createOrderButton{
+	-fx-graphic: url("../Images/plus.png"); 
+}
+
+.viewWorkOrderButton{
+	-fx-graphic: url("../Images/viewPMA.png");
+}
+
+.printbutton{
+	-fx-graphic: url("../Images/print.png");
+}
+
+.addclientbutton{
+	-fx-graphic: url("../Images/adduser.png");
+}
+
+.editclientbutton{
+	-fx-graphic: url("../Images/edituser.png");
+}
+
+.advancedsearchbutton{
+	-fx-graphic: url("../Images/find.png");
+}
+
 .panel1{
 	
 	-fx-background-color: rgba(201,201,201,0.3); 
@@ -19,10 +51,10 @@
 
 .logoutButton{
 	-fx-graphic: url("../Images/signout.png");
-	-fx-background-color: 
+	/*-fx-background-color: 
         #3c7fb1,
         linear-gradient(#fafdfe, #e8f5fc),
-        linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+        linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);*/
 	-fx-background-insets: 0,1,2;
     -fx-background-radius: 3,2,1;
     -fx-padding: 3 30 3 30;
