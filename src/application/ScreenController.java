@@ -6,8 +6,6 @@ package application;
  * and open the template in the editor.
  */
 
-
-import java.io.IOException;
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

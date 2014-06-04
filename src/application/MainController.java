@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -47,32 +48,26 @@ public class MainController implements Initializable, ControlledScreen {
 	TableView pmaTable;
 	@FXML TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
 
-	
-	
-	
-	
-	
-	
 	@FXML SplitPane pmaSplitPane;
 	
 	@FXML TextField firstAddField, lastAddField, emailAddField;
 	
 	
-	/** IN SERVICE TAB **/
-	@FXML TableView<WorkOrder> serviceTable;
+	/** 	IN SERVICE TAB 		**/
+	@FXML private TableView<WorkOrder> serviceTable;
 	
-	@FXML TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,
-					  serviceStatus;
+	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus;
 	
-	@FXML Button viewWorkOrdersButton;
-	
+	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
 	
 	
 	
 	/** 	CUSTOMERS TAB 			**/
 	@FXML private TableView<Person> customerTable;
+	
 	@FXML private Button searchCustomerButton;
+	
 	@FXML private TextField firstNameField,lastNameField,phoneField;
 	
 	@FXML TableColumn<Person, String> customerId, customerFirst, customerLast, customerPhone,
@@ -122,8 +117,23 @@ public class MainController implements Initializable, ControlledScreen {
 		
 		serviceTable.setItems(MyCMS.workOrders.getWorksOrders());
 		
-		//, serviceDateIn, serviceName, serviceVehicle,
-		//  serviceStatus
+		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
+			@Override
+			public void changed(
+					ObservableValue<? extends WorkOrder> observable,WorkOrder oldValue, WorkOrder newValue) {
+				
+			}
+			
+
+			
+			
+			
+			
+		});
+
+		
+		
+		
 		
 		
 		
@@ -187,7 +197,7 @@ public class MainController implements Initializable, ControlledScreen {
 		
 	}
 	
-	public Stage loadpopup(String filename){
+	private  Stage loadpopup(String filename){
 		Stage popup = new Stage();
 		try{
 			Parent root = FXMLLoader.load(getClass().getResource(filename));
@@ -229,7 +239,6 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	/** CUSTOMERS TAB CONTROLLER SECTION **/
 	
-	
 	public void searchCustomer(){
 		String first,last,phone;
 		first = firstNameField.getText();
@@ -260,19 +269,31 @@ public class MainController implements Initializable, ControlledScreen {
 		customerTable.setItems(persons);
 	}
 	
+	
+	
 	/** IN SERVICE TAB CONTROLLER SECTION **/
 	public void viewWorkOrder(){
-		String workOrder = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
+		String workOrderString = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
+		Integer workOrder = Integer.parseInt(workOrderString);
+		
+		if(workOrder < 0)
+			return;
 		
 		PMA pma = new PMA();
-		pma.setWorkOrder(Integer.parseInt(workOrder));
+		pma.setWorkOrder(workOrder);
 		try {
 			pma.start(new Stage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

@@ -625,8 +625,8 @@ public void initialize(URL location, ResourceBundle resources) {
 			col +=2;
 		}
 		
-		initComoBoxOptions();
-		initMenuItems();
+		initializeComoBoxOptions();
+		initializeMenuItems();
 		
 		//System.out.println(MyCMS.PMA.createPMA(25376, "JHLRD77874CO2656", "Oil Change required"));
 		
@@ -635,8 +635,13 @@ public void initialize(URL location, ResourceBundle resources) {
 public void initializePMA(int workOrder){
 	this.WORK_ORDER_NUMBER = workOrder;
 	
+	if( WORK_ORDER_NUMBER < 0 )
+		return;
+
 	PMA = null;
-	PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER);
+	if((PMA = MyCMS.PMA.getPMA(WORK_ORDER_NUMBER)) == null)
+			return;
+	
 	CUST.setText(PMA.first);									/** FIRST NAME **/
 	WO.setText(new Integer(WORK_ORDER_NUMBER).toString());		/** WORK ORDER NUMBER **/
 	ENG.setText(PMA.engine);									/** ENGINE **/
@@ -697,7 +702,7 @@ public void initializePMA(int workOrder){
 }
 
 
-private void initMenuItems(){
+private void initializeMenuItems(){
 	int i = 0;
 	for(Label l : labels){
 		ContextMenu contextMenu = new ContextMenu();
@@ -757,7 +762,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 			}
 	}
 		
-	private void initComoBoxOptions(){
+	private void initializeComoBoxOptions(){
 		
 		/** strings used as combobox options in PMA **/
 		

@@ -3,6 +3,7 @@ package PMAWizard;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -16,9 +17,14 @@ public class Main extends Application {
 
     
     public void start(Stage stage) throws Exception{
+    	FXMLLoader fxmlLoader = new FXMLLoader();
+    	Parent root = (Parent) fxmlLoader.load(getClass().getResource("PMAWizard.fxml").openStream());
+    	MainController controller = fxmlLoader.getController();
+    	stage.setScene(new Scene(root));
     	stage.setTitle("2 Fat Guys");
-        stage.setScene(createScene(loadMainPane()));
         stage.show();
+    	controller.switchScreen(MainController.SELECTCUSTOMER_SCREEN);
+
     }
 
     /**
@@ -28,7 +34,7 @@ public class Main extends Application {
      *
      * @return the loaded pane.
      * @throws IOException if the pane could not be loaded.
-     */
+     
     private Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
 
@@ -39,11 +45,12 @@ public class Main extends Application {
         );
 
         MainController mainController = loader.getController();
-        VistaNavigator.setMainController(mainController);
-        VistaNavigator.loadVista(VistaNavigator.SELECTCUSTOMER);
+        mainController.switchScreen(MainController.SELECTCUSTOMER_SCREEN);
+        //VistaNavigator.setMainController(mainController);
+        //VistaNavigator.loadVista(VistaNavigator.SELECTCUSTOMER);
 
         return mainPane;
-    }
+    }**/
 
     /**
      * Creates the main application scene.

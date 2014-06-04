@@ -261,7 +261,6 @@ public static class employee{
 		
 		
 		public static PMAObject getPMA(int workOrder){
-			System.out.println(workOrder);
 			String statement = "SELECT date,object FROM PMA WHERE wo = ?";
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
@@ -272,6 +271,9 @@ public static class employee{
 			result_types.add(Type.PMA_OBJECT);
 			
 			if( (results = MySQL.executeQuery(statement,arguments, result_types)) == null)
+				return null;
+			
+			if(results.size() == 0)
 				return null;
 			
 			PMAObject pma = (PMAObject) results.get(0)[1];
