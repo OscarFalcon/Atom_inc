@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -35,9 +36,7 @@ import PMA.PMA;
 
 public class MainController implements Initializable, ControlledScreen {
 
-	ScreenController myController;
-
-	public TabPane tabbedPane;
+	private ScreenController myController;
 	static Stage primaryStage;
 
 	
@@ -53,12 +52,20 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML TextField firstAddField, lastAddField, emailAddField;
 	
 	
+	
+	/** GENERAL **/
+	private Button signOutButton;
+	
+	
 	/** 	IN SERVICE TAB 		**/
 	@FXML private TableView<WorkOrder> serviceTable;
 	
 	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus;
 	
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
+	
+	private ObservableList<WorkOrder> workOrderList;
+	
 	
 	
 	
@@ -70,18 +77,9 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	@FXML private TextField firstNameField,lastNameField,phoneField;
 	
-	@FXML TableColumn<Person, String> customerId, customerFirst, customerLast, customerPhone,
-			customerAddress, customerEmail;
+	@FXML TableColumn<Person, String> customerId, customerFirst, customerLast, customerPhone,customerAddress, customerEmail;
 	
-	/** 		CUSTOMRER FIELD  LIMITS 			**/
-	private static final int MAX_CLIENT_FIRST = 32;
-	private static final int MAX_CLIENT_LAST = 32;
-	private static final int MAX_CLIENT_ADDRESS = 64;
-	private static final int MAX_CLIENT_CITY = 64;
-	private static final int MAX_CLIENT_STATE = 11;
-	private static final int MAX_CLIENT_ZIP = 11;
-	private static final int MAX_CLIENT_EMAIL = 255;
-	private static final int MAX_CLIENT_PHONE = 20;
+	
 	
 	
 	public Person current;
@@ -115,20 +113,41 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
 		
-		serviceTable.setItems(MyCMS.workOrders.getWorksOrders());
 		
+		
+		
+		
+		
+		
+		
+		workOrderList = MyCMS.workOrders.getWorksOrders();
+		if(workOrderList != null)							/** HANDLE ERROR APPROPRIATELY **/
+			serviceTable.setItems(workOrderList);
+		
+		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
 			@Override
 			public void changed(
 					ObservableValue<? extends WorkOrder> observable,WorkOrder oldValue, WorkOrder newValue) {
-				
-			}
-			
-
-			
-			
-			
-			
+					
+					if(newValue == null){
+						firstNameLabel.setText("");
+						lastNameLabel.setText("");
+						phoneLabel.setText("");
+						addressLabel.setText("");
+						cityLabel.setText("");
+						stateLabel.setText("");
+						/**HANDLE ERROR BY DISPLAYING MESSAGE ? **/
+						return;
+					
+					}
+					firstNameLabel.setText(newValue.getFirstName());
+					lastNameLabel.setText(newValue.getLastName());
+					phoneLabel.setText(newValue.getPhone());
+					addressLabel.setText(newValue.getAddress());
+					cityLabel.setText(newValue.getCity());
+					stateLabel.setText(newValue.getState());	
+			}		
 		});
 
 		
@@ -223,11 +242,9 @@ public class MainController implements Initializable, ControlledScreen {
 		myController = screenParent;
 	}
 
-	@FXML
-	public void signOut(ActionEvent event) {
-		//sign out prompt
-		//then load login screen clear logged in info
-	}
+	
+	
+	
 
 	@FXML
 	public void close(ActionEvent event) {
@@ -236,8 +253,17 @@ public class MainController implements Initializable, ControlledScreen {
 	}
 	
 	
+	/** GENERAL SECTION **/
+	public void signOut(ActionEvent event) {
+		myController.setScreen(Main.screenLoginID);
+	}
+	public void setScreenController(ScreenController controller){
+		myController = controller;
+	}
 	
-	/** CUSTOMERS TAB CONTROLLER SECTION **/
+	
+	
+	/** 		CUSTOMERS TAB CONTROLLER SECTION 			**/
 	
 	public void searchCustomer(){
 		String first,last,phone;
@@ -246,15 +272,15 @@ public class MainController implements Initializable, ControlledScreen {
 		phone = phoneField.getText();
 	
 		
-		if(first.length() > MAX_CLIENT_FIRST){
+		if(first.length() > InputLimits.MAX_CLIENT_FIRST){
 			System.out.println("MAX CLIENT FIRST ERROR");
 			return;
 		}
-		if(last.length() > MAX_CLIENT_LAST){
+		if(last.length() > InputLimits.MAX_CLIENT_LAST){
 			System.out.println("MAX CLIENT LAST ERROR");
 			return;
 		}
-		if(phone.length() > MAX_CLIENT_PHONE){
+		if(phone.length() > InputLimits.MAX_CLIENT_PHONE){
 			System.out.println("MAX CLIENT PHONE ERROR");
 			return;
 		}
@@ -269,9 +295,9 @@ public class MainController implements Initializable, ControlledScreen {
 		customerTable.setItems(persons);
 	}
 	
+	/** 			IN SERVICE TAB CONTROLLER SECTION 				**/
 	
 	
-	/** IN SERVICE TAB CONTROLLER SECTION **/
 	public void viewWorkOrder(){
 		String workOrderString = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
 		Integer workOrder = Integer.parseInt(workOrderString);
@@ -287,6 +313,12 @@ public class MainController implements Initializable, ControlledScreen {
 			e.printStackTrace();
 		}
 	}
+	public void refresh(){
+		if(MyCMS.workOrders.getWorksOrders() == null) /**HANDLE ERROR !! */
+			System.out.println("FAILED TO GET WORK ORDERS");
+		serviceTable.getSelectionModel().clearSelection();
+	}
+	
 	
 	
 	

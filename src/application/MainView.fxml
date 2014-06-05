@@ -86,8 +86,8 @@
                                                 <HBox prefHeight="0.0" prefWidth="250.0">
                                                    <children>
                                         <Label fx:id="cityLabel" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="San Antonio" textFill="WHITE" />
-                                                      <Label text="Texas" textFill="WHITE" />
-                                        <Label fx:id="zipLabel" maxWidth="1.7976931348623157E308" prefWidth="80.0" text="78240" textFill="WHITE" />
+                                                      <Label fx:id="stateLabel" text="Texas" textFill="WHITE" />
+                                        <Label fx:id="zipLabel" maxWidth="1.7976931348623157E308" prefWidth="80.0" textFill="WHITE" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -166,6 +166,7 @@
                     <Button alignment="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="140.0" styleClass="createOrderButton" stylesheets="@Login.css" text="Create W/O" />
                     <Button fx:id="viewWorkOrderButton" alignment="CENTER" mnemonicParsing="false" onAction="#viewWorkOrder" prefHeight="45.0" prefWidth="140.0" styleClass="viewWorkOrderButton" text="View W/O" />
                               <Button alignment="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="140.0" styleClass="printbutton" text="Print List" />
+                              <Button mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="140.0" styleClass="refresh" text="Refresh" />
                   </items>
                 </ToolBar>
               </children>
@@ -349,7 +350,7 @@
       </tabs>
     </TabPane>
     <Separator layoutY="31.0" orientation="VERTICAL" prefHeight="548.0" prefWidth="5.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="184.0" AnchorPane.topAnchor="31.0" />
-    <Button fx:id="signOutButton" layoutX="11.0" layoutY="548.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="168.0" styleClass="logoutButton" text="" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="11.0">
+    <Button fx:id="signOutButton" layoutX="11.0" layoutY="548.0" mnemonicParsing="false" onAction="#signOut" prefHeight="30.0" prefWidth="168.0" styleClass="logoutButton" text="" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="11.0">
       <stylesheets>
         <URL value="@Login.css" />
       </stylesheets>

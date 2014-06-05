@@ -53,7 +53,7 @@ public class ScreenController extends StackPane {
             addScreen(name, loadScreen);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+        	e.printStackTrace();
             return false;
         }
     }
