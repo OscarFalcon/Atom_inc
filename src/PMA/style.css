@@ -40,14 +40,14 @@
 
 .custom-field {
    /*-fx-padding: 0;*/ 
-   -fx-background-color:#FFFFFF;
+   -fx-background-color:white;
    -fx-border-style:solid;
 }
 
-:disabled{
-	-fx-background-color:#FFFFFF;	
-	-fx-text-fill: #FFFFFF;
-	-fx-opacity:.95;
+.disabled{
+	/*-fx-background-color:#FFFFFF;	
+	-fx-text-fill: #FFFFFF; */
+	-fx-opacity:.95; 
 }
 
 .check-box-invalid{
@@ -58,7 +58,7 @@
 
 .check-box-regular{
    -fx-background-color:#E0E0E0;
-   -fx-border-style:solid;
+   -fx-border-style:solid; 
 }
 .check-box-valid{
    -fx-background-color:#00FF00;
