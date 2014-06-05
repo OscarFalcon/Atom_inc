@@ -6,6 +6,10 @@
     -fx-background-position: center center;
 }
 
+.loginbutton:pressed{
+	-fx-padding: 4 29 2 31;
+}
+
 .loginbutton{
 	-fx-graphic: url("../Images/login.png"); 
 }
@@ -13,33 +17,53 @@
 .toolbar{
 	-fx-background-color: #6B6B6B;
 }
+.createOrderButton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 
 .createOrderButton{
 	-fx-graphic: url("../Images/plus.png"); 
 }
-
+.viewWorkOrderButton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 .viewWorkOrderButton{
 	-fx-graphic: url("../Images/viewPMA.png");
 }
 
+printbutton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 .printbutton{
 	-fx-graphic: url("../Images/print.png");
 }
 
+.refresh:pressed{
+	-fx-padding: 4 29 2 31;
+}
 .refresh{
 	-fx-graphic: url("../Images/refresh.png");
 }
 
 
+.addclientbutton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 
 .addclientbutton{
 	-fx-graphic: url("../Images/adduser.png");
 }
 
+.editclientbutton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 .editclientbutton{
 	-fx-graphic: url("../Images/edituser.png");
 }
 
+.advancedsearchbutton:pressed{
+	-fx-padding: 4 29 2 31;
+}
 .advancedsearchbutton{
 	-fx-graphic: url("../Images/find.png");
 }
@@ -52,6 +76,10 @@
         transparent rgba(0,168,355,0.3);*/
 }
 .button:pressed{
+ 	-fx-text-fill: white;
+ }
+ 
+ .logoutButton:pressed{
  	-fx-padding: 4 29 2 31;
  }
 
