@@ -23,19 +23,31 @@
     -fx-font-weight:bold;
 }
 
+.background-label{
+	-fx-background-image: url("../Images/background.jpg");
+}
 
 .custom-label{
    /*-fx-padding: 1;*/
-   -fx-background-color: #C0C0C0;
+   /*-fx-background-color: #C0C0C0;*/
+   -fx-background-color: #6B6B6B;
+   /*-fx-background-image: url("../Images/background.jpg");*/
+   -fx-text-fill: #C0C0C0;
    -fx-border-style:solid;
    /*-fx-border-width:small; */
 }
 
 
 .custom-field {
-   /*-fx-padding: 1; */
-   -fx-background-color:white;
+   /*-fx-padding: 0;*/ 
+   -fx-background-color:#FFFFFF;
    -fx-border-style:solid;
+}
+
+:disabled{
+	-fx-background-color:#FFFFFF;	
+	-fx-text-fill: #FFFFFF;
+	-fx-opacity:.95;
 }
 
 .check-box-invalid{
@@ -73,4 +85,9 @@
    -fx-opacity:0.8;
    -fx-border-style:solid;
 	
+}
+
+.label:disabled{
+	-fx-background-color: white;
+	-fx-text-fill:white;	
 }

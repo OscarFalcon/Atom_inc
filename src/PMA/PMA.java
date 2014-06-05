@@ -21,7 +21,11 @@ public class PMA extends Application{
 		FXMLLoader fxmlLoader = new FXMLLoader();		
 		
 		Parent root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());
-        Scene scene = new Scene(root, 1200, 800);
+        Scene scene = new Scene(root, 1350, 800);
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
+        stage.setMaxWidth(1750);
+        stage.setMaxHeight(1000);
         stage.setScene(scene);
         stage.show();
      
