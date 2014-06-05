@@ -3,6 +3,7 @@ package MyCMS;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import workshop.Vehicle;
 import application.Person;
 import application.WorkOrder;
 import javafx.collections.FXCollections;
@@ -27,14 +28,6 @@ public class MyCMS {
 	
 	/**			search customer 	**/
 	public static final int SEARCH_INVALID_ARGUMENTS_ERROR = -6;
-	
-	/** 		employee table					**/ 
-	private static final int MAX_USERNAME = 32;
-	private static final int MAX_PASSWORD = 32;
-	private static final int MAX_EMPLOYEE_FIRST = 32;
-	private static final int MAX_EMPLOYEE_LAST = 32;
-	
-	
 	
 	
 	/**			client options 				**/
@@ -196,7 +189,7 @@ public static class employee{
 		 * @return SUCCCESS if successfully added client to database, error code otherwise
 		 */
 		
-		public static boolean addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
+		public static boolean addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email){
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			String statement;
 			
@@ -216,10 +209,9 @@ public static class employee{
 			arguments.add(new Type(email));
 			arguments.add(new Type(phone));
 			
-			if(MySQL.execute(statement, arguments) == false){
-				e.setMySQLError(MySQL.errorno);
+			if(MySQL.execute(statement, arguments) == false)
 				return false;
-			}				
+						
 			return true;
 		}
 		
@@ -370,6 +362,67 @@ public static class employee{
 		}
 
 	}
+	public static class vehicle{
+		
+		public static ObservableList<Vehicle> getVehicles(int custID){
+			final ObservableList<Vehicle> list = FXCollections.observableArrayList();
+			
+			final String SELECT_VEHICLE =   "SELECT AES_DECRYPT(vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))," 
+											+ "AES_DECRYPT(tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),year," 
+											+ "AES_DECRYPT(make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+											+ "from vehicle INNER JOIN info ON vehicle.id = info.id WHERE vehicle.id = ?";
+			
+			if(custID < 0)
+				return null;
+			
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+			
+			arguments.add(new Type(custID));
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.INTEGER);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			result_types.add(Type.STRING);
+			
+			if( (results = MySQL.executeQuery(SELECT_VEHICLE, arguments, result_types)) == null)
+					return null;
+			
+			Vehicle vehicle;
+			int length = results.size();
+			for(int i = 0; i < length; i++){
+				vehicle = new Vehicle( (String)results.get(i)[0],(String)results.get(i)[1],(String)results.get(i)[2],
+						((Integer)results.get(i)[3]).toString(),(String)results.get(i)[4],(String)results.get(i)[5],(String)results.get(i)[6],
+						(String)results.get(i)[7],(String)results.get(i)[8]
+						);
+				list.add(vehicle);
+			}
+			return list;
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static class workOrders{
 		
@@ -452,37 +505,7 @@ public static class employee{
 	
 	
 	
-	public static void main(String args[]){
-		Error e = new Error();
-		
-		/** Session s = employee.login_employee("birdman","password");
-		if(s == null){
-			switch( e.getMyCMSError() ){
-				case MyCMS.LOGIN_USERNAME_MAX_ERROR:
-					System.out.println("USERNAME MAX ERROR");
-					break;
-				case MyCMS.LOGIN_PASSWORD_MAX_ERROR:
-					System.out.println("PASSWORD MAX ERROR");
-					break;
-				case MyCMS.LOGIN_INVALID_CREDENTIALS_ERROR:
-					System.out.println("INVALID CREDENTIALS");
-			}
-			switch ( e.getMySQLError() ){
-				case MySQL.NO_INTERNET_CONNECTION_ERROR:
-					System.out.println("NO INTERNET ERROR");
-					break;
-				case MySQL.CONNECTION_ERROR:
-					System.out.println("SERVER DOWN ERROR");
-					break;
-				case MySQL.SUCCESS:
-					break;
-				default:
-					System.out.println("UNEXPECTED ERROR");
-			}
-			return;
-		}		
-		**/
-	}
+
 	
 	
 }

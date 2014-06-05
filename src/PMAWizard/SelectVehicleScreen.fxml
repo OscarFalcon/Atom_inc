@@ -5,8 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PMAWizard.SelectVehicleController">
    <children>
       <BorderPane layoutX="146.0" layoutY="55.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -22,18 +21,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add New Vehicle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="addVehicleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addVehicle" text="Add New Vehicle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </top>
          <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="vehicleTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn prefWidth="75.0" text="Year" />
-                <TableColumn prefWidth="75.0" text="Make" />
-                  <TableColumn prefWidth="75.0" text="Model" />
-                  <TableColumn prefWidth="75.0" text="License" />
-                  <TableColumn prefWidth="75.0" text="VIN" />
+                <TableColumn fx:id="yearColumn" prefWidth="75.0" text="Year" />
+                <TableColumn fx:id="makeColumn" prefWidth="75.0" text="Make" />
+                  <TableColumn fx:id="modelColumn" prefWidth="75.0" text="Model" />
+                  <TableColumn fx:id="licenseColumn" prefWidth="75.0" text="License" />
+                  <TableColumn fx:id="vinColumn" prefWidth="75.0" text="VIN" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
