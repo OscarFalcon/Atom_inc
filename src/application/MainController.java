@@ -64,6 +64,9 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
+	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
+			engineLabel, transmissionLabel;
+	
 	private ObservableList<WorkOrder> workOrderList;
 	
 	
@@ -141,12 +144,24 @@ public class MainController implements Initializable, ControlledScreen {
 						return;
 					
 					}
+					/** UPDATES PERSONAL INFO TAB **/
 					firstNameLabel.setText(newValue.getFirstName());
 					lastNameLabel.setText(newValue.getLastName());
 					phoneLabel.setText(newValue.getPhone());
 					addressLabel.setText(newValue.getAddress());
 					cityLabel.setText(newValue.getCity());
 					stateLabel.setText(newValue.getState());	
+					
+					/** UPDATES VEHICLE INFO TAB **/
+					makeLabel.setText(newValue.getMake());
+					modelLabel.setText(newValue.getModel());
+					yearLabel.setText(newValue.getYear());
+					licenseLabel.setText(newValue.getLic());
+					vinLabel.setText(newValue.getVIN());
+					mileageLabel.setText(newValue.getMiles());
+					engineLabel.setText(newValue.getEngine());
+					transmissionLabel.setText(newValue.getTransmission());
+					
 			}		
 		});
 

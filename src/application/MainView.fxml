@@ -69,27 +69,15 @@
                               <children>
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
                                   <children>
-                                    <Label prefHeight="21.0" prefWidth="100.0" text="Mitsubishi" textFill="WHITE">
+                                    <Label fx:id="makeLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label prefHeight="21.0" prefWidth="75.0" text="Lancer" textFill="WHITE">
+                                    <Label fx:id="modelLabel" prefHeight="21.0" prefWidth="75.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label prefHeight="21.0" prefWidth="41.0" text="2006" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                  </children>
-                                </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
-                                  <children>
-                                    <Label prefHeight="21.0" prefWidth="100.0" text="CC5-C450" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                    <Label prefHeight="21.0" prefWidth="133.0" text="VPA45670PI9015" textFill="WHITE">
+                                    <Label fx:id="yearLabel" prefHeight="21.0" prefWidth="41.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -97,11 +85,11 @@
                                 </HBox>
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
                                   <children>
-                                    <Label prefHeight="21.0" prefWidth="100.0" text="Steel Grey" textFill="WHITE">
+                                    <Label fx:id="licenseLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label prefHeight="21.0" prefWidth="100.0" text="45,689" textFill="WHITE">
+                                    <Label fx:id="vinLabel" prefHeight="21.0" prefWidth="140.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -109,11 +97,19 @@
                                 </HBox>
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
                                   <children>
-                                    <Label prefHeight="21.0" prefWidth="100.0" text="2 Cylinder" textFill="WHITE">
+                                    <Label fx:id="mileageLabel" prefHeight="21.0" prefWidth="149.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label prefHeight="21.0" prefWidth="90.0" text="Automatic" textFill="WHITE">
+                                  </children>
+                                </HBox>
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
+                                  <children>
+                                    <Label fx:id="engineLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font></Label>
+                                    <Label fx:id="transmissionLabel" prefHeight="21.0" prefWidth="90.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -136,11 +132,11 @@
                                              <children>
                                                 <HBox prefHeight="0.0" prefWidth="250.0" spacing="25.0">
                                                    <children>
-                                        <Label fx:id="firstNameLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="148.0" text="Adrian" textFill="WHITE" underline="true">
+                                        <Label fx:id="firstNameLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="148.0" textFill="WHITE" underline="true">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                        <Label fx:id="lastNameLabel" maxWidth="1.7976931348623157E308" prefWidth="136.0" text="Martinez" textFill="WHITE" underline="true">
+                                        <Label fx:id="lastNameLabel" maxWidth="1.7976931348623157E308" prefWidth="136.0" textFill="WHITE" underline="true">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -148,7 +144,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                                                    <children>
-                                        <Label fx:id="phoneLabel" prefHeight="21.0" prefWidth="104.0" text="210-543-0476" textFill="WHITE">
+                                        <Label fx:id="phoneLabel" prefHeight="21.0" prefWidth="104.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -156,7 +152,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="22.0" prefWidth="250.0" spacing="25.0">
                                                    <children>
-                                        <Label fx:id="addressLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="238.0" text="303 UTSA  Bvd" textFill="WHITE">
+                                        <Label fx:id="addressLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="238.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -164,11 +160,11 @@
                                                 </HBox>
                                                 <HBox prefHeight="0.0" prefWidth="250.0" spacing="25.0">
                                                    <children>
-                                        <Label fx:id="cityLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="200.0" text="San Antonio" textFill="WHITE">
+                                        <Label fx:id="cityLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="200.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                                      <Label fx:id="stateLabel" prefHeight="21.0" prefWidth="163.0" text="Texas" textFill="WHITE">
+                                                      <Label fx:id="stateLabel" prefHeight="21.0" prefWidth="163.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
