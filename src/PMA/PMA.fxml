@@ -31,7 +31,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <ScrollPane prefHeight="945.0" prefWidth="1351.0">
+            <ScrollPane prefViewportHeight="2257.0" prefViewportWidth="1740.0">
                <content>
                   <GridPane fx:id="grid" alignment="CENTER" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false" styleClass="custom-field" stylesheets="/PMA/style.css">
                      <children>
@@ -561,6 +561,20 @@
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.columnIndex="9" GridPane.rowIndex="28" />
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.columnIndex="9" GridPane.rowIndex="29" />
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" text="Label" GridPane.columnIndex="9" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="29" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="30" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="31" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="32" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="33" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="34" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="35" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="36" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="37" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="38" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.rowIndex="39" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" text="Label" GridPane.rowIndex="40" GridPane.rowSpan="2147483647" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.columnIndex="9" GridPane.rowIndex="30" GridPane.rowSpan="2147483647" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="background-label" GridPane.columnIndex="10" GridPane.columnSpan="2147483647" GridPane.rowSpan="8" />
                      </children>
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="70.0" />
@@ -657,7 +671,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-               </content></ScrollPane>
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
    </children>
