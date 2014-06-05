@@ -144,7 +144,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                                                    <children>
-                                        <Label fx:id="phoneLabel" prefHeight="21.0" prefWidth="104.0" textFill="WHITE">
+                                        <Label fx:id="phoneLabel" prefHeight="21.0" prefWidth="130.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
