@@ -213,14 +213,12 @@ public class PMAController implements Initializable{
 	}
 	
 	private void selectOK(int place){
-		disableAndClearFields(place);		
-		disableMenuItems(place,true,true,true);		
+		disableAndClearFields(place);	
 		techcomments[place].setDisable(true);
-		priorities[place].getStyleClass().removeAll("","","","");
-		priorities[place].getStyleClass().add("custom-field");
+		disableMenuItems(place,true,true,true);		
 		checkboxes[place][1].setSelected(false);
 		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
-		checkboxes[place][1].getStyleClass().add("check-box-regular");
+		checkboxes[place][1].getStyleClass().add("check-box-regular");		
 		ROW_STATUS[place][0] = OK_SELECTED;
 		ROW_STATUS[place][1] = NO_STATUS;
 	}
@@ -231,9 +229,10 @@ public class PMAController implements Initializable{
 	
 	private void selectNOTOK(int place){
 		disableFields(place,false);
+		clearCSS(place);
 		techcomments[place].setDisable(false);
 		disableMenuItems(place,false,false,false);
-		checkboxes[place][0].setSelected(false);
+		checkboxes[place][0].setSelected(false);	
 		checkboxes[place][1].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-invalid");
 		ROW_STATUS[place][0] = NOT_OK_SELECTED;
@@ -287,7 +286,6 @@ public class PMAController implements Initializable{
 	private void clearCSS(int place){
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
 		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
-		priorities[place].getStyleClass().add("custom-field");
 		priorities[place].getEditor().getStyleClass().add("custom-field");
 		moneyFields[place][0].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		moneyFields[place][1].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
