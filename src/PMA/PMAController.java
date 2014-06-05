@@ -216,6 +216,8 @@ public class PMAController implements Initializable{
 		disableAndClearFields(place);		
 		disableMenuItems(place,true,true,true);		
 		techcomments[place].setDisable(true);
+		priorities[place].getStyleClass().removeAll("","","","");
+		priorities[place].getStyleClass().add("custom-field");
 		checkboxes[place][1].setSelected(false);
 		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
@@ -328,6 +330,8 @@ public class PMAController implements Initializable{
 				return;
 		}
 		ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
+		priorities[place].getStyleClass().removeAll("green-label","red-label","yellow-label");
+		priorities[place].getEditor().getStyleClass().removeAll("green-label", "red-label", "yellow-label");
 		priorities[place].getStyleClass().add(css);
 		priorities[place].getEditor().getStyleClass().add(css);
 		moneyFields[place][0].getStyleClass().add(css);
