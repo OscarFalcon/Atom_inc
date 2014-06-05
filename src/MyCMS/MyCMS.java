@@ -364,6 +364,37 @@ public static class employee{
 	}
 	public static class vehicle{
 		
+		public static boolean addVehicle(int custID,String vin,String licnum,String tags,int year,String make,String model,String engine,String trans,String miles){
+			final String ADD_VEHICLE = "INSERT INTO vehicle(vin,lic,tags,year,make,model,engine,trans,miles,id) VALUES("
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "?,"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),?)";
+			
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			
+			arguments.add(new Type(vin));
+			arguments.add(new Type(licnum));
+			arguments.add(new Type(tags));
+			arguments.add(new Type(year));
+			arguments.add(new Type(make));
+			arguments.add(new Type(model));
+			arguments.add(new Type(engine));
+			arguments.add(new Type(trans));
+			arguments.add(new Type(miles));
+			arguments.add(new Type(custID));			
+				
+			return MySQL.execute(ADD_VEHICLE, arguments);
+		}
+		
+		
+		
+		
 		public static ObservableList<Vehicle> getVehicles(int custID){
 			final ObservableList<Vehicle> list = FXCollections.observableArrayList();
 			
@@ -412,16 +443,6 @@ public static class employee{
 		
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	public static class workOrders{

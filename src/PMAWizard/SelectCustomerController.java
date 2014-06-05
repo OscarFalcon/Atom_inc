@@ -66,7 +66,6 @@ public class SelectCustomerController extends ControlledScreen implements Initia
 					controller.setNextButtonDisable(true);
 				else{
 					controller.setNextButtonDisable(false);
-					System.out.println("Setting: " + Integer.parseInt(newValue.getCustomerId()));
 					controller.setCustID(Integer.parseInt(newValue.getCustomerId()));
 				}
 			}
