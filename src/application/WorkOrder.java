@@ -39,6 +39,31 @@ public class WorkOrder {
         this.person = person;
 	}
 	
+	public String getVIN(){
+		return vehicleVIN.get();
+	}
+	public String getLic(){
+		return vehicleLic.get();
+	}
+	public String getMake(){
+		return vehicleMake.get();
+	}
+	public String getModel(){
+		return vehicleModel.get();
+	}
+	public String getYear(){
+		return vehicleYear.get();
+	}
+	public String getEngine(){
+		return vehicleEngine.get();
+	}
+	public String getTransmission(){
+		return vehicleTrans.get();
+	}
+	public String getMiles(){
+		return vehicleMiles.get();
+	}
+	
 	public String getWorkOrder(){
 		return workOrder.get();
 	}
