@@ -60,7 +60,8 @@ public class MainController implements Initializable, ControlledScreen {
 	/** 	IN SERVICE TAB 		**/
 	@FXML private TableView<WorkOrder> serviceTable;
 	
-	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus;
+	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus, 
+					serviceLic, serviceTotal;
 	
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
@@ -115,6 +116,11 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
+		
+		/** Still need to init the value for license plate in table and TODO Status , Total  **/
+		//serviceLic.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>())
+		
+		
 		
 		
 		
