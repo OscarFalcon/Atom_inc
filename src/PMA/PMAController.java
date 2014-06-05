@@ -403,7 +403,7 @@ public class PMAController implements Initializable{
 				cell.setCellValue(richString);
 			}
 			
-			if(ROW_STATUS[i][0] != NO_STATUS){
+			if(ROW_STATUS[i][0] != NO_STATUS && ROW_STATUS[i][0] != OK_SELECTED){
 				cell = row.getCell(3); 							/**  TECH COMMENTS  **/ 
 				cell.setCellValue(techcomments[i].getEditor().getText());
 				cell = row.getCell(4);							/** RECOMMENDED REPAIRS **/
