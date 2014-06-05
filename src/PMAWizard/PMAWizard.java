@@ -2,6 +2,8 @@ package PMAWizard;
 
 
 
+import java.util.HashMap;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +14,6 @@ import javafx.stage.Stage;
 public class PMAWizard extends Application{
 	
 	
-	private static final String SCREEN1 = "PMAWizard.fxml";
 	private static final String SCREEN2 = "SelectCustomerScreen.fxml";
 	private static final String SCREEN3 = "CreateCustScreen.fxml";
 	private static final String SCREEN4 = "SelectVehicleScreen.fxml";
@@ -43,15 +44,17 @@ public class PMAWizard extends Application{
 			e.printStackTrace();
 			return;
 		}
+		MainController mainController = fxmlLoader.getController();
+		mainController.loadScreen(SELECTCUSTOMER_SCREEN, SCREEN2);
+	    mainController.loadScreen(CREATECUSTOMER_SCREEN, SCREEN3);
+	    mainController.loadScreen(SELECTVEHICLE_SCREEN, SCREEN4);
+	   // controller.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
+	   // controller.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
 		
-		MainController controller = fxmlLoader.getController();
-		controller.loadScreen(MAIN_SCREEN,SCREEN1);
-		controller.loadScreen(SELECTCUSTOMER_SCREEN, SCREEN2);
-	    controller.loadScreen(CREATECUSTOMER_SCREEN, SCREEN3);
-	    controller.loadScreen(SELECTVEHICLE_SCREEN, SCREEN4);
-	    controller.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
-	    controller.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
-	    controller.switchScreen(SELECTCUSTOMER_SCREEN);
+		mainController.setNextButtonDisable(true);
+		mainController.setBackButtonDisable(true);
+		mainController.setFinishButtonDisable(true);
+		mainController.switchScreen(SELECTCUSTOMER_SCREEN);
 		
 		Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);

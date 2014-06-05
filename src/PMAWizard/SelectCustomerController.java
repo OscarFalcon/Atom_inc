@@ -5,14 +5,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Person;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import MyCMS.InputLimits;
 import MyCMS.MyCMS;
 
 public class SelectCustomerController extends ControlledScreen implements Initializable{
@@ -29,17 +33,23 @@ public class SelectCustomerController extends ControlledScreen implements Initia
 	}
 
 	public void search(){
-		//String first = first
-		//list = MyCMS.client.search(first, b1, last, b2, address, city, state, zip, phone, email)
+		String first = firstNameField.getText();
+		String last = lastNameField.getText();
+		String phone = phoneField.getText();
 		
+		if(first.length() > InputLimits.MAX_CLIENT_FIRST)
+			first = first.substring(0,InputLimits.MAX_CLIENT_FIRST);
+		if(last.length() > InputLimits.MAX_CLIENT_LAST)
+			last = last.substring(0,InputLimits.MAX_CLIENT_LAST);
+		if(phone.length() > InputLimits.MAX_CLIENT_PHONE)
+			phone = phone.substring(0,InputLimits.MAX_CLIENT_LAST);
 		
+		customerTable.getSelectionModel().clearSelection();
+		list = MyCMS.client.search(first,MyCMS.EXACTLY, last,MyCMS.EXACTLY,null,null,null,null, phone,null);
+		customerTable.setItems(list);	
 		
 	}
 
-	
-	
-	
-	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -48,6 +58,22 @@ public class SelectCustomerController extends ControlledScreen implements Initia
 	    lastNameColumn.setCellValueFactory(new PropertyValueFactory<Person,String>("lastName"));
 	    phoneColumn.setCellValueFactory(new PropertyValueFactory<Person,String>("phoneId"));
 	    addressColumn.setCellValueFactory(new PropertyValueFactory<Person,String>("addressId"));
+	    customerTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+	    customerTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Person>(){
+			@Override
+			public void changed(ObservableValue<? extends Person> observable,Person oldValue,Person newValue) {
+				if(customerTable.getSelectionModel().getSelectedIndex() < 0)
+					controller.setNextButtonDisable(true);
+				else{
+					controller.setNextButtonDisable(false);
+					System.out.println("Setting: " + Integer.parseInt(newValue.getCustomerId()));
+					controller.setCustID(Integer.parseInt(newValue.getCustomerId()));
+				}
+			}
+	    	
+	    }); 
+	    list = null;
+	    customerTable.setItems(list);
 	}
 	
 	
