@@ -67,13 +67,13 @@
                           <children>
                             <VBox id="VBox" alignment="CENTER_LEFT" layoutX="14.0" layoutY="11.0" spacing="5.0">
                               <children>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
                                   <children>
                                     <Label fx:id="makeLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label fx:id="modelLabel" prefHeight="21.0" prefWidth="75.0" textFill="WHITE">
+                                    <Label fx:id="modelLabel" prefHeight="21.0" prefWidth="120.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
@@ -83,19 +83,19 @@
                                                          </font></Label>
                                   </children>
                                 </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
                                   <children>
                                     <Label fx:id="licenseLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
-                                    <Label fx:id="vinLabel" prefHeight="21.0" prefWidth="140.0" textFill="WHITE">
+                                    <Label fx:id="vinLabel" prefHeight="21.0" prefWidth="165.0" textFill="WHITE">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font></Label>
                                   </children>
                                 </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
                                   <children>
                                     <Label fx:id="mileageLabel" prefHeight="21.0" prefWidth="149.0" textFill="WHITE">
                                                          <font>
@@ -103,7 +103,7 @@
                                                          </font></Label>
                                   </children>
                                 </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="25.0">
+                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
                                   <children>
                                     <Label fx:id="engineLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
                                                          <font>
