@@ -26,6 +26,12 @@
 	-fx-graphic: url("../Images/print.png");
 }
 
+.refresh{
+	-fx-graphic: url("../Images/refresh.png");
+}
+
+
+
 .addclientbutton{
 	-fx-graphic: url("../Images/adduser.png");
 }

@@ -26,10 +26,10 @@ public class LoginController implements Initializable, ControlledScreen {
 	@FXML private Label loginLabel;
 	@FXML private Button loginButton;
 	
-	private static Scene scene;
 	
-	ScreenController myController;
+	private ScreenController myController;
 
+	
 	private static final int MAX_USERNAME = 32;
 	private static final int MAX_PASSWORD = 32;
 	
@@ -43,18 +43,12 @@ public class LoginController implements Initializable, ControlledScreen {
 	 * Initializes the controller class.
 	 */
 	public void initialize(URL url, ResourceBundle rb) {
-		//usernameField.layoutXProperty().bind(scene.widthProperty().subtract(usernameField.prefWidth(-1)).divide(2));
 	}
 
 	public void setScreenParent(ScreenController screenParent) {
 		myController = screenParent;
 	}
 
-	@FXML
-	public void signOut(ActionEvent event) {
-		// add "are you sure you wish to sign out" prompt
-		myController.setScreen(Main.screenLoginID);
-	}
 
 	@FXML
 	public void close(ActionEvent event) {
@@ -70,7 +64,7 @@ public class LoginController implements Initializable, ControlledScreen {
 		password = passwordField.getText();
 		user_name_length = usernameField.getLength();
 		password_length = passwordField.getLength();
-			
+		
 		if(user_name_length == 0){
 			System.out.println("USERNAME NO ENTRY ERROR");
 			return;
@@ -102,6 +96,8 @@ public class LoginController implements Initializable, ControlledScreen {
 		if(MyCMS.employee.login_employee(username, password)){
 			attempts = 0;
 			myController.setScreen(Main.screenMainID);
+			usernameField.setText("");
+			passwordField.setText("");
 		}
 		else
 			attempts++;
@@ -121,8 +117,5 @@ public class LoginController implements Initializable, ControlledScreen {
 		return;
 	}
 	
-	public static void setScene(Scene s){
-		scene = s;
-	}
 	
 }

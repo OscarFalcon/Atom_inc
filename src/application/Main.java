@@ -39,15 +39,18 @@ public class Main extends Application{
         
     	ScreenController mainContainer = new ScreenController();
         
+    	
     	mainContainer.loadScreen(Main.screenLoginID, Main.screenLoginFile);
         mainContainer.loadScreen(Main.screenMainID, Main.screenMainFile);
         mainContainer.setScreen(Main.screenLoginID);
+        
         mainContainer.prefHeightProperty().bind(primaryStage.heightProperty());
         mainContainer.prefWidthProperty().bind(primaryStage.widthProperty());
         
         AnchorPane root = new AnchorPane();
         root.getChildren().addAll(mainContainer);
             
+        
         //sets the initial size of the frame (stage)
         primaryStage.setWidth(1300);
         primaryStage.setHeight(775);

@@ -45,9 +45,42 @@ public class WorkOrder {
 	public String getDate(){
 		return workOrderDate.get();
 	}
-	public String getName(){
+	
+	
+	
+	public String getFullName(){
 		return person.getFirstName() + " " + person.getLastName();
 	}
+	public String getFirstName(){
+		return person.getFirstName();
+	}
+	public String getLastName(){
+		return person.getLastName();
+	}
+	public String getPhone(){
+		return person.getPhoneId();
+	}
+	public String getEmail(){
+		return person.getEmailId();
+	}
+	public String getAddress(){
+		return person.getAddressId();
+	}
+	public String getCity(){
+		return person.getCity();
+	}
+	public String getState(){
+		return person.getState();
+	}
+	public String getZip(){
+		return person.getZip();
+	}
+	public String getLocation(){
+		return person.getCity() + "," + person.getState() + " " + person.getZip();
+	}
+	
+	
+	
 	public String getVehicle(){
 		return vehicleYear.get() + " "	+ vehicleMake.get() + " " + vehicleModel.get();
 	}
