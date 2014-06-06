@@ -19,7 +19,7 @@ import MyCMS.*;
 
 public class MySQL {
 
-	private static final String DATABASE_URL = "jdbc:mysql://24.153.253.126/customers";
+	private static final String DATABASE_URL = "jdbc:mysql://localhost/customers";
 	private static final String MySQLUser = "foo", MySQLPassword = "foobar159";
 	private static Connection connection;
 	private static final BasicDataSource dataSource = new BasicDataSource();

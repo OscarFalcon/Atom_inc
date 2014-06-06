@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,10 +28,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import MyCMS.*;
 import PMA.PMA;
-
-
+import MyCMS.*;
 
 public class MainController implements Initializable, ControlledScreen {
 
@@ -129,7 +126,7 @@ public class MainController implements Initializable, ControlledScreen {
 		
 		
 		
-		workOrderList = MyCMS.workOrders.getWorksOrders();
+		//workOrderList = MyCMS.workOrders.getWorksOrders();
 		if(workOrderList != null)							/** HANDLE ERROR APPROPRIATELY **/
 			serviceTable.setItems(workOrderList);
 		
@@ -293,15 +290,15 @@ public class MainController implements Initializable, ControlledScreen {
 		phone = phoneField.getText();
 	
 		
-		if(first.length() > InputLimits.MAX_CLIENT_FIRST){
+		if(first.length() > 50){
 			System.out.println("MAX CLIENT FIRST ERROR");
 			return;
 		}
-		if(last.length() > InputLimits.MAX_CLIENT_LAST){
+		if(last.length() > 50){
 			System.out.println("MAX CLIENT LAST ERROR");
 			return;
 		}
-		if(phone.length() > InputLimits.MAX_CLIENT_PHONE){
+		if(phone.length() > 50){
 			System.out.println("MAX CLIENT PHONE ERROR");
 			return;
 		}
