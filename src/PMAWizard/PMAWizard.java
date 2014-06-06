@@ -2,8 +2,6 @@ package PMAWizard;
 
 
 
-import java.util.HashMap;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
