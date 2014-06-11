@@ -1,9 +1,9 @@
 package application;
 
-import java.awt.Dimension;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,21 +15,23 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import PMA.PMA;
-import MyCMS.*;
+import mycms.MyCMS;
+import pma.PMAView;
+import pmawizard.PMAWizard;
+import workshop.Person;
+import workshop.WorkOrder;
+
+
 
 public class MainController implements Initializable, ControlledScreen {
 
@@ -118,15 +120,7 @@ public class MainController implements Initializable, ControlledScreen {
 		//serviceLic.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>())
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		//workOrderList = MyCMS.workOrders.getWorksOrders();
+		workOrderList = MyCMS.workorder.getWorksOrders();
 		if(workOrderList != null)							/** HANDLE ERROR APPROPRIATELY **/
 			serviceTable.setItems(workOrderList);
 		
@@ -309,7 +303,7 @@ public class MainController implements Initializable, ControlledScreen {
 		if(phone.equals(""))
 			phone = null;
 		
-		ObservableList<Person> persons = MyCMS.client.search(first, MyCMS.EXACTLY,last,MyCMS.EXACTLY, null,null,null,null,null,null);
+		ObservableList<Person> persons = MyCMS.customer.search(first, MyCMS.EXACTLY,last,MyCMS.EXACTLY, null,null,null,null,null,null);
 		customerTable.setItems(persons);
 	}
 	
@@ -317,27 +311,28 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	public void viewWorkOrder(){
-		String workOrderString = serviceTable.getSelectionModel().getSelectedItem().getWorkOrder();
-		Integer workOrder = Integer.parseInt(workOrderString);
+		int workOrder;
+		WorkOrder workOrderItem;
 		
-		if(workOrder < 0)
+		workOrderItem = serviceTable.getSelectionModel().getSelectedItem();
+		
+		if(workOrderItem == null)
 			return;
 		
-		PMA pma = new PMA();
-		pma.setWorkOrder(workOrder);
-		try {
-			pma.start(new Stage());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		workOrder = workOrderItem.getWorkOrderAsInt();
+		Platform.runLater(new PMAView(workOrder));
 	}
+	
+	
 	public void refresh(){
-		if(MyCMS.workOrders.getWorksOrders() == null) /**HANDLE ERROR !! */
+		if(MyCMS.workorder.getWorksOrders() == null) /**HANDLE ERROR !! */
 			System.out.println("FAILED TO GET WORK ORDERS");
 		serviceTable.getSelectionModel().clearSelection();
 	}
 	
-	
+	public void addPMA(){
+		Platform.runLater(new PMAWizard());
+	}
 	
 	
 	
