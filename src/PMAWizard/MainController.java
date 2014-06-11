@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import PMAWizard.SelectVehicleController;
+import MyCMS.MyCMS;
 
 /**
  * Main controller class for the entire layout.
@@ -37,13 +38,23 @@ public class MainController {
      */
     final private HashMap<String,ControlledScreen> controllers =  new HashMap<String,ControlledScreen>();
 
-    private SelectVehicleController sc;
+    
+   
+    public ControlledScreen getController(String name){
+    	return controllers.get(name);
+    }
     
     
    
     /** the currently selected customer id, -1 if no customer is selected **/
     private int custID = -1; 
   
+    
+    private String customerConcerns;
+    
+    private String vehicleVIN;
+    
+    
     
     
     
@@ -57,12 +68,36 @@ public class MainController {
     	finishButton.setDisable(b);
     }
   
+    
     public void setCustID(int custID){
     	this.custID = custID;
     }
     public int getCustID(){
     	return custID;
     }
+    public void setCustomerConcerns(String concerns){
+    	customerConcerns = concerns;
+    }
+    public String getCustomerConcerns(){
+    	return customerConcerns;
+    }
+    public void setVehicleVin(String vin){
+    	vehicleVIN = vin;
+    }
+    public String getVehicleVin(){
+    	return vehicleVIN;
+    }
+    
+    
+    
+    
+    public void submitPMA(){
+    	finalCommentsController fcc = (finalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
+    	customerConcerns = fcc.getCustomerConcerns();
+    	MyCMS.PMA.createPMA(custID, vehicleVIN, customerConcerns);
+    	
+    }
+    
     
     
     public void switchScreen(String whichScreen){
@@ -89,11 +124,11 @@ public class MainController {
     		node = (Node) fxmlLoader.load();
     		controlledScreen = (ControlledScreen) fxmlLoader.getController();
     		controlledScreen.setController(this);
-    		controllers.put(name, controlledScreen);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
+		controllers.put(name, controlledScreen);
 		screens.put(name, node);
     	return true;
     }
@@ -116,12 +151,10 @@ public class MainController {
     		case PMAWizard.CREATECUSTOMER_SCREEN:
     			switchScreen(PMAWizard.SELECTVEHICLE_SCREEN);
     			SelectVehicleController c = (SelectVehicleController) controllers.get(PMAWizard.SELECTVEHICLE_SCREEN);
-    			if(c==null)System.out.println("null");
     			c.setItems(custID);
+    			nextButton.setDisable(true);
       			break;
     		case PMAWizard.SELECTVEHICLE_SCREEN:
-    			switchScreen(PMAWizard.ADDVEHICLE_SCREEN);
-    			break;
     		case PMAWizard.ADDVEHICLE_SCREEN:
     			switchScreen(PMAWizard.FINALCOMMENTS_SCREEN);
     			break;

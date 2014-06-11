@@ -2,8 +2,6 @@ package PMAWizard;
 
 
 
-import java.util.HashMap;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -48,8 +46,8 @@ public class PMAWizard extends Application{
 		mainController.loadScreen(SELECTCUSTOMER_SCREEN, SCREEN2);
 	    mainController.loadScreen(CREATECUSTOMER_SCREEN, SCREEN3);
 	    mainController.loadScreen(SELECTVEHICLE_SCREEN, SCREEN4);
-	   // controller.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
-	   // controller.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
+	    mainController.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
+	    mainController.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
 		
 		mainController.setNextButtonDisable(true);
 		mainController.setBackButtonDisable(true);

@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,10 +28,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import MyCMS.*;
 import PMA.PMA;
-
-
+import MyCMS.*;
 
 public class MainController implements Initializable, ControlledScreen {
 
@@ -60,9 +57,13 @@ public class MainController implements Initializable, ControlledScreen {
 	/** 	IN SERVICE TAB 		**/
 	@FXML private TableView<WorkOrder> serviceTable;
 	
-	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus;
+	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus, 
+					serviceLic, serviceTotal;
 	
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
+	
+	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
+			engineLabel, transmissionLabel;
 	
 	private ObservableList<WorkOrder> workOrderList;
 	
@@ -113,6 +114,8 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
 		
+		/** Still need to init the value for license plate in table and TODO Status , Total  **/
+		//serviceLic.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>())
 		
 		
 		
@@ -120,7 +123,10 @@ public class MainController implements Initializable, ControlledScreen {
 		
 		
 		
-		workOrderList = MyCMS.workOrders.getWorksOrders();
+		
+		
+		
+		//workOrderList = MyCMS.workOrders.getWorksOrders();
 		if(workOrderList != null)							/** HANDLE ERROR APPROPRIATELY **/
 			serviceTable.setItems(workOrderList);
 		
@@ -141,12 +147,24 @@ public class MainController implements Initializable, ControlledScreen {
 						return;
 					
 					}
+					/** UPDATES PERSONAL INFO TAB **/
 					firstNameLabel.setText(newValue.getFirstName());
 					lastNameLabel.setText(newValue.getLastName());
 					phoneLabel.setText(newValue.getPhone());
 					addressLabel.setText(newValue.getAddress());
 					cityLabel.setText(newValue.getCity());
 					stateLabel.setText(newValue.getState());	
+					
+					/** UPDATES VEHICLE INFO TAB **/
+					makeLabel.setText(newValue.getMake());
+					modelLabel.setText(newValue.getModel());
+					yearLabel.setText(newValue.getYear());
+					licenseLabel.setText(newValue.getLic());
+					vinLabel.setText(newValue.getVIN());
+					mileageLabel.setText(newValue.getMiles());
+					engineLabel.setText(newValue.getEngine());
+					transmissionLabel.setText(newValue.getTransmission());
+					
 			}		
 		});
 
@@ -272,15 +290,15 @@ public class MainController implements Initializable, ControlledScreen {
 		phone = phoneField.getText();
 	
 		
-		if(first.length() > InputLimits.MAX_CLIENT_FIRST){
+		if(first.length() > 50){
 			System.out.println("MAX CLIENT FIRST ERROR");
 			return;
 		}
-		if(last.length() > InputLimits.MAX_CLIENT_LAST){
+		if(last.length() > 50){
 			System.out.println("MAX CLIENT LAST ERROR");
 			return;
 		}
-		if(phone.length() > InputLimits.MAX_CLIENT_PHONE){
+		if(phone.length() > 50){
 			System.out.println("MAX CLIENT PHONE ERROR");
 			return;
 		}
