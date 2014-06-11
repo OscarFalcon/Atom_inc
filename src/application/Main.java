@@ -36,10 +36,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         MainController.primaryStage = primaryStage;
         
-        
     	ScreenController mainContainer = new ScreenController();
-        
-    	
     	mainContainer.loadScreen(Main.screenLoginID, Main.screenLoginFile);
         mainContainer.loadScreen(Main.screenMainID, Main.screenMainFile);
         mainContainer.setScreen(Main.screenLoginID);

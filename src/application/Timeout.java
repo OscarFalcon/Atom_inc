@@ -1,6 +1,5 @@
 package application;
 
-import javafx.scene.control.TextField;
 
 public class Timeout implements Runnable {
 
@@ -8,7 +7,7 @@ public class Timeout implements Runnable {
 	private long time;
 	
 	
-	public void run() {
+	public void run(){
 		try{
 			Thread.sleep(time);
 			controller.setTimeOutStatus(false);
