@@ -210,7 +210,7 @@
                 </TabPane>
                 <ToolBar prefHeight="57.0" prefWidth="597.0" styleClass="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <items>
-                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="45.0" prefWidth="140.0" styleClass="createOrderButton" stylesheets="@Login.css" text="Create W/O" />
+                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#addPMA" prefHeight="45.0" prefWidth="140.0" styleClass="createOrderButton" stylesheets="@Login.css" text="Create W/O" />
                     <Button fx:id="viewWorkOrderButton" alignment="CENTER" mnemonicParsing="false" onAction="#viewWorkOrder" prefHeight="45.0" prefWidth="140.0" styleClass="viewWorkOrderButton" text="View W/O" />
                               <Button alignment="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="140.0" styleClass="printbutton" text="Print List" />
                               <Button mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="140.0" styleClass="refresh" text="Refresh" />
