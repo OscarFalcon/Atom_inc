@@ -6,9 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="941.0" prefWidth="1351.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pma.PMAController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1047.0" prefWidth="1742.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pma.PMAController">
    <children>
-      <VBox prefHeight="1050.0" prefWidth="1122.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="1062.0" prefWidth="1757.0" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-15.0" AnchorPane.topAnchor="0.0">
          <children>
             <MenuBar stylesheets="/PMA/style.css">
               <menus>
@@ -31,7 +31,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <ScrollPane prefViewportHeight="2257.0" prefViewportWidth="1740.0">
+            <ScrollPane prefHeight="1021.0" prefViewportHeight="2257.0" prefViewportWidth="1740.0" prefWidth="1778.0">
                <content>
                   <GridPane fx:id="grid" alignment="CENTER" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false" styleClass="custom-field" stylesheets="/PMA/style.css">
                      <children>
