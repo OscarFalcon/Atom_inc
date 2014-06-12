@@ -1,7 +1,6 @@
 package workshop;
 
 import java.sql.Date;
-
 import javafx.beans.property.SimpleStringProperty;
 
 public class WorkOrder {
@@ -39,40 +38,77 @@ public class WorkOrder {
         this.person = person;
 	}
 	
+										/** vin **/
 	public String getVIN(){
 		return vehicleVIN.get();
 	}
-	public String getLic(){
+	public void setVIN(String vin){
+		vehicleVIN.set(vin);
+	}
+	public String getLic(){				/** lic **/
 		return vehicleLic.get();
 	}
-	public String getMake(){
+	public void setLic(String lic){		
+		vehicleLic.set(lic);
+	}
+	public String getMake(){			/** make **/
 		return vehicleMake.get();
 	}
-	public String getModel(){
+	public void setMake(String make){	
+		vehicleMake.set(make);
+	}
+	public String getModel(){			/** model **/
 		return vehicleModel.get();
 	}
-	public String getYear(){
+	public void setModel(String model){
+		vehicleModel.set(model);
+	}
+	public String getYear(){			/** year **/
 		return vehicleYear.get();
 	}
-	public String getEngine(){
+	public void setYear(String year){	
+		vehicleYear.set(year);
+	}
+	public String getEngine(){			/** engine **/
 		return vehicleEngine.get();
 	}
-	public String getTransmission(){
+	public void setEngine(String engine){
+		vehicleEngine.set(engine);
+	}
+	public String getTransmission(){	/** trans **/
 		return vehicleTrans.get();
 	}
-	public String getMiles(){
+	public void setTransmission(String trans){
+		vehicleTrans.set(trans);
+	}
+	public String getMiles(){			/** miles **/
 		return vehicleMiles.get();
 	}
-	
-	public String getWorkOrder(){
+	public void setMiles(String miles){
+		vehicleMiles.set(miles);
+	}
+	public String getWorkOrder(){		/** work order **/
 		return workOrder.get();
 	}
 	public int getWorkOrderAsInt(){
 		return Integer.parseInt(workOrder.get());
 	}
-	public String getDate(){
+	public void setWorkOrder(String workOrder){
+		this.workOrder.set(workOrder);
+	}
+	public String getDate(){			/** date **/
 		return workOrderDate.get();
 	}
+	public void setDate(Date date){
+		workOrderDate.set(date.toString());
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -106,11 +142,11 @@ public class WorkOrder {
 	public String getLocation(){
 		return person.getCity() + "," + person.getState() + " " + person.getZip();
 	}
-	
-	
-	
 	public String getVehicle(){
 		return vehicleYear.get() + " "	+ vehicleMake.get() + " " + vehicleModel.get();
 	}
+	
+	
+	
 	
 }

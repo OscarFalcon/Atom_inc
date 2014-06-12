@@ -248,6 +248,7 @@ public static class employee{
 	}	
 	
 	public static class pma{
+		
 		private static int ROW_COUNT = 50;
 		
 		
@@ -515,6 +516,41 @@ public static class employee{
 			}
 			return list;
 		}//getOrderOrders
+		
+		
+		public ObservableList<WorkOrder> searchWorkOrder(){
+			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Object[]> results;
+			String SEARCH_WORK_WORDERS = "SELECT PMA.wo, "
+										+ "PMA.date,"
+										+ "AES_DECRYPT(vehicle.vin,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "vehicle.year,"
+										+ "AES_DECRYPT(vehicle.make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(vehicle.miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "info.id,"
+										+ "AES_DECRYPT(info.first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+										+ "AES_DECRYPT(info.email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+										+ "FROM vehicle INNER JOIN PMA ON vehicle.vin = PMA.vin INNER JOIN info ON PMA.id = info.id WHERE ";
+			
+			
+			
+			
+			return null;
+		}
+		
+		
 		
 		
 	}//workOrder
