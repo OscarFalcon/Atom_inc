@@ -2,21 +2,15 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import mycms.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import mycms.MyCMS;
 
 
 public class LoginController implements Initializable, ControlledScreen {
@@ -98,6 +92,8 @@ public class LoginController implements Initializable, ControlledScreen {
 			myController.setScreen(Main.screenMainID);
 			usernameField.setText("");
 			passwordField.setText("");
+			MainController c = (MainController) myController.getScreenController(Main.screenMainID);
+			c.refresh();//fill in the service table of main view
 		}
 		else
 			attempts++;

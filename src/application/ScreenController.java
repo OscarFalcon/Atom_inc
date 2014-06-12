@@ -1,10 +1,5 @@
 package application;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
@@ -19,37 +14,76 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-/**
- *
- * @author john
- */
+
 public class ScreenController extends StackPane {
-    //Holds the screens to be displayed
 
-    private HashMap<String, Node> screens = new HashMap<String, Node>();
-
-    public ScreenController() {
+    /**
+     * Holds the nodes associated by a string name
+     */
+	private HashMap<String, Node> screens = new HashMap<String, Node>();
+	
+	
+	
+	/**
+	 * Holds the controllers for each node
+	 */
+	private HashMap<String,ControlledScreen> controllers = new HashMap<String,ControlledScreen>();
+	
+	
+   
+	public ScreenController() {
         super();
     }
 
-    //Add the screen to the collection
-    public void addScreen(String name, Node screen) {
+    
+	/** 
+     *  Add the screen to the collection 
+     * @param name - a reference name of the screen(can be anything), 
+     * @param screen - to node which to load
+     *  
+     **/
+    
+	public void addScreen(String name, Node screen) {
         screens.put(name, screen);
     }
 
-    //Returns the Node with the appropriate name
+   
+	/**
+     * @return the Node with the appropriate name 
+     *
+     **/
     public Node getScreen(String name) {
         return screens.get(name);
     }
 
-    //Loads the fxml file, add the screen to the screens collection and
-    //finally injects the screenPane to the controller.
+   
+    /**
+     * 
+     * @param whichScreen
+     * @return The controller for 'whichScreen'
+     */
+    public ControlledScreen getScreenController(String whichScreen){
+    	return controllers.get(whichScreen);
+    }
+    
+    
+    
+    
+    /**
+     * Loads the fxml file, add the screen to the screens collection and
+     * finally injects the screenPane to the controller.
+
+     * @param name
+     * @param resource
+     * @return true if screen was successfully loaded, false otherwise
+     */
     public boolean loadScreen(String name, String resource) {
         try {
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource(resource));
             Parent loadScreen = (Parent) myLoader.load();
-            ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController());
-            myScreenControler.setScreenParent(this);
+            ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController()); 
+            myScreenControler.setScreenParent(this); // set the parent of the node to this
+            controllers.put(name,myScreenControler); // add the loaded pages' controller to data structure
             addScreen(name, loadScreen);
             return true;
         } catch (Exception e) {
@@ -58,10 +92,13 @@ public class ScreenController extends StackPane {
         }
     }
 
-    //This method tries to displayed the screen with a predefined name.
-    //First it makes sure the screen has been already loaded.  Then if there is more than
-    //one screen the new screen is been added second, and then the current screen is removed.
-    // If there isn't any screen being displayed, the new screen is just added to the root.
+    /**
+     * This method tries to displayed the screen with a predefined name.
+     *	First it makes sure the screen has been already loaded.  Then if there is more than
+     *	one screen the new screen is been added second, and then the current screen is removed.
+     * 	If there isn't any screen being displayed, the new screen is just added to the root.
+     **/
+     
     public boolean setScreen(final String name) {
         if (screens.get(name) != null) {   //screen loaded
             final DoubleProperty opacity = opacityProperty();
@@ -97,8 +134,7 @@ public class ScreenController extends StackPane {
         }
         
     }
-
-    //This method will remove the screen with the given name from the collection of screens
+    /** This method will remove the screen with the given name from the collection of screens **/
     public boolean unloadScreen(String name) {
         if (screens.remove(name) == null) {
             System.out.println("Screen didn't exist");

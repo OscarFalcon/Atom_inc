@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,16 +61,14 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML private TableView<WorkOrder> serviceTable;
 	
 	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus, 
-					serviceLic, serviceTotal;
+												serviceLic, serviceTotal;
 	
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
 	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
-			engineLabel, transmissionLabel;
+						engineLabel, transmissionLabel;
 	
-	private ObservableList<WorkOrder> workOrderList;
-	
-	
+	private final ObservableList<WorkOrder> workOrderList = FXCollections.observableArrayList();
 	
 	
 	
@@ -88,7 +87,11 @@ public class MainController implements Initializable, ControlledScreen {
 	public Person current;
 	
 	
+	public void setScreenParent(ScreenController screenParent) {
+		myController = screenParent;
+	}
 
+	
 	public void initialize(URL url, ResourceBundle rb) {
 		
 		customerTable.setOpacity(.6);
@@ -110,20 +113,14 @@ public class MainController implements Initializable, ControlledScreen {
 		customerPhone.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.15));
 		customerEmail.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.20));
 
+		
+		
 		/** INIT IN SERVICE TABLE VIEW **/
 		serviceOrderNum.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("workOrder"));
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
-		
-		/** Still need to init the value for license plate in table and TODO Status , Total  **/
-		//serviceLic.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>())
-		
-		
-		workOrderList = MyCMS.workorder.getWorksOrders();
-		if(workOrderList != null)							/** HANDLE ERROR APPROPRIATELY **/
-			serviceTable.setItems(workOrderList);
-		
+		serviceTable.setItems(workOrderList);
 		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
 			@Override
@@ -141,6 +138,7 @@ public class MainController implements Initializable, ControlledScreen {
 						return;
 					
 					}
+					
 					/** UPDATES PERSONAL INFO TAB **/
 					firstNameLabel.setText(newValue.getFirstName());
 					lastNameLabel.setText(newValue.getLastName());
@@ -162,12 +160,6 @@ public class MainController implements Initializable, ControlledScreen {
 			}		
 		});
 
-		
-		
-		
-		
-		
-		
 		
 		// Set the resizing property for the service order table
 		serviceOrderNum.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
@@ -250,18 +242,14 @@ public class MainController implements Initializable, ControlledScreen {
 	}
 	
 
-	public void setScreenParent(ScreenController screenParent) {
-		myController = screenParent;
-	}
-
+	
 	
 	
 	
 
 	@FXML
 	public void close(ActionEvent event) {
-		// add 'are you sure you want to exit application" prompt
-		Platform.exit();
+		Platform.exit();		// add 'are you sure you want to exit application" prompt
 	}
 	
 	
@@ -269,9 +257,16 @@ public class MainController implements Initializable, ControlledScreen {
 	public void signOut(ActionEvent event) {
 		myController.setScreen(Main.screenLoginID);
 	}
-	public void setScreenController(ScreenController controller){
-		myController = controller;
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -310,6 +305,7 @@ public class MainController implements Initializable, ControlledScreen {
 	/** 			IN SERVICE TAB CONTROLLER SECTION 				**/
 	
 	
+	/** view work order button **/
 	public void viewWorkOrder(){
 		int workOrder;
 		WorkOrder workOrderItem;
@@ -322,17 +318,18 @@ public class MainController implements Initializable, ControlledScreen {
 		workOrder = workOrderItem.getWorkOrderAsInt();
 		Platform.runLater(new PMAView(workOrder));
 	}
-	
-	
-	public void refresh(){
-		if(MyCMS.workorder.getWorksOrders() == null) /**HANDLE ERROR !! */
-			System.out.println("FAILED TO GET WORK ORDERS");
-		serviceTable.getSelectionModel().clearSelection();
-	}
-	
+	/** add work order button **/
 	public void addPMA(){
 		Platform.runLater(new PMAWizard());
 	}
+	
+	/** refresh button **/
+	public void refresh(){
+		workOrderList.setAll(MyCMS.workorder.getWorksOrders());
+	}
+	
+	
+	
 	
 	
 	

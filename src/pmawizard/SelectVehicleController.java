@@ -17,7 +17,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import workshop.Person;
 import workshop.Vehicle;
 
 public class SelectVehicleController extends ControlledScreen implements Initializable{
@@ -64,14 +63,14 @@ public class SelectVehicleController extends ControlledScreen implements Initial
 				}	
 			}
 		});
-		vehicleTable.setRowFactory(new Callback<TableView<Vehicle>,TableRow<Vehicle>>(){
+		/**vehicleTable.setRowFactory(new Callback<TableView<Vehicle>,TableRow<Vehicle>>(){
 			@Override
 			public TableRow<Vehicle> call(TableView<Vehicle> param) {
 				System.out.println("CallBack method");
 				return null;
 			}
 			
-		});
+		}); **/
 		
 		
 		
