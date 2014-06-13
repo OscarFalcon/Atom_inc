@@ -80,70 +80,74 @@ public static class employee{
 													final String address,final String city,final String state,
 													final String zip,final String phone,final String email){
 					
-			ArrayList<Type> arguments = new ArrayList<Type>();
-			ArrayList<Integer> result_types = new ArrayList<Integer>();
-			ArrayList<Object[]> results = null;
-			ObservableList<Person> persons = FXCollections.observableArrayList();
+			final ArrayList<Type> arguments = new ArrayList<Type>();
+			final ArrayList<Integer> result_types = new ArrayList<Integer>();
+			final ArrayList<Object[]> results;
+			final ObservableList<Person> persons = FXCollections.observableArrayList();
 			
-			String query =		"SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-								+ "AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
+			String SEARCH_CUSTOMER_STRING = "SELECT id, AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(address,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(city,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(state,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(zip,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(primaryPhone,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(email,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) from info WHERE ";
 			
 			if( (b1 != EXACTLY && b1 != MATCHES) || (b2 != EXACTLY && b2!= MATCHES)){	/** b1 has to be either EXACTLY or MATCHES, same for b2	**/
 				//e.setMyCMSError(SEARCH_INVALID_ARGUMENTS_ERROR);
 				return null;
 			}
 			
-			
 			if (first == null || first.equals(""))			
-					query = query + "first LIKE '%' ";
+					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "first LIKE '%' ";
+			
 			else{											
 				if (b1 == EXACTLY){
-					query = query + "first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 					arguments.add(new Type(first));
 				}
 				else{
-					query = query + "AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ? ";
+					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ? ";
 					arguments.add(new Type("%"+first+"%"));
 				}
 			}
+			
+			
 			if (last != null && !last.equals("")){
 				if (b2 == EXACTLY){
-					query = query + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 					arguments.add(new Type(last));
 				}
 				else{
-					query = query + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
+					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
 					arguments.add(new Type("%"+last+"%"));
 				}	
 			}
+			
+			
 			if(address != null && !address.equals("")){
-				query = query + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(address));
 			}
 			if (city != null && !city.equals("")){
-				query = query + "&& city = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& city = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(city));
 			}
 			if (state != null && !state.equals("")){
-				query = query + "&& state = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& state = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(state));
 			}
 			if (zip != null && !zip.equals("")){
-				query = query + "&& zip = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& zip = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(zip));
 			}
 			if (phone != null && !phone.equals("")){
-				query = query + "&& primaryPhone = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& primaryPhone = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(phone));
 			}
 			if (email != null && !email.equals("")){
-				query = query + "&& email = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
+				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& email = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
 				arguments.add(new Type(email));
 			}
 			
@@ -157,7 +161,7 @@ public static class employee{
 			result_types.add(Type.STRING);
 			result_types.add(Type.STRING);
 			
-			if( (results = MySQL.executeQuery(query,arguments,result_types)) == null){
+			if( (results = MySQL.executeQuery(SEARCH_CUSTOMER_STRING,arguments,result_types)) == null){
 				//e.setMySQLError(MySQL.errorno); 
 				return null;
 			}
