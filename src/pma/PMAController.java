@@ -818,7 +818,7 @@ private void initializeMoneyTextFields(){
 		            int i;
 		            for(i = 0;!partFieldListeners.get(i).equals(this);i++)
 		            	;
-		            BigDecimal value = PMA.markUpRate_parts.divide(new BigDecimal(100),math_context);//markuprate / 100
+		            BigDecimal value = PMA.markUpRate_parts.divide(new BigDecimal(100),math_context);// markuprate % 100
 		            value = moneyFields[i][2].getValue().multiply(value,math_context); // markuprate * moneyfield
 		            value = value.multiply(QTY[i].getValue(),math_context); //value = value * qty
 		            moneyFields[i][0].setValue(value);
