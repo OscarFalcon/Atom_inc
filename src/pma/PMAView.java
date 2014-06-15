@@ -26,14 +26,12 @@ public class PMAView extends Application implements Runnable{
 		FXMLLoader fxmlLoader = new FXMLLoader();		
 		
 		Parent root;
-		
 		try {
 			root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
-        
 		Scene scene = new Scene(root, 1350, 800);
         stage.setMinWidth(800);
         stage.setMinHeight(600);
@@ -42,7 +40,7 @@ public class PMAView extends Application implements Runnable{
         stage.setScene(scene);
         stage.show();
         PMAController controller =  fxmlLoader.getController();
-        controller.initializePMA(workOrderNumber);
+        controller.initializePMA(workOrderNumber,stage,this);
 	}
 	
 	@Override

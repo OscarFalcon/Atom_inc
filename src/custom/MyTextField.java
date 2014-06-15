@@ -48,6 +48,15 @@ public abstract class MyTextField extends TextField{
 		setValue(getValueOf(text));
     	moveCaret(getText().length()); /** must have **/
     } 
+	
+	public final void setHide(boolean b){
+		if(b)
+			setText("");
+		else
+			setValue(new BigDecimal(0.0));
+		setDisable(b);
+	}
+	
 
 	/**
 	 * Sets the displayed text of this text field to the 

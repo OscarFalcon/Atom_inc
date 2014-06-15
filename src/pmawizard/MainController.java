@@ -26,8 +26,21 @@ public class MainController {
     @FXML private Button finishButton;
 
     
-    /** data structure that will associate a screen name with a node 
-     *  so that we won't have to reload a particular node several times;
+    
+    /** the currently selected customer id, -1 if no customer is selected **/
+    private int custID = -1; 
+  
+    
+    /** the customer concerns screen is typed at the end of the pma **/
+    private String customerConcerns;
+    
+   
+   /** the vehicleVIN that is currently selected via the create vehicle or select vehicle sections **/
+    private String vehicleVIN;
+    
+    
+    /**  data structure that will associate a screen name with a node 
+     *   so that we won't have to reload a particular node several times;
      */
     final private HashMap<String,Node> screens = new HashMap<String,Node>();
     private String current_screen;
@@ -39,25 +52,22 @@ public class MainController {
     final private HashMap<String,ControlledScreen> controllers =  new HashMap<String,ControlledScreen>();
 
     
-   
-    public ControlledScreen getController(String name){
-    	return controllers.get(name);
+    
+    /**
+     * 
+     * @param whichScreen
+     * @return The controller for the specified fxml node
+     */
+    public ControlledScreen getController(String whichScreen){
+    	return controllers.get(whichScreen);
     }
     
     
-   
-    /** the currently selected customer id, -1 if no customer is selected **/
-    private int custID = -1; 
-  
     
-    private String customerConcerns;
-    
-    private String vehicleVIN;
-    
-    
-    
-    
-    
+    /**
+     * The setters for the constant back,next and finish buttons of the PMA Wizard
+     * @param b
+     */
     public void setNextButtonDisable(boolean b){
     	nextButton.setDisable(b);
     }
@@ -66,11 +76,7 @@ public class MainController {
     }
     public void setFinishButtonDisable(boolean b){
     	finishButton.setDisable(b);
-    	if(b)
-			finishButton.setDefaultButton(false);
-    	else
-			finishButton.setDefaultButton(true);
-
+    	finishButton.setDefaultButton(!b);
     }
   
     
@@ -93,29 +99,6 @@ public class MainController {
     	return vehicleVIN;
     }
     
-    
-    
-    
-    public void submitPMA(){
-    	finalCommentsController fcc = (finalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
-    	customerConcerns = fcc.getCustomerConcerns();
-    	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns);
-    }
-    
-    public void switchScreen(String whichScreen){
-    	Node node = null;
-    	
-    	if((node = screens.get(whichScreen)) == null)
-    		return;
-    	
-    	AnchorPane.setBottomAnchor(node,1.0);
- 		AnchorPane.setLeftAnchor(node,1.0);
- 		AnchorPane.setRightAnchor(node, 1.0);
- 		AnchorPane.setTopAnchor(node, 1.0);
- 		
- 		vistaHolder.getChildren().setAll(node);
- 		current_screen = whichScreen;
-    }
     
     public boolean loadScreen(String name,String filename){
     	if(screens.get(name) != null) /** screen already loaded **/
@@ -141,15 +124,19 @@ public class MainController {
     	return screens.get(whichScreen);
     }
     
-    
-    public void finish(){
+    public void switchScreen(String whichScreen){
+    	Node node = null;
     	
+    	if((node = screens.get(whichScreen)) == null)
+    		return;
+    	
+    	AnchorPane.setBottomAnchor(node,1.0);
+ 		AnchorPane.setLeftAnchor(node,1.0);
+ 		AnchorPane.setRightAnchor(node, 1.0);
+ 		AnchorPane.setTopAnchor(node, 1.0);
+ 		vistaHolder.getChildren().setAll(node);
+ 		current_screen = whichScreen;
     }
-    
-    public void cancel(){
-    	Platform.exit();
-    } 
-    
     
     public void next(ActionEvent event){
     	switch (current_screen){
@@ -170,10 +157,8 @@ public class MainController {
     	
     	}
     	
-    }
-    
+    } 
     public void back(ActionEvent event){
-    	
     	switch (current_screen){
 			case PMAWizard.CREATECUSTOMER_SCREEN:
 				switchScreen(PMAWizard.SELECTCUSTOMER_SCREEN);
@@ -192,6 +177,20 @@ public class MainController {
     	}
     	
     }
+    
+    
+
+    // ON ACTION  SECTION 
+    
+    public void submitPMA(){
+    	FinalCommentsController fcc = (FinalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
+    	customerConcerns = fcc.getCustomerConcerns();
+    	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns);
+    }
+    
+    public void cancel(){
+    	Platform.exit();
+    } 
     	
 }
     

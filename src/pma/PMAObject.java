@@ -35,9 +35,12 @@ public class PMAObject extends Object implements Serializable{
 	public BigDecimal[] totalLabor;  /** what the customer sees **/
 	public BigDecimal[] laborCost;   /** stores cost **/
 	public BigDecimal[] partCost;    /** stores cost **/
+	public BigDecimal[] markUpRates; /** the mark up rate for each row **/
 	public BigDecimal[] totals;  /** HIGH,MED,LOW,PARTS,LABOR,TOTAL_PARTS_AND_LABOR,TAX,SHOP_SUPPLIES,GRAND_TOTAL **/
 	public BigDecimal[] qty; 		
 
+	
+	
 	
 	
 	public PMAObject(int rowCount){
@@ -50,6 +53,7 @@ public class PMAObject extends Object implements Serializable{
 		totalLabor = new BigDecimal[ROW_COUNT];
 		laborCost = new BigDecimal[ROW_COUNT];
 		partCost = new BigDecimal[ROW_COUNT];
+		markUpRates = new BigDecimal[ROW_COUNT];
 		ROW_STATUS = new int[ROW_COUNT][2];
 		qty = new BigDecimal[ROW_COUNT];
 		vendor = new String[ROW_COUNT];
@@ -61,13 +65,13 @@ public class PMAObject extends Object implements Serializable{
 			laborCost[i] = new BigDecimal(0.0);
 			partCost[i] = new BigDecimal(0.0);
 			qty[i] = new BigDecimal(0);
+			markUpRates[i] = new BigDecimal(200);
 			ROW_STATUS[i][0] = PMAController.NO_STATUS;
-			ROW_STATUS[i][1] = PMAController.NO_STATUS;			
+			ROW_STATUS[i][1] = PMAController.NO_STATUS;		
 		}
+		
 		for(int i = 0; i < 9; i++)
 			totals[i] = new BigDecimal(0.0);
-		
-		
 	}
 }
 	

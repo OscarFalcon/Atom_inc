@@ -12,32 +12,52 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 
-public class addVehicleController extends ControlledScreen implements Initializable{
+public class AddVehicleController extends ControlledScreen implements Initializable{
 
-	@FXML TextField yearField,makeField,modelField,vinField,licenseField,tagsField,engineField,transField,milesField;
-	@FXML Button addVehicleButton;
+	@FXML private TextField yearField,makeField,modelField,vinField,licenseField,tagsField,engineField,transField,milesField;
+	
+	@FXML private Button addVehicleButton;
+	
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		yearField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		makeField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		modelField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		vinField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		licenseField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		tagsField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		engineField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		transField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
+		milesField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());	
+		addVehicleButton.setDisable(true);
+		
+	}
 	
 	
-	
+	/**
+	 * onAction:
+	 * adds a vehicle into the database 
+	 */
 	public void addVehicle(){
-		String vin,licnum,tags,make,model,engine,trans,miles;
-		int year;
+		final String vin,licnum,tags,make,model,engine,trans,miles;
+		final int year;
 		
 		
 		vin = vinField.getText();
 		licnum = licenseField.getText();
 		tags = tagsField.getText();
-		year = Integer.parseInt(yearField.getText());
+		year = Integer.parseInt(yearField.getText()); /** HANDLE ERROR **/
 		make = makeField.getText();
 		model = modelField.getText();
 		engine = engineField.getText();
 		trans = transField.getText();
 		miles = milesField.getText();
 	
-		
+		/** ERROR TRAP **/
 		if(MyCMS.vehicle.addVehicle(controller.getCustID(), vin, licnum, tags, year, make, model, engine, trans, miles))
 			controller.setVehicleVin(vin);
-		
 		
 	}
 	
@@ -51,19 +71,7 @@ public class addVehicleController extends ControlledScreen implements Initializa
 	}
 	
 	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		yearField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		makeField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		modelField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		vinField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		licenseField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		tagsField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		engineField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		transField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());
-		milesField.addEventHandler(KeyEvent.KEY_RELEASED,new handler());	
-		addVehicleButton.setDisable(true);
-	}
+	
 
 	
 	

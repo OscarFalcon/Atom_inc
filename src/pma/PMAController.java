@@ -26,7 +26,6 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.PageRanges;
 import javax.swing.SwingUtilities;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
@@ -49,6 +48,9 @@ import com.aspose.cells.Worksheet;
 import custom.DoubleTextField;
 import custom.IntegerTextField;
 import custom.MoneyTextField;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingNode;
@@ -68,15 +70,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
-
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import mycms.*;
 import pma.PMAObject;
+import popups.MarkUpRateView;
 
 
 public class PMAController implements Initializable{
 	
-	public static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
-	private int WORK_ORDER_NUMBER = -1; 	//the work order number used to load a specific PMA
+	private static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
+	
+	private int WORK_ORDER_NUMBER;
+	
+	private Stage parent;
+	
+	private PMAController self = this;
+	
 	
 	
 	/** title fields **/
@@ -121,7 +131,6 @@ public class PMAController implements Initializable{
 	
 	@FXML private Label highPrior,mediumPrior,lowPrior;
 	
-	
 	/** customer concerns text area **/
 	@FXML private TextArea CustConcerns;
 	
@@ -142,17 +151,33 @@ public class PMAController implements Initializable{
 	
 	private Label[] labels;
 	
-	final private MoneyTextField[][] moneyFields = new MoneyTextField[ROW_COUNT][3];
 	
-	final private IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
 	
-	final private DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
 	
-	final private MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
+	private final MoneyTextField[][] moneyFields = new MoneyTextField[ROW_COUNT][3];
 	
-	final private MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
+	private final ArrayList<ChangeListener<Boolean>> partFieldListeners = new ArrayList<ChangeListener<Boolean>>();//listeners for moneyfields
 	
-	final private MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
+	private final ArrayList<ChangeListener<Boolean>> laborFieldListeners = new ArrayList<ChangeListener<Boolean>>();
+	
+	
+
+	
+	
+	
+	
+	private final IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
+	
+	private final DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
+	
+	private final MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
+	
+	private final MenuItem[] menuItemsDisapproved = new MenuItem[ROW_COUNT];
+	
+	private final MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
+	
+	private final MenuItem[] menuItemsMarkUpRate = new MenuItem[ROW_COUNT];
+	
 	
 	
 	private PMAObject PMA; 		/** the PMA object that will be used throughout the program **/
@@ -191,6 +216,14 @@ public class PMAController implements Initializable{
 	
 	
 	
+	
+	/**
+	 * This is the method that performs the logic whenever a checkbox 
+	 * is selected or unselected. It has several helper methods to 
+	 * improve readability. 
+	 * 
+	 * @param event
+	 */
 	public void checked(ActionEvent event){		
 		short place,index;
 		CheckBox box;
@@ -218,7 +251,10 @@ public class PMAController implements Initializable{
 	private void selectOK(int place){
 		disableAndClearFields(place);	
 		techcomments[place].setDisable(true);
-		disableMenuItems(place,true,true,true);		
+		disableMenuItems(place,true,true,true);	
+		
+		hideFields(place,true);//insert
+		
 		checkboxes[place][1].setSelected(false);
 		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");		
@@ -231,10 +267,11 @@ public class PMAController implements Initializable{
 	}
 	
 	private void selectNOTOK(int place){
-		disableFields(place,false);
 		clearCSS(place);
+		disableFields(place,false);
 		techcomments[place].setDisable(false);
 		disableMenuItems(place,false,false,false);
+		hideFields(place,false);//insert
 		checkboxes[place][0].setSelected(false);	
 		checkboxes[place][1].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-invalid");
@@ -244,6 +281,7 @@ public class PMAController implements Initializable{
 	private void unselectNOTOK(int place){		
 		disableAndClearFields(place);
 		disableMenuItems(place,true,true,true);
+		hideFields(place,true);//insert
 		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
 		ROW_STATUS[place][0] = NO_STATUS;
@@ -265,6 +303,18 @@ public class PMAController implements Initializable{
 		laborHours[place].setDisable(b);
 		vendors[place].setDisable(b);
 	}
+	
+	private void hideFields(int place,boolean b){
+		moneyFields[place][0].setHide(b);
+		moneyFields[place][1].setHide(b);
+		moneyFields[place][2].setHide(b);
+		QTY[place].setHide(b);
+		laborHours[place].setHide(b);
+		vendors[place].setText("");
+	}
+	
+	
+	
 	
 	/**
 	 *  sets all the fields in a row to their default values 
@@ -293,6 +343,8 @@ public class PMAController implements Initializable{
 		moneyFields[place][0].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		moneyFields[place][1].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 	}
+	
+	
 	private void disableAndClearFields(int place){
 		clearFields(place);
 		clearCSS(place);
@@ -312,11 +364,7 @@ public class PMAController implements Initializable{
 	 */
 	private void alterRow(final int place, final int status){
 		String css;
-		
-		techcomments[place].setDisable(true);
-		disableFields(place,true);
-		clearCSS(place);
-		
+			
 		switch( status ){
 			case APPROVED:
 				css = "green-label";
@@ -330,6 +378,11 @@ public class PMAController implements Initializable{
 			default:
 				return;
 		}
+
+		techcomments[place].setDisable(true);
+		disableFields(place,true);
+		clearCSS(place);
+		
 		ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
 		priorities[place].getStyleClass().removeAll("green-label","red-label","yellow-label");
 		priorities[place].getEditor().getStyleClass().removeAll("green-label", "red-label", "yellow-label");
@@ -339,9 +392,12 @@ public class PMAController implements Initializable{
 		moneyFields[place][1].getStyleClass().add(css);
 	}
 	
+	
+	
 	private int addRows(int rowNum){
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
 	}
+	
 	
 	public void excel() throws Exception {
 
@@ -494,7 +550,7 @@ public class PMAController implements Initializable{
 		MyCMS.pma.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
 
-	private void computeTotals(){
+	public void computeTotals(){
 		BigDecimal total_parts = new BigDecimal("0.00");
 		BigDecimal total_labor = new BigDecimal("0.00");
 		BigDecimal total_parts_and_labor = new BigDecimal("0.00");
@@ -553,13 +609,23 @@ public class PMAController implements Initializable{
 		PMA.totals[GRAND_TOTAL] = grand_total;
 		
 	}
+	public void setMarkUpRate(int place,BigDecimal markUpRate){
+		BigDecimal value = new BigDecimal(0);
+		PMA.markUpRates[place] = markUpRate.multiply(new BigDecimal(100));
+        value = markUpRate.multiply(moneyFields[place][2].getValue());
+        value = value.add(moneyFields[place][2].getValue());
+        moneyFields[place][0].setValue(value);  
+	}
+	
+	
+	
 	
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 
-	/** put all declared FX id variables in arrays for easier processing later on **/
-	
-		checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
+	/** put all declared FX id variables in arrays for easier processing later on **/	
+		
+	checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
 				{OK7, NOTOK7},{OK8, NOTOK8},{OK9, NOTOK9},{OK10, NOTOK10},{OK11, NOTOK11},{OK12, NOTOK12},{OK13, NOTOK13},{OK14, NOTOK14},
 				{OK15, NOTOK15},{OK16, NOTOK16},{OK17, NOTOK17},{OK18, NOTOK18},{OK19, NOTOK19},{OK20, NOTOK20},{OK21, NOTOK21},{OK22, NOTOK22},
 				{OK23, NOTOK23},{OK24, NOTOK24},{OK25, NOTOK25},{OK26, NOTOK26},{OK27, NOTOK27},{OK28, NOTOK28},{OK29, NOTOK29},{OK30, NOTOK30},
@@ -632,13 +698,12 @@ public void initialize(URL location, ResourceBundle resources) {
 		
 		initializeComoBoxOptions();
 		initializeMenuItems();
-		
-		//System.out.println(MyCMS.PMA.createPMA(25376, "JHLRD77874CO2656", "Oil Change required"));
-		
+		initializeMoneyTextFields();
 	}
 
-public void initializePMA(int workOrder){
-	this.WORK_ORDER_NUMBER = workOrder;
+public void initializePMA(int workOrder,Stage parent,PMAView pmaview){
+	WORK_ORDER_NUMBER = workOrder;
+	this.parent = parent;
 	
 	if( WORK_ORDER_NUMBER < 0 )
 		return;
@@ -664,28 +729,8 @@ public void initializePMA(int workOrder){
 	
 	for(int i = 0; i < ROW_COUNT; i++){							/** REVERT ALL ROW STATUSES  **/
 		
-		if(PMA.ROW_STATUS[i][0] == OK_SELECTED){
-			selectOK(i);
-			checkboxes[i][0].setSelected(true);
-		}
-		else if(PMA.ROW_STATUS[i][0] == NOT_OK_SELECTED ){
-			selectNOTOK(i);
-			checkboxes[i][1].setSelected(true);
-		}
-		
-		moneyFields[i][0].setValue(PMA.totalParts[i]);
-		moneyFields[i][1].setValue(PMA.totalLabor[i]);
-		moneyFields[i][2].setValue(PMA.partCost[i]);
-
-		if( PMA.ROW_STATUS[i][1] == APPROVED )
-			alterRow(i,APPROVED);
-		
-		else if( PMA.ROW_STATUS[i][1] == NOT_APPROVED)
-			alterRow(i,NOT_APPROVED);
-		
-		else if( PMA.ROW_STATUS[i][1] == INFORMATION_ONLY )
-			alterRow(i,INFORMATION_ONLY);
-	
+		moneyFields[i][0].setEditable(false);
+		moneyFields[i][1].setEditable(false);
 		
 		techcomments[i].getEditor().setText((PMA.tech_comments[i]));			/** TECH COMMENTS **/
 		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);	/** RECOMMENDED REPAIRS **/
@@ -693,24 +738,77 @@ public void initializePMA(int workOrder){
 		QTY[i].setValue(PMA.qty[i]);											/** QTY **/
 		laborHours[i].setValue(PMA.laborCost[i]);								/** LABOR HOURS **/
 		vendors[i].setText(PMA.vendor[i]);										/** VENDOR **/
+	
 		
-		laborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LABOR]));
-		partsTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[PARTS]));
-		tax.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TAX]));
-		partsLaborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TOTAL_PARTS_AND_LABOR]));
-		Total.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[GRAND_TOTAL]));
+		if(PMA.ROW_STATUS[i][0] == OK_SELECTED){				// if ok was selected 
+			selectOK(i);
+			checkboxes[i][0].setSelected(true);
+		}
+		else if(PMA.ROW_STATUS[i][0] == NOT_OK_SELECTED ){		// if not-ok was selected
+			selectNOTOK(i);
+			checkboxes[i][1].setSelected(true);
+			moneyFields[i][0].setValue(PMA.totalParts[i]);		//revert money fields 
+			moneyFields[i][1].setValue(PMA.totalLabor[i]);
+			moneyFields[i][2].setValue(PMA.partCost[i]);
+		}
+		else
+			hideFields(i,true);
 		
-		highPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[HIGH]));
-		mediumPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[MED]));
-		lowPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LOW]));
+		alterRow(i,PMA.ROW_STATUS[i][1]);						//revert row status 
+	}
+		
+		
+	laborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LABOR]));
+	partsTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[PARTS]));
+	tax.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TAX]));
+	partsLaborTotal.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[TOTAL_PARTS_AND_LABOR]));
+	Total.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[GRAND_TOTAL]));
+		
+	highPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[HIGH]));
+	mediumPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[MED]));
+	lowPrior.setText(NumberFormat.getCurrencyInstance().format(PMA.totals[LOW]));
+	
+	
+}
+	
+private void initializeMoneyTextFields(){
+	for(int i= 0; i < ROW_COUNT; i++){
+		partFieldListeners.add(new ChangeListener<Boolean>(){
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue){
+		        if(!newPropertyValue){
+		            int i;
+		            for(i = 0;!partFieldListeners.get(i).equals(this);i++)
+		            	;
+		            BigDecimal value = new BigDecimal(0);
+		            value = PMA.markUpRates[i].divide(new BigDecimal(100));
+		            setMarkUpRate(i,value);
+		        }
+		    }
+		});
+		moneyFields[i][2].focusedProperty().addListener(partFieldListeners.get(i));
+		
+		laborFieldListeners.add(new ChangeListener<Boolean>(){
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue){
+		        if(!newPropertyValue){
+		            int i;
+		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++);
+		            moneyFields[i][1].setValue(laborHours[i].getValue());
+		        }
+		    }
+		});
+		laborHours[i].focusedProperty().addListener(laborFieldListeners.get(i));
 	}
 }
 
 
 private void initializeMenuItems(){
+	
 	int i = 0;
 	for(Label l : labels){
 		ContextMenu contextMenu = new ContextMenu();
+		
 		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/Images/approve.png")));
 		approve.setDisable(true);
 		menuItemsApproved[i] = approve;
@@ -720,10 +818,17 @@ private void initializeMenuItems(){
 		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/Images/warning.png")));	
 		information.setDisable(true);
 		menuItemsInformation[i] = information;
-		contextMenu.getItems().addAll(approve,disapprove,information);
+		MenuItem edit = new MenuItem("Change Markup Rate", new ImageView(new Image("/Images/edit.png")));
+		edit.setDisable(false);
+		menuItemsMarkUpRate[i] = edit;
+		
+		contextMenu.getItems().addAll(approve,disapprove,information,edit);
+		
 		approve.setOnAction(new rightClickMenuApprove());
 		disapprove.setOnAction(new rightClickMenuDisapprove());
 		information.setOnAction(new rightClickMenuInformation());
+		edit.setOnAction(new rightClickMarkUpRate());
+		
 		l.setContextMenu(contextMenu);
 		i++;
 	}
@@ -766,14 +871,29 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				computeTotals();
 			}
 	}
+	private class rightClickMarkUpRate implements EventHandler<ActionEvent>{
+		@Override		
+		public void handle(ActionEvent event) {
+			int place = 0;
+			MenuItem item  =  (MenuItem)event.getSource();
+			
+			while( item != menuItemsMarkUpRate[place])
+				place++;
+			Platform.runLater(new MarkUpRateView(PMA,place,parent,self));
+		}
+		
+	}
+	
+	
+	
 		
 	private void initializeComoBoxOptions(){
 		
 		/** strings used as combobox options in PMA **/
 		
-		String[] priority = new String[]{ "", "HIGH", "MED", "LOW" };
+		final String[] priority = new String[]{ "", "HIGH", "MED", "LOW" };
 
-		String[] tireTechComments = { "", "TIRE IS WORN OUT", "TIRE IS FLAT",
+		final String[] tireTechComments = { "", "TIRE IS WORN OUT", "TIRE IS FLAT",
 				"TIRE HAS HOLE IN SIDE WALL", "TIRE HAS IRREGULAR WEAR",
 				"TIRE HAS ALIGNMENT WEAR", "1/32 TREAD", "2/32 TREAD",
 				"3/32 TREAD", "4/32 TREAD", "5/32 TREAD", "6/32 TREAD",
@@ -781,53 +901,53 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"11/32 TREAD", "12/32 TREAD", "13/32 TREAD", "14/32 TREAD",
 				"15/32 TREAD" };
 		
-		String[] tireRecommendedComments = { "", "REPLACE TIRE", "REPAIR TIRE","ROTATE TIRE" };
+		final String[] tireRecommendedComments = { "", "REPLACE TIRE", "REPAIR TIRE","ROTATE TIRE" };
 		
-		String[] WWTechComments = { "", "WINDSHIELD IS CRACKED",
+		final String[] WWTechComments = { "", "WINDSHIELD IS CRACKED",
 				"WINDSHIELD HAS CHIP IN IT", "WINDSHIELD IS SCRATCHED",
 				"DRIVERS SIDE FRONT WINDOW NOT GOING UP",
 				"PASSENGER SIDE FRONT WINDOW NOT GOING UP",
 				"DRIVERS SIDE REAR WINDOW WILL NOT GO UP",
 				"PASSENGER SIDE REAR WINDOW NOT GOING UP", };
-		String[] WWRecommendedComments = { "", "REPLACE WINDSHIELD",
+		final String[] WWRecommendedComments = { "", "REPLACE WINDSHIELD",
 				"INFORMATION ONLY", "DO DIAGNOSTIC ON WINDOW" };
 
 		
-		String[] locksTechComments = { "",
+		final String[] locksTechComments = { "",
 				"DRIVERS SIDE FRONT LOCK NOT WORKING",
 				"PASSENGER SIDE FRONT LOCK NOT WORKING",
 				"DRIVERS SIDE REAR LOCK NOT WORKING",
 				"PASSENGER SIDE REAR LOCK NOT WORKING",
 				"POWER LOCKS NOT WORKING" };
 		
-		String[] locksRecommendedComments = { "", "DO DIAGNOSTICS ON LOCKS" };
+		final String[] locksRecommendedComments = { "", "DO DIAGNOSTICS ON LOCKS" };
 		
 		
-		String[] ACHTechComments = { "", "NEEDS DIAGNOSTIC ON A/C SYSTEM",
+		final String[] ACHTechComments = { "", "NEEDS DIAGNOSTIC ON A/C SYSTEM",
 				"LOW ON FREON", "HAS LEAK IN A/C SYSTEM",
 				"NOT COOLING VERY WELL", "A/C SWITCH IS BROKEN" };
 		
-		String[] ACHRecommendedComments = { "", "DO A/C SERVICE/DIAGNOSTIC" };
+		final String[] ACHRecommendedComments = { "", "DO A/C SERVICE/DIAGNOSTIC" };
 		
-		String[] heaterTechComments = { "", "NEEDS DIAGNOSTIC ON HEATER",
+		final String[] heaterTechComments = { "", "NEEDS DIAGNOSTIC ON HEATER",
 				"LOW ON COOLANT", "NEEDS HEATER CONTROL VALVE",
 				"HEATER CORE LEAKING" };
-		String[] heaterRecommendedComments = { "",
+		final String[] heaterRecommendedComments = { "",
 				"DO DIAGNOSTIC ON HEATER SYSTEM", "DO COOLANT PRESSURE TEST",
 				"REPLACE HEATER CONTROL VALVE" };
 		
-		String[] wiperTechComments = { "", "WIPERS NOT WORKING",
+		final String[] wiperTechComments = { "", "WIPERS NOT WORKING",
 				"WIPERS STREAKING", "SQUIRTERS NOT WORKING" };
 		
-		String[] wiperRecommendedComments = { "",
+		final String[] wiperRecommendedComments = { "",
 				"DO DIAGNOSTIC ON WIPER SYSTEM", "REPLACE WIPERS",
 				"DO DIAGNOSTIC ON SQUIRTERS" };
 		
-		String[] hornTechComments = { "", "", "" };
+		final String[] hornTechComments = { "", "", "" };
 		
-		String[] hornRecommendedComments = { "", "DO DIAGNOSTIC ON HORN" };
+		final String[] hornRecommendedComments = { "", "DO DIAGNOSTIC ON HORN" };
 		
-		String[] HLTechComments = { "", "DRIVER SIDE HIGH BEAM IS OUT",
+		final String[] HLTechComments = { "", "DRIVER SIDE HIGH BEAM IS OUT",
 				"DRIVER SIDE LOW BEAM IS OUT",
 				"PASSENGER SIDE HIGH BEAM IS OUT",
 				"PASSENGER SIDE LOW BEAM IS OUT",
@@ -835,28 +955,28 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"PASSENGER SIDE HEADLIGHT HAS CRACK IN IT",
 				"HEAD LIGHTS DO NOT WORK" };
 		
-		String[] HLRecommendedComments = { "", "REPLACE LIGHT(S)",
+		final String[] HLRecommendedComments = { "", "REPLACE LIGHT(S)",
 				"DO DIAGNOSTICS ON HEAD LIGHTS" };
 		
-		String[] PTLTechComments = { "", "DRIVER SIDE REAR TAIL LIGHT IS OUT",
+		final String[] PTLTechComments = { "", "DRIVER SIDE REAR TAIL LIGHT IS OUT",
 				"PASSENGER SIDE REAR TAIL LIGHT IS OUT",
 				"PASSENGER SIDE TAIL LIGHT IS CRACKED",
 				"DRIVER SIDE TAIL LIGHT IS CRACKED",
 				"PARK/TAIL LAMP DO NOT WORK", "LIC PLATE LIGHT IS OUT" };
 		
-		String[] PTLRecommendedComments = { "", "REPLACE LIGHT(S)",
+		final String[] PTLRecommendedComments = { "", "REPLACE LIGHT(S)",
 				"DO DIAGNOSTIC ON PARK/TAIL LAMP" };
 		
-		String[] brakeTechComments = { "", "DRIVER SIDE BRAKE LIGHT IS OUT",
+		final String[] brakeTechComments = { "", "DRIVER SIDE BRAKE LIGHT IS OUT",
 				"PASSENGER SIDE BRAKE LIGHT IS OUT",
 				"PASSENGER SIDE BRAKE LIGHT IS CRACKED",
 				"DRIVER SIDE BRAKE LIGHT IS CRACKED",
 				"BRAKE LIGHTS DO NOT WORK" };
 		
-		String[] brakeRecommendedComments = { "", "REPLACE LIGHT(S)",
+		final String[] brakeRecommendedComments = { "", "REPLACE LIGHT(S)",
 				"DO DIAGNOSTICS ON BRAKE LIGHTS" };
 		
-		String[] DSTechComments = { "", "PASSENGER SIDE FENDER IS DENTED",
+		final String[] DSTechComments = { "", "PASSENGER SIDE FENDER IS DENTED",
 				"DRIVER SIDE FENDER IS DENTED",
 				"DRIVER SIDE FRONT DOOR IS DENTED",
 				"DRIVER SIDE REAR DOOR IS DENTED",
@@ -866,131 +986,131 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"PASSENGER SIDE REAR QUARTER IS DENTED", "TRUNK LID IS DENTED",
 				"HOOD IS DENTED", "TAILGATE IS DENTED", "DENTS/SCRATCHES" };
 		
-		String[] DSRecommendedComments = { "", "DO ESTIMATE ON BODYWORK",
+		final String[] DSRecommendedComments = { "", "DO ESTIMATE ON BODYWORK",
 				"INFORMATION ONLY" };
 		
-		String[] engineDiagTechComments = { "", "CHECK ENGINE LIGHT IS ON",
+		final String[] engineDiagTechComments = { "", "CHECK ENGINE LIGHT IS ON",
 				"VEHICLE RUNS ROUGH", "NEED TO DO DIAGNOSTICS" };
 		
-		String[] engineDiagRecommendedComments = { "", "DO DIAGNOSTICS",
+		final String[] engineDiagRecommendedComments = { "", "DO DIAGNOSTICS",
 				"INFORMATION ONLY" };
 		
-		String[] MMTechComments = { "", "DRIVER SIDE MOTOR MOUNT IS BROKEN",
+		final String[] MMTechComments = { "", "DRIVER SIDE MOTOR MOUNT IS BROKEN",
 				"PASSENGER SIDE MOTOR MOUNT IS BROKEN",
 				"BOTH MOTOR MOUNTS ARE BROKEN", "MOTOR MOUNTS ARE WEAK",
 				"NEED TO CHECK MOTOR MOUNTS" };
 		
-		String[] MMRecommendedComments = { "",
+		final String[] MMRecommendedComments = { "",
 				"REPLACE DRIVER SIDE MOTOR MOUNT",
 				"REPLACE PASSENGER SIDE MOTOR MOUNT",
 				"REPLACE BOTH MOTOR MOUNTS" };
 		
-		String[] BCBTechComments = { "", "BATTERY TERMINALS DIRTY",
+		final String[] BCBTechComments = { "", "BATTERY TERMINALS DIRTY",
 				"SEAL BATTERY TERMINALS", "BATTERY TERMINALS CORRODED",
 				"BATTERY CABLES BROKEN", "BATTERY CABLES CORRODED",
 				"NEEDS BATTERY" };
 		
-		String[] BCBRecommendedComments = { "",
+		final String[] BCBRecommendedComments = { "",
 				"CLEAN AND SEAL BATTERY TERMINALS", "REPLACE(1) BATTERY END",
 				"REPLACE(2) BATTERY ENDS", "REPLACE POSITIVE BATTERY CABLE",
 				"REPLACE NEGATIVE BATTERY CABLE",
 				"REPLACE BOTH BATTERY CABLES", "REPLACE BATTERY" };
 
-		String[] EOTechComments = { "", "ENGINE OIL IS LOW",
+		final String[] EOTechComments = { "", "ENGINE OIL IS LOW",
 				"ENGINE OIL IS DIRTY", "ENGINE OIL IS LOW AND DIRTY",
 				"ENGINE HAS OIL LEAK" };
 		
-		String[] EORecommendedComments = { "", "DO OIL CHANGE", "ADD OIL",
+		final String[] EORecommendedComments = { "", "DO OIL CHANGE", "ADD OIL",
 				"DO DYE TEST TO CHECK FOR OIL LEAK" };
 
-		String[] TFTechComments = { "", "TRANSMISSION FLUID IS LOW",
+		final String[] TFTechComments = { "", "TRANSMISSION FLUID IS LOW",
 				"TRANSMISSION FLUID IS DIRTY",
 				"TRANSMISSION FLUID IS LOW AND DIRTY",
 				"TRANSMISSION HAS OIL LEAK" };
 		
-		String[] TFRecommendedComments = { "", "DO TRANSMISSION SERVICE",
+		final String[] TFRecommendedComments = { "", "DO TRANSMISSION SERVICE",
 				"ADD TRANSMISSION FLUID", "DO DYE TEST TO CHECK FOR FLUID LEAK" };
 
-		String[] WFTechComments = { "", "WASHER FLUID IS LOW",
+		final String[] WFTechComments = { "", "WASHER FLUID IS LOW",
 				"SQUIRTERS NOT WORKING", "WASHER FLUID BOTTLE IS CRACKED" };
 		
-		String[] WFRecommendedComments = { "", "ADD WASHER FLUID",
+		final String[] WFRecommendedComments = { "", "ADD WASHER FLUID",
 				"DO DIAGNOSTICS ON SQUIRTERS",
 				"REPLACE WINDSHIELD WASHER BOTTLE" };
 		
-		String[] BFTechComments = { "", "BRAKE FLUID IS LOW",
+		final String[] BFTechComments = { "", "BRAKE FLUID IS LOW",
 				"BRAKE FLUID IS DIRTY", "BRAKE FLUID IS LOW AND DIRTY" };
 		
-		String[] BFRecommendedComments = { "", "DO BRAKE FLUSH",
+		final String[] BFRecommendedComments = { "", "DO BRAKE FLUSH",
 				"ADD BRAKE FLUID" };
 		
-		String[] PSFTechComments = { "", "POWER STEERING FLUID IS LOW",
+		final String[] PSFTechComments = { "", "POWER STEERING FLUID IS LOW",
 				"POWER STEERING FLUID IS DIRTY",
 				"POWER STEERING FLUID IS LOW AND DIRTY" };
 		
-		String[] PSFRecommendedComments = { "", "DO A POWER STEERING FLUSH",
+		final String[] PSFRecommendedComments = { "", "DO A POWER STEERING FLUSH",
 				"ADD POWER STEERING FLUID" };
 		
 
-		String[] coolantTechComments = { "", "COOLANT IS LOW",
+		final String[] coolantTechComments = { "", "COOLANT IS LOW",
 				"COOLANT IS DIRTY", "COOLANT IS LOW AND DIRTY",
 				"NEEDS COOLANT FLUSH WITH REPAIRS",
 				"HAS COOLANT LEAK DO PRESSURE TEST" };
 		
-		String[] coolantRecommendedComments = { "", "DO COOLANT FLUSH",
+		final String[] coolantRecommendedComments = { "", "DO COOLANT FLUSH",
 				"ADD COOLANT", "DO PRESSURE TEST TO CHECK FOR LEAKS" };
 		
-		String[] SBTechComments = { "", "SERPENTINE BELT IS CRACKED",
+		final String[] SBTechComments = { "", "SERPENTINE BELT IS CRACKED",
 				"SERPENTINE BELT IS MISSING", "BELT TENSIONER IS WORN",
 				"BELT TENSIONER AND BELT ARE WORN" };
 		
-		String[] SBRecommendedComments = { "", "REPLACE BELT", "ADJUST BELT",
+		final String[] SBRecommendedComments = { "", "REPLACE BELT", "ADJUST BELT",
 				"REPLACE BELT TENSIONER", "REPLACE BELT TENSIONER AND BELT" };
 		
-		String[] AFTechComments = { "", "AIR FILTER IS DIRTY",
+		final String[] AFTechComments = { "", "AIR FILTER IS DIRTY",
 					"K&N TYPE FILTER NEEDS TO BE CLEANED" };
 		
-		String[] AFRecommendedComments = { "", "REPLACE AIR FILTER",
+		final String[] AFRecommendedComments = { "", "REPLACE AIR FILTER",
 					"CLEAN AND RE OIL AIR FILTER" };
 		
-		String[] FFTechComments = { "", "REPLACE FILTER DUE TO MILEAGE",
+		final String[] FFTechComments = { "", "REPLACE FILTER DUE TO MILEAGE",
 				"REPLACE FILTER MANUFACTURER RECOMMEND", "FUE FILTER CLOGGED",
 				"NEED TO REMOVE FUEL FILTER TO CHECK IT" };
 		
-		String[] FFRecommendedComments = { "", "REPLACE FUEL FILTER",
+		final String[] FFRecommendedComments = { "", "REPLACE FUEL FILTER",
 				"REMOVE FILTER AND CHECK FOR CLOGS" };
 		
-		String[] radiatorTechComments = { "", "RADIATOR IS LEAKING",
+		final String[] radiatorTechComments = { "", "RADIATOR IS LEAKING",
 				"RADIATOR IS CLOGGED", "OVERHEATING NEED TO CHECK SYSTEM" };
 		
-		String[] radiatorRecommendedComments = { "",
+		final String[] radiatorRecommendedComments = { "",
 				"DO PRESSURE CHECK TO CHECK LEAKS", "REPLACE RADIATOR",
 				"DO DIAGNOSTICS ON OVERHEATING" };
 		
-		String[] URHTechComments = { "", "UPPER HODE IS LEAKING",
+		final String[] URHTechComments = { "", "UPPER HODE IS LEAKING",
 				"UPPER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
 		
-		String[] URHRecommendedComments = { "", "REPLACE UPPER RADIATOR HOSE" };
+		final String[] URHRecommendedComments = { "", "REPLACE UPPER RADIATOR HOSE" };
 
-		String[] LRHTechComments = { "", "LOWER HOSE IS LEAKING",
+		final String[] LRHTechComments = { "", "LOWER HOSE IS LEAKING",
 				"LOWER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
 		
-		String[] LRHRecommendedComments = { "", "REPLACE LOWER RADIATOR HOSE" };
+		final String[] LRHRecommendedComments = { "", "REPLACE LOWER RADIATOR HOSE" };
 
-		String[] HBHTechComments = { "", "HEATER IS LEAKING",
+		final String[] HBHTechComments = { "", "HEATER IS LEAKING",
 				"HEATER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
 		
-		String[] HBHRecommendedComments = { "", "REPLACE HEATER HOSES" };
+		final String[] HBHRecommendedComments = { "", "REPLACE HEATER HOSES" };
 		
-		String[] SRPTechComments = { "", "STEERING BOX/GEAR IS LEAKING",
+		final String[] SRPTechComments = { "", "STEERING BOX/GEAR IS LEAKING",
 				"STEERING BOX/GEAR IS LOOSE", "RACK & PINION IS LEAKING",
 				"RACK AND PINION IS LOOSE", "RACK AND PINION MOUNTS ARE WORN",
 				"RACK AND PINION MOUNTS ARE BROKEN" };
 		
-		String[] SRPRecommendedComments = { "", "REPLACE STEERING BOX/GEAR",
+		final String[] SRPRecommendedComments = { "", "REPLACE STEERING BOX/GEAR",
 				"REPLACE RACK AND PINION", "REPLACE RACK & PINION MOUNTS" };
 		
-		String[] SLTechComments = { "", "LEFT OUTER TIE ROD WORN",
+		final String[] SLTechComments = { "", "LEFT OUTER TIE ROD WORN",
 				"RIGHT OUTER TIE ROD WORN", "LEFT INNER TIE ROD WORN",
 				"RIGHT INNER TIE ROD WORN", "BOTH INNER TIE RODS WORN",
 				"BOTH OUTER TIE RODS WORN", "BOTH INNER & OUTER TIE RODS WORN",
@@ -1000,7 +1120,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"PITMAN ARM IDLER ARM & DRAG LINK WORN",
 				"STEERING STABILIZER WORN" };
 		
-		String[] SLRecommendedComments = { "", "REPLACE LEFT OUTER TIE ROD",
+		final String[] SLRecommendedComments = { "", "REPLACE LEFT OUTER TIE ROD",
 				"REPLACE RIGHT OUTER TIE ROD", "REPLACE LEFT INNER TIE ROD",
 				"REPLACE RIGHT INNER TIE ROD", "REPLACE BOTH INNER TIE RODS",
 				"REPLACE BOTH OUTER TIE RODS",
@@ -1011,7 +1131,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"REPLACE PITMAN ARM, IDLER ARM & DRAG LINK",
 				"REPLACE STEERING STABILIZER" };
 		
-		String[] suspTechComments = { "", "LEFT UPPER BALL JOINT WORN",
+		final String[] suspTechComments = { "", "LEFT UPPER BALL JOINT WORN",
 				"LEFT LOWER BALL JOINT WORN", "RIGHT UPPER BALL JOINT WORN",
 				"RIGHT LOWER BALL JOINT WORN",
 				"BOTH LEFT UPPER & LOWER BALL JOINTS WORN",
@@ -1026,7 +1146,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"LEFT SIDE UPPER STRUT MOUNT WORN",
 				"RIGHT SIDE UPPER STRUT MOUNT WORN" };
 		
-		String[] suspRecommendedComments = { "",
+		final String[] suspRecommendedComments = { "",
 				"REPLACE LEFT UPPER BALL JOINT",
 				"REPLACE LEFT LOWER BALL JOINT",
 				"REPLACE RIGHT UPPER BALL JOINT",
@@ -1044,13 +1164,13 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"REPLACE LEFT SIDE UPPER STRUT MOUNT",
 				"REPLACE RIGHT SIDE UPPER STRUT MOUNT" };
 		
-		String[] alignTechComments = { "", "NEEDS ALIGNMENT CAUSING TIRE WEAR",
+		final String[] alignTechComments = { "", "NEEDS ALIGNMENT CAUSING TIRE WEAR",
 				"NEEDS ALIGNMENT PULLS LEFT", "NEEDS ALIGNMENT PULLS RIGHT",
 				"NEEDS ALIGNMENT AFTER FRONT END WORK" };
 		
-		String[] alignRecommendedComments = { "", "DO ALIGNMENT" };
+		final String[] alignRecommendedComments = { "", "DO ALIGNMENT" };
 		
-		String[] FSSTechComments = { "", "FRONT SHOCKS WORN OUT",
+		final String[] FSSTechComments = { "", "FRONT SHOCKS WORN OUT",
 				"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
 				"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
 				"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
@@ -1062,12 +1182,12 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"REAR STUTS CAUSING TIRE WEAR",
 				"ALL (4) STRUTS CAUSING TIRE WEAR" };
 		
-		String[] FSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
+		final String[] FSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
 				"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
 				"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
 				"REPLACE ALL (4) STRUTS" };
 		
-		String[] RSSTechComments = { "", "FRONT SHOCKS WORN OUT",
+		final String[] RSSTechComments = { "", "FRONT SHOCKS WORN OUT",
 				"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
 				"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
 				"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
@@ -1079,23 +1199,23 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"REAR STRUTS CAUSING TIRE WEAR",
 				"ALL (4) STRUTS CAUSING TIRE WEAR" };
 		
-		String[] RSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
+		final String[] RSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
 				"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
 				"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
 				"REPLACE ALL (4) STRUTS" };
 		
-		String[] FBTechComments = { "",
+		final String[] FBTechComments = { "",
 				"FRONT BRAKES WORN NEED TO BE REPLACED",
 				"NEEDS FRONT BRAKES AND BRAKE ROTORS",
 				"NEEDS FRONT BRAKES AND BRAKE CALIPERS",
 				"NEEDS FRONT BRAKES, ROTORS & CALIPERS" };
 		
-		String[] FBRecommendedComments = { "", "REPLACE FRONT BRAKES",
+		final String[] FBRecommendedComments = { "", "REPLACE FRONT BRAKES",
 				"REPLACE FRONT BRAKES AND BRAKE ROTORS",
 				"REPLACE FRONT BRAKES AND BRAKE CALIPERS",
 				"REPLACE FRONT BRAKES, ROTORS & CALIPERS" };
 
-		String[] RBTechComments = { "", "CLEAN AND ADJUST BRAKES",
+		final String[] RBTechComments = { "", "CLEAN AND ADJUST BRAKES",
 				"REAR BRAKES WORN NEED TO BE REPLACED",
 				"NEEDS REAR BRAKES AND BRAKE ROTOR",
 				"NEEDS REAR BRAKES AND BRAKE DRUMS",
@@ -1104,7 +1224,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"NEEDS REAR BRAKES,BRAKE ROTOR&CALIPERS",
 				"NEEDS REAR BRAKES,BRAKE DRUMS&CYLINDERS" };
 		
-		String[] RBRecommendedComments = { "", "CLEAN AND ADJUST BRAKES",
+		final String[] RBRecommendedComments = { "", "CLEAN AND ADJUST BRAKES",
 				"REPLACE REAR BRAKES", "REPLACE REAR BRAKES AMD BRAKE ROTOR",
 				"REPLACE REAR BRAKES AND BRAKE DRUMS",
 				"REPLACE REAR BRAKES AND BRAKE CALIPERS",
@@ -1112,29 +1232,29 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				"REPLACE REAR BRAKES,ROTORS & CALIPERS",
 				"REPLACE REAR BRAKES,DRUMS & CYLINDERS" };
 		
-		String[] CVADTechComments = { "", "FRONT U JOINT WORN",
+		final String[] CVADTechComments = { "", "FRONT U JOINT WORN",
 				"REAR U JOINT WORN", "FRONT DRIVE SHAFT 4X4 U JOINT WORN",
 				"REAR DRIVE SHAFT 4X4 U JOINT WORN" };
 		
-		String[] CVADRecommendedComments = { "", "REPLACE FRONT U JOINT",
+		final String[] CVADRecommendedComments = { "", "REPLACE FRONT U JOINT",
 				"REPLACE REAR U JOINT",
 				"REPLACE FRONT DRIVE SHAFT 4X4 U JOINT",
 				"REPLACE REAR DRIVE SHAFT 4X4 U JOINT" };
 		
-		String[] mufflerTechComments = { "", "MUFFLER LEAKING EXHAUST",
+		final String[] mufflerTechComments = { "", "MUFFLER LEAKING EXHAUST",
 				"MUFFLER HAS HOLES IN IT", "MUFFLER IS RUSTED",
 				"MUFFLER IS MISSING" };
 		
-		String[] mufflerRecommendedComments = { "", "REPLACE MUFFLER" };
+		final String[] mufflerRecommendedComments = { "", "REPLACE MUFFLER" };
 		
-		String[] EPTechComments = { "", "EXAUST PIPES ARE LEAKING EXHAUST",
+		final String[] EPTechComments = { "", "EXAUST PIPES ARE LEAKING EXHAUST",
 				"EXHAUST PIPES HOLES IN THEM", "EXHAUST PIPES ARE RUSTED",
 				"EXHAUST PIPES ARE MISSING" };
 		
-		String[] EPRecommendedComments = { "", "REPLACE EXHAUST PIPES" };
+		final String[] EPRecommendedComments = { "", "REPLACE EXHAUST PIPES" };
 
 		/** make array of all combobox options that will displayed on the same row, ie(tech comment options,recommended repairs options and priority on */
-		String[][][] comments = new String[][][]{
+		final String[][][] comments = new String[][][]{
 				new String[][]{tireTechComments,tireRecommendedComments,priority},
 				new String[][]{tireTechComments,tireRecommendedComments,priority},
 				new String[][]{tireTechComments,tireRecommendedComments,priority},
