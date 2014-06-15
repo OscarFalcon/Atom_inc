@@ -63,6 +63,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -74,22 +75,19 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import mycms.*;
 import pma.PMAObject;
-import popups.MarkUpRateView;
 
 
 public class PMAController implements Initializable{
 	
 	private static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
 	
-	private int WORK_ORDER_NUMBER;
+	private int WORK_ORDER_NUMBER;				//the unique work order, is SET in initializePMA() method
 	
-	private Stage parent;
-	
-	private PMAController self = this;
+	final MathContext math_context = new MathContext(50,RoundingMode.HALF_UP); //  Rounding mode for big decimal calculations
 	
 	
 	
-	/** title fields **/
+	/** TITLE FIELDS **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
 	
 	/**OK CHECK BOXES **/
@@ -116,32 +114,44 @@ public class PMAController implements Initializable{
 					,PRIOR19,PRIOR20,PRIOR21,PRIOR22,PRIOR23,PRIOR24,PRIOR25,PRIOR26,PRIOR27,PRIOR28,PRIOR29,PRIOR30,PRIOR31,PRIOR32,PRIOR33,PRIOR34
 					,PRIOR35,PRIOR36,PRIOR37,PRIOR38,PRIOR39,PRIOR40,PRIOR41,PRIOR42,PRIOR43,PRIOR44,PRIOR45,PRIOR46,PRIOR47,PRIOR48,PRIOR49,PRIOR50;
 	
-	/** title labels **/
+	/** TITLE LABELS **/
 	@FXML Label L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,
 				L38,L39,L40,L41,L42;
 	
-	/** vendors fields **/
+	/** VENDOR FIELDS **/
 	@FXML private TextField vendor1,vendor2,vendor3,vendor4,vendor5,vendor6,vendor7,vendor8,vendor9,vendor10,vendor11,vendor12,vendor13,vendor14,
 								vendor15,vendor16,vendor17,vendor18,vendor19,vendor20,vendor21,vendor22,vendor23,vendor24,vendor25,
 								vendor26,vendor27,vendor28,vendor29,vendor30,vendor31,vendor32,vendor33,vendor34,vendor35,vendor36,vendor37,
 								vendor38,vendor39,vendor40,vendor41,vendor42,vendor43,vendor44,vendor45,vendor46,vendor47,vendor48,vendor49,vendor50; 
 	
 	
+	/** total label at the bottom of the PMA **/
 	@FXML private Label laborTotal,partsTotal,shopSupplies,tax,Total,partsLaborTotal;
 	
+	/** total by priority label at bottom of the PMA **/
 	@FXML private Label highPrior,mediumPrior,lowPrior;
 	
-	/** customer concerns text area **/
+	/** CUSTOMER CONCERNS TEXT AREA **/
 	@FXML private TextArea CustConcerns;
 	
-	/** grid pane that holds the rows of the PMA **/
+	/** GRID PANE 
+	 *   holds all the rows of the PMA 
+	 *   used to insert custom fields dynamically 
+	 **/
 	@FXML private GridPane grid;
 
+
 	
+	/**
+	 *  These arrays are initialized to the injectable counterparts from the PMA
+	 *  checkboxes[i][0] = OK1 ..
+	 *  checkboxes[i][1] = NOTOK1 ..
+	 *  techcomments[0] = TC1... and so on.
+	 */
 	
-	private CheckBox[][] checkboxes;
+	private CheckBox[][] checkboxes;				
 	
-	private ComboBox<String>[] techcomments;
+	private ComboBox<String>[] techcomments;		
 	
 	private ComboBox<String>[] recommendedrepairs;
 	
@@ -153,22 +163,23 @@ public class PMAController implements Initializable{
 	
 	
 	
-	
+	/**
+	 * moneyFields[0] = total parts/tires field
+	 * moneyFields[1] = labor field
+	 * moneyFields[2] = parts/tires cost
+	 */
 	private final MoneyTextField[][] moneyFields = new MoneyTextField[ROW_COUNT][3];
 	
-	private final ArrayList<ChangeListener<Boolean>> partFieldListeners = new ArrayList<ChangeListener<Boolean>>();//listeners for moneyfields
+	private final ArrayList<ChangeListener<Boolean>> partFieldListeners = new ArrayList<ChangeListener<Boolean>>();
 	
 	private final ArrayList<ChangeListener<Boolean>> laborFieldListeners = new ArrayList<ChangeListener<Boolean>>();
-	
-	
-
-	
-	
-	
 	
 	private final IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
 	
 	private final DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
+	
+	
+	
 	
 	private final MenuItem[] menuItemsApproved = new MenuItem[ROW_COUNT];
 	
@@ -176,7 +187,6 @@ public class PMAController implements Initializable{
 	
 	private final MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
-	private final MenuItem[] menuItemsMarkUpRate = new MenuItem[ROW_COUNT];
 	
 	
 	
@@ -213,6 +223,22 @@ public class PMAController implements Initializable{
 	private static final int TAX = 6;
 	private static final int SHOP_SUPPLIES = 7;
 	private static final int GRAND_TOTAL = 8;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -301,7 +327,8 @@ public class PMAController implements Initializable{
 		moneyFields[place][2].setDisable(b);
 		QTY[place].setDisable(b);
 		laborHours[place].setDisable(b);
-		vendors[place].setDisable(b);
+		vendors[place].setDisable(b);		
+		
 	}
 	
 	private void hideFields(int place,boolean b){
@@ -311,11 +338,7 @@ public class PMAController implements Initializable{
 		QTY[place].setHide(b);
 		laborHours[place].setHide(b);
 		vendors[place].setText("");
-	}
-	
-	
-	
-	
+	}	
 	/**
 	 *  sets all the fields in a row to their default values 
 	 *  except for tech comments
@@ -333,17 +356,26 @@ public class PMAController implements Initializable{
 	/**
 	 * removes any CSS of each component of the row, and sets all the components back 
 	 * to their default looks.
-	 * PRIORITY,TOTAL PARTS, and TOTAL LABOR ARE the only fields affected.
+	 * PRIORITY,TOTAL PARTS, and TOTAL LABOR, TECH-COMMENTS,RECOMMENDED-REPAIRS are affected 
 	 * 
 	 */
 	private void clearCSS(int place){
 		priorities[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");		
 		priorities[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		priorities[place].getEditor().getStyleClass().add("custom-field");
+		
 		moneyFields[place][0].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
 		moneyFields[place][1].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
-	}
+		
+		techcomments[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+		techcomments[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+		techcomments[place].getEditor().getStyleClass().add("custom-field");
 	
+		recommendedrepairs[place].getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+		recommendedrepairs[place].getEditor().getStyleClass().removeAll("custom-field","green-label","red-label","yellow-label");
+		recommendedrepairs[place].getEditor().getStyleClass().add("custom-field");
+		
+	}
 	
 	private void disableAndClearFields(int place){
 		clearFields(place);
@@ -384,12 +416,16 @@ public class PMAController implements Initializable{
 		clearCSS(place);
 		
 		ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
-		priorities[place].getStyleClass().removeAll("green-label","red-label","yellow-label");
-		priorities[place].getEditor().getStyleClass().removeAll("green-label", "red-label", "yellow-label");
 		priorities[place].getStyleClass().add(css);
 		priorities[place].getEditor().getStyleClass().add(css);
 		moneyFields[place][0].getStyleClass().add(css);
 		moneyFields[place][1].getStyleClass().add(css);
+		
+		techcomments[place].getStyleClass().add(css);
+		techcomments[place].getEditor().getStyleClass().add(css);
+		
+		recommendedrepairs[place].getStyleClass().add(css);
+		recommendedrepairs[place].getEditor().getStyleClass().add(css);
 	}
 	
 	
@@ -546,11 +582,17 @@ public class PMAController implements Initializable{
 			PMA.partCost[i] = moneyFields[i][2].getValue();									/** PARTS COST **/
 			PMA.laborCost[i] = laborHours[i].getValue();									/** LABOR HOURS **/
 			PMA.vendor[i] = vendors[i].getText();											/** VENDORS **/
+			
 		}
+		
 		MyCMS.pma.updatePMA(WORK_ORDER_NUMBER,PMA);
 	}
 
+	
+	
 	public void computeTotals(){
+		
+		
 		BigDecimal total_parts = new BigDecimal("0.00");
 		BigDecimal total_labor = new BigDecimal("0.00");
 		BigDecimal total_parts_and_labor = new BigDecimal("0.00");
@@ -561,16 +603,19 @@ public class PMAController implements Initializable{
 		BigDecimal priority_med = new BigDecimal("0.00");
 		BigDecimal priority_low = new BigDecimal("0.00");
 		BigDecimal tax_rate = new BigDecimal(".0825");
+		
 		final MathContext mc = new MathContext(50,RoundingMode.HALF_UP);
 		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
 			if(ROW_STATUS[i][1] == APPROVED){
-				total_parts = total_parts.add(moneyFields[i][0].getValue());
+				total_parts = total_parts.add(moneyFields[i][0].getValue());	
+				total_parts = total_parts.multiply(QTY[i].getValue(), math_context);
 				total_labor = total_labor.add(moneyFields[i][1].getValue());
 				total_parts_and_labor = total_parts.add(total_labor,mc);
 			}
 			Object item;
+			
 			if( (item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("HIGH") ){
 				priority_high = priority_high.add(moneyFields[i][0].getValue(),mc);
 				priority_high = priority_high.add(moneyFields[i][1].getValue(),mc);
@@ -609,13 +654,7 @@ public class PMAController implements Initializable{
 		PMA.totals[GRAND_TOTAL] = grand_total;
 		
 	}
-	public void setMarkUpRate(int place,BigDecimal markUpRate){
-		BigDecimal value = new BigDecimal(0);
-		PMA.markUpRates[place] = markUpRate.multiply(new BigDecimal(100));
-        value = markUpRate.multiply(moneyFields[place][2].getValue());
-        value = value.add(moneyFields[place][2].getValue());
-        moneyFields[place][0].setValue(value);  
-	}
+
 	
 	
 	
@@ -701,9 +740,8 @@ public void initialize(URL location, ResourceBundle resources) {
 		initializeMoneyTextFields();
 	}
 
-public void initializePMA(int workOrder,Stage parent,PMAView pmaview){
+public void initializePMA(int workOrder,PMAView pmaview){
 	WORK_ORDER_NUMBER = workOrder;
-	this.parent = parent;
 	
 	if( WORK_ORDER_NUMBER < 0 )
 		return;
@@ -780,9 +818,10 @@ private void initializeMoneyTextFields(){
 		            int i;
 		            for(i = 0;!partFieldListeners.get(i).equals(this);i++)
 		            	;
-		            BigDecimal value = new BigDecimal(0);
-		            value = PMA.markUpRates[i].divide(new BigDecimal(100));
-		            setMarkUpRate(i,value);
+		            BigDecimal value = PMA.markUpRate_parts.divide(new BigDecimal(100),math_context);//markuprate / 100
+		            value = moneyFields[i][2].getValue().multiply(value,math_context); // markuprate * moneyfield
+		            value = value.multiply(QTY[i].getValue(),math_context); //value = value * qty
+		            moneyFields[i][0].setValue(value);
 		        }
 		    }
 		});
@@ -793,8 +832,8 @@ private void initializeMoneyTextFields(){
 		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue){
 		        if(!newPropertyValue){
 		            int i;
-		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++);
-		            moneyFields[i][1].setValue(laborHours[i].getValue());
+		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++)
+		            	;
 		        }
 		    }
 		});
@@ -812,23 +851,19 @@ private void initializeMenuItems(){
 		MenuItem approve = new MenuItem("Approve Row", new ImageView(new Image("/Images/approve.png")));
 		approve.setDisable(true);
 		menuItemsApproved[i] = approve;
+		
 		MenuItem disapprove = new MenuItem("Disapprove Row",new ImageView(new Image("/Images/red-x.png")));
 		disapprove.setDisable(true);
 		menuItemsDisapproved[i] = disapprove;
+	
 		MenuItem information = new MenuItem("Set Row as Information Only",new ImageView(new Image("/Images/warning.png")));	
 		information.setDisable(true);
 		menuItemsInformation[i] = information;
-		MenuItem edit = new MenuItem("Change Markup Rate", new ImageView(new Image("/Images/edit.png")));
-		edit.setDisable(false);
-		menuItemsMarkUpRate[i] = edit;
-		
-		contextMenu.getItems().addAll(approve,disapprove,information,edit);
 		
 		approve.setOnAction(new rightClickMenuApprove());
 		disapprove.setOnAction(new rightClickMenuDisapprove());
 		information.setOnAction(new rightClickMenuInformation());
-		edit.setOnAction(new rightClickMarkUpRate());
-		
+		contextMenu.getItems().addAll(approve,disapprove,information);
 		l.setContextMenu(contextMenu);
 		i++;
 	}
@@ -871,20 +906,6 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				computeTotals();
 			}
 	}
-	private class rightClickMarkUpRate implements EventHandler<ActionEvent>{
-		@Override		
-		public void handle(ActionEvent event) {
-			int place = 0;
-			MenuItem item  =  (MenuItem)event.getSource();
-			
-			while( item != menuItemsMarkUpRate[place])
-				place++;
-			Platform.runLater(new MarkUpRateView(PMA,place,parent,self));
-		}
-		
-	}
-	
-	
 	
 		
 	private void initializeComoBoxOptions(){

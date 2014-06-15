@@ -7,7 +7,6 @@
 }
 
 .custom-title {
-    /*-fx-font: 10px "Serif"; */
     -fx-padding:3;
     -fx-background-color: #C0C0C0;
     -fx-border-style:solid;
@@ -28,13 +27,9 @@
 }
 
 .custom-label{
-   /*-fx-padding: 1;*/
-   /*-fx-background-color: #C0C0C0;*/
    -fx-background-color: #6B6B6B;
-   /*-fx-background-image: url("../Images/background.jpg");*/
    -fx-text-fill: #C0C0C0;
    -fx-border-style:solid;
-   /*-fx-border-width:small; */
 }
 
 
@@ -44,11 +39,11 @@
    -fx-border-style:solid;
 }
 
-.disabled{
-	/*-fx-background-color:#FFFFFF;	
-	-fx-text-fill: #FFFFFF; */
-	-fx-opacity:.95; 
-}
+/* .disabled{
+	-fx-opacity:1.0;
+	-fx-font: 13px "Serif"; 
+	-fx-background-color:white;
+}*/
 
 .check-box-invalid{
    -fx-background-color:#FF0000;

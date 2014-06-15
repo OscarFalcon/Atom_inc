@@ -2,8 +2,11 @@ package mycms;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList; 
+
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
+
 import pma.PMAObject;
 import workshop.Person;
 import workshop.Vehicle;
@@ -289,7 +292,7 @@ public static class employee{
 			return MySQL.execute(UPDATE_PMA, arguments);
 		}
 		
-		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns){
+		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns,BigDecimal markupRateParts,BigDecimal markupRateLabor){
 			ArrayList<Type> arguments = new ArrayList<Type>();
 			ArrayList<Integer> result_types = new ArrayList<Integer>();
 			ArrayList<Object[]> results;
@@ -329,7 +332,7 @@ public static class employee{
 			
 			final PMAObject pma;							/** FILL IN PMA WITH VEHICLE INFORMATION **/
 			Object[] tmp = results.get(0);
-			pma = new PMAObject(ROW_COUNT);
+			pma = new PMAObject(ROW_COUNT,markupRateParts,markupRateLabor);
 			pma.customer_concerns = customerConcerns;
 			pma.vin = vehicleVIN;
 			pma.lic = (String) tmp[0];
