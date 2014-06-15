@@ -1,6 +1,7 @@
 package pmawizard;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import pmawizard.SelectVehicleController;
@@ -185,7 +186,7 @@ public class MainController {
     public void submitPMA(){
     	FinalCommentsController fcc = (FinalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
     	customerConcerns = fcc.getCustomerConcerns();
-    	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns);
+    	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns,new BigDecimal(200),new BigDecimal(100));
     }
     
     public void cancel(){
