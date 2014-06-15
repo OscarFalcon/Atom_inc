@@ -9,27 +9,31 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 
 
-public class finalCommentsController extends ControlledScreen implements Initializable{
+public class FinalCommentsController extends ControlledScreen implements Initializable{
 
-	@FXML TextArea customerConcernsTextArea,techCommentsTextArea;
+	@FXML private TextArea customerConcernsTextArea,techCommentsTextArea;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		customerConcernsTextArea.addEventHandler(KeyEvent.KEY_RELEASED, new handler());
 		techCommentsTextArea.addEventHandler(KeyEvent.KEY_RELEASED, new handler());
-		
 	}
 	
-	
+	/**
+	 * gets the customer concerns 
+	 * @return
+	 */
 	public String getCustomerConcerns(){
 		return customerConcernsTextArea.getText();
 	}
+	
+	/**
+	 * gets the tech comments 
+	 * @return
+	 */
 	public String getTechComments(){
 		return techCommentsTextArea.getText();
 	}
-	
-	
-	
 	
 	
 	private class handler implements EventHandler<KeyEvent>{
@@ -41,7 +45,6 @@ public class finalCommentsController extends ControlledScreen implements Initial
 				controller.setFinishButtonDisable(false);
 		}
 	}
-	
 	private boolean hasEmptyField(){
 		if(customerConcernsTextArea.getText().equals("") || techCommentsTextArea.getText().equals(""))
 			return true;
