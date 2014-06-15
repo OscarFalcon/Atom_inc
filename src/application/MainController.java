@@ -40,9 +40,6 @@ public class MainController implements Initializable, ControlledScreen {
 	static Stage primaryStage;
 
 	
-	
-	
-	
 	@FXML
 	TableView pmaTable;
 	@FXML TableColumn workOrderNum, dateIn, first, last, vehicle, phone;
@@ -50,6 +47,10 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML SplitPane pmaSplitPane;
 	
 	@FXML TextField firstAddField, lastAddField, emailAddField;
+	
+	@FXML
+	TableView previewTable;
+	@FXML TableColumn previewDescription, previewTechComments, previewRepairComments, previewPriority, previewApproval, previewCost;
 	
 	
 	
@@ -63,12 +64,14 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus, 
 												serviceLic, serviceTotal;
 	
+	/**************REMOVED ***************************/
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
 	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
 						engineLabel, transmissionLabel;
-	
+	/***************************************************/
 	private final ObservableList<WorkOrder> workOrderList = FXCollections.observableArrayList();
+	
 	
 	
 	
@@ -123,7 +126,7 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceTable.setItems(workOrderList);
 		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
-			@Override
+			
 			public void changed(
 					ObservableValue<? extends WorkOrder> observable,WorkOrder oldValue, WorkOrder newValue) {
 					
@@ -176,8 +179,13 @@ public class MainController implements Initializable, ControlledScreen {
 		vehicle.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.23));
 		phone.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
 			
-		
-        
+		//set resizing for the previewTable
+		previewDescription.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.20));
+		previewTechComments.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.25));
+		previewRepairComments.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.25));
+		previewPriority.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
+		previewApproval.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
+		previewCost.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
 	
         
 	}

@@ -14,11 +14,6 @@
 <AnchorPane prefHeight="618.0" prefWidth="800.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
   <!-- TODO Add Nodes -->
   <children>
-    <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
-      <image>
-        <Image url="@../Images/2fatguyslogo.png" />
-      </image>
-    </ImageView>
     <MenuBar prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <menus>
         <Menu mnemonicParsing="false" text="File">
@@ -38,7 +33,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <TabPane fx:id="tabbedPane" prefHeight="561.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="189.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="29.0">
+    <TabPane fx:id="tabbedPane" layoutX="4.0" layoutY="49.0" prefHeight="480.0" prefWidth="782.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="89.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0">
       <tabs>
         <Tab text="In Service">
           <content>
@@ -59,155 +54,6 @@
                            </columnResizePolicy>
                 </TableView>
                 <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="14.0" spacing="5.0" />
-                <TabPane layoutX="1.0" layoutY="329.0" prefHeight="197.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0">
-                  <tabs>
-                    <Tab text="Vehicle Info">
-                      <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="577.0" styleClass="panel1">
-                          <children>
-                            <VBox id="VBox" alignment="CENTER_LEFT" layoutX="14.0" layoutY="11.0" spacing="5.0">
-                              <children>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
-                                  <children>
-                                    <Label fx:id="makeLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                    <Label fx:id="modelLabel" prefHeight="21.0" prefWidth="120.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                    <Label fx:id="yearLabel" prefHeight="21.0" prefWidth="41.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                  </children>
-                                </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
-                                  <children>
-                                    <Label fx:id="licenseLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                    <Label fx:id="vinLabel" prefHeight="21.0" prefWidth="165.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                  </children>
-                                </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
-                                  <children>
-                                    <Label fx:id="mileageLabel" prefHeight="21.0" prefWidth="149.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                  </children>
-                                </HBox>
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="15.0">
-                                  <children>
-                                    <Label fx:id="engineLabel" prefHeight="21.0" prefWidth="100.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                    <Label fx:id="transmissionLabel" prefHeight="21.0" prefWidth="90.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                  </children>
-                                </HBox>
-                              </children>
-                            </VBox>
-                          </children>
-                          <stylesheets>
-                            <URL value="@Login.css" />
-                          </stylesheets>
-                        </AnchorPane>
-                      </content>
-                    </Tab>
-                    <Tab text="Personal Info">
-                      <content>
-                        <AnchorPane opacity="1.0" prefHeight="200.0" prefWidth="200.0" styleClass="panel1">
-                          <children>
-                                          <VBox layoutX="14.0" layoutY="11.0" prefHeight="21.0" prefWidth="250.0" spacing="5.0">
-                                             <children>
-                                                <HBox prefHeight="0.0" prefWidth="250.0" spacing="25.0">
-                                                   <children>
-                                        <Label fx:id="firstNameLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="148.0" textFill="WHITE" underline="true">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                        <Label fx:id="lastNameLabel" maxWidth="1.7976931348623157E308" prefWidth="136.0" textFill="WHITE" underline="true">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="25.0">
-                                                   <children>
-                                        <Label fx:id="phoneLabel" prefHeight="21.0" prefWidth="130.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="22.0" prefWidth="250.0" spacing="25.0">
-                                                   <children>
-                                        <Label fx:id="addressLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="238.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="0.0" prefWidth="250.0" spacing="25.0">
-                                                   <children>
-                                        <Label fx:id="cityLabel" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="200.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                                      <Label fx:id="stateLabel" prefHeight="21.0" prefWidth="163.0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="15.0" />
-                                                         </font></Label>
-                                        <Label fx:id="zipLabel" maxWidth="1.7976931348623157E308" prefWidth="80.0" textFill="WHITE" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </VBox>
-                          </children>
-                          <stylesheets>
-                            <URL value="@Login.css" />
-                          </stylesheets>
-                        </AnchorPane>
-                      </content>
-                    </Tab>
-                    <Tab text="Notes/History">
-                      <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="131.0" prefWidth="582.0" styleClass="panel1" stylesheets="@Login.css">
-                          <children>
-                          <TextArea editable="false" layoutX="1.0" layoutY="34.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="130.0" prefWidth="597.0" text="June 2, 2014 10:15pm - This is a Note" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0" />
-                                          <RadioButton layoutX="14.0" layoutY="5.0" mnemonicParsing="false" text="Issues" textFill="WHITE">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font></RadioButton>
-                                          <RadioButton layoutX="125.0" layoutY="5.0" mnemonicParsing="false" text="Notes" textFill="WHITE">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font></RadioButton>
-                          </children>
-                        </AnchorPane>
-                      </content>
-                    </Tab>
-                              <Tab text="Issues">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="panel1" stylesheets="@Login.css">
-                                       <children>
-                                          <TextArea editable="false" layoutX="65.0" layoutY="34.0" prefHeight="130.0" prefWidth="597.0" text="Needed part delivery delayed until 07/25/14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="34.0" />
-                                          <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" text="Resolve Issue" />
-                                       </children></AnchorPane>
-                                </content>
-                              </Tab>
-                  </tabs>
-                </TabPane>
                 <ToolBar prefHeight="57.0" prefWidth="597.0" styleClass="toolbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <items>
                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#addPMA" prefHeight="45.0" prefWidth="140.0" styleClass="createOrderButton" stylesheets="@Login.css" text="Create W/O" />
@@ -216,6 +62,16 @@
                               <Button mnemonicParsing="false" onAction="#refresh" prefHeight="44.0" prefWidth="140.0" styleClass="refresh" text="Refresh" />
                   </items>
                 </ToolBar>
+                        <TableView fx:id="previewTable" layoutX="1.0" layoutY="233.0" prefHeight="206.0" prefWidth="574.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="207.0">
+                           <columns>
+                              <TableColumn fx:id="previewDescription" prefWidth="94.0" text="Description" />
+                              <TableColumn fx:id="previewTechComments" prefWidth="141.0" text="Technician Comments" />
+                              <TableColumn fx:id="previewRepairComments" prefWidth="123.0" text="Repair comments" />
+                              <TableColumn fx:id="previewPriority" minWidth="0.0" prefWidth="69.0" text="Priority" />
+                              <TableColumn fx:id="previewApproval" prefWidth="71.0" text="Approval" />
+                              <TableColumn fx:id="previewCost" prefWidth="75.0" text="Cost" />
+                           </columns>
+                        </TableView>
               </children>
             </AnchorPane>
           </content>
@@ -396,11 +252,15 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Separator layoutY="31.0" orientation="VERTICAL" prefHeight="548.0" prefWidth="5.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="184.0" AnchorPane.topAnchor="31.0" />
     <Button fx:id="signOutButton" layoutX="11.0" layoutY="548.0" mnemonicParsing="false" onAction="#signOut" prefHeight="30.0" prefWidth="168.0" styleClass="logoutButton" text="" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="11.0">
       <stylesheets>
         <URL value="@Login.css" />
       </stylesheets>
     </Button>
+      <Label layoutX="287.0" layoutY="25.0" text="2 Fat Guys Automotive" textFill="WHITE" AnchorPane.leftAnchor="287.0" AnchorPane.rightAnchor="286.0">
+         <font>
+            <Font name="Courier New Bold Italic" size="18.0" />
+         </font>
+      </Label>
   </children>
 </AnchorPane>
