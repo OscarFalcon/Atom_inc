@@ -194,7 +194,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	public void addClient(ActionEvent event){
 		EditClientController.person = null;
-		Stage popup = loadpopup("EditCustomerView.fxml");
+		Stage popup = loadpopup("EditCustomerView.fxml",450,350);
 		popup.setTitle("Add Client");
 		popup.show();
 		
@@ -210,7 +210,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	public void editClient(ActionEvent event){
 		EditClientController.person = current;
-		Stage popup = loadpopup("EditCustomerView.fxml");
+		Stage popup = loadpopup("EditCustomerView.fxml",450,350);
 		popup.setTitle("Edit Client");
 		popup.show();
 		
@@ -223,16 +223,19 @@ public class MainController implements Initializable, ControlledScreen {
 	        e.printStackTrace(); 
 	    }
 	    */
-	    
-	    
-		
 	}
 	
-	private  Stage loadpopup(String filename){
+	public void printList(ActionEvent event){
+		Stage popup = loadpopup("printDialog.fxml",550,250);
+		popup.setTitle("Print Dialog");
+		popup.show();
+	}
+	
+	private  Stage loadpopup(String filename, int height, int width){
 		Stage popup = new Stage();
 		try{
 			Parent root = FXMLLoader.load(getClass().getResource(filename));
-			Scene scene = new Scene(root, 450, 350);
+			Scene scene = new Scene(root, height, width);
 			popup.setScene(scene);
 			popup.initModality(Modality.APPLICATION_MODAL);
 			popup.setResizable(false);
@@ -326,6 +329,7 @@ public class MainController implements Initializable, ControlledScreen {
 		workOrder = workOrderItem.getWorkOrderAsInt();
 		Platform.runLater(new PMAView(workOrder));
 	}
+	
 	/** add work order button **/
 	public void addPMA(){
 		Platform.runLater(new PMAWizard());
