@@ -11,8 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import pma.PMAObject;
 
+import pma.PMAObject;
+import mycms.Type.Type_T;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -185,14 +186,15 @@ public class MySQL {
 
     
 	/**
-	* @param preparedStatementString a valid SQL prepared statement string that represents the query to be performed
+	* @param mysql_string a valid SQL prepared statement string that represents the query to be performed
 	* @param args the arguments that will pair for each '?' in the prepared statement string
 	* @param arg_types the argument types of any '?' in preparedStatmentString in the form of a string array(ie 'Integer' if the first argument is of type Integer)
 	* @param result_array_types a list of the type specifiers that represent each individual type of the returned object array. 
 	* @return an ArrayList of Object[] that represent a result set object 
 	*/
-    public static ArrayList<Object[]> executeQuery(String preparedStatementString, ArrayList<Type> arguments, ArrayList<Integer> result_types){	
-		int i;
+    public static ArrayList<Object[]> executeQuery(String mysql_string, ArrayList<Type<?>> arguments, ArrayList<Type_T> result_types){	
+		int length;
+    	int i;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		final ArrayList<Object[]> list = new ArrayList<Object[]>();
@@ -200,7 +202,7 @@ public class MySQL {
 		errorno = SUCCESS;	/**initially, no errors have occurred **/
 		operationStatus = OPERATION_FAILED; /** initially, the SQL statement has not completed **/
 		
-		if(preparedStatementString == null || arguments == null|| result_types == null){
+		if(mysql_string == null || arguments == null|| result_types == null){
 			errorno = INVALID_ARGUMENTS;
 			return null;
 		}
@@ -209,14 +211,35 @@ public class MySQL {
 			return null; /** connect method will set errorno **/
 		}
 		
-		if((preparedStatement = prepareStatement(preparedStatementString)) == null)/** prepare statement for execution, will set errorno **/
+		if((preparedStatement = prepareStatement(mysql_string)) == null)/** prepare statement for execution, will set errorno **/
 			return null;
 		
 		try{
-			for(i = 0; i < arguments.size(); i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
-				switch( arguments.get(i).getType() ){
+			Object value;
+			length = arguments.size();
+			for(i = 0; i < length; i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
+				value = arguments.get(i).getValue();
+				
+				if(value instanceof Byte)
+					preparedStatement.setByte(i+1,(Byte)value);
+				else if(value instanceof Date )
+					preparedStatement.setDate(i+1, (Date)value);
+				else if(value instanceof Integer)
+					preparedStatement.setInt(i+1, (Integer)value);
+				else if(value instanceof String)
+					preparedStatement.setString(i+1,(String)value);
+				else if(value instanceof PMAObject || value instanceof Object)
+					preparedStatement.setObject(i+1, (Object)value);
+				else{
+					errorno = INVALID_ARGUMENTS;
+					return null;
+				}
+					
+					
+				
+				/**switch( arguments.get(i).getType() ){
 					case Type.BYTE:
-						preparedStatement.setByte(i+1, (Byte) arguments.get(i).getValue() );
+						
 						break;
 					case Type.DATE:
 						preparedStatement.setDate(i+1, (Date) arguments.get(i).getValue());
@@ -234,7 +257,7 @@ public class MySQL {
 					default:
 						errorno = INVALID_ARGUMENTS;
 						return null;
-				}
+				}**/
 			}		
 			
 			if((resultSet = executeQuery(preparedStatement)) == null) /** will set errorno **/
@@ -242,11 +265,48 @@ public class MySQL {
 			
 			operationStatus = OPERATION_SUCCESS; /**at this point the query succeeded **/
 						
-			final int length = result_types.size(); /** at this point, result_array_types cannot equal null **/
+			length = result_types.size(); /** at this point, result_array_types cannot equal null **/
 			while(resultSet.next()){
 				Object[] tmp = new Object[length];
 				for(int j = 0; j < length; j++){
-					switch( result_types.get(j) ){
+					switch(result_types.get(j)){
+						case BYTE:
+							tmp[j] = resultSet.getByte(j+1);
+							break;
+						case DATE:
+							tmp[j] = resultSet.getDate(j+1);
+							break;
+						case INTEGER:
+							tmp[j] = resultSet.getInt(j+1);
+							break;
+						case PMA_OBJECT:
+							ObjectInputStream objectIn = null;
+							byte[] buf = null;
+							Object object = null;	
+							buf = resultSet.getBytes(j+1);
+							if (buf != null){
+						    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
+								object = objectIn.readObject();
+								tmp[j] = object;
+							}
+							break;
+						
+						case OBJECT:
+							tmp[j] = resultSet.getObject(j+1);
+							break;
+						case STRING:
+							tmp[j] = resultSet.getString(j+1);
+							break;
+						
+						
+					}//switch
+							
+							
+					
+					
+					
+					
+					/**switch( result_types.get(j) ){
 						case Type.BYTE:
 							tmp[j] = resultSet.getByte(j+1);
 							break;	
@@ -276,7 +336,7 @@ public class MySQL {
 							break;
 						
 						
-					}//switch
+					}//switch **/
 				}//for loop
 				list.add(tmp);
 			}//while
@@ -306,14 +366,15 @@ public class MySQL {
 		}
 		return list;
 	}
-	public static boolean execute(String preparedStatementString, ArrayList<Type> arguments){
-			int i;
+	public static boolean execute(String mysql_string, ArrayList<Type<?>> arguments){
+		int length;	
+		int i;
 			PreparedStatement preparedStatement = null;
 			
 			errorno = SUCCESS;	/**initially, no errors have occurred **/
 			operationStatus = OPERATION_FAILED; /** initially, the SQL statement has not completed **/
 			
-			if(preparedStatementString == null || arguments == null){
+			if(mysql_string == null || arguments == null){
 				System.out.println("Invalid Arguments");
 				errorno = INVALID_ARGUMENTS;
 				return false;
@@ -322,12 +383,34 @@ public class MySQL {
 			if(!connect()){ /** connect to database  **/
 				return false; /** connect method will set errorno **/
 			}
-			if((preparedStatement = prepareStatement(preparedStatementString)) == null)//prepare statement for execution
+			if((preparedStatement = prepareStatement(mysql_string)) == null)//prepare statement for execution
 				return false;
 			
 			try{
-				for(i = 0; i < arguments.size() ;i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
-					switch( arguments.get(i).getType() ){
+				length = arguments.size();
+				Object value;
+				for(i = 0; i < length; i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
+					value = arguments.get(i).getValue();
+					
+					
+					if(value instanceof Byte)
+						preparedStatement.setByte(i+1,(Byte)value);
+					else if(value instanceof Date )
+						preparedStatement.setDate(i+1, (Date)value);
+					else if(value instanceof Integer)
+						preparedStatement.setInt(i+1, (Integer)value);
+					else if(value instanceof String)
+						preparedStatement.setString(i+1,(String)value);
+					else if(value instanceof PMAObject || value instanceof Object)
+						preparedStatement.setObject(i+1, (Object)value);
+					else{
+						errorno = INVALID_ARGUMENTS;
+						return false;
+					}
+					
+					
+					
+					/**switch( arguments.get(i).getType() ){
 						case Type.INTEGER:
 							preparedStatement.setInt(i+1,(Integer)arguments.get(i).getValue());
 							break;
@@ -344,7 +427,7 @@ public class MySQL {
 						default:
 							errorno = INVALID_ARGUMENTS;
 							return false;
-					}
+					} **/
 				}
 				if(execute(preparedStatement) == false)
 					return false;

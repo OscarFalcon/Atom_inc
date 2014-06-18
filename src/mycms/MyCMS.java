@@ -7,8 +7,10 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import mycms.Type.Type_T;
 import pma.PMAObject;
 import workshop.Person;
+import workshop.PmaPreview;
 import workshop.Vehicle;
 import workshop.WorkOrder;
 
@@ -43,8 +45,8 @@ public static class employee{
 	
 	public static boolean login_employee(String username,String password){  
 		String selectUser;
-		ArrayList<Type> arguments = new ArrayList<Type>();
-		ArrayList<Integer> result_types = new ArrayList<Integer>();
+		ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+		ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 		ArrayList<Object[]> results;
 		
 		
@@ -56,11 +58,15 @@ public static class employee{
 						+ "&& password = AES_ENCRYPT(?,'rd6mNKL0vD1h95p1i') LIMIT 1";
 		
 		
-		arguments.add(new Type(username));
-		arguments.add(new Type(password));
+		arguments.add(new Type<String>(username));
+		arguments.add(new Type<String>(password));
+		result_types.add(Type_T.STRING);
+		result_types.add(Type_T.STRING);
+		result_types.add(Type_T.STRING);
+		
+		/**result_types.add(Type.STRING);
 		result_types.add(Type.STRING);
-		result_types.add(Type.STRING);
-		result_types.add(Type.STRING);
+		result_types.add(Type.STRING);**/
 
 		
 		if( (results = MySQL.executeQuery(selectUser,arguments,result_types)) == null){/** why did exceuteQuery return null? **/
@@ -83,8 +89,11 @@ public static class employee{
 													final String address,final String city,final String state,
 													final String zip,final String phone,final String email){
 					
-			final ArrayList<Type> arguments = new ArrayList<Type>();
-			final ArrayList<Integer> result_types = new ArrayList<Integer>();
+			
+			
+			
+			final ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			final ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			final ArrayList<Object[]> results;
 			final ObservableList<Person> persons = FXCollections.observableArrayList();
 			
@@ -108,11 +117,11 @@ public static class employee{
 			else{											
 				if (b1 == EXACTLY){
 					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "first = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-					arguments.add(new Type(first));
+					arguments.add(new Type<String>(first));
 				}
 				else{
 					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ? ";
-					arguments.add(new Type("%"+first+"%"));
+					arguments.add(new Type<String>("%"+first+"%"));
 				}
 			}
 			
@@ -120,49 +129,50 @@ public static class employee{
 			if (last != null && !last.equals("")){
 				if (b2 == EXACTLY){
 					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& last = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-					arguments.add(new Type(last));
+					arguments.add(new Type<String>(last));
 				}
 				else{
 					SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) LIKE ?" ;
-					arguments.add(new Type("%"+last+"%"));
+					arguments.add(new Type<String>("%"+last+"%"));
 				}	
 			}
 			
 			
 			if(address != null && !address.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& address = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(address));
+				arguments.add(new Type<String>(address));
 			}
 			if (city != null && !city.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& city = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(city));
+				arguments.add(new Type<String>(city));
 			}
 			if (state != null && !state.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& state = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(state));
+				arguments.add(new Type<String>(state));
 			}
 			if (zip != null && !zip.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& zip = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(zip));
+				arguments.add(new Type<String>(zip));
 			}
 			if (phone != null && !phone.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& primaryPhone = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(phone));
+				arguments.add(new Type<String>(phone));
 			}
 			if (email != null && !email.equals("")){
 				SEARCH_CUSTOMER_STRING = SEARCH_CUSTOMER_STRING + "&& email = " + "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) ";
-				arguments.add(new Type(email));
+				arguments.add(new Type<String>(email));
 			}
+	
 			
-			result_types.add(Type.INTEGER);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
+			result_types.add(Type_T.INTEGER);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING); 
 			
 			if( (results = MySQL.executeQuery(SEARCH_CUSTOMER_STRING,arguments,result_types)) == null){
 				//e.setMySQLError(MySQL.errorno); 
@@ -196,7 +206,7 @@ public static class employee{
 		 */
 		
 		public static boolean addCustomer(String first, String last,String address, String city, String state, String zip,String phone, String email){
-			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
 			final String ADD_CUSTOMER;
 			
 			ADD_CUSTOMER  = "INSERT INTO info(first,last,address,city,state,zip,email,primaryPhone) VALUES "
@@ -210,14 +220,14 @@ public static class employee{
 							+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)))";
 			
 			
-			arguments.add(new Type(first));
-			arguments.add(new Type(last));
-			arguments.add(new Type(address));
-			arguments.add(new Type(city));
-			arguments.add(new Type(state));
-			arguments.add(new Type(zip));
-			arguments.add(new Type(email));
-			arguments.add(new Type(phone));
+			arguments.add(new Type<String>(first));
+			arguments.add(new Type<String>(last));
+			arguments.add(new Type<String>(address));
+			arguments.add(new Type<String>(city));
+			arguments.add(new Type<String>(state));
+			arguments.add(new Type<String>(zip));
+			arguments.add(new Type<String>(email));
+			arguments.add(new Type<String>(phone));
 			
 			
 			return MySQL.execute(ADD_CUSTOMER, arguments);
@@ -225,7 +235,7 @@ public static class employee{
 		}
 		
 		public static boolean updateCustomer(int id,String first, String last,String address, String city, String state, String zip,String phone, String email, Error e){
-			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
 			final String UPDATE_CUSTOMER;
 			
 			UPDATE_CUSTOMER = 	  "UPDATE info SET "
@@ -239,15 +249,15 @@ public static class employee{
 								+ "primaryPhone = AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
 								+ "WHERE id = ?";
 			
-			arguments.add(new Type(first));
-			arguments.add(new Type(last));
-			arguments.add(new Type(address));
-			arguments.add(new Type(city));
-			arguments.add(new Type(state));
-			arguments.add(new Type(zip));
-			arguments.add(new Type(email));
-			arguments.add(new Type(phone));
-			arguments.add(new Type(id));
+			arguments.add(new Type<String>(first));
+			arguments.add(new Type<String>(last));
+			arguments.add(new Type<String>(address));
+			arguments.add(new Type<String>(city));
+			arguments.add(new Type<String>(state));
+			arguments.add(new Type<String>(zip));
+			arguments.add(new Type<String>(email));
+			arguments.add(new Type<String>(phone));
+			arguments.add(new Type<Integer>(id));
 
 			return MySQL.execute(UPDATE_CUSTOMER, arguments);
 		}
@@ -260,16 +270,16 @@ public static class employee{
 		
 		
 		public static PMAObject getPMA(int workOrder){
-			final ArrayList<Type> arguments = new ArrayList<Type>();
-			final ArrayList<Integer> result_types = new ArrayList<Integer>();
+			final ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			final ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			final ArrayList<Object[]> results;
 			final String statement = "SELECT date,object FROM PMA WHERE wo = ?";
 
 			
-			arguments.add(new Type(workOrder));
+			arguments.add(new Type<Integer>(workOrder));
 			
-			result_types.add(Type.DATE);
-			result_types.add(Type.PMA_OBJECT);
+			result_types.add(Type_T.DATE);
+			result_types.add(Type_T.PMA_OBJECT);
 			
 			if( (results = MySQL.executeQuery(statement,arguments, result_types)) == null)
 				return null;
@@ -284,17 +294,17 @@ public static class employee{
 		}
 		
 		public static boolean updatePMA(int workOrder,PMAObject pma){
-			final ArrayList<Type> arguments = new ArrayList<Type>();
+			final ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
 			final String UPDATE_PMA = "UPDATE PMA SET object = ? WHERE wo = ?";
 
-			arguments.add(new Type(pma));
-			arguments.add(new Type(workOrder));
+			arguments.add(new Type<PMAObject>(pma));
+			arguments.add(new Type<Integer>(workOrder));
 			return MySQL.execute(UPDATE_PMA, arguments);
 		}
 		
 		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns,BigDecimal markupRateParts,BigDecimal markupRateLabor){
-			ArrayList<Type> arguments = new ArrayList<Type>();
-			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			ArrayList<Object[]> results;
 			
 			String SEARCH_BY_VIN =    "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
@@ -316,16 +326,16 @@ public static class employee{
 									+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 									+ "?,?,?)";
 			
-			arguments.add(new Type(vehicleVIN));		/** SEARCH FOR VEHICLE INFORMATION IN DATABASE **/
-			arguments.add(new Type(custID));
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.INTEGER);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
+			arguments.add(new Type<String>(vehicleVIN));		/** SEARCH FOR VEHICLE INFORMATION IN DATABASE **/
+			arguments.add(new Type<Integer>(custID));
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.INTEGER);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
 			
 			if((results = MySQL.executeQuery(SEARCH_BY_VIN, arguments, result_types)) == null)
 				return false;
@@ -348,9 +358,9 @@ public static class employee{
 			result_types.clear();
 			results.clear();
 			
-			arguments.add(new Type(custID));			/** SEARCH FOR CUSTOMER INFORMATION **/
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
+			arguments.add(new Type<Integer>(custID));			/** SEARCH FOR CUSTOMER INFORMATION **/
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
 			
 			if((results = MySQL.executeQuery(SEARCH_CUST, arguments, result_types)) == null)
 				return false;
@@ -362,10 +372,10 @@ public static class employee{
 			arguments.clear();
 			
 			final byte b = 1;							/** INSERT PMA INTO DATABASE **/
-			arguments.add(new Type(vehicleVIN));
-			arguments.add(new Type(custID));
-			arguments.add(new Type(new Byte(b)));			
-			arguments.add(new Type(pma));
+			arguments.add(new Type<String>(vehicleVIN));
+			arguments.add(new Type<Integer>(custID));
+			arguments.add(new Type<Byte>(new Byte(b)));			
+			arguments.add(new Type<PMAObject>(pma));
 			return MySQL.execute(CREATE_PMA, arguments);
 		}
 
@@ -384,18 +394,18 @@ public static class employee{
 										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
 										+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),?)";
 			
-			ArrayList<Type> arguments = new ArrayList<Type>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
 			
-			arguments.add(new Type(vin));
-			arguments.add(new Type(licnum));
-			arguments.add(new Type(tags));
-			arguments.add(new Type(year));
-			arguments.add(new Type(make));
-			arguments.add(new Type(model));
-			arguments.add(new Type(engine));
-			arguments.add(new Type(trans));
-			arguments.add(new Type(miles));
-			arguments.add(new Type(custID));			
+			arguments.add(new Type<String>(vin));
+			arguments.add(new Type<String>(licnum));
+			arguments.add(new Type<String>(tags));
+			arguments.add(new Type<Integer>(year));
+			arguments.add(new Type<String>(make));
+			arguments.add(new Type<String>(model));
+			arguments.add(new Type<String>(engine));
+			arguments.add(new Type<String>(trans));
+			arguments.add(new Type<String>(miles));
+			arguments.add(new Type<Integer>(custID));			
 				
 			return MySQL.execute(ADD_VEHICLE, arguments);
 		}
@@ -419,20 +429,20 @@ public static class employee{
 			if(custID < 0)
 				return null;
 			
-			ArrayList<Type> arguments = new ArrayList<Type>();
-			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			ArrayList<Object[]> results;
 			
-			arguments.add(new Type(custID));
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.INTEGER);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
-			result_types.add(Type.STRING);
+			arguments.add(new Type<Integer>(custID));
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.INTEGER);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
+			result_types.add(Type_T.STRING);
 			
 			if( (results = MySQL.executeQuery(SELECT_VEHICLE, arguments, result_types)) == null)
 					return null;
@@ -477,30 +487,32 @@ public static class employee{
 										+ "FROM vehicle INNER JOIN PMA ON vehicle.vin = PMA.vin INNER JOIN info ON PMA.id = info.id";						
 			
 			
-			ArrayList<Type> arguments = new ArrayList<Type>();
-			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			ArrayList<Object[]> results;
 
-			result_types.add(Type.INTEGER);	//wo
-			result_types.add(Type.DATE);	//date
-			result_types.add(Type.STRING);	//vin
-			result_types.add(Type.STRING);	//lic
-			result_types.add(Type.STRING);	//tags
-			result_types.add(Type.INTEGER);	//year
-			result_types.add(Type.STRING);	//make
-			result_types.add(Type.STRING);	//model
-			result_types.add(Type.STRING);	//engine
-			result_types.add(Type.STRING);	//trans
-			result_types.add(Type.STRING);	//miles
-			result_types.add(Type.INTEGER); //id 
-			result_types.add(Type.STRING);	//first
-			result_types.add(Type.STRING);	//last
-			result_types.add(Type.STRING);	//address
-			result_types.add(Type.STRING);  //city
-			result_types.add(Type.STRING); 	//state
-			result_types.add(Type.STRING); 	//zip
-			result_types.add(Type.STRING);	//phone
-			result_types.add(Type.STRING);  //email
+			
+			
+			result_types.add(Type_T.INTEGER);	//wo
+			result_types.add(Type_T.DATE);		//date
+			result_types.add(Type_T.STRING);	//vin
+			result_types.add(Type_T.STRING);	//lic
+			result_types.add(Type_T.STRING);	//tags
+			result_types.add(Type_T.INTEGER);	//year
+			result_types.add(Type_T.STRING);	//make
+			result_types.add(Type_T.STRING);	//model
+			result_types.add(Type_T.STRING);	//engine
+			result_types.add(Type_T.STRING);	//trans
+			result_types.add(Type_T.STRING);	//miles
+			result_types.add(Type_T.INTEGER); 	//id 
+			result_types.add(Type_T.STRING);	//first
+			result_types.add(Type_T.STRING);	//last
+			result_types.add(Type_T.STRING);	//address
+			result_types.add(Type_T.STRING); 	 //city
+			result_types.add(Type_T.STRING); 	//state
+			result_types.add(Type_T.STRING); 	//zip
+			result_types.add(Type_T.STRING);	//phone
+			result_types.add(Type_T.STRING);  	//email
 			
 			
 			if((results = MySQL.executeQuery(GET_WORK_ORDERS, arguments, result_types)) == null)
@@ -508,6 +520,7 @@ public static class employee{
 			
 			int size = results.size();
 			Person person;
+			PmaPreview pmaPreview;
 			WorkOrder workOrder;
 			ObservableList<WorkOrder> list = FXCollections.observableArrayList();
 			for(int i = 0; i < size; i++){
@@ -516,6 +529,23 @@ public static class employee{
 									,(String) results.get(i)[15],(String) results.get(i)[16],(String) results.get(i)[17],(String) results.get(i)[18],
 									(String) results.get(i)[19]);
 								
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				workOrder = new WorkOrder(((Integer)results.get(i)[0]).toString(),(Date)results.get(i)[1],(String)results.get(i)[2],(String) results.get(i)[3]
 											,(String)results.get(i)[4],((Integer)results.get(i)[5]).toString(),(String) results.get(i)[6],(String)results.get(i)[7]
 											,(String) results.get(i)[8],(String) results.get(i)[9],(String) results.get(i)[10],person); 
@@ -526,8 +556,8 @@ public static class employee{
 		
 		
 		public ObservableList<WorkOrder> searchWorkOrder(){
-			ArrayList<Type> arguments = new ArrayList<Type>();
-			ArrayList<Integer> result_types = new ArrayList<Integer>();
+			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
+			ArrayList<Type_T> result_types = new ArrayList<Type_T>();
 			ArrayList<Object[]> results;
 			String SEARCH_WORK_WORDERS = "SELECT PMA.wo, "
 										+ "PMA.date,"
