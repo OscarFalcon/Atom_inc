@@ -2,6 +2,7 @@ package application;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -29,6 +30,7 @@ import javafx.stage.StageStyle;
 import mycms.MyCMS;
 import pma.PMAView;
 import pmawizard.PMAWizard;
+import workshop.PMARow;
 import workshop.Person;
 import workshop.WorkOrder;
 
@@ -48,14 +50,11 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	@FXML TextField firstAddField, lastAddField, emailAddField;
 	
-	@FXML
-	TableView previewTable;
-	@FXML TableColumn previewDescription, previewTechComments, previewRepairComments, previewPriority, previewApproval, previewCost;
-	
-	
 	
 	/** GENERAL **/
 	private Button signOutButton;
+	
+	
 	
 	
 	/** 	IN SERVICE TAB 		**/
@@ -64,13 +63,28 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML private TableColumn<WorkOrder,String> serviceOrderNum, serviceDateIn, serviceName, serviceVehicle,serviceStatus, 
 												serviceLic, serviceTotal;
 	
+	@FXML private TableView<PMARow> previewTable;
+	
+	@FXML TableColumn<PMARow, String> previewDescription, previewTechComments, previewRepairComments, previewPriority, previewParts, previewLabor;
+	
+	
+	private final ObservableList<WorkOrder> work_oder_list = FXCollections.observableArrayList();
+	
+	private final ArrayList<ObservableList<PMARow>> pma_preview_list = new ArrayList<ObservableList<PMARow>>();
+	
+	
+	
+	
+	
+	
+	
 	/**************REMOVED ***************************/
 	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,emailLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
 	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
 						engineLabel, transmissionLabel;
 	/***************************************************/
-	private final ObservableList<WorkOrder> workOrderList = FXCollections.observableArrayList();
+	
 	
 	
 	
@@ -117,16 +131,24 @@ public class MainController implements Initializable, ControlledScreen {
 		customerEmail.prefWidthProperty().bind(customerTable.widthProperty().multiply(0.20));
 
 		
+		/** INIT PREVIEW PMA TABLE **/
+		previewDescription.setCellValueFactory(new PropertyValueFactory<PMARow,String>("description"));
+		previewTechComments.setCellValueFactory(new PropertyValueFactory<PMARow,String>("techComments"));
+		previewRepairComments.setCellValueFactory(new PropertyValueFactory<PMARow,String>("repairComments"));
+		previewPriority.setCellValueFactory(new PropertyValueFactory<PMARow,String>("priority"));
+		previewParts.setCellValueFactory(new PropertyValueFactory<PMARow,String>("parts"));
+		previewLabor.setCellValueFactory(new PropertyValueFactory<PMARow,String>("labor"));
+		
+		
 		
 		/** INIT IN SERVICE TABLE VIEW **/
 		serviceOrderNum.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("workOrder"));
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
-		serviceTable.setItems(workOrderList);
+		serviceTable.setItems(work_oder_list);
 		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
-			
 			public void changed(
 					ObservableValue<? extends WorkOrder> observable,WorkOrder oldValue, WorkOrder newValue) {
 					
@@ -161,6 +183,11 @@ public class MainController implements Initializable, ControlledScreen {
 					engineLabel.setText(newValue.getEngine());
 					transmissionLabel.setText(newValue.getTransmission());
 					
+					
+					
+					//pma_preview_list = pma_preview_list.get(serviceTable.getSelectionModel().getSelectedIndex());
+					
+					
 			}		
 		});
 
@@ -185,8 +212,8 @@ public class MainController implements Initializable, ControlledScreen {
 		previewTechComments.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.25));
 		previewRepairComments.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.25));
 		previewPriority.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
-		previewApproval.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
-		previewCost.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
+		previewParts.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
+		previewLabor.prefWidthProperty().bind(previewTable.widthProperty().multiply(0.10));
 	
         
 	}
@@ -273,13 +300,31 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	
+/** 			IN SERVICE TAB CONTROLLER SECTION 				**/
 	
+	/** view work order button **/
+	public void viewWorkOrder(){
+		int workOrder;
+		WorkOrder workOrderItem;
+		
+		workOrderItem = serviceTable.getSelectionModel().getSelectedItem();
+		
+		if(workOrderItem == null)
+			return;
+		
+		workOrder = workOrderItem.getWorkOrderAsInt();
+		Platform.runLater(new PMAView(workOrder));
+	}
 	
+	/** add work order button **/
+	public void addPMA(){
+		Platform.runLater(new PMAWizard());
+	}
 	
-	
-	
-	
-	
+	/** refresh button **/
+	public void refresh(){
+		MyCMS.workorder.getWorksOrders(work_oder_list,pma_preview_list);
+	}
 	
 	
 	/** 		CUSTOMERS TAB CONTROLLER SECTION 			**/
@@ -314,32 +359,10 @@ public class MainController implements Initializable, ControlledScreen {
 		customerTable.setItems(persons);
 	}
 	
-	/** 			IN SERVICE TAB CONTROLLER SECTION 				**/
 	
 	
-	/** view work order button **/
-	public void viewWorkOrder(){
-		int workOrder;
-		WorkOrder workOrderItem;
-		
-		workOrderItem = serviceTable.getSelectionModel().getSelectedItem();
-		
-		if(workOrderItem == null)
-			return;
-		
-		workOrder = workOrderItem.getWorkOrderAsInt();
-		Platform.runLater(new PMAView(workOrder));
-	}
 	
-	/** add work order button **/
-	public void addPMA(){
-		Platform.runLater(new PMAWizard());
-	}
 	
-	/** refresh button **/
-	public void refresh(){
-		workOrderList.setAll(MyCMS.workorder.getWorksOrders());
-	}
 	
 	
 	

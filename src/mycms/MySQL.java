@@ -11,11 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import pma.PMAObject;
-import mycms.Type.Type_T;
-
 import org.apache.commons.dbcp2.BasicDataSource;
+import pma.PMAObject;
+import mycms.Type.Class;
+
 
 
 public class MySQL {
@@ -185,6 +184,12 @@ public class MySQL {
     }
 
     
+    
+    public static ArrayList<Object[]> executeQuery(String mysql_string,ArrayList<Type<?>> arguments, Class[] result_types){
+    	return executeQuery(mysql_string,arguments.toArray(new Type<?>[arguments.size()]),result_types);
+    }
+    
+    
 	/**
 	* @param mysql_string a valid SQL prepared statement string that represents the query to be performed
 	* @param args the arguments that will pair for each '?' in the prepared statement string
@@ -192,7 +197,7 @@ public class MySQL {
 	* @param result_array_types a list of the type specifiers that represent each individual type of the returned object array. 
 	* @return an ArrayList of Object[] that represent a result set object 
 	*/
-    public static ArrayList<Object[]> executeQuery(String mysql_string, ArrayList<Type<?>> arguments, ArrayList<Type_T> result_types){	
+    public static ArrayList<Object[]> executeQuery(String mysql_string, Type<?>[] arguments, Class[] result_types){	
 		int length;
     	int i;
 		PreparedStatement preparedStatement = null;
@@ -216,9 +221,9 @@ public class MySQL {
 		
 		try{
 			Object value;
-			length = arguments.size();
+			length = arguments.length;
 			for(i = 0; i < length; i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
-				value = arguments.get(i).getValue();
+				value = arguments[i].getValue();
 				
 				if(value instanceof Byte)
 					preparedStatement.setByte(i+1,(Byte)value);
@@ -234,30 +239,6 @@ public class MySQL {
 					errorno = INVALID_ARGUMENTS;
 					return null;
 				}
-					
-					
-				
-				/**switch( arguments.get(i).getType() ){
-					case Type.BYTE:
-						
-						break;
-					case Type.DATE:
-						preparedStatement.setDate(i+1, (Date) arguments.get(i).getValue());
-						break;
-					case Type.INTEGER:
-						preparedStatement.setInt(i+1, (Integer) arguments.get(i).getValue() );
-						break;
-					case Type.PMA_OBJECT:
-					case Type.OBJECT:
-						preparedStatement.setObject(i+1, (Object) arguments.get(i).getValue() );
-						break;
-					case Type.STRING:
-						preparedStatement.setString(i+1,(String) arguments.get(i).getValue() );
-						break;
-					default:
-						errorno = INVALID_ARGUMENTS;
-						return null;
-				}**/
 			}		
 			
 			if((resultSet = executeQuery(preparedStatement)) == null) /** will set errorno **/
@@ -265,78 +246,39 @@ public class MySQL {
 			
 			operationStatus = OPERATION_SUCCESS; /**at this point the query succeeded **/
 						
-			length = result_types.size(); /** at this point, result_array_types cannot equal null **/
+			length = result_types.length; /** at this point, result_array_types cannot equal null **/
 			while(resultSet.next()){
 				Object[] tmp = new Object[length];
-				for(int j = 0; j < length; j++){
-					switch(result_types.get(j)){
+				for(i = 0; i < length; i++){
+					switch(result_types[i]){
 						case BYTE:
-							tmp[j] = resultSet.getByte(j+1);
+							tmp[i] = resultSet.getByte(i+1);
 							break;
 						case DATE:
-							tmp[j] = resultSet.getDate(j+1);
+							tmp[i] = resultSet.getDate(i+1);
 							break;
 						case INTEGER:
-							tmp[j] = resultSet.getInt(j+1);
+							tmp[i] = resultSet.getInt(i+1);
 							break;
 						case PMA_OBJECT:
 							ObjectInputStream objectIn = null;
 							byte[] buf = null;
 							Object object = null;	
-							buf = resultSet.getBytes(j+1);
+							buf = resultSet.getBytes(i+1);
 							if (buf != null){
 						    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
 								object = objectIn.readObject();
-								tmp[j] = object;
+								tmp[i] = object;
 							}
 							break;
-						
 						case OBJECT:
-							tmp[j] = resultSet.getObject(j+1);
+							tmp[i] = resultSet.getObject(i+1);
 							break;
 						case STRING:
-							tmp[j] = resultSet.getString(j+1);
+							tmp[i] = resultSet.getString(i+1);
 							break;
-						
-						
 					}//switch
 							
-							
-					
-					
-					
-					
-					/**switch( result_types.get(j) ){
-						case Type.BYTE:
-							tmp[j] = resultSet.getByte(j+1);
-							break;	
-						case Type.DATE:
-							tmp[j] = resultSet.getDate(j+1);
-							break;
-						case Type.INTEGER:
-							tmp[j] = resultSet.getInt(j+1);
-							break;
-						case Type.PMA_OBJECT:
-							ObjectInputStream objectIn = null;
-							byte[] buf = null;
-							Object object = null;	
-							buf = resultSet.getBytes(j+1);
-							if (buf != null){
-						    	objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
-								object = objectIn.readObject();
-								tmp[j] = object;
-							}
-							break;
-						
-						case Type.OBJECT:
-							tmp[j] = resultSet.getObject(j+1);
-							break;
-						case Type.STRING:
-							tmp[j] = resultSet.getString(j+1);
-							break;
-						
-						
-					}//switch **/
 				}//for loop
 				list.add(tmp);
 			}//while
@@ -366,7 +308,14 @@ public class MySQL {
 		}
 		return list;
 	}
-	public static boolean execute(String mysql_string, ArrayList<Type<?>> arguments){
+    
+    public static boolean execute(String mysql_string,ArrayList<Type<?>> arguments){
+    	return execute(mysql_string,arguments.toArray(new Type<?>[arguments.size()]));
+    }
+    
+    
+    
+	public static boolean execute(String mysql_string, Type<?>[] arguments){
 		int length;	
 		int i;
 			PreparedStatement preparedStatement = null;
@@ -387,10 +336,10 @@ public class MySQL {
 				return false;
 			
 			try{
-				length = arguments.size();
+				length = arguments.length;
 				Object value;
 				for(i = 0; i < length; i++){	/** loop through args and call the appropriate set method of preparedStatement depending on arg_types **/
-					value = arguments.get(i).getValue();
+					value = arguments[i].getValue();
 					
 					
 					if(value instanceof Byte)
@@ -407,28 +356,8 @@ public class MySQL {
 						errorno = INVALID_ARGUMENTS;
 						return false;
 					}
-					
-					
-					
-					/**switch( arguments.get(i).getType() ){
-						case Type.INTEGER:
-							preparedStatement.setInt(i+1,(Integer)arguments.get(i).getValue());
-							break;
-						case Type.OBJECT:
-						case Type.PMA_OBJECT:
-							preparedStatement.setObject(i+1,arguments.get(i).getValue());
-							break;
-						case Type.STRING:
-							preparedStatement.setString(i+1,(String)arguments.get(i).getValue());
-							break;
-						case Type.BYTE:
-							preparedStatement.setByte(i+1, (Byte)arguments.get(i).getValue());
-							break;
-						default:
-							errorno = INVALID_ARGUMENTS;
-							return false;
-					} **/
 				}
+				
 				if(execute(preparedStatement) == false)
 					return false;
 				

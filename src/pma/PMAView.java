@@ -40,7 +40,7 @@ public class PMAView extends Application implements Runnable{
         stage.setScene(scene);
         stage.show();
         PMAController controller =  fxmlLoader.getController();
-        controller.initializePMA(workOrderNumber,this);
+        controller.initializePMA(workOrderNumber);
 	}
 	
 	@Override
