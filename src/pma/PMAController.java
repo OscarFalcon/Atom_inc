@@ -73,20 +73,22 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import mycms.*;
 import pma.PMAObject;
+import pma.PMAObject.Status;
+import pma.PMAObject.Priority;
 
 
 public class PMAController implements Initializable{
 	
 	private static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
 	
+	private static final MathContext math_context = new MathContext(50,RoundingMode.HALF_UP); //  Rounding mode for big decimal calculations
+
 	private int WORK_ORDER_NUMBER;				//the unique work order, is SET in initializePMA() method
 	
-	final MathContext math_context = new MathContext(50,RoundingMode.HALF_UP); //  Rounding mode for big decimal calculations
-	
-	
-	
+
 	/** TITLE FIELDS **/
 	@FXML private Label CUST, DATE, TAGS, YEAR, MAKE, MODEL, WO, LICNUM, VIN, ENG, TRANS, MILES;
 	
@@ -187,18 +189,10 @@ public class PMAController implements Initializable{
 	
 	private final MenuItem[] menuItemsInformation = new MenuItem[ROW_COUNT];
 	
-	
-	
-	
 	private PMAObject PMA; 		/** the PMA object that will be used throughout the program **/
 		
+
 	
-	public  static final int NO_STATUS = 0;			/** lock all fields, except for tech comments: lock menu items **/
-	private static final int OK_SELECTED = 1;		/** lock all fields, including tech comments : lock menu items **/
-	private static final int NOT_OK_SELECTED = 2;	/** unlock all fields : unlock menu items **/
-	private static final int APPROVED = 3;			/** lock all fields, including tech comments : unlock menu items **/
-	private static final int NOT_APPROVED = 4;		/** lock all fields, including tech comments : unlock menu items **/
-	private static final int INFORMATION_ONLY = 5;	/** lock all fields, including tech comments : unlock menu items **/
 	
 	/** 
 	 *  ROW_STATUS[i][0] can be either NO_STATUS, OK_SELECTED, or NOT_OK_SELECTED
@@ -207,7 +201,7 @@ public class PMAController implements Initializable{
 	 *  you the approval status of the row 
 	 *  
 	 */
-	private static int[][] ROW_STATUS = new int[ROW_COUNT][2];	/** status of each row **/
+	private static Status[][] ROW_STATUS = new Status[ROW_COUNT][2];	/** status of each row **/
 	
 	
 	/**
@@ -225,18 +219,419 @@ public class PMAController implements Initializable{
 	private static final int GRAND_TOTAL = 8;
 	
 	
+	/*****************************************************************************************************************/
+	/**				 These are the string constants that are loaded inside the comboxes of the PMA **/
 	
 	
+	public static final String[] priority = new String[]{ "", "HIGH", "MED", "LOW" };
+
+	public static final String[] tireTechComments = { "", "TIRE IS WORN OUT", "TIRE IS FLAT",
+			"TIRE HAS HOLE IN SIDE WALL", "TIRE HAS IRREGULAR WEAR",
+			"TIRE HAS ALIGNMENT WEAR", "1/32 TREAD", "2/32 TREAD",
+			"3/32 TREAD", "4/32 TREAD", "5/32 TREAD", "6/32 TREAD",
+			"7/32 TREAD", "8/32 TREAD", "9/32 TREAD", "10/32 TREAD",
+			"11/32 TREAD", "12/32 TREAD", "13/32 TREAD", "14/32 TREAD",
+			"15/32 TREAD" };
+	
+	public static final String[] tireRecommendedComments = { "", "REPLACE TIRE", "REPAIR TIRE","ROTATE TIRE" };
+	
+	public static 	final String[] WWTechComments = { "", "WINDSHIELD IS CRACKED",
+			"WINDSHIELD HAS CHIP IN IT", "WINDSHIELD IS SCRATCHED",
+			"DRIVERS SIDE FRONT WINDOW NOT GOING UP",
+			"PASSENGER SIDE FRONT WINDOW NOT GOING UP",
+			"DRIVERS SIDE REAR WINDOW WILL NOT GO UP",
+			"PASSENGER SIDE REAR WINDOW NOT GOING UP", };
+	
+	public static final String[] WWRecommendedComments = { "", "REPLACE WINDSHIELD",
+			"INFORMATION ONLY", "DO DIAGNOSTIC ON WINDOW" };
+
+	
+	public static final String[] locksTechComments = { "",
+			"DRIVERS SIDE FRONT LOCK NOT WORKING",
+			"PASSENGER SIDE FRONT LOCK NOT WORKING",
+			"DRIVERS SIDE REAR LOCK NOT WORKING",
+			"PASSENGER SIDE REAR LOCK NOT WORKING",
+			"POWER LOCKS NOT WORKING" };
+	
+	public static final String[] locksRecommendedComments = { "", "DO DIAGNOSTICS ON LOCKS" };
 	
 	
+	public static final String[] ACHTechComments = { "", "NEEDS DIAGNOSTIC ON A/C SYSTEM",
+			"LOW ON FREON", "HAS LEAK IN A/C SYSTEM",
+			"NOT COOLING VERY WELL", "A/C SWITCH IS BROKEN" };
 	
+	public static final String[] ACHRecommendedComments = { "", "DO A/C SERVICE/DIAGNOSTIC" };
 	
+	public static final String[] heaterTechComments = { "", "NEEDS DIAGNOSTIC ON HEATER",
+			"LOW ON COOLANT", "NEEDS HEATER CONTROL VALVE",
+			"HEATER CORE LEAKING" };
+	public static final String[] heaterRecommendedComments = { "",
+			"DO DIAGNOSTIC ON HEATER SYSTEM", "DO COOLANT PRESSURE TEST",
+			"REPLACE HEATER CONTROL VALVE" };
 	
+	public static final String[] wiperTechComments = { "", "WIPERS NOT WORKING",
+			"WIPERS STREAKING", "SQUIRTERS NOT WORKING" };
 	
+	public static final String[] wiperRecommendedComments = { "",
+			"DO DIAGNOSTIC ON WIPER SYSTEM", "REPLACE WIPERS",
+			"DO DIAGNOSTIC ON SQUIRTERS" };
 	
+	public static final String[] hornTechComments = { "", "", "" };
 	
+	public static final String[] hornRecommendedComments = { "", "DO DIAGNOSTIC ON HORN" };
 	
+	public static final String[] HLTechComments = { "", "DRIVER SIDE HIGH BEAM IS OUT",
+			"DRIVER SIDE LOW BEAM IS OUT",
+			"PASSENGER SIDE HIGH BEAM IS OUT",
+			"PASSENGER SIDE LOW BEAM IS OUT",
+			"DRIVER SIDE HEALIGHT HAS CRACK IN IT",
+			"PASSENGER SIDE HEADLIGHT HAS CRACK IN IT",
+			"HEAD LIGHTS DO NOT WORK" };
 	
+	public static final String[] HLRecommendedComments = { "", "REPLACE LIGHT(S)",
+			"DO DIAGNOSTICS ON HEAD LIGHTS" };
+	
+	public static final String[] PTLTechComments = { "", "DRIVER SIDE REAR TAIL LIGHT IS OUT",
+			"PASSENGER SIDE REAR TAIL LIGHT IS OUT",
+			"PASSENGER SIDE TAIL LIGHT IS CRACKED",
+			"DRIVER SIDE TAIL LIGHT IS CRACKED",
+			"PARK/TAIL LAMP DO NOT WORK", "LIC PLATE LIGHT IS OUT" };
+	
+	public static final String[] PTLRecommendedComments = { "", "REPLACE LIGHT(S)",
+			"DO DIAGNOSTIC ON PARK/TAIL LAMP" };
+	
+	public static final String[] brakeTechComments = { "", "DRIVER SIDE BRAKE LIGHT IS OUT",
+			"PASSENGER SIDE BRAKE LIGHT IS OUT",
+			"PASSENGER SIDE BRAKE LIGHT IS CRACKED",
+			"DRIVER SIDE BRAKE LIGHT IS CRACKED",
+			"BRAKE LIGHTS DO NOT WORK" };
+	public static final String[] brakeRecommendedComments = { "", "REPLACE LIGHT(S)",
+			"DO DIAGNOSTICS ON BRAKE LIGHTS" };
+	
+	public static final String[] DSTechComments = { "", "PASSENGER SIDE FENDER IS DENTED",
+			"DRIVER SIDE FENDER IS DENTED",
+			"DRIVER SIDE FRONT DOOR IS DENTED",
+			"DRIVER SIDE REAR DOOR IS DENTED",
+			"PASSENGER FRONT DOOR IS DENTED",
+			"PASSENGER SIDE REAR DOOR IS DENTED",
+			"DRIVER SIDE REAR QUARTER IS DENTED",
+			"PASSENGER SIDE REAR QUARTER IS DENTED", "TRUNK LID IS DENTED",
+			"HOOD IS DENTED", "TAILGATE IS DENTED", "DENTS/SCRATCHES" };
+	
+	public static final String[] DSRecommendedComments = { "", "DO ESTIMATE ON BODYWORK",
+			"INFORMATION ONLY" };
+	
+	public static final String[] engineDiagTechComments = { "", "CHECK ENGINE LIGHT IS ON",
+			"VEHICLE RUNS ROUGH", "NEED TO DO DIAGNOSTICS" };
+	
+	public static final String[] engineDiagRecommendedComments = { "", "DO DIAGNOSTICS",
+			"INFORMATION ONLY" };
+	
+	public static final String[] MMTechComments = { "", "DRIVER SIDE MOTOR MOUNT IS BROKEN",
+			"PASSENGER SIDE MOTOR MOUNT IS BROKEN",
+			"BOTH MOTOR MOUNTS ARE BROKEN", "MOTOR MOUNTS ARE WEAK",
+			"NEED TO CHECK MOTOR MOUNTS" };
+	
+	public static final String[] MMRecommendedComments = { "",
+			"REPLACE DRIVER SIDE MOTOR MOUNT",
+			"REPLACE PASSENGER SIDE MOTOR MOUNT",
+			"REPLACE BOTH MOTOR MOUNTS" };
+	
+	public static final String[] BCBTechComments = { "", "BATTERY TERMINALS DIRTY",
+			"SEAL BATTERY TERMINALS", "BATTERY TERMINALS CORRODED",
+			"BATTERY CABLES BROKEN", "BATTERY CABLES CORRODED",
+			"NEEDS BATTERY" };
+	
+	public static final String[] BCBRecommendedComments = { "",
+			"CLEAN AND SEAL BATTERY TERMINALS", "REPLACE(1) BATTERY END",
+			"REPLACE(2) BATTERY ENDS", "REPLACE POSITIVE BATTERY CABLE",
+			"REPLACE NEGATIVE BATTERY CABLE",
+			"REPLACE BOTH BATTERY CABLES", "REPLACE BATTERY" };
+
+	public static final String[] EOTechComments = { "", "ENGINE OIL IS LOW",
+			"ENGINE OIL IS DIRTY", "ENGINE OIL IS LOW AND DIRTY",
+			"ENGINE HAS OIL LEAK" };
+	
+	public static final String[] EORecommendedComments = { "", "DO OIL CHANGE", "ADD OIL",
+			"DO DYE TEST TO CHECK FOR OIL LEAK" };
+
+	public static final String[] TFTechComments = { "", "TRANSMISSION FLUID IS LOW",
+			"TRANSMISSION FLUID IS DIRTY",
+			"TRANSMISSION FLUID IS LOW AND DIRTY",
+			"TRANSMISSION HAS OIL LEAK" };
+	
+	public static final String[] TFRecommendedComments = { "", "DO TRANSMISSION SERVICE",
+			"ADD TRANSMISSION FLUID", "DO DYE TEST TO CHECK FOR FLUID LEAK" };
+
+	public static final String[] WFTechComments = { "", "WASHER FLUID IS LOW",
+			"SQUIRTERS NOT WORKING", "WASHER FLUID BOTTLE IS CRACKED" };
+
+	public static final String[] WFRecommendedComments = { "", "ADD WASHER FLUID",
+			"DO DIAGNOSTICS ON SQUIRTERS",
+			"REPLACE WINDSHIELD WASHER BOTTLE" };
+	
+	public static final String[] BFTechComments = { "", "BRAKE FLUID IS LOW",
+			"BRAKE FLUID IS DIRTY", "BRAKE FLUID IS LOW AND DIRTY" };
+	
+	public static final String[] BFRecommendedComments = { "", "DO BRAKE FLUSH",
+			"ADD BRAKE FLUID" };
+	
+	public static final String[] PSFTechComments = { "", "POWER STEERING FLUID IS LOW",
+			"POWER STEERING FLUID IS DIRTY",
+			"POWER STEERING FLUID IS LOW AND DIRTY" };
+	
+	public static final String[] PSFRecommendedComments = { "", "DO A POWER STEERING FLUSH",
+			"ADD POWER STEERING FLUID" };
+	
+
+	public static final String[] coolantTechComments = { "", "COOLANT IS LOW",
+			"COOLANT IS DIRTY", "COOLANT IS LOW AND DIRTY",
+			"NEEDS COOLANT FLUSH WITH REPAIRS",
+			"HAS COOLANT LEAK DO PRESSURE TEST" };
+	
+	public static final String[] coolantRecommendedComments = { "", "DO COOLANT FLUSH",
+			"ADD COOLANT", "DO PRESSURE TEST TO CHECK FOR LEAKS" };
+	
+	public static final String[] SBTechComments = { "", "SERPENTINE BELT IS CRACKED",
+			"SERPENTINE BELT IS MISSING", "BELT TENSIONER IS WORN",
+			"BELT TENSIONER AND BELT ARE WORN" };
+	
+	public static final String[] SBRecommendedComments = { "", "REPLACE BELT", "ADJUST BELT",
+			"REPLACE BELT TENSIONER", "REPLACE BELT TENSIONER AND BELT" };
+	
+	public static final String[] AFTechComments = { "", "AIR FILTER IS DIRTY",
+				"K&N TYPE FILTER NEEDS TO BE CLEANED" };
+	
+	public static final String[] AFRecommendedComments = { "", "REPLACE AIR FILTER",
+				"CLEAN AND RE OIL AIR FILTER" };
+	
+	public static final String[] FFTechComments = { "", "REPLACE FILTER DUE TO MILEAGE",
+			"REPLACE FILTER MANUFACTURER RECOMMEND", "FUE FILTER CLOGGED",
+			"NEED TO REMOVE FUEL FILTER TO CHECK IT" };
+	
+	public static final String[] FFRecommendedComments = { "", "REPLACE FUEL FILTER",
+			"REMOVE FILTER AND CHECK FOR CLOGS" };
+	
+	public static final String[] radiatorTechComments = { "", "RADIATOR IS LEAKING",
+			"RADIATOR IS CLOGGED", "OVERHEATING NEED TO CHECK SYSTEM" };
+	
+	public static final String[] radiatorRecommendedComments = { "",
+			"DO PRESSURE CHECK TO CHECK LEAKS", "REPLACE RADIATOR",
+			"DO DIAGNOSTICS ON OVERHEATING" };
+	
+	public static final String[] URHTechComments = { "", "UPPER HODE IS LEAKING",
+			"UPPER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
+	
+	public static final String[] URHRecommendedComments = { "", "REPLACE UPPER RADIATOR HOSE" };
+
+	public static final String[] LRHTechComments = { "", "LOWER HOSE IS LEAKING",
+			"LOWER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
+	
+	public static final String[] LRHRecommendedComments = { "", "REPLACE LOWER RADIATOR HOSE" };
+
+	public static final String[] HBHTechComments = { "", "HEATER IS LEAKING",
+			"HEATER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
+	
+	public static final String[] HBHRecommendedComments = { "", "REPLACE HEATER HOSES" };
+	
+	public static final String[] SRPTechComments = { "", "STEERING BOX/GEAR IS LEAKING",
+			"STEERING BOX/GEAR IS LOOSE", "RACK & PINION IS LEAKING",
+			"RACK AND PINION IS LOOSE", "RACK AND PINION MOUNTS ARE WORN",
+			"RACK AND PINION MOUNTS ARE BROKEN" };
+	
+	public static final String[] SRPRecommendedComments = { "", "REPLACE STEERING BOX/GEAR",
+			"REPLACE RACK AND PINION", "REPLACE RACK & PINION MOUNTS" };
+	
+	public static final String[] SLTechComments = { "", "LEFT OUTER TIE ROD WORN",
+			"RIGHT OUTER TIE ROD WORN", "LEFT INNER TIE ROD WORN",
+			"RIGHT INNER TIE ROD WORN", "BOTH INNER TIE RODS WORN",
+			"BOTH OUTER TIE RODS WORN", "BOTH INNER & OUTER TIE RODS WORN",
+			"PITMAN ARM WORN", "IDLER ARM WORN", "DRAG LINK WORN",
+			"DRAG LINK, LEFT & RIGHT TIE ROD ENDS WORN",
+			"PITMAN ARM AND IDLER ARM WORN",
+			"PITMAN ARM IDLER ARM & DRAG LINK WORN",
+			"STEERING STABILIZER WORN" };
+	
+	public static final String[] SLRecommendedComments = { "", "REPLACE LEFT OUTER TIE ROD",
+			"REPLACE RIGHT OUTER TIE ROD", "REPLACE LEFT INNER TIE ROD",
+			"REPLACE RIGHT INNER TIE ROD", "REPLACE BOTH INNER TIE RODS",
+			"REPLACE BOTH OUTER TIE RODS",
+			"REPLACE BOTH INNER & OUTER TIE RODS", "REPLACE PITMAN ARM",
+			"REPLACE IDLER ARM", "REPLACE DRAG LINK",
+			"REPLACE DRAG LINK, LEFT&RIGHT TIE ROD ENDS",
+			"REPLACE PITMAN ARM AND IDLER ARM",
+			"REPLACE PITMAN ARM, IDLER ARM & DRAG LINK",
+			"REPLACE STEERING STABILIZER" };
+	
+	public static final String[] suspTechComments = { "", "LEFT UPPER BALL JOINT WORN",
+			"LEFT LOWER BALL JOINT WORN", "RIGHT UPPER BALL JOINT WORN",
+			"RIGHT LOWER BALL JOINT WORN",
+			"BOTH LEFT UPPER & LOWER BALL JOINTS WORN",
+			"BOTH RIGHT UPPER & LOWER BALL JOINTS WORN",
+			"ALL BALL JOINTS WORN",
+			"RIGHT SIDE LOWER A FRAME BUSHINGS WORN",
+			"RIGHT SIDE UPPER A FRAME BUSHINGS WORN",
+			"LEFT SIDE LOWER A FRAME BUSHINGS WORN",
+			"LEFT SIDE UPPER A FRAME BUSHINGS WORN",
+			"ALL A FRAME BUSHINGS WORN", "LEFT SIDE KING PIN(S) WORN",
+			"RIGHT SIDE KING PIN(S) WORN", "BOTH KING PINS WORN",
+			"LEFT SIDE UPPER STRUT MOUNT WORN",
+			"RIGHT SIDE UPPER STRUT MOUNT WORN" };
+	
+	public static final String[] suspRecommendedComments = { "",
+			"REPLACE LEFT UPPER BALL JOINT",
+			"REPLACE LEFT LOWER BALL JOINT",
+			"REPLACE RIGHT UPPER BALL JOINT",
+			"REPLACE RIGHT LOWER BALL JOINT",
+			"REPLACE LEFT UPPER & LOWER BALL JOINTS",
+			"REPLACE RIGHT UPPER & LOWER BALL JOINTS",
+			"REPLACE ALL BALL JOINTS",
+			"REPLACE RIGHT SIDE LOWER A FRAME BUSHINGS",
+			"REPLACE RIGHT SIDE UPPER A FRAME BUSHINGS",
+			"REPLACE LEFT SIDE LOWER A FRAME BUSHINGS",
+			"REPLACE LEFT SIDE UPPER A FRAME BUSHINGS",
+			"REPLACE ALL A FRAME BUSHINGS",
+			"REPLACE LEFT SIDE KING PIN(S)",
+			"REPLACE RIGHT SIDE KING PIN(S)", "REPLACE BOTH KING PINS",
+			"REPLACE LEFT SIDE UPPER STRUT MOUNT",
+			"REPLACE RIGHT SIDE UPPER STRUT MOUNT" };
+	
+	public static final String[] alignTechComments = { "", "NEEDS ALIGNMENT CAUSING TIRE WEAR",
+			"NEEDS ALIGNMENT PULLS LEFT", "NEEDS ALIGNMENT PULLS RIGHT",
+			"NEEDS ALIGNMENT AFTER FRONT END WORK" };
+	
+	public static final String[] alignRecommendedComments = { "", "DO ALIGNMENT" };
+	
+	public static final String[] FSSTechComments = { "", "FRONT SHOCKS WORN OUT",
+			"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
+			"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
+			"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
+			"REAR SHOCKS CAUSING TIRE WEAR",
+			"ALL (4) SHOCKS CAUSING TIRE WEAR", "FRONT STRUTS WORN OUT",
+			"REAR STRUT WORN OUT", "ALL (4) STRUTS WORN OUT",
+			"FRONT STRUTS LEAKING", "REAR STRUTS LEAKING",
+			"ALL (4) STRUTS LEAKING", "FRONT STRUTS CAUSING TIRE WEAR",
+			"REAR STUTS CAUSING TIRE WEAR",
+			"ALL (4) STRUTS CAUSING TIRE WEAR" };
+	
+	public static final String[] FSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
+			"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
+			"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
+			"REPLACE ALL (4) STRUTS" };
+	
+	public static final String[] RSSTechComments = { "", "FRONT SHOCKS WORN OUT",
+			"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
+			"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
+			"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
+			"REAR SHOCKS CAUSING TIRE WEAR",
+			"ALL (4) SHOCKS CAUSING TIRE WEAR", "FRONT STRUTS WORN OUT",
+			"REAR STRUT WORN OUT", "ALL (4) STRUTS WORN OUT",
+			"FRONT STRUTS LEAKING", "REAR STRUTS LEAKING",
+			"ALL (4) STRUTS LEAKING", "FRONT STRUTS CAUSING TIRE WEAR",
+			"REAR STRUTS CAUSING TIRE WEAR",
+			"ALL (4) STRUTS CAUSING TIRE WEAR" };
+	
+	public static final String[] RSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
+			"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
+			"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
+			"REPLACE ALL (4) STRUTS" };
+	
+	public static final String[] FBTechComments = { "",
+			"FRONT BRAKES WORN NEED TO BE REPLACED",
+			"NEEDS FRONT BRAKES AND BRAKE ROTORS",
+			"NEEDS FRONT BRAKES AND BRAKE CALIPERS",
+			"NEEDS FRONT BRAKES, ROTORS & CALIPERS" };
+	
+	public static final String[] FBRecommendedComments = { "", "REPLACE FRONT BRAKES",
+			"REPLACE FRONT BRAKES AND BRAKE ROTORS",
+			"REPLACE FRONT BRAKES AND BRAKE CALIPERS",
+			"REPLACE FRONT BRAKES, ROTORS & CALIPERS" };
+
+	public static final String[] RBTechComments = { "", "CLEAN AND ADJUST BRAKES",
+			"REAR BRAKES WORN NEED TO BE REPLACED",
+			"NEEDS REAR BRAKES AND BRAKE ROTOR",
+			"NEEDS REAR BRAKES AND BRAKE DRUMS",
+			"NEEDS REAR BRAKES AND BRAKE CALIPERS",
+			"NEEDS REAR BRAKES AND WHEEL CYLINDERS",
+			"NEEDS REAR BRAKES,BRAKE ROTOR&CALIPERS",
+			"NEEDS REAR BRAKES,BRAKE DRUMS&CYLINDERS" };
+	
+	public static final String[] RBRecommendedComments = { "", "CLEAN AND ADJUST BRAKES",
+			"REPLACE REAR BRAKES", "REPLACE REAR BRAKES AMD BRAKE ROTOR",
+			"REPLACE REAR BRAKES AND BRAKE DRUMS",
+			"REPLACE REAR BRAKES AND BRAKE CALIPERS",
+			"REPLACE REAR BRAKES AND WHEEL CYLINDERS",
+			"REPLACE REAR BRAKES,ROTORS & CALIPERS",
+			"REPLACE REAR BRAKES,DRUMS & CYLINDERS" };
+	
+	public static final String[] CVADTechComments = { "", "FRONT U JOINT WORN",
+			"REAR U JOINT WORN", "FRONT DRIVE SHAFT 4X4 U JOINT WORN",
+			"REAR DRIVE SHAFT 4X4 U JOINT WORN" };
+	
+	public static final String[] CVADRecommendedComments = { "", "REPLACE FRONT U JOINT",
+			"REPLACE REAR U JOINT",
+			"REPLACE FRONT DRIVE SHAFT 4X4 U JOINT",
+			"REPLACE REAR DRIVE SHAFT 4X4 U JOINT" };
+	
+	public static final String[] mufflerTechComments = { "", "MUFFLER LEAKING EXHAUST",
+			"MUFFLER HAS HOLES IN IT", "MUFFLER IS RUSTED",
+			"MUFFLER IS MISSING" };
+	
+	public static final String[] mufflerRecommendedComments = { "", "REPLACE MUFFLER" };
+	
+	public static final String[] EPTechComments = { "", "EXAUST PIPES ARE LEAKING EXHAUST",
+			"EXHAUST PIPES HOLES IN THEM", "EXHAUST PIPES ARE RUSTED",
+			"EXHAUST PIPES ARE MISSING" };
+	
+	public static final String[] EPRecommendedComments = { "", "REPLACE EXHAUST PIPES" };
+	
+	// make array of all combobox options that will displayed on the same row, ie(tech comment options,recommended repairs options and priority on 
+	public static final String[][][] comments = new String[][][]{
+			new String[][]{tireTechComments,tireRecommendedComments,priority},
+			new String[][]{tireTechComments,tireRecommendedComments,priority},
+			new String[][]{tireTechComments,tireRecommendedComments,priority},
+			new String[][]{tireTechComments,tireRecommendedComments,priority},
+			new String[][]{tireTechComments,tireRecommendedComments,priority},
+			new String[][]{WWTechComments,WWRecommendedComments,priority},
+			new String[][]{locksTechComments,locksRecommendedComments,priority},
+			new String[][]{ACHTechComments,ACHRecommendedComments,priority},
+			new String[][]{heaterTechComments,heaterRecommendedComments,priority},
+			new String[][]{wiperTechComments,wiperRecommendedComments,priority},
+			new String[][]{hornTechComments,hornRecommendedComments,priority},
+			new String[][]{HLTechComments,HLRecommendedComments,priority},
+			new String[][]{PTLTechComments,PTLRecommendedComments,priority},
+			new String[][]{brakeTechComments,brakeRecommendedComments,priority},
+			new String[][]{DSTechComments,DSRecommendedComments,priority},
+			new String[][]{engineDiagTechComments,engineDiagRecommendedComments,priority},
+			new String[][]{MMTechComments,MMRecommendedComments,priority},
+			new String[][]{BCBTechComments,BCBRecommendedComments,priority},
+			new String[][]{EOTechComments,EORecommendedComments,priority},
+			new String[][]{TFTechComments,TFRecommendedComments,priority},
+			new String[][]{WFTechComments,WFRecommendedComments,priority},
+			new String[][]{BFTechComments,BFRecommendedComments,priority},
+			new String[][]{PSFTechComments,PSFRecommendedComments,priority},
+			new String[][]{coolantTechComments,coolantRecommendedComments,priority},
+			new String[][]{SBTechComments,SBRecommendedComments,priority},
+			new String[][]{AFTechComments,AFRecommendedComments,priority},
+			new String[][]{FFTechComments,FFRecommendedComments,priority},
+			new String[][]{radiatorTechComments,radiatorRecommendedComments,priority},
+			new String[][]{URHTechComments,URHRecommendedComments,priority},
+			new String[][]{LRHTechComments,LRHRecommendedComments,priority},
+			new String[][]{HBHTechComments,HBHRecommendedComments,priority},
+			new String[][]{SRPTechComments,SRPRecommendedComments,priority},
+			new String[][]{SLTechComments,SLRecommendedComments,priority},
+			new String[][]{suspTechComments,suspRecommendedComments,priority},
+			new String[][]{alignTechComments,alignRecommendedComments,priority},
+			new String[][]{FSSTechComments,FSSRecommendedComments,priority},
+			new String[][]{RSSTechComments,RSSRecommendedComments,priority},
+			new String[][]{FBTechComments,FBRecommendedComments,priority},
+			new String[][]{RBTechComments,RBRecommendedComments,priority},
+			new String[][]{CVADTechComments,CVADRecommendedComments,priority},
+			new String[][]{mufflerTechComments,mufflerRecommendedComments,priority},
+			new String[][]{EPTechComments,EPRecommendedComments,priority}
+			};
+	
+/*********************************************************************************************************************************/
 	
 	
 	
@@ -284,12 +679,12 @@ public class PMAController implements Initializable{
 		checkboxes[place][1].setSelected(false);
 		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");		
-		ROW_STATUS[place][0] = OK_SELECTED;
-		ROW_STATUS[place][1] = NO_STATUS;
+		ROW_STATUS[place][0] = Status.OK_SELECTED;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	private void unselectOK(int place){
 		techcomments[place].setDisable(false);
-		ROW_STATUS[place][0] = NO_STATUS;
+		ROW_STATUS[place][0] = Status.NO_STATUS;
 	}
 	
 	private void selectNOTOK(int place){
@@ -301,8 +696,8 @@ public class PMAController implements Initializable{
 		checkboxes[place][0].setSelected(false);	
 		checkboxes[place][1].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-invalid");
-		ROW_STATUS[place][0] = NOT_OK_SELECTED;
-		ROW_STATUS[place][1] = NO_STATUS;
+		ROW_STATUS[place][0] = Status.NOT_OK_SELECTED;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	private void unselectNOTOK(int place){		
 		disableAndClearFields(place);
@@ -310,8 +705,8 @@ public class PMAController implements Initializable{
 		hideFields(place,true);//insert
 		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		ROW_STATUS[place][0] = NO_STATUS;
-		ROW_STATUS[place][1] = NO_STATUS;
+		ROW_STATUS[place][0] = Status.NO_STATUS;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	
 	/** 
@@ -394,7 +789,7 @@ public class PMAController implements Initializable{
 	 * @param place
 	 * @param which
 	 */
-	private void alterRow(final int place, final int status){
+	private void alterRow(final int place, final Status status){
 		String css;
 			
 		switch( status ){
@@ -427,8 +822,6 @@ public class PMAController implements Initializable{
 		recommendedrepairs[place].getStyleClass().add(css);
 		recommendedrepairs[place].getEditor().getStyleClass().add(css);
 	}
-	
-	
 	
 	private int addRows(int rowNum){
 		return (rowNum < 5) ? 0 : (rowNum < 15) ? 1 : (rowNum < 31) ? 2 : (rowNum < 42) ? 3 : 4; 
@@ -498,7 +891,7 @@ public class PMAController implements Initializable{
 				cell.setCellValue(richString);
 			}
 			
-			if(ROW_STATUS[i][0] != NO_STATUS && ROW_STATUS[i][0] != OK_SELECTED){
+			if(ROW_STATUS[i][0] != Status.NO_STATUS && ROW_STATUS[i][0] != Status.OK_SELECTED){
 				cell = row.getCell(3); 							/**  TECH COMMENTS  **/ 
 				cell.setCellValue(techcomments[i].getEditor().getText());
 				cell = row.getCell(4);							/** RECOMMENDED REPAIRS **/
@@ -569,13 +962,14 @@ public class PMAController implements Initializable{
 	}
 	
 	public void save(){
+		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
 			PMA.ROW_STATUS[i][0] = ROW_STATUS[i][0];										/** OK/NOT OK STATUS **/
 			PMA.ROW_STATUS[i][1] = ROW_STATUS[i][1];										/** APPROVED-DISAPPROVED-INFORMATION_ONLY **/
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();					/** TECH COMMENTS **/
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();		/** RECOMMENDED REPAIRS **/
-			PMA.priority[i] = priorities[i].getSelectionModel().getSelectedIndex();			/** PRIORITY **/
+			PMA.priority[i] = PMAObject.stringToPriority(priorities[i].getSelectionModel().getSelectedItem());	/** PRIORITY **/
 			PMA.totalParts[i] = moneyFields[i][0].getValue();								/** TOTAL PARTS **/
 			PMA.totalLabor[i] = moneyFields[i][1].getValue();								/** TOTAL LABOR **/
 			PMA.qty[i] = QTY[i].getValue();													/** QUANTITY **/
@@ -608,7 +1002,7 @@ public class PMAController implements Initializable{
 		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
-			if(ROW_STATUS[i][1] == APPROVED){
+			if(ROW_STATUS[i][1] == Status.APPROVED){
 				total_parts = total_parts.add(moneyFields[i][0].getValue());	
 				total_parts = total_parts.multiply(QTY[i].getValue(), math_context);
 				total_labor = total_labor.add(moneyFields[i][1].getValue());
@@ -740,7 +1134,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		initializeMoneyTextFields();
 	}
 
-public void initializePMA(int workOrder,PMAView pmaview){
+public void initializePMA(int workOrder){
 	WORK_ORDER_NUMBER = workOrder;
 	
 	if( WORK_ORDER_NUMBER < 0 )
@@ -770,19 +1164,19 @@ public void initializePMA(int workOrder,PMAView pmaview){
 		moneyFields[i][0].setEditable(false);
 		moneyFields[i][1].setEditable(false);
 		
-		techcomments[i].getEditor().setText((PMA.tech_comments[i]));			/** TECH COMMENTS **/
-		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);	/** RECOMMENDED REPAIRS **/
-		priorities[i].getSelectionModel().select(PMA.priority[i]);				/** PRIORITIES **/
-		QTY[i].setValue(PMA.qty[i]);											/** QTY **/
-		laborHours[i].setValue(PMA.laborCost[i]);								/** LABOR HOURS **/
-		vendors[i].setText(PMA.vendor[i]);										/** VENDOR **/
+		techcomments[i].getEditor().setText((PMA.tech_comments[i]));							/** TECH COMMENTS **/
+		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);					/** RECOMMENDED REPAIRS **/
+		priorities[i].getSelectionModel().select(PMAObject.priorityToString(PMA.priority[i]));	/** PRIORITIES **/
+		QTY[i].setValue(PMA.qty[i]);															/** QTY **/
+		laborHours[i].setValue(PMA.laborCost[i]);												/** LABOR HOURS **/
+		vendors[i].setText(PMA.vendor[i]);														/** VENDOR **/
 	
 		
-		if(PMA.ROW_STATUS[i][0] == OK_SELECTED){				// if ok was selected 
+		if(PMA.ROW_STATUS[i][0] == Status.OK_SELECTED){				// if ok was selected 
 			selectOK(i);
 			checkboxes[i][0].setSelected(true);
 		}
-		else if(PMA.ROW_STATUS[i][0] == NOT_OK_SELECTED ){		// if not-ok was selected
+		else if(PMA.ROW_STATUS[i][0] == Status.NOT_OK_SELECTED ){		// if not-ok was selected
 			selectNOTOK(i);
 			checkboxes[i][1].setSelected(true);
 			moneyFields[i][0].setValue(PMA.totalParts[i]);		//revert money fields 
@@ -878,7 +1272,7 @@ private class rightClickMenuApprove implements EventHandler<ActionEvent>{
 		while( item != menuItemsApproved[place])
 			place++;
 		
-		alterRow(place,APPROVED);
+		alterRow(place,Status.APPROVED);
 		computeTotals();
 	}
 }
@@ -890,7 +1284,7 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 			
 			while( item != menuItemsDisapproved[place])
 				place++;
-			alterRow(place,NOT_APPROVED);
+			alterRow(place,Status.NOT_APPROVED);
 			computeTotals();
 		}
 	}
@@ -902,423 +1296,13 @@ private class rightClickMenuDisapprove implements EventHandler<ActionEvent>{
 				
 				while( item != menuItemsInformation[place])
 					place++;
-				alterRow(place,INFORMATION_ONLY);
+				alterRow(place,Status.INFORMATION_ONLY);
 				computeTotals();
 			}
 	}
 	
 		
 	private void initializeComoBoxOptions(){
-		
-		/** strings used as combobox options in PMA **/
-		
-		final String[] priority = new String[]{ "", "HIGH", "MED", "LOW" };
-
-		final String[] tireTechComments = { "", "TIRE IS WORN OUT", "TIRE IS FLAT",
-				"TIRE HAS HOLE IN SIDE WALL", "TIRE HAS IRREGULAR WEAR",
-				"TIRE HAS ALIGNMENT WEAR", "1/32 TREAD", "2/32 TREAD",
-				"3/32 TREAD", "4/32 TREAD", "5/32 TREAD", "6/32 TREAD",
-				"7/32 TREAD", "8/32 TREAD", "9/32 TREAD", "10/32 TREAD",
-				"11/32 TREAD", "12/32 TREAD", "13/32 TREAD", "14/32 TREAD",
-				"15/32 TREAD" };
-		
-		final String[] tireRecommendedComments = { "", "REPLACE TIRE", "REPAIR TIRE","ROTATE TIRE" };
-		
-		final String[] WWTechComments = { "", "WINDSHIELD IS CRACKED",
-				"WINDSHIELD HAS CHIP IN IT", "WINDSHIELD IS SCRATCHED",
-				"DRIVERS SIDE FRONT WINDOW NOT GOING UP",
-				"PASSENGER SIDE FRONT WINDOW NOT GOING UP",
-				"DRIVERS SIDE REAR WINDOW WILL NOT GO UP",
-				"PASSENGER SIDE REAR WINDOW NOT GOING UP", };
-		final String[] WWRecommendedComments = { "", "REPLACE WINDSHIELD",
-				"INFORMATION ONLY", "DO DIAGNOSTIC ON WINDOW" };
-
-		
-		final String[] locksTechComments = { "",
-				"DRIVERS SIDE FRONT LOCK NOT WORKING",
-				"PASSENGER SIDE FRONT LOCK NOT WORKING",
-				"DRIVERS SIDE REAR LOCK NOT WORKING",
-				"PASSENGER SIDE REAR LOCK NOT WORKING",
-				"POWER LOCKS NOT WORKING" };
-		
-		final String[] locksRecommendedComments = { "", "DO DIAGNOSTICS ON LOCKS" };
-		
-		
-		final String[] ACHTechComments = { "", "NEEDS DIAGNOSTIC ON A/C SYSTEM",
-				"LOW ON FREON", "HAS LEAK IN A/C SYSTEM",
-				"NOT COOLING VERY WELL", "A/C SWITCH IS BROKEN" };
-		
-		final String[] ACHRecommendedComments = { "", "DO A/C SERVICE/DIAGNOSTIC" };
-		
-		final String[] heaterTechComments = { "", "NEEDS DIAGNOSTIC ON HEATER",
-				"LOW ON COOLANT", "NEEDS HEATER CONTROL VALVE",
-				"HEATER CORE LEAKING" };
-		final String[] heaterRecommendedComments = { "",
-				"DO DIAGNOSTIC ON HEATER SYSTEM", "DO COOLANT PRESSURE TEST",
-				"REPLACE HEATER CONTROL VALVE" };
-		
-		final String[] wiperTechComments = { "", "WIPERS NOT WORKING",
-				"WIPERS STREAKING", "SQUIRTERS NOT WORKING" };
-		
-		final String[] wiperRecommendedComments = { "",
-				"DO DIAGNOSTIC ON WIPER SYSTEM", "REPLACE WIPERS",
-				"DO DIAGNOSTIC ON SQUIRTERS" };
-		
-		final String[] hornTechComments = { "", "", "" };
-		
-		final String[] hornRecommendedComments = { "", "DO DIAGNOSTIC ON HORN" };
-		
-		final String[] HLTechComments = { "", "DRIVER SIDE HIGH BEAM IS OUT",
-				"DRIVER SIDE LOW BEAM IS OUT",
-				"PASSENGER SIDE HIGH BEAM IS OUT",
-				"PASSENGER SIDE LOW BEAM IS OUT",
-				"DRIVER SIDE HEALIGHT HAS CRACK IN IT",
-				"PASSENGER SIDE HEADLIGHT HAS CRACK IN IT",
-				"HEAD LIGHTS DO NOT WORK" };
-		
-		final String[] HLRecommendedComments = { "", "REPLACE LIGHT(S)",
-				"DO DIAGNOSTICS ON HEAD LIGHTS" };
-		
-		final String[] PTLTechComments = { "", "DRIVER SIDE REAR TAIL LIGHT IS OUT",
-				"PASSENGER SIDE REAR TAIL LIGHT IS OUT",
-				"PASSENGER SIDE TAIL LIGHT IS CRACKED",
-				"DRIVER SIDE TAIL LIGHT IS CRACKED",
-				"PARK/TAIL LAMP DO NOT WORK", "LIC PLATE LIGHT IS OUT" };
-		
-		final String[] PTLRecommendedComments = { "", "REPLACE LIGHT(S)",
-				"DO DIAGNOSTIC ON PARK/TAIL LAMP" };
-		
-		final String[] brakeTechComments = { "", "DRIVER SIDE BRAKE LIGHT IS OUT",
-				"PASSENGER SIDE BRAKE LIGHT IS OUT",
-				"PASSENGER SIDE BRAKE LIGHT IS CRACKED",
-				"DRIVER SIDE BRAKE LIGHT IS CRACKED",
-				"BRAKE LIGHTS DO NOT WORK" };
-		
-		final String[] brakeRecommendedComments = { "", "REPLACE LIGHT(S)",
-				"DO DIAGNOSTICS ON BRAKE LIGHTS" };
-		
-		final String[] DSTechComments = { "", "PASSENGER SIDE FENDER IS DENTED",
-				"DRIVER SIDE FENDER IS DENTED",
-				"DRIVER SIDE FRONT DOOR IS DENTED",
-				"DRIVER SIDE REAR DOOR IS DENTED",
-				"PASSENGER FRONT DOOR IS DENTED",
-				"PASSENGER SIDE REAR DOOR IS DENTED",
-				"DRIVER SIDE REAR QUARTER IS DENTED",
-				"PASSENGER SIDE REAR QUARTER IS DENTED", "TRUNK LID IS DENTED",
-				"HOOD IS DENTED", "TAILGATE IS DENTED", "DENTS/SCRATCHES" };
-		
-		final String[] DSRecommendedComments = { "", "DO ESTIMATE ON BODYWORK",
-				"INFORMATION ONLY" };
-		
-		final String[] engineDiagTechComments = { "", "CHECK ENGINE LIGHT IS ON",
-				"VEHICLE RUNS ROUGH", "NEED TO DO DIAGNOSTICS" };
-		
-		final String[] engineDiagRecommendedComments = { "", "DO DIAGNOSTICS",
-				"INFORMATION ONLY" };
-		
-		final String[] MMTechComments = { "", "DRIVER SIDE MOTOR MOUNT IS BROKEN",
-				"PASSENGER SIDE MOTOR MOUNT IS BROKEN",
-				"BOTH MOTOR MOUNTS ARE BROKEN", "MOTOR MOUNTS ARE WEAK",
-				"NEED TO CHECK MOTOR MOUNTS" };
-		
-		final String[] MMRecommendedComments = { "",
-				"REPLACE DRIVER SIDE MOTOR MOUNT",
-				"REPLACE PASSENGER SIDE MOTOR MOUNT",
-				"REPLACE BOTH MOTOR MOUNTS" };
-		
-		final String[] BCBTechComments = { "", "BATTERY TERMINALS DIRTY",
-				"SEAL BATTERY TERMINALS", "BATTERY TERMINALS CORRODED",
-				"BATTERY CABLES BROKEN", "BATTERY CABLES CORRODED",
-				"NEEDS BATTERY" };
-		
-		final String[] BCBRecommendedComments = { "",
-				"CLEAN AND SEAL BATTERY TERMINALS", "REPLACE(1) BATTERY END",
-				"REPLACE(2) BATTERY ENDS", "REPLACE POSITIVE BATTERY CABLE",
-				"REPLACE NEGATIVE BATTERY CABLE",
-				"REPLACE BOTH BATTERY CABLES", "REPLACE BATTERY" };
-
-		final String[] EOTechComments = { "", "ENGINE OIL IS LOW",
-				"ENGINE OIL IS DIRTY", "ENGINE OIL IS LOW AND DIRTY",
-				"ENGINE HAS OIL LEAK" };
-		
-		final String[] EORecommendedComments = { "", "DO OIL CHANGE", "ADD OIL",
-				"DO DYE TEST TO CHECK FOR OIL LEAK" };
-
-		final String[] TFTechComments = { "", "TRANSMISSION FLUID IS LOW",
-				"TRANSMISSION FLUID IS DIRTY",
-				"TRANSMISSION FLUID IS LOW AND DIRTY",
-				"TRANSMISSION HAS OIL LEAK" };
-		
-		final String[] TFRecommendedComments = { "", "DO TRANSMISSION SERVICE",
-				"ADD TRANSMISSION FLUID", "DO DYE TEST TO CHECK FOR FLUID LEAK" };
-
-		final String[] WFTechComments = { "", "WASHER FLUID IS LOW",
-				"SQUIRTERS NOT WORKING", "WASHER FLUID BOTTLE IS CRACKED" };
-		
-		final String[] WFRecommendedComments = { "", "ADD WASHER FLUID",
-				"DO DIAGNOSTICS ON SQUIRTERS",
-				"REPLACE WINDSHIELD WASHER BOTTLE" };
-		
-		final String[] BFTechComments = { "", "BRAKE FLUID IS LOW",
-				"BRAKE FLUID IS DIRTY", "BRAKE FLUID IS LOW AND DIRTY" };
-		
-		final String[] BFRecommendedComments = { "", "DO BRAKE FLUSH",
-				"ADD BRAKE FLUID" };
-		
-		final String[] PSFTechComments = { "", "POWER STEERING FLUID IS LOW",
-				"POWER STEERING FLUID IS DIRTY",
-				"POWER STEERING FLUID IS LOW AND DIRTY" };
-		
-		final String[] PSFRecommendedComments = { "", "DO A POWER STEERING FLUSH",
-				"ADD POWER STEERING FLUID" };
-		
-
-		final String[] coolantTechComments = { "", "COOLANT IS LOW",
-				"COOLANT IS DIRTY", "COOLANT IS LOW AND DIRTY",
-				"NEEDS COOLANT FLUSH WITH REPAIRS",
-				"HAS COOLANT LEAK DO PRESSURE TEST" };
-		
-		final String[] coolantRecommendedComments = { "", "DO COOLANT FLUSH",
-				"ADD COOLANT", "DO PRESSURE TEST TO CHECK FOR LEAKS" };
-		
-		final String[] SBTechComments = { "", "SERPENTINE BELT IS CRACKED",
-				"SERPENTINE BELT IS MISSING", "BELT TENSIONER IS WORN",
-				"BELT TENSIONER AND BELT ARE WORN" };
-		
-		final String[] SBRecommendedComments = { "", "REPLACE BELT", "ADJUST BELT",
-				"REPLACE BELT TENSIONER", "REPLACE BELT TENSIONER AND BELT" };
-		
-		final String[] AFTechComments = { "", "AIR FILTER IS DIRTY",
-					"K&N TYPE FILTER NEEDS TO BE CLEANED" };
-		
-		final String[] AFRecommendedComments = { "", "REPLACE AIR FILTER",
-					"CLEAN AND RE OIL AIR FILTER" };
-		
-		final String[] FFTechComments = { "", "REPLACE FILTER DUE TO MILEAGE",
-				"REPLACE FILTER MANUFACTURER RECOMMEND", "FUE FILTER CLOGGED",
-				"NEED TO REMOVE FUEL FILTER TO CHECK IT" };
-		
-		final String[] FFRecommendedComments = { "", "REPLACE FUEL FILTER",
-				"REMOVE FILTER AND CHECK FOR CLOGS" };
-		
-		final String[] radiatorTechComments = { "", "RADIATOR IS LEAKING",
-				"RADIATOR IS CLOGGED", "OVERHEATING NEED TO CHECK SYSTEM" };
-		
-		final String[] radiatorRecommendedComments = { "",
-				"DO PRESSURE CHECK TO CHECK LEAKS", "REPLACE RADIATOR",
-				"DO DIAGNOSTICS ON OVERHEATING" };
-		
-		final String[] URHTechComments = { "", "UPPER HODE IS LEAKING",
-				"UPPER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
-		
-		final String[] URHRecommendedComments = { "", "REPLACE UPPER RADIATOR HOSE" };
-
-		final String[] LRHTechComments = { "", "LOWER HOSE IS LEAKING",
-				"LOWER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
-		
-		final String[] LRHRecommendedComments = { "", "REPLACE LOWER RADIATOR HOSE" };
-
-		final String[] HBHTechComments = { "", "HEATER IS LEAKING",
-				"HEATER HOSE FEELS BRITTLE", "NEEDS HOSE CLAMPS REPLACED" };
-		
-		final String[] HBHRecommendedComments = { "", "REPLACE HEATER HOSES" };
-		
-		final String[] SRPTechComments = { "", "STEERING BOX/GEAR IS LEAKING",
-				"STEERING BOX/GEAR IS LOOSE", "RACK & PINION IS LEAKING",
-				"RACK AND PINION IS LOOSE", "RACK AND PINION MOUNTS ARE WORN",
-				"RACK AND PINION MOUNTS ARE BROKEN" };
-		
-		final String[] SRPRecommendedComments = { "", "REPLACE STEERING BOX/GEAR",
-				"REPLACE RACK AND PINION", "REPLACE RACK & PINION MOUNTS" };
-		
-		final String[] SLTechComments = { "", "LEFT OUTER TIE ROD WORN",
-				"RIGHT OUTER TIE ROD WORN", "LEFT INNER TIE ROD WORN",
-				"RIGHT INNER TIE ROD WORN", "BOTH INNER TIE RODS WORN",
-				"BOTH OUTER TIE RODS WORN", "BOTH INNER & OUTER TIE RODS WORN",
-				"PITMAN ARM WORN", "IDLER ARM WORN", "DRAG LINK WORN",
-				"DRAG LINK, LEFT & RIGHT TIE ROD ENDS WORN",
-				"PITMAN ARM AND IDLER ARM WORN",
-				"PITMAN ARM IDLER ARM & DRAG LINK WORN",
-				"STEERING STABILIZER WORN" };
-		
-		final String[] SLRecommendedComments = { "", "REPLACE LEFT OUTER TIE ROD",
-				"REPLACE RIGHT OUTER TIE ROD", "REPLACE LEFT INNER TIE ROD",
-				"REPLACE RIGHT INNER TIE ROD", "REPLACE BOTH INNER TIE RODS",
-				"REPLACE BOTH OUTER TIE RODS",
-				"REPLACE BOTH INNER & OUTER TIE RODS", "REPLACE PITMAN ARM",
-				"REPLACE IDLER ARM", "REPLACE DRAG LINK",
-				"REPLACE DRAG LINK, LEFT&RIGHT TIE ROD ENDS",
-				"REPLACE PITMAN ARM AND IDLER ARM",
-				"REPLACE PITMAN ARM, IDLER ARM & DRAG LINK",
-				"REPLACE STEERING STABILIZER" };
-		
-		final String[] suspTechComments = { "", "LEFT UPPER BALL JOINT WORN",
-				"LEFT LOWER BALL JOINT WORN", "RIGHT UPPER BALL JOINT WORN",
-				"RIGHT LOWER BALL JOINT WORN",
-				"BOTH LEFT UPPER & LOWER BALL JOINTS WORN",
-				"BOTH RIGHT UPPER & LOWER BALL JOINTS WORN",
-				"ALL BALL JOINTS WORN",
-				"RIGHT SIDE LOWER A FRAME BUSHINGS WORN",
-				"RIGHT SIDE UPPER A FRAME BUSHINGS WORN",
-				"LEFT SIDE LOWER A FRAME BUSHINGS WORN",
-				"LEFT SIDE UPPER A FRAME BUSHINGS WORN",
-				"ALL A FRAME BUSHINGS WORN", "LEFT SIDE KING PIN(S) WORN",
-				"RIGHT SIDE KING PIN(S) WORN", "BOTH KING PINS WORN",
-				"LEFT SIDE UPPER STRUT MOUNT WORN",
-				"RIGHT SIDE UPPER STRUT MOUNT WORN" };
-		
-		final String[] suspRecommendedComments = { "",
-				"REPLACE LEFT UPPER BALL JOINT",
-				"REPLACE LEFT LOWER BALL JOINT",
-				"REPLACE RIGHT UPPER BALL JOINT",
-				"REPLACE RIGHT LOWER BALL JOINT",
-				"REPLACE LEFT UPPER & LOWER BALL JOINTS",
-				"REPLACE RIGHT UPPER & LOWER BALL JOINTS",
-				"REPLACE ALL BALL JOINTS",
-				"REPLACE RIGHT SIDE LOWER A FRAME BUSHINGS",
-				"REPLACE RIGHT SIDE UPPER A FRAME BUSHINGS",
-				"REPLACE LEFT SIDE LOWER A FRAME BUSHINGS",
-				"REPLACE LEFT SIDE UPPER A FRAME BUSHINGS",
-				"REPLACE ALL A FRAME BUSHINGS",
-				"REPLACE LEFT SIDE KING PIN(S)",
-				"REPLACE RIGHT SIDE KING PIN(S)", "REPLACE BOTH KING PINS",
-				"REPLACE LEFT SIDE UPPER STRUT MOUNT",
-				"REPLACE RIGHT SIDE UPPER STRUT MOUNT" };
-		
-		final String[] alignTechComments = { "", "NEEDS ALIGNMENT CAUSING TIRE WEAR",
-				"NEEDS ALIGNMENT PULLS LEFT", "NEEDS ALIGNMENT PULLS RIGHT",
-				"NEEDS ALIGNMENT AFTER FRONT END WORK" };
-		
-		final String[] alignRecommendedComments = { "", "DO ALIGNMENT" };
-		
-		final String[] FSSTechComments = { "", "FRONT SHOCKS WORN OUT",
-				"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
-				"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
-				"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
-				"REAR SHOCKS CAUSING TIRE WEAR",
-				"ALL (4) SHOCKS CAUSING TIRE WEAR", "FRONT STRUTS WORN OUT",
-				"REAR STRUT WORN OUT", "ALL (4) STRUTS WORN OUT",
-				"FRONT STRUTS LEAKING", "REAR STRUTS LEAKING",
-				"ALL (4) STRUTS LEAKING", "FRONT STRUTS CAUSING TIRE WEAR",
-				"REAR STUTS CAUSING TIRE WEAR",
-				"ALL (4) STRUTS CAUSING TIRE WEAR" };
-		
-		final String[] FSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
-				"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
-				"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
-				"REPLACE ALL (4) STRUTS" };
-		
-		final String[] RSSTechComments = { "", "FRONT SHOCKS WORN OUT",
-				"REAR SHOCKS WORN OUT", "ALL (4) SHOCKS WORN OUT",
-				"FRONT SHOCKS LEAKING", "REAR SHOCKS LEAKING",
-				"ALL (4) SHOCKS LEAKING", "FRONT SHOCKS CAUSING TIRE WEAR",
-				"REAR SHOCKS CAUSING TIRE WEAR",
-				"ALL (4) SHOCKS CAUSING TIRE WEAR", "FRONT STRUTS WORN OUT",
-				"REAR STRUT WORN OUT", "ALL (4) STRUTS WORN OUT",
-				"FRONT STRUTS LEAKING", "REAR STRUTS LEAKING",
-				"ALL (4) STRUTS LEAKING", "FRONT STRUTS CAUSING TIRE WEAR",
-				"REAR STRUTS CAUSING TIRE WEAR",
-				"ALL (4) STRUTS CAUSING TIRE WEAR" };
-		
-		final String[] RSSRecommendedComments = { "", "REPLACE FRONT SHOCKS",
-				"REPLACE REAR SHOCKS", "REPLACE ALL (4) SHOCKS",
-				"REPLACE FRONT STRUTS", "REPLACE REAR STRUTS",
-				"REPLACE ALL (4) STRUTS" };
-		
-		final String[] FBTechComments = { "",
-				"FRONT BRAKES WORN NEED TO BE REPLACED",
-				"NEEDS FRONT BRAKES AND BRAKE ROTORS",
-				"NEEDS FRONT BRAKES AND BRAKE CALIPERS",
-				"NEEDS FRONT BRAKES, ROTORS & CALIPERS" };
-		
-		final String[] FBRecommendedComments = { "", "REPLACE FRONT BRAKES",
-				"REPLACE FRONT BRAKES AND BRAKE ROTORS",
-				"REPLACE FRONT BRAKES AND BRAKE CALIPERS",
-				"REPLACE FRONT BRAKES, ROTORS & CALIPERS" };
-
-		final String[] RBTechComments = { "", "CLEAN AND ADJUST BRAKES",
-				"REAR BRAKES WORN NEED TO BE REPLACED",
-				"NEEDS REAR BRAKES AND BRAKE ROTOR",
-				"NEEDS REAR BRAKES AND BRAKE DRUMS",
-				"NEEDS REAR BRAKES AND BRAKE CALIPERS",
-				"NEEDS REAR BRAKES AND WHEEL CYLINDERS",
-				"NEEDS REAR BRAKES,BRAKE ROTOR&CALIPERS",
-				"NEEDS REAR BRAKES,BRAKE DRUMS&CYLINDERS" };
-		
-		final String[] RBRecommendedComments = { "", "CLEAN AND ADJUST BRAKES",
-				"REPLACE REAR BRAKES", "REPLACE REAR BRAKES AMD BRAKE ROTOR",
-				"REPLACE REAR BRAKES AND BRAKE DRUMS",
-				"REPLACE REAR BRAKES AND BRAKE CALIPERS",
-				"REPLACE REAR BRAKES AND WHEEL CYLINDERS",
-				"REPLACE REAR BRAKES,ROTORS & CALIPERS",
-				"REPLACE REAR BRAKES,DRUMS & CYLINDERS" };
-		
-		final String[] CVADTechComments = { "", "FRONT U JOINT WORN",
-				"REAR U JOINT WORN", "FRONT DRIVE SHAFT 4X4 U JOINT WORN",
-				"REAR DRIVE SHAFT 4X4 U JOINT WORN" };
-		
-		final String[] CVADRecommendedComments = { "", "REPLACE FRONT U JOINT",
-				"REPLACE REAR U JOINT",
-				"REPLACE FRONT DRIVE SHAFT 4X4 U JOINT",
-				"REPLACE REAR DRIVE SHAFT 4X4 U JOINT" };
-		
-		final String[] mufflerTechComments = { "", "MUFFLER LEAKING EXHAUST",
-				"MUFFLER HAS HOLES IN IT", "MUFFLER IS RUSTED",
-				"MUFFLER IS MISSING" };
-		
-		final String[] mufflerRecommendedComments = { "", "REPLACE MUFFLER" };
-		
-		final String[] EPTechComments = { "", "EXAUST PIPES ARE LEAKING EXHAUST",
-				"EXHAUST PIPES HOLES IN THEM", "EXHAUST PIPES ARE RUSTED",
-				"EXHAUST PIPES ARE MISSING" };
-		
-		final String[] EPRecommendedComments = { "", "REPLACE EXHAUST PIPES" };
-
-		/** make array of all combobox options that will displayed on the same row, ie(tech comment options,recommended repairs options and priority on */
-		final String[][][] comments = new String[][][]{
-				new String[][]{tireTechComments,tireRecommendedComments,priority},
-				new String[][]{tireTechComments,tireRecommendedComments,priority},
-				new String[][]{tireTechComments,tireRecommendedComments,priority},
-				new String[][]{tireTechComments,tireRecommendedComments,priority},
-				new String[][]{tireTechComments,tireRecommendedComments,priority},
-				new String[][]{WWTechComments,WWRecommendedComments,priority},
-				new String[][]{locksTechComments,locksRecommendedComments,priority},
-				new String[][]{ACHTechComments,ACHRecommendedComments,priority},
-				new String[][]{heaterTechComments,heaterRecommendedComments,priority},
-				new String[][]{wiperTechComments,wiperRecommendedComments,priority},
-				new String[][]{hornTechComments,hornRecommendedComments,priority},
-				new String[][]{HLTechComments,HLRecommendedComments,priority},
-				new String[][]{PTLTechComments,PTLRecommendedComments,priority},
-				new String[][]{brakeTechComments,brakeRecommendedComments,priority},
-				new String[][]{DSTechComments,DSRecommendedComments,priority},
-				new String[][]{engineDiagTechComments,engineDiagRecommendedComments,priority},
-				new String[][]{MMTechComments,MMRecommendedComments,priority},
-				new String[][]{BCBTechComments,BCBRecommendedComments,priority},
-				new String[][]{EOTechComments,EORecommendedComments,priority},
-				new String[][]{TFTechComments,TFRecommendedComments,priority},
-				new String[][]{WFTechComments,WFRecommendedComments,priority},
-				new String[][]{BFTechComments,BFRecommendedComments,priority},
-				new String[][]{PSFTechComments,PSFRecommendedComments,priority},
-				new String[][]{coolantTechComments,coolantRecommendedComments,priority},
-				new String[][]{SBTechComments,SBRecommendedComments,priority},
-				new String[][]{AFTechComments,AFRecommendedComments,priority},
-				new String[][]{FFTechComments,FFRecommendedComments,priority},
-				new String[][]{radiatorTechComments,radiatorRecommendedComments,priority},
-				new String[][]{URHTechComments,URHRecommendedComments,priority},
-				new String[][]{LRHTechComments,LRHRecommendedComments,priority},
-				new String[][]{HBHTechComments,HBHRecommendedComments,priority},
-				new String[][]{SRPTechComments,SRPRecommendedComments,priority},
-				new String[][]{SLTechComments,SLRecommendedComments,priority},
-				new String[][]{suspTechComments,suspRecommendedComments,priority},
-				new String[][]{alignTechComments,alignRecommendedComments,priority},
-				new String[][]{FSSTechComments,FSSRecommendedComments,priority},
-				new String[][]{RSSTechComments,RSSRecommendedComments,priority},
-				new String[][]{FBTechComments,FBRecommendedComments,priority},
-				new String[][]{RBTechComments,RBRecommendedComments,priority},
-				new String[][]{CVADTechComments,CVADRecommendedComments,priority},
-				new String[][]{mufflerTechComments,mufflerRecommendedComments,priority},
-				new String[][]{EPTechComments,EPRecommendedComments,priority}
-				};
 		
 		/** comboboxes use observable lists, so make an arraylist of observable list to loop through and set items for each combobox **/
 		ArrayList<ObservableList<String>> observableLists = new ArrayList<ObservableList<String>>();

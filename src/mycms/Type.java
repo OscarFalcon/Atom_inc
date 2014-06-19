@@ -3,20 +3,18 @@ package mycms;
 
 public class Type<T> {
 
+	private T value;
 	
-	public enum Type_T{
+	public enum Class{
 		BYTE,
 		DATE,
 		INTEGER,
 		STRING,
-		PMA_OBJECT,
-		OBJECT;
+		OBJECT,
+		PMA_OBJECT;
 	}
 	
 	
-	
-	private T value;
-
 	public Type(T value){
 		this.value = value;
 	}
