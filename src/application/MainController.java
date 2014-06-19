@@ -65,7 +65,7 @@ public class MainController implements Initializable, ControlledScreen {
 												serviceLic, serviceTotal;
 	
 	/**************REMOVED ***************************/
-	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,addressLabel,cityLabel,stateLabel,zipLabel;
+	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,emailLabel,addressLabel,cityLabel,stateLabel,zipLabel;
 	
 	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
 						engineLabel, transmissionLabel;
@@ -146,6 +146,7 @@ public class MainController implements Initializable, ControlledScreen {
 					firstNameLabel.setText(newValue.getFirstName());
 					lastNameLabel.setText(newValue.getLastName());
 					phoneLabel.setText(newValue.getPhone());
+					emailLabel.setText(newValue.getEmail());
 					addressLabel.setText(newValue.getAddress());
 					cityLabel.setText(newValue.getCity());
 					stateLabel.setText(newValue.getState());	
