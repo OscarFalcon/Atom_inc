@@ -70,6 +70,8 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	private final ObservableList<WorkOrder> work_oder_list = FXCollections.observableArrayList();
 	
+	private ObservableList<PMARow> current_pma_list;
+	
 	private final ArrayList<ObservableList<PMARow>> pma_preview_list = new ArrayList<ObservableList<PMARow>>();
 	
 	
@@ -138,7 +140,7 @@ public class MainController implements Initializable, ControlledScreen {
 		previewPriority.setCellValueFactory(new PropertyValueFactory<PMARow,String>("priority"));
 		previewParts.setCellValueFactory(new PropertyValueFactory<PMARow,String>("parts"));
 		previewLabor.setCellValueFactory(new PropertyValueFactory<PMARow,String>("labor"));
-		
+		previewTable.setItems(current_pma_list);
 		
 		
 		/** INIT IN SERVICE TABLE VIEW **/
@@ -185,8 +187,7 @@ public class MainController implements Initializable, ControlledScreen {
 					
 					
 					
-					//pma_preview_list = pma_preview_list.get(serviceTable.getSelectionModel().getSelectedIndex());
-					
+					current_pma_list = pma_preview_list.get(serviceTable.getSelectionModel().getSelectedIndex());
 					
 			}		
 		});

@@ -187,6 +187,7 @@ public class MainController {
     	FinalCommentsController fcc = (FinalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
     	customerConcerns = fcc.getCustomerConcerns();
     	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns,new BigDecimal(200),new BigDecimal(100));
+    	Platform.exit();
     }
     
     public void cancel(){
