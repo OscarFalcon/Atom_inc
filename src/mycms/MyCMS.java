@@ -288,28 +288,28 @@ public static class employee{
 		}
 		
 		public static boolean createPMA(int custID,String vehicleVIN,String customerConcerns,BigDecimal markupRateParts,BigDecimal markupRateLabor){
+			
 			ArrayList<Type<?>> arguments = new ArrayList<Type<?>>();
 			ArrayList<Class> result_types = new ArrayList<Class>();
 			ArrayList<Object[]> results;
 			
 			final String SEARCH_BY_VIN =    "SELECT AES_DECRYPT(lic,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-									+ "AES_DECRYPT(tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), year ," 
-									+ "AES_DECRYPT(make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
-									+ "AES_DECRYPT(model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
-									+ "AES_DECRYPT(engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
-									+ "AES_DECRYPT(trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
-									+ "AES_DECRYPT(miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
-									+ "from vehicle WHERE vin = "
-									+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) && id = ?  LIMIT 1";
+											+ "AES_DECRYPT(tags,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), year ," 
+											+ "AES_DECRYPT(make,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(model,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(engine,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(trans,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), "
+											+ "AES_DECRYPT(miles,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512))"
+											+ "from vehicle WHERE vin = "
+											+ "AES_ENCRYPT(?, SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) && id = ?  LIMIT 1";
 		
-			final String SEARCH_CUST = 	"SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-									+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) "
-									+ "from info where id = ? LIMIT 1";
+			final String SEARCH_CUST = 		"SELECT AES_DECRYPT(first,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
+											+ "AES_DECRYPT(last,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)) "
+											+ "from info where id = ? LIMIT 1";
 			
 			
-			final String CREATE_PMA = 	"INSERT INTO PMA(vin,id,active,object) VALUES("
-									+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)),"
-									+ "?,?,?)";
+			final String CREATE_PMA = 		"INSERT INTO PMA(vin,id,active,object) VALUES("
+											+ "AES_ENCRYPT(?,SHA2('a1767a2TE6LsoL4bCg161LbqzpHn97d7',512)), ?,?,?)";
 			
 			arguments.add(new Type<String>(vehicleVIN));		/** SEARCH FOR VEHICLE INFORMATION IN DATABASE **/
 			arguments.add(new Type<Integer>(custID));
@@ -343,7 +343,7 @@ public static class employee{
 			result_types.clear();
 			results.clear();
 			
-			arguments.add(new Type<Integer>(custID));			/** SEARCH FOR CUSTOMER INFORMATION **/
+			arguments.add(new Type<Integer>(custID));		/** SEARCH FOR CUSTOMER INFORMATION **/
 			result_types.add(Class.STRING);
 			result_types.add(Class.STRING);
 			
@@ -536,7 +536,7 @@ public static class employee{
 				int size = pmaObject.getRowCount();
 				
 				for(int j = 0; j < size ;j++){
-					if(pmaObject.ROW_STATUS[i][1] == Status.APPROVED) /** if the current row has been approved **/
+					if(pmaObject.ROW_STATUS[j][1] == Status.APPROVED){ /** if the current row has been approved **/
 						pmaList.add(new PMARow( pmaObject.descriptions[j],
 												pmaObject.tech_comments[j],
 												pmaObject.recommended_repairs[j],
@@ -544,6 +544,7 @@ public static class employee{
 												pmaObject.totalParts[j].toString(),
 												pmaObject.totalLabor[j].toString()
 						));	
+						}
 				}
 				preview_list.add(pmaList);			
 			}

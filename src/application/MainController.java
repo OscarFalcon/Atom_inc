@@ -3,6 +3,7 @@ package application;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -57,6 +58,14 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	
+	/** maps work orders to pma previews - needed to work with reordering of in service table **/
+	private final HashMap<Integer,ObservableList<PMARow>> map = new HashMap<Integer,ObservableList<PMARow>>(); 
+	
+	
+	
+	
+	
+	
 	/** 	IN SERVICE TAB 		**/
 	@FXML private TableView<WorkOrder> serviceTable;
 	
@@ -68,9 +77,9 @@ public class MainController implements Initializable, ControlledScreen {
 	@FXML TableColumn<PMARow, String> previewDescription, previewTechComments, previewRepairComments, previewPriority, previewParts, previewLabor;
 	
 	
-	private final ObservableList<WorkOrder> work_oder_list = FXCollections.observableArrayList();
+	private final ObservableList<WorkOrder> work_order_list = FXCollections.observableArrayList();
 	
-	private ObservableList<PMARow> current_pma_list;
+	private final ObservableList<PMARow> current_pma_list = FXCollections.observableArrayList();
 	
 	private final ArrayList<ObservableList<PMARow>> pma_preview_list = new ArrayList<ObservableList<PMARow>>();
 	
@@ -148,7 +157,7 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
-		serviceTable.setItems(work_oder_list);
+		serviceTable.setItems(work_order_list);
 		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {
 			public void changed(
@@ -185,10 +194,10 @@ public class MainController implements Initializable, ControlledScreen {
 					engineLabel.setText(newValue.getEngine());
 					transmissionLabel.setText(newValue.getTransmission());
 					
-					
-					
-					current_pma_list = pma_preview_list.get(serviceTable.getSelectionModel().getSelectedIndex());
-					
+					int index = serviceTable.getSelectionModel().getSelectedIndex();
+					String wo = serviceOrderNum.getCellData(index);
+					if(wo != null)
+						current_pma_list.setAll(map.get(Integer.parseInt(wo)));					
 			}		
 		});
 
@@ -324,7 +333,16 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	/** refresh button **/
 	public void refresh(){
-		MyCMS.workorder.getWorksOrders(work_oder_list,pma_preview_list);
+		MyCMS.workorder.getWorksOrders(work_order_list,pma_preview_list);
+		map.clear();
+		
+		int count = 0;
+		for(WorkOrder w : work_order_list){
+			int wo = w.getWorkOrderAsInt();
+			map.put(wo, pma_preview_list.get(count++));
+		}
+		
+		
 	}
 	
 	

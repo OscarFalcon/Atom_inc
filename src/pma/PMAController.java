@@ -201,7 +201,7 @@ public class PMAController implements Initializable{
 	 *  you the approval status of the row 
 	 *  
 	 */
-	//private static Status[][] ROW_STATUS = new Status[ROW_COUNT][2];	/** status of each row **/
+	private Status[][] ROW_STATUS = new Status[ROW_COUNT][2];	/** status of each row **/
 	
 	
 	/**
@@ -679,12 +679,12 @@ public class PMAController implements Initializable{
 		checkboxes[place][1].setSelected(false);
 		checkboxes[place][1].getStyleClass().removeAll("check-box-invalid","check-box-regular");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");		
-		PMA.ROW_STATUS[place][0] = Status.OK_SELECTED;
-		PMA.ROW_STATUS[place][1] = Status.NO_STATUS;
+		ROW_STATUS[place][0] = Status.OK_SELECTED;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	private void unselectOK(int place){
 		techcomments[place].setDisable(false);
-		PMA.ROW_STATUS[place][0] = Status.NO_STATUS;
+		ROW_STATUS[place][0] = Status.NO_STATUS;
 	}
 	
 	private void selectNOTOK(int place){
@@ -696,8 +696,8 @@ public class PMAController implements Initializable{
 		checkboxes[place][0].setSelected(false);	
 		checkboxes[place][1].getStyleClass().removeAll("check-box-regular","check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-invalid");
-		PMA.ROW_STATUS[place][0] = Status.NOT_OK_SELECTED;
-		PMA.ROW_STATUS[place][1] = Status.NO_STATUS;
+		ROW_STATUS[place][0] = Status.NOT_OK_SELECTED;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	private void unselectNOTOK(int place){		
 		disableAndClearFields(place);
@@ -705,8 +705,8 @@ public class PMAController implements Initializable{
 		hideFields(place,true);//insert
 		checkboxes[place][1].getStyleClass().remove("check-box-invalid");
 		checkboxes[place][1].getStyleClass().add("check-box-regular");
-		PMA.ROW_STATUS[place][0] = Status.NO_STATUS;
-		PMA.ROW_STATUS[place][1] = Status.NO_STATUS;
+		ROW_STATUS[place][0] = Status.NO_STATUS;
+		ROW_STATUS[place][1] = Status.NO_STATUS;
 	}
 	
 	/** 
@@ -791,9 +791,13 @@ public class PMAController implements Initializable{
 	 */
 	private void alterRow(final int place, final Status status){
 		String css;
-			
+		
+		if(status == null)
+			return;
+		
 		switch( status ){
 			case APPROVED:
+				System.out.println("APPROVED");
 				css = "green-label";
 				break;
 			case NOT_APPROVED:
@@ -810,7 +814,7 @@ public class PMAController implements Initializable{
 		disableFields(place,true);
 		clearCSS(place);
 		
-		PMA.ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
+		ROW_STATUS[place][1] = status;		/** Guaranteed to be either APPROVED,NOT_APPROVED,or INFORMATION_ONLY **/
 		priorities[place].getStyleClass().add(css);
 		priorities[place].getEditor().getStyleClass().add(css);
 		moneyFields[place][0].getStyleClass().add(css);
@@ -891,7 +895,7 @@ public class PMAController implements Initializable{
 				cell.setCellValue(richString);
 			}
 			
-			if(PMA.ROW_STATUS[i][0] != Status.NO_STATUS && PMA.ROW_STATUS[i][0] != Status.OK_SELECTED){
+			if(ROW_STATUS[i][0] != Status.NO_STATUS && ROW_STATUS[i][0] != Status.OK_SELECTED){
 				cell = row.getCell(3); 							/**  TECH COMMENTS  **/ 
 				cell.setCellValue(techcomments[i].getEditor().getText());
 				cell = row.getCell(4);							/** RECOMMENDED REPAIRS **/
@@ -965,9 +969,21 @@ public class PMAController implements Initializable{
 		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
-			//PMA.ROW_STATUS[i][0] = ROW_STATUS[i][0];									/** OK/NOT OK STATUS **/
-			//PMA.ROW_STATUS[i][1] = ROW_STATUS[i][1];									/** APPROVED-DISAPPROVED-INFORMATION_ONLY **/
-			System.out.println("SAVING .. " + PMA.ROW_STATUS[i][1]);
+			
+			if(ROW_STATUS[i][0] == null)
+				PMA.ROW_STATUS[i][0] = Status.NO_STATUS;
+			else
+				PMA.ROW_STATUS[i][0] = ROW_STATUS[i][0];									/** OK/NOT OK STATUS **/
+			if(ROW_STATUS[i][1] == null)
+				PMA.ROW_STATUS[i][1] = Status.NO_STATUS;
+			else
+				PMA.ROW_STATUS[i][1] = ROW_STATUS[i][1];									/** APPROVED-DISAPPROVED-INFORMATION_ONLY **/
+			
+			if(i < 42)
+				PMA.descriptions[i] = labels[i].getText();									/** DESCRIPTION **/
+			
+			
+			
 			PMA.tech_comments[i] = techcomments[i].getEditor().getText();					/** TECH COMMENTS **/
 			PMA.recommended_repairs[i] = recommendedrepairs[i].getEditor().getText();		/** RECOMMENDED REPAIRS **/
 			PMA.priority[i] = PMAObject.stringToPriority(priorities[i].getSelectionModel().getSelectedItem());	/** PRIORITY **/
@@ -1003,7 +1019,7 @@ public class PMAController implements Initializable{
 		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
-			if(PMA.ROW_STATUS[i][1] == Status.APPROVED){
+			if(ROW_STATUS[i][1] == Status.APPROVED){
 				total_parts = total_parts.add(moneyFields[i][0].getValue());	
 				total_parts = total_parts.multiply(QTY[i].getValue(), math_context);
 				total_labor = total_labor.add(moneyFields[i][1].getValue());
@@ -1138,9 +1154,7 @@ public void initialize(URL location, ResourceBundle resources) {
 public void initializePMA(int workOrder){
 	WORK_ORDER_NUMBER = workOrder;
 	
-	if( WORK_ORDER_NUMBER < 0 )
-		return;
-
+	
 	PMA = null;
 	if((PMA = MyCMS.pma.getPMA(WORK_ORDER_NUMBER)) == null)
 			return;
@@ -1173,22 +1187,21 @@ public void initializePMA(int workOrder){
 		vendors[i].setText(PMA.vendor[i]);														/** VENDOR **/
 	
 		
-		if(PMA.ROW_STATUS[i][0] == Status.OK_SELECTED){				// if ok was selected 
+		if(PMA.ROW_STATUS[i][0] == Status.OK_SELECTED){				// if OK was selected 
 			selectOK(i);
 			checkboxes[i][0].setSelected(true);
 		}
-		else if(PMA.ROW_STATUS[i][0] == Status.NOT_OK_SELECTED ){		// if not-ok was selected
+		else if(PMA.ROW_STATUS[i][0] == Status.NOT_OK_SELECTED ){	// if not-OK was selected
 			selectNOTOK(i);
 			checkboxes[i][1].setSelected(true);
-			moneyFields[i][0].setValue(PMA.totalParts[i]);		//revert money fields 
+			moneyFields[i][0].setValue(PMA.totalParts[i]);			//revert money fields 
 			moneyFields[i][1].setValue(PMA.totalLabor[i]);
 			moneyFields[i][2].setValue(PMA.partCost[i]);
 		}
 		else
 			hideFields(i,true);
 		
-		System.out.println("LOADING.. " + PMA.ROW_STATUS[i][1]);
-		alterRow(i,PMA.ROW_STATUS[i][1]);						//revert row status 
+		alterRow(i,PMA.ROW_STATUS[i][1]);							//revert row status 
 	}
 		
 		

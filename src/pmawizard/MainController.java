@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * Main controller class for the entire layout.
@@ -21,23 +22,23 @@ import javafx.scene.layout.Pane;
 public class MainController {
 
    
-    @FXML private Pane vistaHolder;   /** node that we will add children screens to. */
+    @FXML private Pane vistaHolder;   		/** node that we will add children screens to. */
     @FXML private Button nextButton;
     @FXML private Button backButton;
     @FXML private Button finishButton;
 
+    private Stage stage; 	/** the stage view that will be used to close the application **/
     
     
-    /** the currently selected customer id, -1 if no customer is selected **/
-    private int custID = -1; 
+    private int custID = -1;	/** the currently selected customer id, -1 if no customer is selected **/
   
     
-    /** the customer concerns screen is typed at the end of the pma **/
-    private String customerConcerns;
+    
+    private String customerConcerns;	/** the customer concerns screen is typed at the end of the pma **/
     
    
-   /** the vehicleVIN that is currently selected via the create vehicle or select vehicle sections **/
-    private String vehicleVIN;
+   
+    private String vehicleVIN;	/** the vehicleVIN that is currently selected via the create vehicle or select vehicle sections **/
     
     
     /**  data structure that will associate a screen name with a node 
@@ -99,6 +100,13 @@ public class MainController {
     public String getVehicleVin(){
     	return vehicleVIN;
     }
+    
+    public void setStage(Stage stage){
+    	this.stage = stage;
+    }
+    
+    
+    
     
     
     public boolean loadScreen(String name,String filename){
@@ -181,18 +189,21 @@ public class MainController {
     
     
 
-    // ON ACTION  SECTION 
+    /** ON ACTION METHODS **/
     
     public void submitPMA(){
     	FinalCommentsController fcc = (FinalCommentsController) controllers.get(PMAWizard.FINALCOMMENTS_SCREEN);
     	customerConcerns = fcc.getCustomerConcerns();
     	MyCMS.pma.createPMA(custID, vehicleVIN, customerConcerns,new BigDecimal(200),new BigDecimal(100));
-    	Platform.exit();
+    	stage.close();
     }
     
     public void cancel(){
     	Platform.exit();
     } 
+    
+    /** END ON ACTION METHODS **/
+    
     	
 }
     
