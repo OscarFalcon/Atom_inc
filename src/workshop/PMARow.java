@@ -90,7 +90,9 @@ public class PMARow {
 		return labor.get();
 	}
 	
-	
+	public String toString(){
+		return "Summary: " + description.get() + techComments.get();
+	}
 	
 	
 }

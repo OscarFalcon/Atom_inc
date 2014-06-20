@@ -17,8 +17,7 @@ public class PMAWizard extends Application implements Runnable{
 	private static final String SCREEN4 = "SelectVehicleScreen.fxml";
 	private static final String SCREEN5 = "AddVehicleScreen.fxml";
 	private static final String SCREEN6 = "FinalCommentsScreen.fxml";
-	
-	
+
 	public static final String MAIN_SCREEN    = 		"SCREEN1";	
     public static final String SELECTCUSTOMER_SCREEN = 	"SCREEN2";
     public static final String CREATECUSTOMER_SCREEN = 	"SCREEN3";
@@ -26,13 +25,9 @@ public class PMAWizard extends Application implements Runnable{
     public static final String ADDVEHICLE_SCREEN =	 	"SCREEN5";
     public static final String FINALCOMMENTS_SCREEN = 	"SCREEN6";
 	
-	
-	public static void main(String args[]){
-		launch(args);
-	}
-
+    	
 	@Override
-	public void start(Stage stage){
+	public void start(Stage stage){		
 		Parent root;
 		FXMLLoader fxmlLoader = new FXMLLoader();		
 		
@@ -54,18 +49,21 @@ public class PMAWizard extends Application implements Runnable{
 		mainController.setBackButtonDisable(true);
 		mainController.setFinishButtonDisable(true);
 		mainController.switchScreen(SELECTCUSTOMER_SCREEN);
-		
+		mainController.setStage(stage);
 		Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
         stage.show();
+        
+ 
 	}
 	
-
+	
+	
 	@Override
 	public void run(){
 		start(new Stage());
 	}
-	
+
 	
 	
 	

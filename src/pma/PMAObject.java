@@ -90,18 +90,18 @@ public class PMAObject extends Object implements Serializable{
 		this.markUpRate_parts = markUpRateParts;
 		this.markUpRate_labor = markUpRateLabor;
 		
-		descriptions = new String[ROW_COUNT];
-		tech_comments = new String[ROW_COUNT];
-		recommended_repairs = new String[ROW_COUNT];
-		priority = new Priority[ROW_COUNT];
-		totalParts = new BigDecimal[ROW_COUNT];
-		totalLabor = new BigDecimal[ROW_COUNT];
-		laborCost = new BigDecimal[ROW_COUNT];
-		partCost = new BigDecimal[ROW_COUNT];
-		ROW_STATUS = new Status[ROW_COUNT][2];
-		qty = new BigDecimal[ROW_COUNT];
-		vendor = new String[ROW_COUNT];
-		totals = new BigDecimal[9];	
+		descriptions =  		new String[ROW_COUNT];
+		tech_comments = 		new String[ROW_COUNT];
+		recommended_repairs = 	new String[ROW_COUNT];
+		priority = 				new Priority[ROW_COUNT];
+		totalParts = 			new BigDecimal[ROW_COUNT];
+		totalLabor = 			new BigDecimal[ROW_COUNT];
+		laborCost = 			new BigDecimal[ROW_COUNT];
+		partCost = 				new BigDecimal[ROW_COUNT];
+		ROW_STATUS = 			new Status[ROW_COUNT][2];
+		qty = 					new BigDecimal[ROW_COUNT];
+		vendor = 				new String[ROW_COUNT];
+		totals = 				new BigDecimal[9];	
 		
 		for(int i = 0; i < ROW_COUNT; i ++){
 			totalParts[i] = new BigDecimal(0.0);
