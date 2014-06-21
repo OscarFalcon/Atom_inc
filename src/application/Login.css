@@ -1,3 +1,6 @@
+.label {
+	-fx-font-family: "Helvetica";
+}
 
 .root{
 	/*-fx-background-image: url("../Images/Dark_Blue_1.jpg"); */
