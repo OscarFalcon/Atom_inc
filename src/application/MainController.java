@@ -130,8 +130,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		customerTable.setOpacity(.6);
+	
 		//customerTable.setPlaceholder(node);
 		
 		/** INIT CUSTOMER TABLE VIEW **/
@@ -166,6 +165,8 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
 		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
+		serviceTotal.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("grandTotal"));
+		
 		serviceTable.setItems(work_order_list);
 		serviceTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		serviceTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<WorkOrder>() {

@@ -542,7 +542,8 @@ public static class employee{
 												pmaObject.recommended_repairs[j],
 												PMAObject.priorityToString(pmaObject.priority[j]),
 												pmaObject.totalParts[j].toString(),
-												pmaObject.totalLabor[j].toString()
+												pmaObject.totalLabor[j].toString(),
+												pmaObject.totals[8].toString()
 						));	
 						}
 				}

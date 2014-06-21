@@ -60,14 +60,17 @@ public class PMARow {
 	private final SimpleStringProperty priority;
 	private final SimpleStringProperty parts;
 	private final SimpleStringProperty labor;
+	private 	  SimpleStringProperty grandTotal;
 	
-	public PMARow(String description,String techcomments,String repairComments,String priority, String parts,String labor){
+	
+	public PMARow(String description,String techcomments,String repairComments,String priority, String parts,String labor,String grandTotal){
 		this.description = new SimpleStringProperty(description);
 		this.techComments = new SimpleStringProperty(techcomments);
 		this.repairComments = new SimpleStringProperty(repairComments);
 		this.priority = new SimpleStringProperty(priority);
 		this.parts = new SimpleStringProperty(parts);
 		this.labor = new SimpleStringProperty(labor);
+		this.grandTotal = new SimpleStringProperty(grandTotal);
 		
 	}
 	
@@ -89,6 +92,10 @@ public class PMARow {
 	public String getLabor(){
 		return labor.get();
 	}
+	public String getGrandTotal(){
+		return grandTotal.get();
+	}
+	
 	
 	public String toString(){
 		return "Summary: " + description.get() + techComments.get();
