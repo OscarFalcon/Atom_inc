@@ -6,6 +6,10 @@
     -fx-background-position: center center;
 }
 
+.work-order-info{
+	-fx-background-color: rgb(205,201,201);
+}
+
 .custom-title {
     -fx-padding:3;
     -fx-background-color: #C0C0C0;
@@ -64,7 +68,7 @@
 }
 
 .green-label{
-	-fx-background-color: #009900;
+	-fx-background-color: rgb(26,228,52);
 	-fx-opacity:0.8;
 	-fx-border-style:solid;
 }

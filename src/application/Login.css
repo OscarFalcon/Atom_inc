@@ -20,6 +20,9 @@
 	/*-fx-background-color: #2A4254; */
 }
 
+
+
+
 .loginbutton:pressed{
 	-fx-padding: 4 29 2 31;
 }
