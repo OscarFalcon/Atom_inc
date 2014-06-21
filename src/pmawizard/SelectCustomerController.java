@@ -31,6 +31,12 @@ public class SelectCustomerController extends ControlledScreen implements Initia
 	public void createCustomer(ActionEvent event){
 		controller.switchScreen(PMAWizard.CREATECUSTOMER_SCREEN);
 	}
+	
+	public void clear(){
+		customerTable.getSelectionModel().clearSelection();
+	}
+	
+	
 
 	public void search(){
 		String first = firstNameField.getText();

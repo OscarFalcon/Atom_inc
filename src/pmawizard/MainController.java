@@ -168,6 +168,12 @@ public class MainController {
     	
     } 
     public void back(ActionEvent event){
+    	SelectVehicleController c = (SelectVehicleController) controllers.get(PMAWizard.SELECTVEHICLE_SCREEN);
+    	c.clearSelection();
+    	
+    	SelectCustomerController c1 = (SelectCustomerController) controllers.get(PMAWizard.SELECTCUSTOMER_SCREEN);
+    	c1.clear();
+    	
     	switch (current_screen){
 			case PMAWizard.CREATECUSTOMER_SCREEN:
 				switchScreen(PMAWizard.SELECTCUSTOMER_SCREEN);
@@ -199,7 +205,7 @@ public class MainController {
     }
     
     public void cancel(){
-    	Platform.exit();
+    	stage.close();
     } 
     
     /** END ON ACTION METHODS **/
