@@ -3,20 +3,15 @@ package pmawizard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.sun.glass.events.MouseEvent;
-
 import mycms.MyCMS;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import workshop.Vehicle;
 
 public class SelectVehicleController extends ControlledScreen implements Initializable{
@@ -63,17 +58,6 @@ public class SelectVehicleController extends ControlledScreen implements Initial
 				}	
 			}
 		});
-		/**vehicleTable.setRowFactory(new Callback<TableView<Vehicle>,TableRow<Vehicle>>(){
-			@Override
-			public TableRow<Vehicle> call(TableView<Vehicle> param) {
-				System.out.println("CallBack method");
-				return null;
-			}
-			
-		}); **/
-		
-		
-		
 	}
 	
 

@@ -72,14 +72,6 @@ public class AddVehicleController extends ControlledScreen implements Initializa
 	
 	
 	
-
-	
-	
-	
-	
-	
-	
-	
 	private class handler implements EventHandler<KeyEvent>{
 		@Override
 		public void handle(KeyEvent event) {

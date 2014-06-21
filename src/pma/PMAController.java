@@ -1108,10 +1108,7 @@ public class PMAController implements Initializable,ControlledScreen{
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 
-	grid.prefWidthProperty().bind(scrollPane.widthProperty());
-	//scrollPane.setFitToWidth(true);
-	
-	
+	grid.prefWidthProperty().bind(scrollPane.widthProperty());	
 	
 	/** put all declared FX id variables in arrays for easier processing later on **/	
 		
@@ -1294,21 +1291,21 @@ private void initializeMoneyTextFields(){
 		});
 		laborHours[i].focusedProperty().addListener(laborFieldListeners.get(i));
 		
-		/**qtyFieldListeners.add(new ChangeListener<Boolean>(){
+		qtyFieldListeners.add(new ChangeListener<Boolean>(){
 		    @Override
 		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue){
 		        if(!newPropertyValue){
 		            int i;
-		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++)
+		            for(i = 0;!qtyFieldListeners.get(i).equals(this);i++)
 		            	;
-		            BigDecimal value = laborHours[i].getValue().multiply(new BigDecimal(99));
-		            moneyFields[i][1].setValue(value);
-		            
-		            
+		            BigDecimal value = PMA.markUpRate_parts.divide(new BigDecimal(100),math_context);// markuprate % 100
+		            value = moneyFields[i][2].getValue().multiply(value,math_context); // markuprate * moneyfield
+		            value = value.multiply(QTY[i].getValue(),math_context); //value = value * qty
+		            moneyFields[i][0].setValue(value);            
 		        }
 		    }
-		});**/
-		laborHours[i].focusedProperty().addListener(laborFieldListeners.get(i));
+		});
+		QTY[i].focusedProperty().addListener(qtyFieldListeners.get(i));
 		
 		
 		
