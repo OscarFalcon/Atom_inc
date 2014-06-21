@@ -1,20 +1,24 @@
 package pma;
 
 
-import java.io.IOException;
 
+import fxml.SimpleEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
 public class PMAView extends Application implements Runnable{
 
-	private int workOrderNumber = -1;
+	private final String resource = "../pma/PMA.fxml";
+	private final String resource_name = "Screen";
 	
 	
+	private int workOrderNumber;
 	
 	public PMAView(int workOrderNumber){
 		super();
@@ -23,24 +27,30 @@ public class PMAView extends Application implements Runnable{
 	
 	@Override
 	public void start(Stage stage){
-		FXMLLoader fxmlLoader = new FXMLLoader();		
+		Parent root = null;
+		/**SimpleEngine engine = new SimpleEngine();
+		engine.loadScreen(resource_name,resource);
+		engine.setScreen(resource_name);		
+		Node node = engine.getContainer(); **/
 		
-		Parent root;
-		try {
-			root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		try{
+			root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());	
 		}
-		Scene scene = new Scene(root, 1350, 800);
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		final Scene scene = new Scene(root, 1350, 800);
         stage.setMinWidth(800);
         stage.setMinHeight(600);
         stage.setMaxWidth(1750);
         stage.setMaxHeight(1000);
         stage.setScene(scene);
         stage.show();
+       
         PMAController controller =  fxmlLoader.getController();
         controller.initializePMA(workOrderNumber);
+ 
 	}
 	
 	@Override

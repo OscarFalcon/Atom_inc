@@ -2,6 +2,9 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import fxml.ControlledScreen;
+import fxml.FXMLEngine;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +24,7 @@ public class LoginController implements Initializable, ControlledScreen {
 	@FXML private Button loginButton;
 	
 	
-	private ScreenController myController;
+	private FXMLEngine myController;
 
 	
 	private static final int MAX_USERNAME = 32;
@@ -36,11 +39,15 @@ public class LoginController implements Initializable, ControlledScreen {
 	/**
 	 * Initializes the controller class.
 	 */
+	
+	
 	public void initialize(URL url, ResourceBundle rb) {
 	}
-
-	public void setScreenParent(ScreenController screenParent) {
-		myController = screenParent;
+	
+	
+	@Override
+	public void setScreenParent(FXMLEngine screenPage) {
+		myController = screenPage;
 	}
 
 
@@ -92,7 +99,7 @@ public class LoginController implements Initializable, ControlledScreen {
 			myController.setScreen(Main.screenMainID);
 			usernameField.setText("");
 			passwordField.setText("");
-			MainController c = (MainController) myController.getScreenController(Main.screenMainID);
+			MainController c = (MainController) myController.getController(Main.screenMainID);
 			c.refresh();//fill in the service table of main view
 		}
 		else
@@ -112,6 +119,8 @@ public class LoginController implements Initializable, ControlledScreen {
 	public void cancel(ActionEvent event) {
 		return;
 	}
+
+	
 	
 	
 }

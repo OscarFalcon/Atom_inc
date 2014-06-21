@@ -5,7 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
+import fxml.ControlledScreen;
+import fxml.FXMLEngine;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -39,8 +40,10 @@ import workshop.WorkOrder;
 
 public class MainController implements Initializable, ControlledScreen {
 
-	private ScreenController myController;
-	static Stage primaryStage;
+	private FXMLEngine parentEngine;
+	
+	
+	public static Stage primaryStage;
 
 	
 	@FXML
@@ -115,10 +118,16 @@ public class MainController implements Initializable, ControlledScreen {
 	public Person current;
 	
 	
-	public void setScreenParent(ScreenController screenParent) {
-		myController = screenParent;
+	
+	
+	
+	@Override
+	public void setScreenParent(FXMLEngine parentEngine){
+		this.parentEngine = parentEngine;	
 	}
-
+	
+	
+	
 	
 	public void initialize(URL url, ResourceBundle rb) {
 		
@@ -207,7 +216,7 @@ public class MainController implements Initializable, ControlledScreen {
 		serviceDateIn.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.15));
 		serviceName.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
 		serviceVehicle.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.30));
-		serviceStatus.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
+		//serviceStatus.prefWidthProperty().bind(serviceTable.widthProperty().multiply(0.20));
 
 		// set resizing for the searched PMA table columns
 		workOrderNum.prefWidthProperty().bind(pmaTable.widthProperty().multiply(0.15));
@@ -304,7 +313,7 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	/** GENERAL SECTION **/
 	public void signOut(ActionEvent event) {
-		myController.setScreen(Main.screenLoginID);
+		parentEngine.setScreen(Main.screenLoginID);
 	}
 	
 	
@@ -377,6 +386,9 @@ public class MainController implements Initializable, ControlledScreen {
 		ObservableList<Person> persons = MyCMS.customer.search(first, MyCMS.EXACTLY,last,MyCMS.EXACTLY, null,null,null,null,null,null);
 		customerTable.setItems(persons);
 	}
+
+
+
 	
 	
 	
