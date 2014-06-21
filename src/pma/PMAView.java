@@ -2,6 +2,8 @@ package pma;
 
 
 
+import com.sun.javafx.tk.Toolkit;
+import java.awt.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +27,7 @@ public class PMAView extends Application implements Runnable{
 	@Override
 	public void start(Stage stage){
 		Parent root = null;
+		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
 		/**SimpleEngine engine = new SimpleEngine();
 		engine.loadScreen(resource_name,resource);
 		engine.setScreen(resource_name);		
@@ -37,11 +40,15 @@ public class PMAView extends Application implements Runnable{
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		final Scene scene = new Scene(root, 1350, 800);
-        stage.setMinWidth(800);
+		
+		int width = toolkit.getDefaultToolkit().getScreenSize().width;
+		int height = toolkit.getDefaultToolkit().getScreenSize().height;
+		
+		final Scene scene = new Scene(root, width, height);
+        stage.setMinWidth(1200);
         stage.setMinHeight(600);
-        stage.setMaxWidth(1750);
-        stage.setMaxHeight(1000);
+        //stage.setMaxWidth(2050);
+        //stage.setMaxHeight(1000);
         stage.setScene(scene);
         stage.show();
        

@@ -20,6 +20,7 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) {
     	MainController.primaryStage = primaryStage;
+        java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
         
     	StackedEngine engine = new StackedEngine();
     	
@@ -35,8 +36,10 @@ public class Main extends Application{
         root.getChildren().addAll(pane);
            
         //sets the initial size of the frame (stage)
-        primaryStage.setWidth(1300);
-        primaryStage.setHeight(775);
+        int width = toolkit.getDefaultToolkit().getScreenSize().width;
+		int height = toolkit.getDefaultToolkit().getScreenSize().height;
+        primaryStage.setWidth(width);
+        primaryStage.setHeight(height);
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(700);
         
