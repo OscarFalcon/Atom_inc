@@ -48,6 +48,8 @@ import com.aspose.cells.Worksheet;
 import custom.DoubleTextField;
 import custom.IntegerTextField;
 import custom.MoneyTextField;
+import fxml.ControlledScreen;
+import fxml.FXMLEngine;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -71,16 +73,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import mycms.*;
 import pma.PMAObject;
 import pma.PMAObject.Status;
 import pma.PMAObject.Priority;
 
 
-public class PMAController implements Initializable{
+public class PMAController implements Initializable,ControlledScreen{
 	
 	private static final int ROW_COUNT = 50; 	//the number of rows in the PMA;
 	
@@ -632,6 +634,14 @@ public class PMAController implements Initializable{
 			};
 	
 /*********************************************************************************************************************************/
+	private FXMLEngine parentEngine;
+	
+	@Override
+	public void setScreenParent(FXMLEngine screenPage) {
+		parentEngine = screenPage;
+	}
+	
+	
 	
 	
 	
