@@ -1,9 +1,19 @@
 
 .root{
-	-fx-background-image: url("../Images/background.jpg");
+	/*-fx-background-image: url("../Images/Dark_Blue_1.jpg"); */
+   /*-fx-background-color: linear-gradient(#517FA4 , #98B5CC); */
 	/*-fx-background-repeat: repeat; */  
-    -fx-background-size: 900 506;
+    -fx-background-size: 1600 1000;
     -fx-background-position: center center;
+}
+
+.menubar{
+	-fx-background-color: rgb(81, 127, 164);
+}
+
+.tabs{
+	-fx-background-color: rgb(81, 127, 164);
+	/*-fx-background-color: #2A4254; */
 }
 
 .loginbutton:pressed{
