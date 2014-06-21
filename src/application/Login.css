@@ -11,6 +11,10 @@
 	-fx-background-color: rgb(81, 127, 164);
 }
 
+.TopMenubar{
+	-fx-background-color: rgb(144,144,144);
+}
+
 .tabs{
 	-fx-background-color: rgb(81, 127, 164);
 	/*-fx-background-color: #2A4254; */

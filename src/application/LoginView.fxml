@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
 <?import java.lang.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="678.0" prefWidth="922.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="923.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
   <!-- TODO Add Nodes -->
   <children>
     <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
@@ -16,7 +17,7 @@
         <Image url="@../Images/2fatguyslogo.png" />
       </image>
     </ImageView>
-    <MenuBar prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <MenuBar prefWidth="850.0" styleClass="TopMenubar" stylesheets="@Login.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -36,15 +37,27 @@
       </menus>
     </MenuBar>
     <Separator layoutX="186.0" orientation="VERTICAL" prefHeight="638.0" prefWidth="5.0" AnchorPane.bottomAnchor="7.0" AnchorPane.topAnchor="33.0" />
-      <VBox alignment="CENTER" layoutX="291.0" layoutY="264.0" prefHeight="109.0" prefWidth="341.0" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="291.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="264.0">
+      <VBox alignment="CENTER" layoutX="291.0" layoutY="264.0" prefHeight="131.0" prefWidth="349.0" AnchorPane.bottomAnchor="328.0" AnchorPane.leftAnchor="291.0" AnchorPane.rightAnchor="282.0" AnchorPane.topAnchor="264.0">
          <children>
+          <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="350.0" promptText="Login Name" VBox.vgrow="NEVER">
+               <VBox.margin>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </VBox.margin></TextField>
+          <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="350.0" promptText="Password" VBox.vgrow="NEVER">
+               <VBox.margin>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </VBox.margin></PasswordField>
+          <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#signIn" prefHeight="30.0" prefWidth="343.0" styleClass="loginbutton" stylesheets="@Login.css" VBox.vgrow="NEVER">
+               <VBox.margin>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </VBox.margin></Button>
           <Label fx:id="loginLabel" alignment="CENTER" prefHeight="42.0" text="Please Log In" textFill="#d00404">
                <font>
-                  <Font size="18.0" />
-               </font></Label>
-          <TextField fx:id="usernameField" maxWidth="-Infinity" prefHeight="42.0" prefWidth="350.0" promptText="Login Name" />
-          <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="350.0" promptText="Password" />
-          <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#signIn" prefHeight="42.0" prefWidth="350.0" styleClass="loginbutton" stylesheets="@Login.css" VBox.vgrow="NEVER" />
+                  <Font size="17.0" />
+               </font>
+               <padding>
+                  <Insets top="10.0" />
+               </padding></Label>
          </children>
       </VBox>
   </children>
