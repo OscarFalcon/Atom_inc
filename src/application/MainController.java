@@ -87,17 +87,10 @@ public class MainController implements Initializable, ControlledScreen {
 	private final ArrayList<ObservableList<PMARow>> pma_preview_list = new ArrayList<ObservableList<PMARow>>();
 	
 	
+	@FXML private TextField nameField,servicePhoneField,emailField,addressField1,addressField2,
+					
+					vehicleField,licField,engineField,transField,milesField;
 	
-	
-	
-	
-	
-	/**************REMOVED ***************************/
-	@FXML private Label firstNameLabel,lastNameLabel,phoneLabel,emailLabel,addressLabel,cityLabel,stateLabel,zipLabel;
-	
-	@FXML private Label makeLabel, modelLabel, yearLabel, licenseLabel, vinLabel, colorLabel, mileageLabel,
-						engineLabel, transmissionLabel;
-	/***************************************************/
 	
 	
 	
@@ -174,35 +167,29 @@ public class MainController implements Initializable, ControlledScreen {
 					ObservableValue<? extends WorkOrder> observable,WorkOrder oldValue, WorkOrder newValue) {
 					
 					if(newValue == null){
-						firstNameLabel.setText("");
-						lastNameLabel.setText("");
-						phoneLabel.setText("");
-						addressLabel.setText("");
-						cityLabel.setText("");
-						stateLabel.setText("");
+						nameField.setText("");
+						phoneField.setText("");
+						addressField1.setText("");
+						addressField2.setText("");
+						emailField.setText("");
 						/**HANDLE ERROR BY DISPLAYING MESSAGE ? **/
 						return;
 					
 					}
 					
 					/** UPDATES PERSONAL INFO TAB **/
-					firstNameLabel.setText(newValue.getFirstName());
-					lastNameLabel.setText(newValue.getLastName());
-					phoneLabel.setText(newValue.getPhone());
-					emailLabel.setText(newValue.getEmail());
-					addressLabel.setText(newValue.getAddress());
-					cityLabel.setText(newValue.getCity());
-					stateLabel.setText(newValue.getState());	
+					nameField.setText(newValue.getFirstName() + " " + newValue.getLastName());
+					servicePhoneField.setText(newValue.getPhone());
+					emailField.setText(newValue.getEmail());
+					addressField1.setText(newValue.getAddress());
+					addressField2.setText(newValue.getCity());
 					
 					/** UPDATES VEHICLE INFO TAB **/
-					makeLabel.setText(newValue.getMake());
-					modelLabel.setText(newValue.getModel());
-					yearLabel.setText(newValue.getYear());
-					licenseLabel.setText(newValue.getLic());
-					vinLabel.setText(newValue.getVIN());
-					mileageLabel.setText(newValue.getMiles());
-					engineLabel.setText(newValue.getEngine());
-					transmissionLabel.setText(newValue.getTransmission());
+					vehicleField.setText(newValue.getYear() + " " + newValue.getMake() + " " + newValue.getModel());
+					licField.setText(newValue.getLic());
+					milesField.setText(newValue.getMiles());
+					engineField.setText(newValue.getEngine());
+					transField.setText(newValue.getTransmission());
 					
 					int index = serviceTable.getSelectionModel().getSelectedIndex();
 					String wo = serviceOrderNum.getCellData(index);
@@ -210,6 +197,22 @@ public class MainController implements Initializable, ControlledScreen {
 						current_pma_list.setAll(map.get(Integer.parseInt(wo)));					
 			}		
 		});
+		
+		nameField.setEditable(false);
+		servicePhoneField.setEditable(false);
+		emailField.setEditable(false);
+		addressField1.setEditable(false);
+		addressField2.setEditable(false);
+		
+		vehicleField.setEditable(false);
+		licField.setEditable(false);
+		milesField.setEditable(false);
+		engineField.setEditable(false);
+		transField.setEditable(false);
+		
+		
+		
+		
 
 		
 		// Set the resizing property for the service order table

@@ -79,15 +79,16 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="work-order-info" stylesheets="@../pma/style.css">
                                        <children>
-                                          <GridPane layoutX="13.0" layoutY="13.0" prefHeight="169.0" prefWidth="753.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="178.0">
+                                          <GridPane layoutX="13.0" layoutY="2.0" prefHeight="180.0" prefWidth="913.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="18.0">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="116.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="58.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="10.0" prefWidth="60.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="112.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="114.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="10.0" prefWidth="77.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="214.0" minWidth="10.0" prefWidth="187.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="0.0" prefWidth="27.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="0.0" prefWidth="0.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="265.0" minWidth="10.0" prefWidth="212.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="0.0" prefWidth="0.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="141.0" minWidth="10.0" prefWidth="141.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="10.0" prefWidth="119.0" />
                                             </columnConstraints>
                                             <rowConstraints>
@@ -98,15 +99,15 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="95.0" styleClass="TopMenubar" text="Customer:">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="95.0" text="Customer:">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Email:" GridPane.rowIndex="1">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Phone:" GridPane.rowIndex="1">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Phone:" GridPane.rowIndex="2">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Email:" GridPane.rowIndex="2">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
@@ -114,110 +115,46 @@
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label fx:id="firstNameLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="custom-field" GridPane.columnIndex="1">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
                                                 <Label fx:id="lastNameLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="emailLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="phoneLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="addressLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="cityLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="stateLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="zipLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Vehicle:" GridPane.columnIndex="4">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="123.0" text="Vehicle:" GridPane.columnIndex="4">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Tags:" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="LIC:" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Vin:" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Engine:" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Engine:" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Trans:" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label fx:id="yearLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="licenseLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="vinLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="engineLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.rowIndex="3">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Trans:" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Miles:" GridPane.columnIndex="4" GridPane.rowIndex="4">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font></Label>
-                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Miles:" GridPane.columnIndex="6" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font></Label>
-                                                <Label fx:id="makeLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="15.0" prefWidth="38.0" GridPane.columnIndex="6">
+                                                <Label fx:id="transmissionLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="8" GridPane.rowIndex="3">
                                                    <font>
                                                       <Font size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="modelLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="7">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="mileageLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="7" GridPane.rowIndex="1">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="transmissionLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="7" GridPane.rowIndex="3">
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Label>
+                                                <TextField fx:id="nameField" GridPane.columnIndex="1" />
+                                                <TextField fx:id="servicePhoneField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="addressField1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="vehicleField" GridPane.columnIndex="5" />
+                                                <TextField fx:id="licField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                <TextField fx:id="engineField" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                                <TextField fx:id="transField" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                                <TextField fx:id="addressField2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <TextField fx:id="milesField" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                                              </children>
                                           </GridPane>
                                        </children>
@@ -363,6 +300,8 @@
                                   </font>
                                 </Label>
                                 <Label font="$x1" layoutX="272.0" layoutY="51.0" text="To" />
+                                                <DatePicker layoutX="320.0" layoutY="8.0" />
+                                                <DatePicker layoutX="320.0" layoutY="46.0" />
                               </children>
                             </AnchorPane>
                           </content>
