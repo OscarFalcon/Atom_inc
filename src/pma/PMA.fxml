@@ -33,7 +33,7 @@
             </MenuBar>
          </top>
          <center>
-            <ScrollPane fx:id="scrollPane" prefViewportHeight="2257.0" prefViewportWidth="1884.0">
+            <ScrollPane fx:id="scrollPane" prefViewportHeight="2257.0" prefViewportWidth="1884.0" >
                <content>
                   <GridPane fx:id="grid" alignment="CENTER" cacheShape="false" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false" styleClass="custom-field" stylesheets="/pma/style.css" BorderPane.alignment="CENTER">
                      <children>
