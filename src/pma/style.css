@@ -1,3 +1,7 @@
+.label {
+	-fx-font-family: "Helvetica";
+}
+
 
 .root{
 	-fx-background-image: url("../Images/background.jpg");
@@ -11,6 +15,7 @@
 }
 
 .custom-title {
+	-fx-font-family : Helvetica;
     -fx-padding:3;
     -fx-background-color: #C0C0C0;
     -fx-border-style:solid;
@@ -38,6 +43,7 @@
 
 
 .custom-field {
+	-fx-font-family : Helvetica;
    /*-fx-padding: 0;*/ 
    -fx-background-color:white;
    -fx-border-style:solid;
@@ -80,7 +86,7 @@
 }
 
 .yellow-label{
-	-fx-background-color:#FFFF00;
+	-fx-background-color:rgb(255,255,51);
    -fx-opacity:0.8;
    -fx-border-style:solid;
 	
