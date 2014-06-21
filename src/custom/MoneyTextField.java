@@ -24,7 +24,7 @@ public class MoneyTextField extends MyTextField{
 	} 
 	
 	@Override
-	protected BigDecimal getValueOf(String input){		
+	protected  BigDecimal getValueOf(String input){		
 		if(input.length() > 8)
 			input = input.substring(0, 8);
     	
@@ -44,4 +44,17 @@ public class MoneyTextField extends MyTextField{
 		}
 		return number;
 	}
+	
+	
+	public static BigDecimal stringToBigDecimal(String input){	
+		
+		if(input.length() > 8)
+			input = input.substring(0, 8);
+    	
+		input = addPeriod(input);    	
+    	BigDecimal bd = new BigDecimal(input);
+    	return bd;
+	}
+	
+	
 }

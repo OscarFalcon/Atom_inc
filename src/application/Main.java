@@ -4,8 +4,6 @@ package application;
 
 import fxml.StackedEngine;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;

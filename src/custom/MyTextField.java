@@ -74,7 +74,7 @@ public abstract class MyTextField extends TextField{
 	/**
 	 * This method must return the BigDecimal representation of the a given input
 	 */
-	protected abstract BigDecimal getValueOf(String input);
+	 protected abstract BigDecimal getValueOf(String input);
 	
 	 /**
 	  * Used to move the caret of the TextField

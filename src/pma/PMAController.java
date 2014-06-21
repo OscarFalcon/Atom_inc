@@ -60,11 +60,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
@@ -144,7 +146,9 @@ public class PMAController implements Initializable,ControlledScreen{
 	 **/
 	@FXML private GridPane grid;
 
-
+	@FXML private ScrollPane scrollPane;
+	
+	
 	
 	/**
 	 *  These arrays are initialized to the injectable counterparts from the PMA
@@ -174,13 +178,20 @@ public class PMAController implements Initializable,ControlledScreen{
 	 */
 	private final MoneyTextField[][] moneyFields = new MoneyTextField[ROW_COUNT][3];
 	
+	private final IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
+	
+	private final DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
+	
 	private final ArrayList<ChangeListener<Boolean>> partFieldListeners = new ArrayList<ChangeListener<Boolean>>();
 	
 	private final ArrayList<ChangeListener<Boolean>> laborFieldListeners = new ArrayList<ChangeListener<Boolean>>();
 	
-	private final IntegerTextField[] QTY = new IntegerTextField[ROW_COUNT];
+	private final ArrayList<ChangeListener<Boolean>> qtyFieldListeners = new ArrayList<ChangeListener<Boolean>>();
 	
-	private final DoubleTextField[] laborHours = new DoubleTextField[ROW_COUNT];
+	
+	
+	
+	
 	
 	
 	
@@ -807,7 +818,6 @@ public class PMAController implements Initializable,ControlledScreen{
 		
 		switch( status ){
 			case APPROVED:
-				System.out.println("APPROVED");
 				css = "green-label";
 				break;
 			case NOT_APPROVED:
@@ -977,6 +987,17 @@ public class PMAController implements Initializable,ControlledScreen{
 	
 	public void save(){
 		
+		/**PMA.totals[0] = MoneyTextField.stringToBigDecimal(highPrior.getText());
+		PMA.totals[1] = MoneyTextField.stringToBigDecimal(mediumPrior.getText());
+		PMA.totals[2] = MoneyTextField.stringToBigDecimal(lowPrior.getText());
+		PMA.totals[3] = MoneyTextField.stringToBigDecimal(partsTotal.getText());
+		PMA.totals[4] = MoneyTextField.stringToBigDecimal(laborTotal.getText());
+		PMA.totals[5] = MoneyTextField.stringToBigDecimal(partsLaborTotal.getText());
+		PMA.totals[6] = MoneyTextField.stringToBigDecimal(tax.getText());
+		PMA.totals[7] = MoneyTextField.stringToBigDecimal(shopSupplies.getText());
+		PMA.totals[8] = MoneyTextField.stringToBigDecimal(Total.getText());**/
+		
+		
 		for(int i = 0; i < ROW_COUNT; i++){
 			
 			
@@ -1013,7 +1034,6 @@ public class PMAController implements Initializable,ControlledScreen{
 	
 	public void computeTotals(){
 		
-		
 		BigDecimal total_parts = new BigDecimal("0.00");
 		BigDecimal total_labor = new BigDecimal("0.00");
 		BigDecimal total_parts_and_labor = new BigDecimal("0.00");
@@ -1024,34 +1044,34 @@ public class PMAController implements Initializable,ControlledScreen{
 		BigDecimal priority_med = new BigDecimal("0.00");
 		BigDecimal priority_low = new BigDecimal("0.00");
 		BigDecimal tax_rate = new BigDecimal(".0825");
-		
-		final MathContext mc = new MathContext(50,RoundingMode.HALF_UP);
-		
+				
 		for(int i = 0; i < ROW_COUNT; i++){
 			
 			if(ROW_STATUS[i][1] == Status.APPROVED){
+				System.out.println("Compute totals: APPROVED");
 				total_parts = total_parts.add(moneyFields[i][0].getValue());	
 				total_parts = total_parts.multiply(QTY[i].getValue(), math_context);
 				total_labor = total_labor.add(moneyFields[i][1].getValue());
-				total_parts_and_labor = total_parts.add(total_labor,mc);
+				total_parts_and_labor = total_parts.add(total_labor,math_context);
+				System.out.println("total_parts:" + total_parts);
 			}
 			Object item;
 			
 			if( (item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("HIGH") ){
-				priority_high = priority_high.add(moneyFields[i][0].getValue(),mc);
-				priority_high = priority_high.add(moneyFields[i][1].getValue(),mc);
+				priority_high = priority_high.add(moneyFields[i][0].getValue(),math_context);
+				priority_high = priority_high.add(moneyFields[i][1].getValue(),math_context);
 			}
 			else if( (item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("MED") ){
-				priority_med = priority_med.add(moneyFields[i][0].getValue(),mc);
-				priority_med = priority_med.add(moneyFields[i][1].getValue(),mc);
+				priority_med = priority_med.add(moneyFields[i][0].getValue(),math_context);
+				priority_med = priority_med.add(moneyFields[i][1].getValue(),math_context);
 			}
 			else if((item = priorities[i].getSelectionModel().getSelectedItem()) != null  && item.equals("LOW") ){
-				priority_low = priority_low.add(moneyFields[i][0].getValue(),mc);
-				priority_low = priority_low.add(moneyFields[i][1].getValue(),mc);			
+				priority_low = priority_low.add(moneyFields[i][0].getValue(),math_context);
+				priority_low = priority_low.add(moneyFields[i][1].getValue(),math_context);			
 			}
 		}
-		tax_amount = total_parts_and_labor.multiply(tax_rate, mc);
-		grand_total = total_parts_and_labor.add(tax_amount, mc);
+		tax_amount = total_parts_and_labor.multiply(tax_rate, math_context);
+		grand_total = total_parts_and_labor.add(tax_amount, math_context);
 		
 		/** set textfields to newly computed totals **/
 		partsTotal.setText(NumberFormat.getCurrencyInstance().format(total_parts));					/**	PARTS TOTAL LABEL **/
@@ -1062,6 +1082,11 @@ public class PMAController implements Initializable,ControlledScreen{
 		highPrior.setText(NumberFormat.getCurrencyInstance().format(priority_high));				/** HIGH PRIORITY LABEL **/
 		mediumPrior.setText(NumberFormat.getCurrencyInstance().format(priority_med));				/** MED PRIORITY LABEL **/
 		lowPrior.setText(NumberFormat.getCurrencyInstance().format(priority_low));					/** LOW PRIORITY LABEL **/
+		
+		
+		System.out.println("UPDATING..");
+		System.out.println("parts total :" + total_parts);
+		
 		
 		/** update PMA with newly computed totals **/
 		PMA.totals[HIGH] = priority_high; 
@@ -1083,6 +1108,11 @@ public class PMAController implements Initializable,ControlledScreen{
 @SuppressWarnings("unchecked")
 public void initialize(URL location, ResourceBundle resources) {
 
+	grid.prefWidthProperty().bind(scrollPane.widthProperty());
+	//scrollPane.setFitToWidth(true);
+	
+	
+	
 	/** put all declared FX id variables in arrays for easier processing later on **/	
 		
 	checkboxes = new CheckBox[][] {{OK1, NOTOK1}, {OK2, NOTOK2}, {OK3, NOTOK3}, {OK4, NOTOK4}, {OK5, NOTOK5},{OK6, NOTOK6},
@@ -1192,7 +1222,6 @@ public void initializePMA(int workOrder){
 		techcomments[i].getEditor().setText((PMA.tech_comments[i]));							/** TECH COMMENTS **/
 		recommendedrepairs[i].getEditor().setText(PMA.recommended_repairs[i]);					/** RECOMMENDED REPAIRS **/
 		priorities[i].getSelectionModel().select(PMAObject.priorityToString(PMA.priority[i]));	/** PRIORITIES **/
-		QTY[i].setValue(PMA.qty[i]);															/** QTY **/
 		laborHours[i].setValue(PMA.laborCost[i]);												/** LABOR HOURS **/
 		vendors[i].setText(PMA.vendor[i]);														/** VENDOR **/
 	
@@ -1204,6 +1233,7 @@ public void initializePMA(int workOrder){
 		else if(PMA.ROW_STATUS[i][0] == Status.NOT_OK_SELECTED ){	// if not-OK was selected
 			selectNOTOK(i);
 			checkboxes[i][1].setSelected(true);
+			QTY[i].setValue(PMA.qty[i]);															/** QTY **/
 			moneyFields[i][0].setValue(PMA.totalParts[i]);			//revert money fields 
 			moneyFields[i][1].setValue(PMA.totalLabor[i]);
 			moneyFields[i][2].setValue(PMA.partCost[i]);
@@ -1211,7 +1241,9 @@ public void initializePMA(int workOrder){
 		else
 			hideFields(i,true);
 		
+		
 		alterRow(i,PMA.ROW_STATUS[i][1]);							//revert row status 
+		
 	}
 		
 		
@@ -1253,11 +1285,37 @@ private void initializeMoneyTextFields(){
 		            int i;
 		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++)
 		            	;
+		            BigDecimal value = laborHours[i].getValue().multiply(new BigDecimal(99));
+		            moneyFields[i][1].setValue(value);
+		            
+		            
 		        }
 		    }
 		});
 		laborHours[i].focusedProperty().addListener(laborFieldListeners.get(i));
+		
+		/**qtyFieldListeners.add(new ChangeListener<Boolean>(){
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue){
+		        if(!newPropertyValue){
+		            int i;
+		            for(i = 0;!laborFieldListeners.get(i).equals(this);i++)
+		            	;
+		            BigDecimal value = laborHours[i].getValue().multiply(new BigDecimal(99));
+		            moneyFields[i][1].setValue(value);
+		            
+		            
+		        }
+		    }
+		});**/
+		laborHours[i].focusedProperty().addListener(laborFieldListeners.get(i));
+		
+		
+		
+		
 	}
+	
+	
 }
 
 
