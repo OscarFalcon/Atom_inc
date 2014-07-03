@@ -3,7 +3,11 @@ package pma;
 
 
 import com.sun.javafx.tk.Toolkit;
+
+import fxml.SimpleEngine;
+
 import java.awt.*;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,18 +32,12 @@ public class PMAView extends Application implements Runnable{
 	public void start(Stage stage){
 		Parent root = null;
 		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-		/**SimpleEngine engine = new SimpleEngine();
-		engine.loadScreen(resource_name,resource);
-		engine.setScreen(resource_name);		
-		Node node = engine.getContainer(); **/
 		
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		try{
-			root = fxmlLoader.load(getClass().getResource("PMA.fxml").openStream());	
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		
+		SimpleEngine engine = new SimpleEngine();
+		root = engine.loadScreen(resource_name, resource);
+		PMAController controller = (PMAController) engine.getController(resource_name);
+		
 		
 		int width = toolkit.getDefaultToolkit().getScreenSize().width;
 		int height = toolkit.getDefaultToolkit().getScreenSize().height;
@@ -52,7 +50,7 @@ public class PMAView extends Application implements Runnable{
         stage.setScene(scene);
         stage.show();
        
-        PMAController controller =  fxmlLoader.getController();
+       // PMAController controller =  fxmlLoader.getController();
         controller.initializePMA(workOrderNumber);
  
 	}

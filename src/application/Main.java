@@ -4,6 +4,7 @@ package application;
 
 import fxml.StackedEngine;
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -22,8 +23,10 @@ public class Main extends Application{
     	MainController.primaryStage = primaryStage;
         java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
         
-    	StackedEngine engine = new StackedEngine();
-    	
+        
+        
+        
+        StackedEngine engine = new StackedEngine();
     	engine.loadScreen(Main.screenLoginID, Main.screenLoginFile);
         engine.loadScreen(Main.screenMainID, Main.screenMainFile);
         engine.setScreen(Main.screenLoginID);
@@ -34,7 +37,7 @@ public class Main extends Application{
          
         AnchorPane root = new AnchorPane();
         root.getChildren().addAll(pane);
-           
+          
         //sets the initial size of the frame (stage)
         int width = toolkit.getDefaultToolkit().getScreenSize().width;
 		int height = toolkit.getDefaultToolkit().getScreenSize().height;
@@ -53,6 +56,6 @@ public class Main extends Application{
     
     
     public static void main(String[] args) {
-        launch(args);
+        launch();
     }   
 }

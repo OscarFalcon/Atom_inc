@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import fxml.ControlledScreen;
 import fxml.FXMLEngine;
 import javafx.application.Platform;
@@ -26,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -45,6 +47,10 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	public static Stage primaryStage;
 
+	
+	
+	
+	
 	
 	@FXML
 	TableView pmaTable;
@@ -118,12 +124,10 @@ public class MainController implements Initializable, ControlledScreen {
 	public void setScreenParent(FXMLEngine parentEngine){
 		this.parentEngine = parentEngine;	
 	}
-	
-	
-	
+
 	
 	public void initialize(URL url, ResourceBundle rb) {
-	
+		
 		//customerTable.setPlaceholder(node);
 		
 		/** INIT CUSTOMER TABLE VIEW **/
@@ -156,7 +160,7 @@ public class MainController implements Initializable, ControlledScreen {
 		/** INIT IN SERVICE TABLE VIEW **/
 		serviceOrderNum.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("workOrder"));
 		serviceDateIn.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("date"));
-		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("name"));
+		serviceName.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("fullName"));
 		serviceVehicle.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("vehicle"));
 		serviceTotal.setCellValueFactory(new PropertyValueFactory<WorkOrder,String>("grandTotal"));
 		
@@ -245,63 +249,28 @@ public class MainController implements Initializable, ControlledScreen {
 	
 	public void addClient(ActionEvent event){
 		EditClientController.person = null;
-		Stage popup = loadpopup("EditCustomerView.fxml",450,350);
+	
+		Stage popup = FXMLEngine.loadPopup(primaryStage,"../application/EditCustomerView.fxml", 450, 450);
 		popup.setTitle("Add Client");
 		popup.show();
 		
-		/*
-		AddClientController msgBox = new AddClientController();
-	    try {
-	        msgBox.showMessageBox(primaryStage);
-	    } catch (Exception e) {
-	        e.printStackTrace(); 
-	    }
-	    */
+	
 	}
 	
 	public void editClient(ActionEvent event){
-		EditClientController.person = current;
-		Stage popup = loadpopup("EditCustomerView.fxml",450,350);
+		EditClientController.person = current; 
+		Stage popup = FXMLEngine.loadPopup(primaryStage,"../application/EditCustomerView.fxml",450,350);
 		popup.setTitle("Edit Client");
 		popup.show();
-		
-		
-		/*
-		EditClientController msgBox = new EditClientController();
-	    try {
-	        msgBox.showMessageBox(primaryStage, current);
-	    } catch (Exception e) {
-	        e.printStackTrace(); 
-	    }
-	    */
 	}
 	
 	public void printList(ActionEvent event){
-		Stage popup = loadpopup("printDialog.fxml",550,250);
+		Stage popup = FXMLEngine.loadPopup(primaryStage,"../application/printDialog.fxml",550,250);
 		popup.setTitle("Print Dialog");
 		popup.show();
 	}
 	
-	private  Stage loadpopup(String filename, int height, int width){
-		Stage popup = new Stage();
-		try{
-			Parent root = FXMLLoader.load(getClass().getResource(filename));
-			Scene scene = new Scene(root, height, width);
-			popup.setScene(scene);
-			popup.initModality(Modality.APPLICATION_MODAL);
-			popup.setResizable(false);
-			
-			popup.setScene(scene);
-	        popup.initOwner(primaryStage);
-	        popup.initModality(Modality.WINDOW_MODAL);
-	        popup.initStyle(StageStyle.UTILITY);
-	        popup.setResizable(false);
-		}
-		catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-		return popup;
-	}
+
 	
 
 	

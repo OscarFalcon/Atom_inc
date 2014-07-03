@@ -2,6 +2,7 @@ package pmawizard;
 
 
 
+import fxml.SimpleEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,11 +13,11 @@ import javafx.stage.Stage;
 public class PMAWizard extends Application implements Runnable{
 	
 	
-	private static final String SCREEN2 = "SelectCustomerScreen.fxml";
-	private static final String SCREEN3 = "CreateCustScreen.fxml";
-	private static final String SCREEN4 = "SelectVehicleScreen.fxml";
-	private static final String SCREEN5 = "AddVehicleScreen.fxml";
-	private static final String SCREEN6 = "FinalCommentsScreen.fxml";
+	private static final String SCREEN2 = "../pmawizard/SelectCustomerScreen.fxml";
+	private static final String SCREEN3 = "../pmawizard/CreateCustScreen.fxml";
+	private static final String SCREEN4 = "../pmawizard/SelectVehicleScreen.fxml";
+	private static final String SCREEN5 = "../pmawizard/AddVehicleScreen.fxml";
+	private static final String SCREEN6 = "../pmawizard/FinalCommentsScreen.fxml";
 
 	public static final String MAIN_SCREEN    = 		"SCREEN1";	
     public static final String SELECTCUSTOMER_SCREEN = 	"SCREEN2";
@@ -29,25 +30,45 @@ public class PMAWizard extends Application implements Runnable{
 	@Override
 	public void start(Stage stage){		
 		Parent root;
-		FXMLLoader fxmlLoader = new FXMLLoader();		
+		
+		
+		
+		
+		
+		
+		SimpleEngine engine = new SimpleEngine();
+		root = engine.loadScreen("PMAWizard", "../pmawizard/PMAWizard.fxml");
+		MainController mainController = (MainController) engine.getController("PMAWizard");
+		
+		engine.setContainer(mainController.getVistaHolder());
+		
+		
+		engine.loadScreen(SELECTCUSTOMER_SCREEN, SCREEN2);
+		engine.loadScreen(CREATECUSTOMER_SCREEN, SCREEN3);
+		engine.loadScreen(SELECTVEHICLE_SCREEN, SCREEN4);
+		engine.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
+		engine.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
+		
+		/**FXMLLoader fxmlLoader = new FXMLLoader();		
 		
 		try{
 			root = fxmlLoader.load(getClass().getResource("PMAWizard.fxml").openStream());
 		}catch(Exception e){	
 			e.printStackTrace();
 			return;
-		}
+		}**/
 		
-		MainController mainController = fxmlLoader.getController();
+		/**MainController mainController = fxmlLoader.getController();
 		mainController.loadScreen(SELECTCUSTOMER_SCREEN, SCREEN2);
 	    mainController.loadScreen(CREATECUSTOMER_SCREEN, SCREEN3);
 	    mainController.loadScreen(SELECTVEHICLE_SCREEN, SCREEN4);
 	    mainController.loadScreen(ADDVEHICLE_SCREEN,SCREEN5);
-	    mainController.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);
+	    mainController.loadScreen(FINALCOMMENTS_SCREEN,SCREEN6);**/
 		
 		mainController.setNextButtonDisable(true);
 		mainController.setBackButtonDisable(true);
 		mainController.setFinishButtonDisable(true);
+		
 		mainController.switchScreen(SELECTCUSTOMER_SCREEN);
 		mainController.setStage(stage);
 		Scene scene = new Scene(root, 900, 600);

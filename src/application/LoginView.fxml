@@ -14,7 +14,7 @@
   <children>
     <ImageView fitHeight="163.0" fitWidth="189.21677846272786" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="33.0">
       <image>
-        <Image url="@../Images/2fatguyslogo.png" />
+        <Image url="@../Images/anablep.png" />
       </image>
     </ImageView>
     <MenuBar prefWidth="850.0" styleClass="TopMenubar" stylesheets="@Login.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

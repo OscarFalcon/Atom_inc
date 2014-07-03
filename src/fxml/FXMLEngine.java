@@ -1,10 +1,16 @@
 package fxml;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 public abstract class FXMLEngine {
 	
@@ -13,20 +19,26 @@ public abstract class FXMLEngine {
 	
 	protected final HashMap<String,ControlledScreen> controllers;
 	
+	private Node container = null;	
 	
-	private Node container;
 	
-	
-	public FXMLEngine(){
-		screens = new HashMap<String, Node>();
+	protected FXMLEngine(){
+		screens = new HashMap<String,Node>();
 		controllers = new HashMap<String,ControlledScreen>();
 	}
 	
-	public Node getContainer(){
+	protected FXMLEngine(Node container){
+		screens = new HashMap<String,Node>();
+		controllers = new HashMap<String,ControlledScreen>();
+		this.container = container;
+	}
+	
+	
+	public final Node getContainer(){
 		return container;
 	}
 	
-	protected void setContainer(Node container){
+	public final void setContainer(Node container){
 		this.container = container;
 	}
 	
@@ -71,6 +83,41 @@ public abstract class FXMLEngine {
     
     
     
+    public static final Stage loadPopup(Window owner,String fxml_file,int height, int width){
+    	
+    	FXMLLoader loader = new FXMLLoader(FXMLEngine.class.getResource(fxml_file));
+    	Parent root;
+		
+    	try {
+			root = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+    	Scene scene = new Scene(root, height, width);
+    	Stage popupStage = new Stage();
+    	
+    	popupStage.setScene(scene);
+		popupStage.setResizable(false);
+        popupStage.initOwner(owner);
+        popupStage.initModality(Modality.WINDOW_MODAL);
+        popupStage.initStyle(StageStyle.UTILITY);
+    	
+    	return popupStage;
+    }
+    
+    public static final Parent loadScreen(String fxml_file){
+    	FXMLLoader loader = new FXMLLoader(FXMLEngine.class.getResource(fxml_file));
+    	Parent root;
+    	try {
+			root = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+    	return root;
+    }
     
     
     
