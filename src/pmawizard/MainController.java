@@ -2,24 +2,27 @@ package pmawizard;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import pmawizard.SelectVehicleController;
 import mycms.MyCMS;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
+import fxml.ControlledScreen;
+import fxml.FXMLEngine;
 /**
  * Main controller class for the entire layout.
  */
-public class MainController {
+public class MainController implements ControlledScreen {
 
    
     @FXML private Pane vistaHolder;   		/** node that we will add children screens to. */
@@ -39,6 +42,13 @@ public class MainController {
    
    
     private String vehicleVIN;	/** the vehicleVIN that is currently selected via the create vehicle or select vehicle sections **/
+    
+   
+    public Pane getVistaHolder(){
+    	return vistaHolder;
+    }
+    
+    
     
     
     /**  data structure that will associate a screen name with a node 
@@ -109,8 +119,8 @@ public class MainController {
     
     
     
-    public boolean loadScreen(String name,String filename){
-    	if(screens.get(name) != null) /** screen already loaded **/
+    /** public boolean loadScreen(String name,String filename){
+    	if(screens.get(name) != null) 
     			return true;
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(filename));
@@ -127,7 +137,7 @@ public class MainController {
 		controllers.put(name, controlledScreen);
 		screens.put(name, node);
     	return true;
-    }
+    }**/
     
     public Node getScreen(String whichScreen){
     	return screens.get(whichScreen);
@@ -206,7 +216,19 @@ public class MainController {
     
     public void cancel(){
     	stage.close();
-    } 
+    }
+
+
+
+	@Override
+	public void setScreenParent(FXMLEngine screenPage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+ 
     
     /** END ON ACTION METHODS **/
     

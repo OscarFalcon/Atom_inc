@@ -5,13 +5,15 @@ import javafx.scene.layout.Pane;
 
 public class SimpleEngine extends FXMLEngine{
 
-	private Pane container;
+
+	private Pane pane;
 	
 	public SimpleEngine(){
 		super();
-		container = new Pane();
-		setContainer(container);
+		pane = new Pane(); 
+		setContainer(pane);
 	}
+	
 	
 	
 	@Override
@@ -21,10 +23,12 @@ public class SimpleEngine extends FXMLEngine{
 		if((node = getScreen(name)) == null)
 			return false;
 	
-		container.getChildren().setAll(node);
+		((Pane) getContainer()).getChildren().setAll(node);		
 		return true;
 	}
 
+	
+	
 	
 	
 	

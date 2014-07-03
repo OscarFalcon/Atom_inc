@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.ImageView?>
 
-<AnchorPane prefHeight="690.0" prefWidth="1147.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<AnchorPane fx:id = "anchorPane" prefHeight="690.0" prefWidth="1147.0" stylesheets="@Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
   <!-- TODO Add Nodes -->
   <children>
     <MenuBar prefWidth="850.0" styleClass="TopMenubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -365,7 +365,7 @@
       </Label>
       <ImageView fitHeight="159.0" fitWidth="168.0" layoutX="11.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/2fatguyslogo.png" />
+            <Image url="@../Images/anablep.png" />
          </image>
       </ImageView>
       <Separator layoutX="10.0" layoutY="41.0" orientation="VERTICAL" prefHeight="548.0" prefWidth="5.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="184.0" AnchorPane.topAnchor="49.0" />
